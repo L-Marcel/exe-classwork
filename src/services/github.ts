@@ -16,6 +16,7 @@ export class Github {
   static privateKey = process.env.GITHUB_PRIVATE_KEY.replace(/\|/gm, '\n');
   static appId = process.env.GITHUB_APP_ID;
   static clientId = process.env.GITHUB_CLIENT_ID;
+  static appName = process.env.APP_NAME;
   static clientSecret = process.env.GITHUB_CLIENT_SECRET;
   static webhookSecret = process.env.GITHUB_WEBHOOK_SECRET;
   static api = axios.create({

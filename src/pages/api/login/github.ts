@@ -33,7 +33,7 @@ async function github(req: Req, res: Res) {
       Cookies.set("token", data.access_token, { req, res });
       Cookies.set("refresh_token", data.refresh_token, { req, res });
 
-      return res.status(300).redirect(`https://github.com/apps/dev-next-classwork/installations/new/permissions?target_id=${githubId}`);
+      return res.status(300).redirect(`https://github.com/apps/${Github.appName}/installations/new/permissions?target_id=${githubId}`);
     } else if(user && !user?.installationId && installationId) {
       console.log("update", user, installationId);
       await Users.update(user.id, {
@@ -41,7 +41,7 @@ async function github(req: Req, res: Res) {
       });
     } else if(user && !user?.installationId && !installationId) {
       console.log("redirect", user);
-      return res.status(300).redirect(`https://github.com/apps/dev-next-classwork/installations/new/permissions?target_id=${user?.githubId}`);
+      return res.status(300).redirect(`https://github.com/apps/${Github.appName}/installations/new/permissions?target_id=${user?.githubId}`);
     };
 
     Cookies.set("token", data.access_token, { req, res });

@@ -11,7 +11,7 @@ async function login(req: Req, res: Res) {
     .catch(() => false as any);
 
     if(user && !user?.installationId) {
-      return res.status(300).redirect(`https://github.com/apps/dev-next-classwork/installations/new/permissions?target_id=${user?.githubId}`);
+      return res.status(300).redirect(`https://github.com/apps/${Github.appName}/installations/new/permissions?target_id=${user?.githubId}`);
     } else if(!user && !stopLoop || stopLoop === "false") {
       Cookies.set("stop_loop", "true", { req, res });
       return res.status(300).redirect(`https://github.com/login/oauth/authorize?client_id=${Github.clientId}`);
