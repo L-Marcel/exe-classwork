@@ -1,16 +1,10 @@
 import { Link as ChakraLink, HStack, Stack, Text } from "@chakra-ui/react";
 import Link from "next/link";
-import { useEffect } from "react";
 import { Button } from "../components/Buttons/Button";
 import { Layout } from "../components/Layout";
 import { Logo } from "../components/Logo";
-import { Cookies } from "../services/cookies";
 
 function Login() {
-  useEffect(() => {
-    Cookies.set("stop_loop", "false");
-  }, []);
-
   return (
     <Layout
       bgImage="/mainpage.svg"
