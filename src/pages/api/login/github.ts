@@ -19,6 +19,8 @@ async function github(req: Req, res: Res) {
         login: username,
       } = await Github.checkIfTokenIsValid(data.access_token);
 
+      console.log("create", githubId, name);
+
       await Users.create({
         avatarUrl,
         githubId: githubId.toString(),
@@ -32,10 +34,12 @@ async function github(req: Req, res: Res) {
 
       return res.status(300).redirect(`https://github.com/apps/dev-next-classwork/installations/new/permissions?target_id=${githubId}`);
     } else if(user && !user?.installationId && installationId) {
+      console.log("update", user, installationId);
       await Users.update(user.id, {
         installationId: installationId?.toString()
       });
     } else if(user && !user?.installationId && !installationId) {
+      console.log("redirect", user);
       return res.status(300).redirect(`https://github.com/apps/dev-next-classwork/installations/new/permissions?target_id=${user?.githubId}`);
     };
 
@@ -44,6 +48,7 @@ async function github(req: Req, res: Res) {
 
     return res.status(300).redirect(`/app/${user.githubId}`);
   } catch(err) {
+    console.log("err", err.message);
     return res.status(300).redirect(`/`);
   };
 };
