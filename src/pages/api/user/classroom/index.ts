@@ -1,0 +1,20 @@
+import { Classrooms } from "../../../../controllers/Classrooms";
+import { ClassroomValidation } from "../../../../services/api/validations/ClassroomValidation";
+import { apiHandle } from "../../../../utils/api/apiHandle";
+import { validate } from "../../../../utils/api/middlewares/validate";
+import { withUser } from "../../../../utils/api/middlewares/withUser";
+
+async function createClassroom(req: Req, res: Res) {
+  const data = req.body;
+  const user = req.user;
+
+  const classroom = await Classrooms.create(user, data);
+
+  return res.status(200).json(classroom);
+};
+
+export default apiHandle({
+  "POST": withUser(
+    validate(ClassroomValidation.create, createClassroom)
+  )
+});

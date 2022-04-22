@@ -1,0 +1,170 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id String @id @default(uuid())
+
+  name String?
+  email String? @unique
+  username String @unique
+  avatarUrl String?
+  
+  installationId String? @unique
+  githubId String @unique
+
+  classrooms ClassroomRelation[]
+  teams TeamRelation[]
+  repositories Repository[]
+  commits Commit[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
+}
+
+model ClassroomRelation {
+  role String @default("STUDENT")
+  
+  classroom Classroom @relation(fields: [classroomId], references: [id], onDelete: Cascade)
+  classroomId String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
+  updatedBy String?
+
+  @@id([classroomId, userId])
+}
+
+model Classroom {
+  id String @id @default(uuid())
+  inviteCode String @unique @default(uuid())
+
+  title String
+  subject String?
+  description String
+
+  users ClassroomRelation[]
+  alerts Alert[]
+  teams Team[]
+  repository Repository[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
+  updatedBy String?
+}
+
+model Team {
+  id String @id @default(uuid())
+
+  users TeamRelation[]
+  alerts Alert[]
+
+  classroom Classroom @relation(fields: [classroomId], references: [id], onDelete: Cascade)
+  classroomId String
+  
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  repositoryId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
+  updatedBy String?
+}
+
+model TeamRelation {
+  role String @default("MEMBER")
+
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
+  updatedBy String?
+
+  @@id([teamId, userId])
+}
+
+model Repository {
+  id String @id @default(uuid())
+
+  name String
+  fullname String
+  description String?
+
+  homepage String?
+  gitUrl String
+  sshUrl String?
+
+  classroom Classroom? @relation(fields: [classroomId], references: [id], onDelete: Cascade)
+  classroomId String?
+  
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId String
+
+  commits Commit[]
+  alerts Alert[]
+  team Team?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
+  updatedBy String?
+}
+
+model Commit {
+  id String @id @default(uuid())
+
+  sha String @unique
+  shaBefore String?
+
+  message String?
+  
+  isForced Boolean @default(false)
+
+  author String
+  tree String
+  url String
+
+  filesAdded Int @default(0)
+  filesRemoved Int @default(0)
+  filesModifed Int @default(0)
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String?
+
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  repositoryId String
+
+  alerts Alert[]
+
+  createdAt DateTime @default(now())
+}
+
+model Alert {
+  id String @id @default(uuid())
+
+  type String
+  avatarUrl String?
+  description String
+
+  classroom Classroom? @relation(fields: [classroomId], references: [id], onDelete: Cascade)
+  classroomId String?
+
+  team Team? @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId String?
+
+  repository Repository? @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  repositoryId String?
+
+  commit Commit? @relation(fields: [commitId], references: [id], onDelete: Cascade)
+  commitId String?
+}
