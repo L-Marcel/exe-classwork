@@ -30,7 +30,7 @@ async function github(req: Req, res: Res) {
 
       Cookies.set("token", data.access_token, { req, res });
       Cookies.set("refresh_token", data.refresh_token, { req, res });
-
+      
       return res.status(300).redirect(`https://github.com/apps/${Github.appName}/installations/new/permissions?target_id=${githubId}`);
     } else if(user && !user?.installationId && installationId) {
       await Users.update(user.id, {
@@ -45,7 +45,6 @@ async function github(req: Req, res: Res) {
 
     return res.status(300).redirect(`/app/${user.githubId}`);
   } catch(err) {
-    console.log("err", err.message);
     return res.status(300).redirect(`/`);
   };
 };
