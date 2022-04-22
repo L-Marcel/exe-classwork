@@ -20,9 +20,11 @@ function App({ user }) {
   };
 
   return (
-    <Text>
-      Hello, {user.name}
-    </Text>
+    <Layout>
+      <Text>
+        Hello, {user.name}
+      </Text>
+    </Layout>
   );
 };
 

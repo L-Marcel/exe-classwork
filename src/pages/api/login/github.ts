@@ -20,8 +20,6 @@ async function github(req: Req, res: Res) {
         login: username,
       } = await Github.checkIfTokenIsValid(data.access_token);
 
-      console.log("create", githubId, name);
-
       await Users.create({
         avatarUrl,
         githubId: githubId.toString(),
@@ -35,12 +33,10 @@ async function github(req: Req, res: Res) {
 
       return res.status(300).redirect(`https://github.com/apps/${Github.appName}/installations/new/permissions?target_id=${githubId}`);
     } else if(user && !user?.installationId && installationId) {
-      console.log("update", user, installationId);
       await Users.update(user.id, {
         installationId: installationId?.toString()
       });
     } else if(user && !user?.installationId && !installationId) {
-      console.log("redirect", user);
       return res.status(300).redirect(`https://github.com/apps/${Github.appName}/installations/new/permissions?target_id=${user?.githubId}`);
     };
 
