@@ -9,7 +9,8 @@ async function github(req: Req, res: Res) {
   try {
     const { data } = await Github.getAccessToken(code?.toString());
 
-    const user = await Users.getUserByToken({ req, res }, data?.access_token);
+    const user = await Users.getUserByToken({ req, res }, data?.access_token)
+    .catch(() => false as any);
 
     if(!user && data?.access_token) {
       const {
