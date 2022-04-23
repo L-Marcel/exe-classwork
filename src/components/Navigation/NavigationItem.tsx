@@ -13,7 +13,10 @@ function NavigationItem({ path, title, ...rest }: NavigationItemProps) {
   const isSelected = asPath.toLowerCase() === path.toLowerCase();
 
   return (
-    <Link href={path}>
+    <Link 
+      data-testid="navigation-item"
+      href={path}
+    >
       <Button
         theme={isSelected? "primary":"solid"}
         color={isSelected && "black.100"}

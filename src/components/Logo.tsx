@@ -8,6 +8,7 @@ interface LogoProps extends BoxProps {};
 function Logo({ ...rest }: LogoProps) {
   return (
     <Box
+      data-testid="logo"
       as={m.div}
       display="flex"
       flexDir="column"

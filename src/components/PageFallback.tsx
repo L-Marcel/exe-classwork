@@ -10,6 +10,7 @@ interface PageFallbackProps extends BoxProps {
 function PageFallback({ title = "exe classwork prod", ...rest }: PageFallbackProps) {
   return (
     <Box
+      data-testid="page-fallback"
       display="flex"
       flexDir="column"
       justifyContent="center"

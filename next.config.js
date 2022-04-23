@@ -4,10 +4,10 @@ module.exports = {
   async headers() {
     return [
       {
-        source: '/:path*',
+        source: "/:path*",
         headers: [{
-          key: 'X-DNS-Prefetch-Control',
-          value: 'on'
+          key: "X-DNS-Prefetch-Control",
+          value: "on"
         }]
       }
     ]
@@ -20,7 +20,7 @@ module.exports = {
     return config;
   },
   i18n: {
-    locales: ['en-US', 'pt-BR'],
-    defaultLocale: 'en-US',
+    locales: ["en-US", "pt-BR"],
+    defaultLocale: "en-US",
   }
 }

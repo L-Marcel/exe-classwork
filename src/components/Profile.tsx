@@ -8,6 +8,7 @@ interface ProfileProps extends BoxProps {
 function Profile({ children, ...rest }: ProfileProps) {
   return (
     <Box
+      data-testid="profile"
       display="flex"
       borderRadius={60}
       bgColor="solid.100"

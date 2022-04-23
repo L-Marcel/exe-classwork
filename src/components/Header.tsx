@@ -7,6 +7,7 @@ interface HeaderProps extends StackProps {};
 function Header({ ...rest }: HeaderProps) {
   return (
     <HStack
+      data-testid="header"
       justifyContent="space-between"
       spacing={[2, 4]}
       w="100%"

@@ -15,6 +15,7 @@ function Button({
 
   return (
     <ChakraButton
+      data-testid="button"
       {...getButtonStyle({ theme, color, colorIndexes })}
       w="min-content"
       {...rest}

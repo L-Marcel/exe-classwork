@@ -82,6 +82,7 @@ function NamedIcon({ name = "default", ...rest }: IconProps) {
   const icon = icons[_name] ?? icons["default"];
   return (
     <ChakraIcon
+      data-testid="icon"
       as={icon}
       {...rest}
     />

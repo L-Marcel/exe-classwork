@@ -9,6 +9,7 @@ function Navigation({ ...rest }: NavigationProps) {
 
   return (
     <Box
+      data-testid="navigation"
       display="flex"
       borderRadius={12}
       bgColor="solid.100"

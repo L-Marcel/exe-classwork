@@ -18,9 +18,11 @@ function Layout({ children, bgImage, ...rest }: LayoutProps) {
 
   return (
     <Box
+      data-testid="layout"
       as={m.div}
       display="flex"
       flexDir="column"
+      data-test
       bgImage={path? bgImg:null}
       p={8}
       h="100vh"

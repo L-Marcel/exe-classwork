@@ -9,6 +9,7 @@ function ToggleColorButton({ ...rest }: ToogleColorButtonProps) {
 
   return (
     <IconButton
+      data-testid="toggle-button"
       aria-label="toogleColorButton"
       icon={<NamedIcon name="sun"/>}
       borderRadius={60}

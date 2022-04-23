@@ -31,19 +31,22 @@ function Login() {
           mb="-18px"
           ml={[0, "-2px", "-3px", "-5px"]}
         />
-        <Text 
+        <Text
+          data-testid="app-description"
           maxW={["90%", "80%", "70%", "60%", "50%"]}
           textAlign="left"
         >
           A simple Github repository monitoring system with tools to improve school environment. You can create a classroom, add developers or students, make a team, and monitoring they repositories. Problems with analyzing the productivity of the projects? Try it!
         </Text>
         <HStack>
-          <Link href="/api/login">
-            <Button
-              theme="primary"
-            >
-              Sign-in
-            </Button>
+          <Link href="/api/login" passHref>
+            <ChakraLink>
+              <Button
+                theme="primary"
+              >
+                Sign-in
+              </Button>
+            </ChakraLink>
           </Link>
           <Button>
             Documentation

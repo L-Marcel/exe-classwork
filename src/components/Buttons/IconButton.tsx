@@ -14,6 +14,7 @@ function IconButton({
 }: IconButtonProps) {
   return (
     <ChakraIconButton
+      data-testid="icon-button"
       {...getButtonStyle({ theme, color, colorIndexes })}
       fontSize={18}
       {...rest}
