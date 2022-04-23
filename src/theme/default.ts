@@ -61,6 +61,9 @@ export const theme = extendTheme({
         'div[role="progressbar"]': {
           bgGradient: "linear(to-r, transparent, primary.700)",
         },
+        "a:hover": {
+          textDecoration: "none!important",
+        },
         "button:hover": {
           filter: "brightness(0.95)"
         },

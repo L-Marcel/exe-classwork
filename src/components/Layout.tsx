@@ -6,16 +6,7 @@ import { ToggleColorButton } from "./Buttons/ToogleColorButton";
 
 interface LayoutProps extends BoxProps {};
 
-function Layout({ children, bgImage, ...rest }: LayoutProps) {
-  const image = useColorModeValue("", "_dark");
-  const path = bgImage as string;
-  let n: string, mi: string, bgImg: string;
-
-  if(path && path?.includes(".")) {
-    [n, mi] = path.split(".");
-    bgImg = n + image + "." + mi; 
-  };
-
+function Layout({ children, ...rest }: LayoutProps) {
   return (
     <Box
       data-testid="layout"
@@ -23,8 +14,6 @@ function Layout({ children, bgImage, ...rest }: LayoutProps) {
       display="flex"
       flexDir="column"
       data-test
-      bgImage={path? bgImg:null}
-      p={8}
       h="100vh"
       {...rest}
       {...fadeLayout}

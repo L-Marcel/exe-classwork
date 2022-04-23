@@ -1,4 +1,4 @@
-import { Link as ChakraLink, HStack, Stack, Text } from "@chakra-ui/react";
+import { Link as ChakraLink, HStack, Stack, Text, Box } from "@chakra-ui/react";
 import Link from "next/link";
 import { Button } from "../components/Buttons/Button";
 import { Layout } from "../components/Layout";
@@ -6,25 +6,11 @@ import { Logo } from "../components/Logo";
 
 function Login() {
   return (
-    <Layout
-      bgImage="/mainpage.svg"
-      bgRepeat="no-repeat"
-      bgPos={[
-        "70% calc(100% + 65px)",
-        "70% calc(100% + 65px)",
-        "70% calc(100% + 200px)",
-        "calc(100% + 50px) calc(100% + 120px)",
-        "90% calc(100% + 220px)"
-      ]}
-      bgSize={[
-        "120% 60%",
-        "160% 70%",
-        "700px 700px"
-      ]}
-    >
+    <Layout>
       <Stack
         display="flex"
         spacing={4}
+        p={8}
       >
         <Logo
           mt="-10px"
@@ -53,10 +39,20 @@ function Login() {
           </Button>
         </HStack>
       </Stack>
+      <Box
+        bgImage="/login_bg.jpg"
+        bgPos={["0 100%", "0 20%"]}
+        bgSize="cover"
+        bgRepeat="no-repeat"
+        bgColor="solid.100"
+        h="full"
+        w="100%"
+      />
       <Link href="https://l-marcel.vercel.app" passHref>
         <ChakraLink
           position="absolute"
-          bottom={8}
+          bottom={0}
+          m={8}
           borderRadius={8}
           bgColor="solid.50"
           py={1}

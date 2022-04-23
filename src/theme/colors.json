@@ -41,8 +41,8 @@
         "_dark": "whiteAlpha.800"
       },
       "alpha.900": {
-        "default": "blackAlpha.800",
-        "_dark": "whiteAlpha.800"
+        "default": "blackAlpha.900",
+        "_dark": "whiteAlpha.900"
       },
       "alpha.alt.50": {
         "default": "whiteAlpha.50",
