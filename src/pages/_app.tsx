@@ -6,6 +6,7 @@ import { domAnimation } from "framer-motion";
 import { theme } from "../theme/default";
 
 import "focus-visible/dist/focus-visible.min.js";
+import { Layout } from "../components/Layout";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -16,7 +17,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       resetCSS 
     >
       <ColorModeScript initialColorMode="dark"/>
-      <Component {...pageProps}/>
+      <Layout>
+        <Component {...pageProps}/>
+      </Layout>
     </AllProviders>
   );
 };

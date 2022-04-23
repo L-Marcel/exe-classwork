@@ -1,12 +1,11 @@
 import { Link as ChakraLink, HStack, Stack, Text, Box } from "@chakra-ui/react";
 import Link from "next/link";
 import { Button } from "../components/Buttons/Button";
-import { Layout } from "../components/Layout";
 import { Logo } from "../components/Logo";
 
-function Login() {
+function LoginPage() {
   return (
-    <Layout>
+    <>
       <Stack
         display="flex"
         spacing={4}
@@ -61,8 +60,8 @@ function Login() {
           @l-marcel
         </ChakraLink>
       </Link>
-    </Layout>
+    </>
   );
 };
 
-export default Login;
+export default LoginPage;

@@ -1,5 +1,6 @@
 declare type _Req = import("next").NextApiRequest;
 declare type Res = import("next").NextApiResponse;
+declare type User = import("@prisma/client").User;
 
 declare interface Req extends _Req {
   user: import("@prisma/client").User;
@@ -64,6 +65,11 @@ declare type ErrorWithContext<T = any> = {
   details: T | T[];
 };
 
+declare interface AppContext {
+  user: User | null;
+  setUser: (user: User) => void;
+  signOut: () => void;
+};
 
 //Fake enums to sqlite dabase
 declare type AlertTypes = "CLASSROOM" | "CLASSROOM_RELATION" | "TEAM" | "TEAM_RELATION" | "REPOSITORY" | "COMMIT";

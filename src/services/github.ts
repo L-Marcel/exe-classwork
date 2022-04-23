@@ -42,9 +42,15 @@ export class Github {
   };
 
   static async checkIfTokenIsValid(token: string): Promise<GithubUser> {
-    const user = await this.api.get(`user`, {
+    const user = await this.api.post(`/applications/${this.clientId}/token`, {
+      access_token: token
+    }, {
+      auth: {
+        username: this.clientId,
+        password: this.clientSecret
+      },
       headers: {
-        "Authorization": `Bearer ${token}`
+        accept: "application/vnd.github.v3+json"
       }
     })
     .then(res => res.data)

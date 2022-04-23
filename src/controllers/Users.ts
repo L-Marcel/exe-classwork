@@ -1,6 +1,6 @@
 import { Prisma as P } from "@prisma/client";
 import { NotFoundError } from "../errors/api/NotFoundError";
-import { AuthUserNotFoundError } from "../errors/api/UserNotFoundError";
+import { AuthUserNotFoundError } from "../errors/api/AuthUserNotFoundError";
 import { Cookies } from "../services/cookies";
 import { Github } from "../services/github";
 import { Prisma } from "../services/prisma";
@@ -65,18 +65,16 @@ export class Users {
       token = Cookies.get("token", { req, res });
     };
 
-    const {
-      id,
-    } = await Github.checkIfTokenIsValid(token);
+    const data = await Github.checkIfTokenIsValid(token);
 
     const user = await Prisma.user.findUnique({
       where: {
-        githubId: id?.toString() ?? ""
+        githubId: data?.id?.toString() ?? ""
       }
     });
 
     if(!user) {
-      throw new AuthUserNotFoundError();
+      throw new AuthUserNotFoundError(data);
     };
 
     return user;

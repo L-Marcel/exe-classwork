@@ -1,35 +1,26 @@
 import { ButtonProps } from "@chakra-ui/react";
+import { IconButton } from "../Buttons/IconButton";
+import { NamedIcon } from "../NamedIcon";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { Button } from "../Buttons/Button";
-
 interface NavigationItemProps extends ButtonProps {
   path: string;
-  title: string;
+  name: string;
+  isSelected: boolean;
 };
 
-function NavigationItem({ path, title, ...rest }: NavigationItemProps) {
-  const { asPath } = useRouter();
-  const isSelected = asPath.toLowerCase() === path.toLowerCase();
-
+function NavigationItem({ path, isSelected, name, ...rest }: NavigationItemProps) {
   return (
-    <Link 
+    <Link
       data-testid="navigation-item"
       href={path}
     >
-      <Button
+      <IconButton
+        aria-label={`${path}-navigation`}
+        icon={<NamedIcon name={name}/>}
         theme={isSelected? "primary":"solid"}
         color={isSelected && "black.100"}
-        borderRightRadius={0}
-        borderRight="2px solid"
-        borderColor={isSelected? "primary.200":"solid.300"}
-        _notFirst={{
-          borderLeftRadius: 0,
-        }}
         {...rest}
-      >
-        {title}
-      </Button>
+      />
     </Link>
   );
 };

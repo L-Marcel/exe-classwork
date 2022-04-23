@@ -4,8 +4,6 @@ import { apiHandle } from "../../utils/api/apiHandle";
 async function users(req: Req, res: Res) {
   const { secret } = req?.headers;
 
-  console.log(secret, req.headers);
-
   if(secret !== process.env.SECRET) {
     return res.status(401).send("");
   };

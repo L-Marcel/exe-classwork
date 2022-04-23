@@ -4,6 +4,7 @@ import { getButtonStyle } from "./styles/getButtonStyle";
 interface IconButtonProps extends ChakraIconButtonProps {
   theme?: string;
   colorIndexes?: [string, string, string];
+  layoutId?: string;
 };
 
 function IconButton({ 
@@ -14,6 +15,7 @@ function IconButton({
 }: IconButtonProps) {
   return (
     <ChakraIconButton
+      layoutId
       data-testid="icon-button"
       {...getButtonStyle({ theme, color, colorIndexes })}
       fontSize={18}

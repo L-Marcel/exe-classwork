@@ -1,4 +1,5 @@
 import { Users } from "../../../controllers/Users";
+import { AuthUserNotFoundError } from "../../../errors/api/AuthUserNotFoundError";
 import { Cookies } from "../../../services/cookies";
 import { Github } from "../../../services/github";
 import { apiHandle } from "../../../utils/api/apiHandle";
@@ -7,18 +8,27 @@ async function github(req: Req, res: Res) {
   const { code, installation_id: installationId } = req.query;
 
   try {
+    console.log(code);
     const { data } = await Github.getAccessToken(code?.toString());
 
-    const user = await Users.getUserByToken({ req, res }, data?.access_token)
-    .catch(() => false as any);
+    console.log(data);
 
-    if(!user && data?.access_token) {
+    let githubUser: GithubUser;
+    const user = await Users.getUserByToken({ req, res }, data?.access_token)
+    .catch((err) => {
+      if(err instanceof AuthUserNotFoundError) {
+        githubUser = err.user;
+      };
+
+      return false as any;
+    });
+
+    if(!user && data?.access_token && githubUser) {
       const {
-        id: githubId,
-        avatar_url: avatarUrl,
-        name,
-        login: username,
-      } = await Github.checkIfTokenIsValid(data.access_token);
+        avatar_url: avatarUrl, 
+        id: githubId, name, 
+        login: username 
+      } = githubUser;
 
       await Users.create({
         avatarUrl,
@@ -45,6 +55,8 @@ async function github(req: Req, res: Res) {
 
     return res.status(300).redirect(`/app/${user.githubId}`);
   } catch(err) {
+
+    console.log(err);
     return res.status(300).redirect(`/`);
   };
 };

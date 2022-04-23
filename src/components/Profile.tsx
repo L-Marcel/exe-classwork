@@ -1,11 +1,10 @@
 import { Avatar, Box, BoxProps } from "@chakra-ui/react";
-import { User } from "@prisma/client";
 
 interface ProfileProps extends BoxProps {
   user?: User;
 };
 
-function Profile({ children, ...rest }: ProfileProps) {
+function Profile({ children, user, ...rest }: ProfileProps) {
   return (
     <Box
       data-testid="profile"
@@ -13,8 +12,11 @@ function Profile({ children, ...rest }: ProfileProps) {
       borderRadius={60}
       bgColor="solid.100"
       p={2}
+      {...rest}
     >
-      <Avatar 
+      <Avatar
+        src={user.avatarUrl}
+        name={user.name ?? user.username}
         bgColor="solid.250"
         pr="2px"
         pt="2px"

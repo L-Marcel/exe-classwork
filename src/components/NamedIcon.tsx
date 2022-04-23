@@ -1,7 +1,7 @@
 import { Icon as ChakraIcon, IconProps as ChakraIconProps } from "@chakra-ui/react";
 import { 
   FaReact, FaDocker, FaGitAlt, 
-  FaJava, FaPython, FaBalanceScale, FaGithubAlt, FaSun, FaUser
+  FaJava, FaPython, FaBalanceScale, FaGithubAlt, FaSun, FaUser, FaHome, FaChalkboardTeacher
 } from "react-icons/fa";
 import { 
   SiTypescript, SiJest, SiNextdotjs, SiGnubash, 
@@ -74,7 +74,9 @@ export const icons = {
   "up": AiFillCaretUp,
   "close": IoIosCloseCircle,
   "info": AiOutlineInfoCircle,
-  "user": FaUser
+  "user": FaUser,
+  "home": FaHome,
+  "classroom": FaChalkboardTeacher
 };
 
 function NamedIcon({ name = "default", ...rest }: IconProps) {

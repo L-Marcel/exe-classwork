@@ -1,8 +1,8 @@
-import { Box, BoxProps, useColorModeValue } from "@chakra-ui/react";
-import { m } from "framer-motion";
+import { Box, BoxProps } from "@chakra-ui/react";
+import { m} from "framer-motion";
 import Head from "next/head";
-import { fadeLayout } from "../theme/animations/motion";
 import { ToggleColorButton } from "./Buttons/ToogleColorButton";
+import { Navigation } from "./Navigation";
 
 interface LayoutProps extends BoxProps {};
 
@@ -16,12 +16,12 @@ function Layout({ children, ...rest }: LayoutProps) {
       data-test
       h="100vh"
       {...rest}
-      {...fadeLayout}
     >
       <Head>
         <title>Exe: classwork</title>
       </Head>
       {children}
+      <Navigation/>
       <ToggleColorButton
         position="absolute"
         top={8}

@@ -1,5 +1,5 @@
-import { m } from "framer-motion";
-import { fadeToTop, scaleOnInteract } from "../../../theme/animations/motion";
+import { m} from "framer-motion";
+import { scaleOnInteract } from "../../../theme/animations/motion";
 
 interface ButtonStyle {
   color?: string | any;
@@ -18,9 +18,8 @@ function getButtonStyle({
   };
   
   return {
-    as: m.div,
+    as: m.button,
     ...scaleOnInteract,
-    ...fadeToTop,
     bgColor: `${theme}.${colorIndexes[0]}`,
     color,
     _hover: {

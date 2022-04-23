@@ -2,16 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { getMiddlewareRedirect } from "../../../utils/middlewares/getMiddlewareRedirect";
 
 export default async function middleware(req: NextRequest) {
-  const { id } = req.page.params;
   const token = req.cookies["token"];
-  const data = await fetch(`${process.env.NEXT_PUBLIC_URL}/auth?token=${token}`, {
+  const { githubId } = req.page.params;
+
+  const user = await fetch(`${process.env.NEXT_PUBLIC_URL}/user/${githubId}?token=${token}`, {
     method: "GET"
   }).then(res => res.json())
   .catch(() => false);
 
-  if(data?.user?.githubId && !data?.user?.installationId) {
+  if(user?.githubId && !user?.installationId) {
     return getMiddlewareRedirect(req, "/api/login");
-  } else if(!data?.user?.githubId || id !== data?.user?.githubId || !id) {
+  } else if(!user?.githubId || githubId !== user?.githubId || !githubId) {
     return getMiddlewareRedirect(req, "/");
   };
 
