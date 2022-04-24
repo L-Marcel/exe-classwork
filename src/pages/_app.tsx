@@ -7,6 +7,7 @@ import { theme } from "../theme/default";
 
 import "focus-visible/dist/focus-visible.min.js";
 import { Layout } from "../components/Layout";
+import { RouterLoading } from "../components/RouterLoading";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -17,6 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       resetCSS 
     >
       <ColorModeScript initialColorMode="dark"/>
+      <RouterLoading/>
       <Layout>
         <Component {...pageProps}/>
       </Layout>
