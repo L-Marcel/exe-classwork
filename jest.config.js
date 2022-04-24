@@ -5,7 +5,10 @@ const createJestConfig = nextJest({
 
 module.exports = createJestConfig({
 	setupFilesAfterEnv: [
-	  "<rootDir>/src/@tests/jest.setup.ts"
+	  "<rootDir>/src/__tests__/lib/jest.setup.ts"
 	],
-	testEnvironment: "jsdom"
+  testPathIgnorePatterns: [
+    "/src/__tests__/lib/"
+  ],
+	testEnvironment: "jest-environment-jsdom"
 });

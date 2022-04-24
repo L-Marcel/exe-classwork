@@ -1,5 +1,5 @@
 import { screen, render, fireEvent } from "@testing-library/react";
-import { getProvidersWrapper } from "../utils/getProviders";
+import { getProvidersWrapper } from "../lib/utils/getProviders";
 
 import router from "next/router";
 import mockRouter from "next-router-mock";
@@ -16,7 +16,7 @@ describe("🏠 Should be able to render the login page:", () => {
     mockRouter.setCurrentUrl("/");
   });
 
-  it("Should be able render the page;", async() => {
+  it("Should be able to render the page;", async() => {
     render(<Login/>, { wrapper });
 
     expect(router).toMatchObject({
