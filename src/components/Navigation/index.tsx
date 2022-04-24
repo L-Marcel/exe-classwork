@@ -27,8 +27,8 @@ function Navigation({ ...rest }: NavigationProps) {
     return (
       <ToggleColorButton
         position="absolute"
-        top={8}
-        right={8}
+        top={6}
+        right={6}
         borderRadius={60}
         w={10}
         h={10}
@@ -61,67 +61,51 @@ function Navigation({ ...rest }: NavigationProps) {
 
   return (
     <>
+      { isWideOrNormalVersion && <Profile
+        position="absolute"
+        user={user}
+        m={3}
+      /> }
       <Stack
         as={m.div}
-        position="absolute"
         data-testid="navigation"
-        w="min-content"
-        alignItems="center"
-        spacing={4}
-        m={8}
-        {...rest}
-      >
-        { isWideOrNormalVersion && <Profile
-          user={user}
-        /> }
-        <Stack
-          as={m.div}
-          spacing={2}
-          display="flex"
-          flexDir="column"
-          borderRadius={12}
-          w="min-content"
-          bgColor="solid.100"
-          p={2}
-        >
-          { !isWideOrNormalVersion && <>
-            <IconButton
-              aria-label="navigation-menu"
-              icon={<NamedIcon name={isOpen? "close":"menu"}/>}
-              zIndex={10}
-              theme={isOpen? "red":"primary"}
-              colorIndexes={isOpen? ["400", "400", "400"]:undefined}
-              onClick={() => setIsOpen(o => !o)}
-            />
-            {
-              isOpen && <ToggleColorButton
-                zIndex={10}
-                theme="orange"
-                colorIndexes={isOpen? ["400", "400", "400"]:undefined}
-              />
-            }
-          </> }
-          { (isWideOrNormalVersion || isOpen) && paths.map(n => {
-            return (
-              <NavigationItem
-                key={n.path}
-                path={n.path}
-                name={n.name}
-                forceExpanded={!isWideOrNormalVersion && isOpen}
-                isSelected={asPath.toLowerCase() === n.path.toLowerCase()}
-              />
-            );
-          })}
-        </Stack>
-      </Stack>
-      { isWideOrNormalVersion && <ToggleColorButton
         position="absolute"
-        top={8}
-        right={8}
-        borderRadius={60}
-        w={10}
-        h={10}
-      /> }
+        ml={[4, 4, "-8px", "-8px", "-8px", "-8px"]}
+        spacing={2}
+        display="flex"
+        flexDir="column"
+        borderRadius={12}
+        w="min-content"
+        bgColor="solid.100"
+        top={[4, 4, "90px", "90px", "90px", "90px"]}
+        p={2}
+      >
+        { !isWideOrNormalVersion && 
+          <IconButton
+            aria-label="navigation-menu"
+            icon={<NamedIcon name={isOpen? "close":"menu"}/>}
+            zIndex={10}
+            theme={isOpen? "red":"primary"}
+            colorIndexes={isOpen? ["400", "400", "400"]:undefined}
+            onClick={() => setIsOpen(o => !o)}
+          /> }
+        { isWideOrNormalVersion || isOpen && <ToggleColorButton
+          zIndex={10}
+          colorIndexes={isOpen? ["400", "400", "400"]:undefined}
+          forceHoverEffect
+        /> }
+        { (isWideOrNormalVersion || isOpen) && paths.map(n => {
+          return (
+            <NavigationItem
+              key={n.path}
+              path={n.path}
+              name={n.name}
+              forceExpanded={!isWideOrNormalVersion && isOpen}
+              isSelected={asPath.toLowerCase() === n.path.toLowerCase()}
+            />
+          );
+        })}
+      </Stack>
     </>
   );
 };
