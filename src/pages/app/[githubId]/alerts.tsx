@@ -1,12 +1,13 @@
 import { NothingHere } from "../../../components/NothingHere";
 import { WithUserProps } from "../../../utils/routes/WithUserProps";
 
-interface ClassroomsPageProps extends WithUserProps {};
 
-function ClassroomsPage({ user }: ClassroomsPageProps) {
+interface AlertsPageProps extends WithUserProps {};
+
+function AlertsPage({ user }: AlertsPageProps) {
   return (
     <NothingHere/>
   );
 };
 
-export default WithUserProps(ClassroomsPage);
+export default WithUserProps(AlertsPage);

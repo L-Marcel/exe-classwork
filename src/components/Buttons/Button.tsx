@@ -4,19 +4,20 @@ import { getButtonStyle } from "./styles/getButtonStyle";
 interface ButtonProps extends ChakraButtonProps {
   theme?: string;
   colorIndexes?: [string, string, string];
+  forceHoverEffect?: boolean;
 };
 
 function Button({ 
   theme, 
   color, 
-  colorIndexes, 
+  colorIndexes,
+  forceHoverEffect,
   ...rest 
 }: ButtonProps) {
-
   return (
     <ChakraButton
       data-testid="button"
-      {...getButtonStyle({ theme, color, colorIndexes })}
+      {...getButtonStyle({ theme, color, colorIndexes, forceHoverEffect })}
       w="min-content"
       {...rest}
     />

@@ -1,22 +1,15 @@
-import { PageFallback } from "../../../components/PageFallback";
-import { useUser } from "../../../contexts/hooks/useUser";
+import { Box } from "@chakra-ui/react";
+import { NothingHere } from "../../../components/NothingHere";
+import { WithUserProps } from "../../../utils/routes/WithUserProps";
 
-interface HomePageProps {};
+interface HomePageProps extends WithUserProps {};
 
-function HomePage({}: HomePageProps) {
-  const { user } = useUser();
-
-  if(!user) {
-    return (
-      <PageFallback
-        title="We are getting everything ready for you."
-      />
-    );
-  };
-
+function HomePage({
+  user
+}: HomePageProps) {
   return (
-    <></>
+    <NothingHere/>
   );
 };
 
-export default HomePage;
+export default WithUserProps(HomePage);

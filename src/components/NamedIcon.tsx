@@ -1,7 +1,7 @@
 import { Icon as ChakraIcon, IconProps as ChakraIconProps } from "@chakra-ui/react";
 import { 
   FaReact, FaDocker, FaGitAlt, 
-  FaJava, FaPython, FaBalanceScale, FaGithubAlt, FaSun, FaUser, FaHome, FaChalkboardTeacher
+  FaJava, FaPython, FaBalanceScale, FaGithubAlt, FaSun, FaUser, FaHome, FaChalkboardTeacher, FaBell
 } from "react-icons/fa";
 import { 
   SiTypescript, SiJest, SiNextdotjs, SiGnubash, 
@@ -9,8 +9,8 @@ import {
   SiTailwindcss, SiApollographql, SiNestjs
 } from "react-icons/si";
 import { DiCss3, DiSass } from "react-icons/di";
-import { AiFillHtml5, AiFillCaretDown, AiOutlineInfoCircle } from "react-icons/ai";
-import { RiFlutterFill, RiFilePaper2Line, RiFlashlightFill } from "react-icons/ri";
+import { AiFillHtml5, AiFillCaretDown, AiOutlineInfoCircle, AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import { RiFlutterFill, RiFilePaper2Line, RiFlashlightFill, RiGitRepositoryLine } from "react-icons/ri";
 import { BsDownload, BsFillMoonStarsFill, BsQuestionCircle } from "react-icons/bs";
 import { 
   AiOutlineCalendar, AiOutlineCheck, AiFillCaretUp
@@ -19,6 +19,7 @@ import { IoIosCloseCircle, IoIosRocket, IoLogoJavascript, IoMdOpen, IoMdSchool }
 import { FiCopy, FiFigma, FiFramer, FiPaperclip } from "react-icons/fi";
 import { GrNode, GrGraphQl } from "react-icons/gr";
 import { BiCubeAlt, BiSearchAlt } from "react-icons/bi";
+import { TiGroup } from "react-icons/ti";
 interface IconProps extends ChakraIconProps {
   name?: string;
 };
@@ -72,11 +73,15 @@ export const icons = {
   "nest.js": SiNestjs,
   "down": AiFillCaretDown,
   "up": AiFillCaretUp,
-  "close": IoIosCloseCircle,
+  "close": AiOutlineClose,
   "info": AiOutlineInfoCircle,
   "user": FaUser,
   "home": FaHome,
-  "classroom": FaChalkboardTeacher
+  "classrooms": FaChalkboardTeacher,
+  "alerts": FaBell,
+  "repositories": RiGitRepositoryLine,
+  "teams": TiGroup,
+  "menu": AiOutlineMenu
 };
 
 function NamedIcon({ name = "default", ...rest }: IconProps) {

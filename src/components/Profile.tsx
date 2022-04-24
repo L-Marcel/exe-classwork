@@ -12,6 +12,7 @@ function Profile({ children, user, ...rest }: ProfileProps) {
       borderRadius={60}
       bgColor="solid.100"
       p={2}
+      w="min-content"
       {...rest}
     >
       <Avatar

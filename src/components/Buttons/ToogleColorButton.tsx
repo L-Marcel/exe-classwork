@@ -1,20 +1,17 @@
-import { IconButtonProps, useColorMode } from "@chakra-ui/react";
+import { useBreakpointValue, useColorMode } from "@chakra-ui/react";
 import { NamedIcon } from "../NamedIcon";
-import { IconButton } from "./IconButton";
+import { IconButton, IconButtonProps } from "./IconButton";
 
-interface ToogleColorButtonProps extends Partial<IconButtonProps> {};
+interface ToogleColorButtonProps extends IconButtonProps {};
 
-function ToggleColorButton({ ...rest }: ToogleColorButtonProps) {
-  const { toggleColorMode } = useColorMode();
+function ToggleColorButton({ ...rest }: Partial<ToogleColorButtonProps>) {
+  const { colorMode, toggleColorMode } = useColorMode();
 
   return (
     <IconButton
       data-testid="toggle-button"
       aria-label="toogleColorButton"
-      icon={<NamedIcon name="sun"/>}
-      borderRadius={60}
-      w={10}
-      h={10}
+      icon={<NamedIcon name={colorMode === "dark"? "sun":"moon"}/>}
       onClick={toggleColorMode}
       {...rest}
     />

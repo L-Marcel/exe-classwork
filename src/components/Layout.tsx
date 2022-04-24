@@ -1,7 +1,6 @@
 import { Box, BoxProps } from "@chakra-ui/react";
 import { m} from "framer-motion";
 import Head from "next/head";
-import { ToggleColorButton } from "./Buttons/ToogleColorButton";
 import { Navigation } from "./Navigation";
 
 interface LayoutProps extends BoxProps {};
@@ -22,11 +21,6 @@ function Layout({ children, ...rest }: LayoutProps) {
       </Head>
       {children}
       <Navigation/>
-      <ToggleColorButton
-        position="absolute"
-        top={8}
-        right={8}
-      />
     </Box>
   );
 };
