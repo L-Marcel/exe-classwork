@@ -24,7 +24,16 @@ function Navigation({ ...rest }: NavigationProps) {
   });
  
   if(!user) {
-    return null;
+    return (
+      <ToggleColorButton
+        position="absolute"
+        top={8}
+        right={8}
+        borderRadius={60}
+        w={10}
+        h={10}
+      />
+    );
   };
 
   const paths = [
