@@ -1,17 +1,21 @@
+import { ColorModeScript } from "@chakra-ui/react";
 import { AppProps } from "next/app";
 import { AllProviders } from "../contexts/AllProviders";
-import { ColorModeScript } from "@chakra-ui/react";
 
 import { domAnimation } from "framer-motion";
 import { theme } from "../theme/default";
 
 import "focus-visible/dist/focus-visible.min.js";
+import { QueryClient } from "react-query";
 import { Layout } from "../components/Layout";
 import { RouterLoading } from "../components/RouterLoading";
+
+const client = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AllProviders 
+      client={client}
       features={domAnimation}
       reducedMotion="user"
       theme={theme}

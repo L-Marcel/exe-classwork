@@ -70,7 +70,7 @@ function Navigation({ ...rest }: NavigationProps) {
         as={m.div}
         data-testid="navigation"
         position="absolute"
-        ml={[4, 4, "-8px", "-8px", "-8px", "-8px"]}
+        ml={[4, 4, "-12px", "-12px", "-12px", "-12px"]}
         spacing={2}
         display="flex"
         flexDir="column"
@@ -89,7 +89,7 @@ function Navigation({ ...rest }: NavigationProps) {
             colorIndexes={isOpen? ["400", "400", "400"]:undefined}
             onClick={() => setIsOpen(o => !o)}
           /> }
-        { isWideOrNormalVersion || isOpen && <ToggleColorButton
+        { (isWideOrNormalVersion || isOpen) && <ToggleColorButton
           zIndex={10}
           colorIndexes={isOpen? ["400", "400", "400"]:undefined}
           forceHoverEffect

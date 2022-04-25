@@ -35,13 +35,13 @@ export const theme = extendTheme({
         },
         "::-webkit-scrollbar-track": {
           h: 5,
-          background: getColorMode("solid.500")(props)
+          background: getColorMode("solid.100")(props)
         },
         "::-webkit-scrollbar-thumb": {
-          background: "primary.600"
+          background: "primary.800"
         },
         "::-webkit-scrollbar-thumb:hover": {
-          background: "primary.800"
+          background: "primary.900"
         },
         html: {
           height: "-webkit-fill-available",

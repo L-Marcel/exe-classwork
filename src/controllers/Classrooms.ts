@@ -1,9 +1,9 @@
 import { Prisma as P, User } from "@prisma/client";
+import { v4 as uuid } from "uuid";
 import { NotFoundError } from "../errors/api/NotFoundError";
 import { Prisma } from "../services/prisma";
 import { Alerts } from "./Alerts";
 import { ClassroomRelations } from "./ClassroomRelations";
-import { v4 as uuid } from "uuid";
 
 export class Classrooms {
   static async get(id: string, select?: P.ClassroomSelect, canReturnFalse: boolean = false) {
@@ -121,5 +121,68 @@ export class Classrooms {
     };
 
     return classroom;
+  };
+
+  static async getByUser(userId: string) {
+    return await Prisma.classroom.findMany({
+      where: {
+        users: {
+          some: {
+            userId
+          }
+        }
+      },
+      select: {
+        description: true,
+        id: true,
+        subject: true,
+        title: true,
+        alerts: {
+          select: {
+            id: true
+          },
+          where: {
+            OR: [
+              {
+                repository: {
+                  ownerId: userId
+                }
+              },
+              {
+                team: {
+                  users: {
+                    some: {
+                      userId
+                    }
+                  }
+                }
+              },
+              {
+                classroom: {
+                  users: {
+                    some: {
+                      OR: [
+                        {
+                          userId,
+                          role: "OWNER"
+                        },
+                        {
+                          userId,
+                          role: "ADMIN"
+                        },
+                        {
+                          userId,
+                          role: "OBSERVER"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    });
   };
 };

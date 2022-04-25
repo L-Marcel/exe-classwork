@@ -1,5 +1,5 @@
 import { Box, BoxProps } from "@chakra-ui/react";
-import { m} from "framer-motion";
+import { m } from "framer-motion";
 import Head from "next/head";
 import { Navigation } from "./Navigation";
 
@@ -14,6 +14,8 @@ function Layout({ children, ...rest }: LayoutProps) {
       flexDir="column"
       data-test
       h="100vh"
+      overflowY="auto"
+      overflowX="hidden"
       {...rest}
     >
       <Head>
@@ -26,3 +28,4 @@ function Layout({ children, ...rest }: LayoutProps) {
 };
 
 export { Layout };
+
