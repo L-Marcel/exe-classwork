@@ -39,9 +39,11 @@ describe("🔒 Should be able to make a valid login request:", () => {
       }
     } as Req, { status } as any);
 
+    //Should verify the user
     expect(getCookies).toBeCalledTimes(1);
     expect(checkIfTokenIsValid).toBeCalledTimes(1);
 
+    //Should redirect
     expect(status).toBeCalledWith(300);
     expect(redirect).toBeCalledTimes(1);
     expect(redirect).toBeCalledWith(`https://github.com/login/oauth/authorize?client_id=${Github.clientId}`);
@@ -63,10 +65,14 @@ describe("🔒 Should be able to make a valid login request:", () => {
       }
     } as Req, { status } as any);
 
+    //Should verify the user
     expect(getCookies).toBeCalledTimes(1);
     expect(checkIfTokenIsValid).toBeCalledTimes(1);
+
+    //Should find him in database, but without installation id
     expect(findUniqueUser).toBeCalledTimes(1);
 
+    //Should redirect
     expect(status).toBeCalledWith(300);
     expect(redirect).toBeCalledTimes(1);
     expect(redirect).toBeCalledWith(`https://github.com/apps/${Github.appName}/installations/new/permissions?target_id=${user?.githubId}`);
@@ -89,10 +95,14 @@ describe("🔒 Should be able to make a valid login request:", () => {
       }
     } as Req, { status } as any);
 
+    //Should verify the user
     expect(getCookies).toBeCalledTimes(1);
     expect(checkIfTokenIsValid).toBeCalledTimes(1);
+    
+    //Should find him in database
     expect(findUniqueUser).toBeCalledTimes(1);
 
+    //Should redirect
     expect(status).toBeCalledWith(300);
     expect(redirect).toBeCalledTimes(1);
     expect(redirect).toBeCalledWith(`/app/${user.githubId}`);

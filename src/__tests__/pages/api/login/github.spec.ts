@@ -53,6 +53,12 @@ describe("🔑 Should be able to get or initialize the installation:", () => {
       method: "GET"
     } as Req, { status } as any);
     
+    //Should verify the user
+    expect(setCookies).toBeCalledTimes(2);
+    expect(checkIfTokenIsValid).toBeCalledTimes(1);
+    expect(getAccessToken).toBeCalledTimes(1);
+
+    //Should create an user
     expect(createUser).toBeCalledWith({
       data: {
         avatarUrl: githubUser.avatar_url,
@@ -62,11 +68,8 @@ describe("🔑 Should be able to get or initialize the installation:", () => {
         installationId: "123"
       }
     });
-
-    expect(setCookies).toBeCalledTimes(2);
-    expect(checkIfTokenIsValid).toBeCalledTimes(1);
-    expect(getAccessToken).toBeCalledTimes(1);
     
+    //Should redirect
     expect(status).toBeCalledWith(300);
     expect(redirect).toBeCalledTimes(1);
     expect(redirect).toBeCalledWith(`https://github.com/apps/${Github.appName}/installations/new/permissions?target_id=${githubUser.id}`);
@@ -99,6 +102,15 @@ describe("🔑 Should be able to get or initialize the installation:", () => {
       method: "GET"
     } as Req, { status } as any);
     
+    //Should verify the user
+    expect(setCookies).toBeCalledTimes(2);
+    expect(checkIfTokenIsValid).toBeCalledTimes(1);
+    expect(getAccessToken).toBeCalledTimes(1);
+
+    //Should find him, but without installation id
+    expect(findUniqueUser).toBeCalledTimes(1);
+    
+    //Should update him with the installation id passed by Github
     expect(updateUser).toBeCalledWith({
       data: {
         installationId: "123"
@@ -107,18 +119,14 @@ describe("🔑 Should be able to get or initialize the installation:", () => {
         id: "1"
       },
     });
-
-    expect(setCookies).toBeCalledTimes(2);
-    expect(checkIfTokenIsValid).toBeCalledTimes(1);
-    expect(getAccessToken).toBeCalledTimes(1);
-    expect(findUniqueUser).toBeCalledTimes(1);
     
+    //Should redirect
     expect(status).toBeCalledWith(300);
     expect(redirect).toBeCalledTimes(1);
     expect(redirect).toBeCalledWith(`/app/${githubUser.id}`);
   });
 
-  it("Should be able to redirect to github installation;", async() => {
+  it("Should be able to redirect to github installation page;", async() => {
     getAccessToken.mockResolvedValue({
       data: {
         access_token: "123",
@@ -142,10 +150,16 @@ describe("🔑 Should be able to get or initialize the installation:", () => {
       method: "GET"
     } as Req, { status } as any);
     
+    //Should verify the user
     expect(checkIfTokenIsValid).toBeCalledTimes(1);
     expect(getAccessToken).toBeCalledTimes(1);
+
+    //Should find him, but without installation id
     expect(findUniqueUser).toBeCalledTimes(1);
-    
+
+    //In this case, installation id should not find in query
+
+    //Should redirect
     expect(status).toBeCalledWith(300);
     expect(redirect).toBeCalledTimes(1);
     expect(redirect).toBeCalledWith(`https://github.com/apps/${Github.appName}/installations/new/permissions?target_id=${githubUser.id}`);
@@ -176,17 +190,21 @@ describe("🔑 Should be able to get or initialize the installation:", () => {
       method: "GET"
     } as Req, { status } as any);
     
+    //Should verify the user
     expect(setCookies).toBeCalledTimes(2);
     expect(checkIfTokenIsValid).toBeCalledTimes(1);
     expect(getAccessToken).toBeCalledTimes(1);
+
+    //Should find him
     expect(findUniqueUser).toBeCalledTimes(1);
     
+    //Should redirect
     expect(status).toBeCalledWith(300);
     expect(redirect).toBeCalledTimes(1);
     expect(redirect).toBeCalledWith(`/app/${githubUser.id}`);
   });
 
-  it("Should be able to redirect to login on error;", async() => {
+  it("Should be able to redirect to login on error.", async() => {
     getAccessToken.mockRejectedValue(new Error());
     
     await github({
@@ -196,8 +214,10 @@ describe("🔑 Should be able to get or initialize the installation:", () => {
       } as any,
     } as Req, { status } as any);
     
+    //Should throw a new error
     expect(getAccessToken).toBeCalledTimes(1);
     
+    //Should redirect
     expect(status).toBeCalledWith(300);
     expect(redirect).toBeCalledTimes(1);
     expect(redirect).toBeCalledWith("/");
