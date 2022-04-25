@@ -16,10 +16,12 @@ function RouterLoading() {
   }, [setIsLoading]);
 
   useEffect(() => {
+    events.on("hashChangeStart", handleStartLoading);
     events.on("routeChangeStart", handleStartLoading);
     events.on("routeChangeComplete", handleOnLoadingComplete);
 
     return () => {
+      events.off("hashChangeStart", handleStartLoading);
       events.off("routeChangeStart", handleStartLoading);
       events.off("routeChangeComplete", handleOnLoadingComplete);
     };
@@ -42,3 +44,4 @@ function RouterLoading() {
 };
 
 export { RouterLoading };
+

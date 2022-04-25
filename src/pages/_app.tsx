@@ -7,6 +7,7 @@ import { theme } from "../theme/default";
 
 import "focus-visible/dist/focus-visible.min.js";
 import { QueryClient } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import { Layout } from "../components/Layout";
 import { RouterLoading } from "../components/RouterLoading";
 
@@ -21,6 +22,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       theme={theme}
       resetCSS 
     >
+      <ReactQueryDevtools/>
       <ColorModeScript initialColorMode="dark"/>
       <RouterLoading/>
       <Layout>

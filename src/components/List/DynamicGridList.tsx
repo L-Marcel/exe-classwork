@@ -74,7 +74,8 @@ function DynamicGridList({
       <HStack
         alignItems="flex-start"
         justifyContent="flex-start"
-        spacing={10}
+        spacing={7}
+        w="100%"
       >
         {stacks.map((a, i) => {
           if(i >= items.length) {
@@ -83,8 +84,9 @@ function DynamicGridList({
 
           return (
             <Stack
-              key={a} 
-              spacing={10}
+              key={a}
+              w="100%" 
+              spacing={7}
               mb={["20px", 0, 0, 0, 0, 0]}
             >
               {columns.length > i && columns[i].map(item => {

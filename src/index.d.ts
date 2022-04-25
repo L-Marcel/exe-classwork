@@ -69,6 +69,10 @@ declare interface AppContext {
   user: User | null;
   setUser: (user: User) => void;
   signOut: () => void;
+  search: string;
+  setSearch: (search: string) => void;
+  page: number;
+  setPage: (page: number) => void;
 };
 
 //Fake enums to sqlite dabase

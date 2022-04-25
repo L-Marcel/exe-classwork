@@ -1,14 +1,16 @@
-import { useState } from "react";
 import { useQuery } from "react-query";
+import { usePage } from "../../../contexts/hooks/usePage";
+import { useSearch } from "../../../contexts/hooks/useSearch";
 import { Api } from "../../../services/api";
 import { DynamicGridList } from "../DynamicGridList";
 import { ClassroomItem } from "./ClassroomItem";
 
 function ClassroomsList() {
-  const [page, setPage] = useState(0);
+  const { search } = useSearch();
+  const { page } = usePage();
 
-  const { data: classrooms } = useQuery([page], async() => {
-    return await Api.get("/user/classrooms").then(res => res.data).catch(() => []);;
+  const { data: classrooms } = useQuery([page, search], async() => {
+    return await Api.get(`/user/classrooms?page=${page}&query=${search}`).then(res => res.data).catch(() => []);;
   }, {
     initialData: []
   });
@@ -16,9 +18,7 @@ function ClassroomsList() {
   return (
     <DynamicGridList
       w="100%"
-      p={10}
-      mt={[10, 0]}
-      ml={[0, 6, 8, 8, 8, 5]}
+      mt={7}
       items={classrooms.map(c => {
         return (
           <ClassroomItem

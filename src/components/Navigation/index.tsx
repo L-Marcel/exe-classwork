@@ -1,4 +1,4 @@
-import { Stack, StackProps, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Stack, StackProps, useBreakpointValue } from "@chakra-ui/react";
 import { m } from "framer-motion";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -43,6 +43,9 @@ function Navigation({ ...rest }: NavigationProps) {
     },
     {
       path: `/app/${user.githubId}/classrooms`,
+      accept: [
+        `/app/${user.githubId}/classroom`
+      ],
       name: "Classrooms"
     },
     {
@@ -60,7 +63,12 @@ function Navigation({ ...rest }: NavigationProps) {
   ];
 
   return (
-    <>
+    <Box
+      position="absolute"
+      top={0}
+      left={0}
+      zIndex={20}
+    >
       { isWideOrNormalVersion && <Profile
         position="absolute"
         user={user}
@@ -101,13 +109,17 @@ function Navigation({ ...rest }: NavigationProps) {
               path={n.path}
               name={n.name}
               forceExpanded={!isWideOrNormalVersion && isOpen}
-              isSelected={asPath.toLowerCase() === n.path.toLowerCase()}
+              isSelected={
+                asPath.toLowerCase() === n.path.toLowerCase() ||
+                n.accept?.includes(asPath.toLowerCase())
+              }
             />
           );
         })}
       </Stack>
-    </>
+    </Box>
   );
 };
 
 export { Navigation };
+

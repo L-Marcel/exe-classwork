@@ -123,14 +123,37 @@ export class Classrooms {
     return classroom;
   };
 
-  static async getByUser(userId: string) {
+  static async getByUser(userId: string, {
+    page = 0,
+    query = ""
+  }) {
     return await Prisma.classroom.findMany({
+      take: 12,
+      skip: 12 * page,
       where: {
-        users: {
-          some: {
-            userId
+        AND: [
+          {
+            OR: [
+              {
+                title: {
+                  contains: query
+                }
+              },
+              {
+                subject: {
+                  contains: query
+                }
+              }
+            ]
+          },
+          {
+            users: {
+              some: {
+                userId
+              }
+            }
           }
-        }
+        ]
       },
       select: {
         description: true,

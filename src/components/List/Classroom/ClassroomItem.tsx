@@ -13,7 +13,7 @@ function ClassroomItem({ title, description, subject, alerts = [] }: ClassroomIt
     <Box
       bgColor="solid.100"
       w="fill"
-      minW={["85vw", "80vw", "80vw", "40vw", "20vw", "20vw"]}
+      minW={["85%", "80%", "80%", "40%", "20%", "20.1%"]}
       borderRadius={15}
       borderLeft="2px solid"
       borderColor="primary.500"

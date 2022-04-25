@@ -1,8 +1,8 @@
 import { Box, ButtonProps, Text } from "@chakra-ui/react";
+import { m } from "framer-motion";
+import Link from "next/link";
 import { IconButton } from "../Buttons/IconButton";
 import { NamedIcon } from "../NamedIcon";
-import Link from "next/link";
-import { m } from "framer-motion";
 interface NavigationItemProps extends ButtonProps {
   path: string;
   name: string;

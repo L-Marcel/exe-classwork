@@ -1,24 +1,14 @@
 import { Icon as ChakraIcon, IconProps as ChakraIconProps } from "@chakra-ui/react";
-import { 
-  FaReact, FaDocker, FaGitAlt, 
-  FaJava, FaPython, FaBalanceScale, FaGithubAlt, FaSun, FaUser, FaHome, FaChalkboardTeacher, FaBell
-} from "react-icons/fa";
-import { 
-  SiTypescript, SiJest, SiNextdotjs, SiGnubash, 
-  SiDart, SiPrisma, SiVisualstudiocode, SiChakraui, SiExpress, SiApachekafka, 
-  SiTailwindcss, SiApollographql, SiNestjs
-} from "react-icons/si";
-import { DiCss3, DiSass } from "react-icons/di";
-import { AiFillHtml5, AiFillCaretDown, AiOutlineInfoCircle, AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
-import { RiFlutterFill, RiFilePaper2Line, RiFlashlightFill, RiGitRepositoryLine } from "react-icons/ri";
-import { BsDownload, BsFillMoonStarsFill, BsQuestionCircle } from "react-icons/bs";
-import { 
-  AiOutlineCalendar, AiOutlineCheck, AiFillCaretUp
-} from "react-icons/ai";
-import { IoIosCloseCircle, IoIosRocket, IoLogoJavascript, IoMdOpen, IoMdSchool } from "react-icons/io";
-import { FiCopy, FiFigma, FiFramer, FiPaperclip } from "react-icons/fi";
-import { GrNode, GrGraphQl } from "react-icons/gr";
+import { AiFillCaretDown, AiFillCaretUp, AiFillHtml5, AiOutlineCalendar, AiOutlineCheck, AiOutlineClose, AiOutlineInfoCircle, AiOutlineMenu, AiOutlinePlus } from "react-icons/ai";
 import { BiCubeAlt, BiSearchAlt } from "react-icons/bi";
+import { BsDownload, BsFillMoonStarsFill, BsQuestionCircle } from "react-icons/bs";
+import { DiCss3, DiSass } from "react-icons/di";
+import { FaBalanceScale, FaBell, FaChalkboardTeacher, FaDocker, FaGitAlt, FaGithubAlt, FaHome, FaJava, FaPython, FaReact, FaSun, FaUser } from "react-icons/fa";
+import { FiCopy, FiFigma, FiFramer, FiPaperclip } from "react-icons/fi";
+import { GrGraphQl, GrNode } from "react-icons/gr";
+import { IoIosRocket, IoLogoJavascript, IoMdOpen, IoMdSchool } from "react-icons/io";
+import { RiFilePaper2Line, RiFlashlightFill, RiFlutterFill, RiGitRepositoryLine } from "react-icons/ri";
+import { SiApachekafka, SiApollographql, SiChakraui, SiDart, SiExpress, SiGnubash, SiJest, SiNestjs, SiNextdotjs, SiPrisma, SiTailwindcss, SiTypescript, SiVisualstudiocode } from "react-icons/si";
 import { TiGroup } from "react-icons/ti";
 interface IconProps extends ChakraIconProps {
   name?: string;
@@ -81,7 +71,8 @@ export const icons = {
   "alerts": FaBell,
   "repositories": RiGitRepositoryLine,
   "teams": TiGroup,
-  "menu": AiOutlineMenu
+  "menu": AiOutlineMenu,
+  "add": AiOutlinePlus
 };
 
 function NamedIcon({ name = "default", ...rest }: IconProps) {
