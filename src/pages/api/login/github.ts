@@ -8,10 +8,7 @@ async function github(req: Req, res: Res) {
   const { code, installation_id: installationId } = req.query;
 
   try {
-    console.log(code);
     const { data } = await Github.getAccessToken(code?.toString());
-
-    console.log(data);
 
     let githubUser: GithubUser;
     const user = await Users.getUserByToken({ req, res }, data?.access_token)
@@ -55,8 +52,6 @@ async function github(req: Req, res: Res) {
 
     return res.status(300).redirect(`/app/${user.githubId}`);
   } catch(err) {
-
-    console.log(err);
     return res.status(300).redirect(`/`);
   };
 };

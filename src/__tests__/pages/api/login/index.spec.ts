@@ -1,26 +1,19 @@
-import login from "../../../pages/api/login";
-import { Cookies } from "../../../services/cookies";
-import { Github } from "../../../services/github";
-import { Prisma } from "../../../services/prisma";
+import login from "../../../../pages/api/login";
+import { Cookies } from "../../../../services/cookies";
+import { Github } from "../../../../services/github";
+import { Prisma } from "../../../../services/prisma";
+import { githubUser, token } from "../../../lib/data/login";
 
-const token = "fake-token";
-const githubUser: GithubUser = {
-  avatar_url: "",
-  id: 1,
-  login: "",
-  name: ""
-};
-const prismaUserWithoutInstallation = {
-  githubId: githubUser.id.toString()
-} as User;
-const prismaUser = {
-  githubId: githubUser.id.toString(),
-  installationId: "1"
-} as User;
+describe("🔒 Should be able to make a valid login request:", () => {
+  let 
+  json: jest.Mock, 
+  redirect: jest.Mock, 
+  status: jest.Mock;
 
-describe("🔑 Should be able to make a valid login request:", () => {
-  let json: any, redirect: any, status: any;
-  let getCookies: any, checkIfTokenIsValid: any, findUniqueUser: any;
+  let 
+  getCookies: jest.SpyInstance, 
+  checkIfTokenIsValid: jest.SpyInstance, 
+  findUniqueUser: jest.SpyInstance
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -49,12 +42,15 @@ describe("🔑 Should be able to make a valid login request:", () => {
     expect(getCookies).toBeCalledTimes(1);
     expect(checkIfTokenIsValid).toBeCalledTimes(1);
 
+    expect(status).toBeCalledWith(300);
     expect(redirect).toBeCalledTimes(1);
     expect(redirect).toBeCalledWith(`https://github.com/login/oauth/authorize?client_id=${Github.clientId}`);
   });
 
   it("Should be able to redirect to installation;", async() => {
-    const user = prismaUserWithoutInstallation;
+    const user = { 
+      githubId: githubUser.id.toString() 
+    };
 
     getCookies.mockReturnValue(token);
     checkIfTokenIsValid.mockResolvedValue(githubUser);
@@ -71,12 +67,16 @@ describe("🔑 Should be able to make a valid login request:", () => {
     expect(checkIfTokenIsValid).toBeCalledTimes(1);
     expect(findUniqueUser).toBeCalledTimes(1);
 
+    expect(status).toBeCalledWith(300);
     expect(redirect).toBeCalledTimes(1);
     expect(redirect).toBeCalledWith(`https://github.com/apps/${Github.appName}/installations/new/permissions?target_id=${user?.githubId}`);
   });
 
   it("Should be able to authorize.", async() => {
-    const user = prismaUser;
+    const user = { 
+      githubId: githubUser.id.toString(),
+      installationId: "123"
+    };;
 
     getCookies.mockReturnValue(token);
     checkIfTokenIsValid.mockResolvedValue(githubUser);
@@ -93,6 +93,7 @@ describe("🔑 Should be able to make a valid login request:", () => {
     expect(checkIfTokenIsValid).toBeCalledTimes(1);
     expect(findUniqueUser).toBeCalledTimes(1);
 
+    expect(status).toBeCalledWith(300);
     expect(redirect).toBeCalledTimes(1);
     expect(redirect).toBeCalledWith(`/app/${user.githubId}`);
   });
