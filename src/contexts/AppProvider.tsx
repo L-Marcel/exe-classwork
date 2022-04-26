@@ -12,6 +12,7 @@ export const appContext = createContext({} as AppContext);
 
 function AppProvider({ children }: AppProviderProps) {
   const router = useRouter();
+  const [inputErrors, setInputErrors] = useState<InputError[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
@@ -32,6 +33,27 @@ function AppProvider({ children }: AppProviderProps) {
     setPage(page);
   }, [setPage]);
 
+  const _addInputErrors = useCallback((errors: InputError[]) => {
+    setInputErrors(e => {
+      const data = [...e, ...errors];
+      const _errors = data.reduce((pre, cur) => {
+        const alreadyExists = pre.some(err => err.name === cur.name);
+
+        if(!alreadyExists) {
+          pre.push(cur);
+        };
+
+        return pre;
+      }, []);
+
+      return _errors;
+    });
+  }, [setInputErrors]);
+
+  const _removeInputError = useCallback((name: string) => {
+    setInputErrors(e => e.filter(err => err.name !== name));
+  }, [setInputErrors]);
+
   useEffect(() => {
     if(router.query?.githubId) {
       Api.get(`/user/${router.query?.githubId}`).then(res => {
@@ -45,7 +67,13 @@ function AppProvider({ children }: AppProviderProps) {
   useEffect(() => {
     setSearch("");
     setPage(0);
-  }, [router, setSearch, setPage]);
+    setInputErrors([]);
+  }, [
+    router, 
+    setSearch, 
+    setPage, 
+    setInputErrors
+  ]);
 
   return (
     <appContext.Provider
@@ -56,7 +84,10 @@ function AppProvider({ children }: AppProviderProps) {
         search,
         setSearch: _setSearch,
         page,
-        setPage: _setPage 
+        setPage: _setPage,
+        inputErrors,
+        addInputErrors: _addInputErrors,
+        removeInputError: _removeInputError
       }}
     >
       {children}

@@ -7,7 +7,7 @@ async function getClassroom(req: Req, res: Res) {
   const user = req.user;
   
   const classrooms = await Classrooms.getByUser(user.id, { 
-   
+    page: Number(page),
     query: query?.toString()
   });
 

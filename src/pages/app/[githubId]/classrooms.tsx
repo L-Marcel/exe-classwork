@@ -11,9 +11,7 @@ interface ClassroomsPageProps extends WithUserProps {};
 function ClassroomsPage({ user }: ClassroomsPageProps) {
   return (
     <Section>
-      <Heading
-        alignSelf={["center", "center", "flex-start"]}
-      >
+      <Heading>
         <Span color="primary.600">C</Span><Span>lass</Span>rooms
       </Heading>
       <HStack 

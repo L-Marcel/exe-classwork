@@ -1,6 +1,6 @@
 import { Prisma as P } from "@prisma/client";
-import { NotFoundError } from "../errors/api/NotFoundError";
 import { AuthUserNotFoundError } from "../errors/api/AuthUserNotFoundError";
+import { NotFoundError } from "../errors/api/NotFoundError";
 import { Cookies } from "../services/cookies";
 import { Github } from "../services/github";
 import { Prisma } from "../services/prisma";
@@ -21,7 +21,7 @@ export class Users {
     });
 
     if(!user && !canReturnFalse) {
-      throw new NotFoundError();
+      throw new NotFoundError("User");
     } else if(!user) {
       return false;
     };

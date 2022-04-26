@@ -114,10 +114,8 @@ export class Classrooms {
       }
     });
 
-    console.log(classroom);
-
     if(!classroom) {
-      throw new NotFoundError();
+      throw new NotFoundError("Classroom");
     };
 
     return classroom;

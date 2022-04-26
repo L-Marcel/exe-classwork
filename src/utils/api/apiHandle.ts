@@ -1,4 +1,3 @@
-import Error from "next/error";
 import { InvalidRequestError } from "../../errors/api/InvalidRequestError";
 import { NotFoundError } from "../../errors/api/NotFoundError";
 
@@ -18,7 +17,7 @@ function apiHandle(methods: ApiHandleMethodsFunctions) {
         });
       };
 
-      return res.status(err.status ?? 400).json({
+      return res.status(err.statusCode ?? 400).json({
         message: err.message,
         data: err.data
       });
@@ -27,3 +26,4 @@ function apiHandle(methods: ApiHandleMethodsFunctions) {
 };
 
 export { apiHandle };
+

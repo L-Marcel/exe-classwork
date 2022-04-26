@@ -73,6 +73,9 @@ declare interface AppContext {
   setSearch: (search: string) => void;
   page: number;
   setPage: (page: number) => void;
+  inputErrors: InputError[];
+  addInputErrors: (errors: InputError[]) => void;
+  removeInputError: (name: string) => void;
 };
 
 //Fake enums to sqlite dabase
@@ -82,4 +85,9 @@ declare type TeamRoles = "LEADER" | "MEMBER";
 
 declare interface WithUserProps {
   user: User;
+};
+
+declare type InputError = {
+  name: string;
+  message: string;
 };
