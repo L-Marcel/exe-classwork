@@ -9,6 +9,9 @@ interface ClassroomItemProps {
 };
 
 function ClassroomItem({ title, description, subject, alerts = [] }: ClassroomItemProps) {
+  const alertsCount = alerts.length >= 9? 9:alerts.length;
+
+
   return (
     <Box
       bgColor="solid.100"
@@ -49,7 +52,7 @@ function ClassroomItem({ title, description, subject, alerts = [] }: ClassroomIt
             maxH="15px"
           />
           {
-            alerts.length > 0 && <Text
+            alertsCount > 0 && <Text
               position="absolute"
               top="-5px"
               right="-10px"
@@ -63,7 +66,7 @@ function ClassroomItem({ title, description, subject, alerts = [] }: ClassroomIt
               color="black"
               textAlign="center"
             >
-              {alerts.length}
+              {alerts.length > 9 && "+"}{alertsCount}
             </Text>
           }
         </Box>

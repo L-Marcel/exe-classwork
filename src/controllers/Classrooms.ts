@@ -179,6 +179,7 @@ export class Classrooms {
                 }
               },
               {
+                type: "CLASSROOM_RELATION",
                 classroom: {
                   users: {
                     some: {
@@ -196,6 +197,16 @@ export class Classrooms {
                           role: "OBSERVER"
                         }
                       ]
+                    }
+                  }
+                }
+              },
+              {
+                type: "CLASSROOM",
+                classroom: {
+                  users: {
+                    some: {
+                      userId
                     }
                   }
                 }
