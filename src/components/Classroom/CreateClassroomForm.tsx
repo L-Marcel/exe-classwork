@@ -20,7 +20,8 @@ function CreateClassroomForm() {
 
   const { 
     startLoading,
-    stopLoading
+    stopLoading,
+    isLoading
   } = useIsLoading();
 
   const { 
@@ -49,7 +50,6 @@ function CreateClassroomForm() {
     Api.post("/user/classroom", classroom).then(() => {
       router.push(`/app/${user.githubId}/classrooms`);
     }).catch((err) => {
-      console.log(err.message);
       stopLoading();
     });
   };
@@ -84,6 +84,7 @@ function CreateClassroomForm() {
       <Button
         type="submit"
         theme="primary"
+        disabled={isLoading}
       >
         Create
       </Button>
