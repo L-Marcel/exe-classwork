@@ -1,4 +1,4 @@
-import { Heading, HStack, Stack } from "@chakra-ui/react";
+import { HStack, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useInputErrors } from "../../contexts/hooks/useInputErrors";
@@ -7,7 +7,7 @@ import { Api } from "../../services/api";
 import { IconButton } from "../Buttons/IconButton";
 import { Input } from "../Inputs";
 import { NamedIcon } from "../NamedIcon";
-import { Span } from "../Span";
+import { Title } from "../Title";
 
 interface InviteCodeFormProps {};
 
@@ -44,12 +44,12 @@ function InviteCodeForm({}: InviteCodeFormProps) {
       spacing={5}
       alignItems={["center", "center", "flex-start"]}
     >
-      <Heading
+      <Title
         bgGradient="linear(to-r, primary.200, primary.600)"
         bgClip="text"
       >
-        <Span color="primary.500">U</Span><Span>s</Span>e invite code
-      </Heading>
+        Use invite code
+      </Title>
       <HStack 
         spacing={5}
         alignItems="flex-start"

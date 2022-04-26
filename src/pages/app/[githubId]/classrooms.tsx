@@ -1,9 +1,9 @@
-import { Heading, HStack } from "@chakra-ui/react";
+import { HStack } from "@chakra-ui/react";
 import { AddInstanceButton } from "../../../components/Buttons/AddInstanceButton";
 import { ClassroomsList } from "../../../components/List/Classroom/ClassroomtsList";
 import { Search } from "../../../components/Search";
 import { Section } from "../../../components/Section";
-import { Span } from "../../../components/Span";
+import { Title } from "../../../components/Title";
 import { WithUserProps } from "../../../utils/routes/WithUserProps";
 
 interface ClassroomsPageProps extends WithUserProps {};
@@ -11,9 +11,9 @@ interface ClassroomsPageProps extends WithUserProps {};
 function ClassroomsPage({ user }: ClassroomsPageProps) {
   return (
     <Section>
-      <Heading>
-        <Span color="primary.600">C</Span><Span>lass</Span>rooms
-      </Heading>
+      <Title>
+        Classrooms
+      </Title>
       <HStack 
         spacing={5}
         mt={5}

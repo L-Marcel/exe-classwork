@@ -1,4 +1,4 @@
-import { Box, Stack, StackProps, useBreakpointValue } from "@chakra-ui/react";
+import { Box, BoxProps, Stack, useBreakpointValue } from "@chakra-ui/react";
 import { m } from "framer-motion";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -6,10 +6,11 @@ import { useUser } from "../../contexts/hooks/useUser";
 import { IconButton } from "../Buttons/IconButton";
 import { ToggleColorButton } from "../Buttons/ToogleColorButton";
 import { NamedIcon } from "../NamedIcon";
+import { Overlay } from "../Overlay";
 import { Profile } from "../Profile";
 import { NavigationItem } from "./NavigationItem";
 
-interface NavigationProps extends StackProps {};
+interface NavigationProps extends BoxProps {};
 
 function Navigation({ ...rest }: NavigationProps) {
   const { user } = useUser();
@@ -67,8 +68,10 @@ function Navigation({ ...rest }: NavigationProps) {
       position="absolute"
       top={0}
       left={0}
-      zIndex={20}
+      zIndex={901}
+      {...rest}
     >
+      { (!isWideOrNormalVersion && isOpen) && <Overlay/> }
       { isWideOrNormalVersion && <Profile
         position="absolute"
         user={user}
@@ -86,6 +89,7 @@ function Navigation({ ...rest }: NavigationProps) {
         w="min-content"
         bgColor="solid.100"
         top={[4, 4, "90px", "90px", "90px", "90px"]}
+        zIndex={902}
         p={2}
       >
         { !isWideOrNormalVersion && 

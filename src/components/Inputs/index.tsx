@@ -74,7 +74,8 @@ function Input({
           }}
           w="100%"
           placeholder={placeholder}
-          animate={!isWideOrNormalVersion? isFocused? "smFocused":"smInitial":isFocused? "focused":"initial"}
+          initial={!isWideOrNormalVersion? "smInitial":"initial"}
+          animate={!isWideOrNormalVersion? (isFocused? "smFocused":"smInitial"):(isFocused? "focused":"initial")}
           variants={{
             initial: {
               paddingLeft: 35
@@ -107,7 +108,6 @@ function Input({
       { error && <Text
         mt={1}
         color="red.400"
-        alignSelf={["center", "center", "flex-start"]}
       >
         {error.message}
       </Text> }

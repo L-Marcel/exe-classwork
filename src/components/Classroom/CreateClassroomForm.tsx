@@ -1,5 +1,5 @@
 
-import { Heading, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -12,7 +12,7 @@ import { ClassroomFormValidation } from "../../services/forms/validations/Classr
 import { Button } from "../Buttons/Button";
 import { Input } from "../Inputs";
 import { Textarea } from "../Inputs/Textarea";
-import { Span } from "../Span";
+import { Title } from "../Title";
 
 function CreateClassroomForm() {
   const router = useRouter();
@@ -61,13 +61,9 @@ function CreateClassroomForm() {
       alignItems={["center", "center", "flex-start"]}
       onSubmit={handleSubmit(onSubmit)}
     >
-      <Heading
-        textAlign={["center", "center", "left"]}
-        bgGradient="linear(to-r, primary.200, primary.600)"
-        bgClip="text"
-      >
-        <Span color="primary.500">C</Span><Span>r</Span>eate a classroom
-      </Heading>
+      <Title>
+        Create a classroom
+      </Title>
       <Input
         placeholder="Title"
         iconName="pencil"
