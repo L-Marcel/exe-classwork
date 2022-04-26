@@ -2,8 +2,8 @@ import Joi from "joi";
 
 class ClassroomValidation {
   static create = Joi.object({
-    title: Joi.string().required().min(3).max(20),
-    subject: Joi.string().optional().min(3).max(18),
+    title: Joi.string().required().min(3).max(40),
+    subject: Joi.string().optional().min(3).max(20),
     description: Joi.string().optional().max(800).allow("")
   }).required();
 
@@ -15,3 +15,4 @@ class ClassroomValidation {
 };
 
 export { ClassroomValidation };
+

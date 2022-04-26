@@ -5,11 +5,12 @@ import { useInputErrors } from "../../contexts/hooks/useInputErrors";
 import { NamedIcon } from "../NamedIcon";
 
 interface InputProps extends InputGroupProps {
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   iconName: string;
   placeholder?: string;
   value?: string;
   name?: string;
+  register?: any;
 };
 
 function Input({ 
@@ -18,6 +19,8 @@ function Input({
   value,
   name,
   iconName,
+  register,
+  as,
   ...rest 
 }: InputProps) {
   const { inputErrors } = useInputErrors();
@@ -30,7 +33,7 @@ function Input({
   });
 
   const [isFocused, setIsFocused] = useState(false);
-  const error = inputErrors.find(err => err.name === name);
+  const error = inputErrors[name ?? register?.name];
 
   return (
     <Box
@@ -38,7 +41,7 @@ function Input({
       flexDir="column"
     >
       <InputGroup
-        w={[200, 300]}
+        w={[300, 350, 500]}
         maxW="80vw"
         alignSelf={["center", "center", "flex-start"]}
         onFocus={() => {
@@ -60,7 +63,7 @@ function Input({
           color={isFocused && (error? "red.400":"primary.500")}
         />
         <ChakraInput
-          as={m.input}
+          as={as ?? m.input}
           size={isWideOrNormalVersion? "md":"sm"}
           bgColor="solid.100"
           border="none"
@@ -69,6 +72,7 @@ function Input({
           _placeholder={{
             color: "alt.400"
           }}
+          w="100%"
           placeholder={placeholder}
           animate={!isWideOrNormalVersion? isFocused? "smFocused":"smInitial":isFocused? "focused":"initial"}
           variants={{
@@ -97,6 +101,7 @@ function Input({
           onChange={onChange}
           value={value}
           name={name}
+          {...register}
         />
       </InputGroup>
       { error && <Text

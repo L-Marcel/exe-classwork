@@ -1,6 +1,7 @@
 declare type _Req = import("next").NextApiRequest;
 declare type Res = import("next").NextApiResponse;
 declare type User = import("@prisma/client").User;
+declare type Classroom = import("@prisma/client").Classroom;
 
 declare interface Req extends _Req {
   user: import("@prisma/client").User;
@@ -73,9 +74,12 @@ declare interface AppContext {
   setSearch: (search: string) => void;
   page: number;
   setPage: (page: number) => void;
-  inputErrors: InputError[];
-  addInputErrors: (errors: InputError[]) => void;
+  inputErrors: InputErrors;
+  addInputErrors: (errors: InputErrors) => void;
   removeInputError: (name: string) => void;
+  resetInputErrors: () => void;
+  isLoading: boolean;
+  setIsLoading: (isLoading: boolean) => void;
 };
 
 //Fake enums to sqlite dabase
@@ -87,7 +91,8 @@ declare interface WithUserProps {
   user: User;
 };
 
-declare type InputError = {
-  name: string;
-  message: string;
+declare type InputErrors = {
+  [key: string]: {
+    message: string;
+  };
 };

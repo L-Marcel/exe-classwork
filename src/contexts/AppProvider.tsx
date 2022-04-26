@@ -2,7 +2,6 @@ import { User } from "@prisma/client";
 import { useRouter } from "next/router";
 import { ReactNode, useCallback, useEffect, useState } from "react";
 import { createContext } from "use-context-selector";
-import { Api } from "../services/api";
 
 interface AppProviderProps {
   children: ReactNode;
@@ -12,8 +11,9 @@ export const appContext = createContext({} as AppContext);
 
 function AppProvider({ children }: AppProviderProps) {
   const router = useRouter();
-  const [inputErrors, setInputErrors] = useState<InputError[]>([]);
+  const [inputErrors, setInputErrors] = useState<InputErrors>({});
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
 
@@ -33,46 +33,50 @@ function AppProvider({ children }: AppProviderProps) {
     setPage(page);
   }, [setPage]);
 
-  const _addInputErrors = useCallback((errors: InputError[]) => {
+  const _addInputErrors = useCallback((errors: InputErrors) => {
     setInputErrors(e => {
-      const data = [...e, ...errors];
-      const _errors = data.reduce((pre, cur) => {
-        const alreadyExists = pre.some(err => err.name === cur.name);
-
-        if(!alreadyExists) {
-          pre.push(cur);
+      const entries = Object.entries(errors);
+      
+      let _errors: InputErrors = {};
+  
+      for(let e in entries) {
+        const [key, value] = entries[e];
+  
+        const message: string = value.message.replaceAll(`${key} `, "");
+  
+        _errors[key] = {
+          message: `${message[0].toUpperCase()}${message.slice(1, message.length)}.`
         };
+      };
 
-        return pre;
-      }, []);
-
-      return _errors;
+      return { ...e, ..._errors };
     });
   }, [setInputErrors]);
 
   const _removeInputError = useCallback((name: string) => {
-    setInputErrors(e => e.filter(err => err.name !== name));
+    setInputErrors(errors => {
+      errors[name] = undefined;
+      return errors;
+    });
   }, [setInputErrors]);
 
-  useEffect(() => {
-    if(router.query?.githubId) {
-      Api.get(`/user/${router.query?.githubId}`).then(res => {
-        setUser(res.data);
-      }).catch((err) => {
-        signOut();
-      });
-    };
-  }, [Api, router, setUser, signOut]);
+  const _resetInputErrors = useCallback(() => {
+    setInputErrors({});
+  }, [setInputErrors]);
+
+  const _setIsLoading = useCallback((isLoading: boolean) => {
+    setIsLoading(isLoading);
+  }, [setIsLoading]);
 
   useEffect(() => {
     setSearch("");
     setPage(0);
-    setInputErrors([]);
+    _resetInputErrors();
   }, [
     router, 
     setSearch, 
     setPage, 
-    setInputErrors
+    _resetInputErrors
   ]);
 
   return (
@@ -87,7 +91,10 @@ function AppProvider({ children }: AppProviderProps) {
         setPage: _setPage,
         inputErrors,
         addInputErrors: _addInputErrors,
-        removeInputError: _removeInputError
+        removeInputError: _removeInputError,
+        resetInputErrors: _resetInputErrors,
+        isLoading,
+        setIsLoading: _setIsLoading
       }}
     >
       {children}

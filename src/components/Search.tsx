@@ -8,6 +8,7 @@ function Search() {
     <Input
       placeholder="Search by title or subject..."
       iconName="search"
+      w={[250, 300]}
       onChange={(e) => {
         setSaerch(e.target.value);
       }}

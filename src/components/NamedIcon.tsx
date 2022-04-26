@@ -1,10 +1,10 @@
 import { Icon as ChakraIcon, IconProps as ChakraIconProps } from "@chakra-ui/react";
 import { AiFillCaretDown, AiFillCaretUp, AiFillHtml5, AiOutlineCalendar, AiOutlineCheck, AiOutlineClose, AiOutlineInfoCircle, AiOutlineMenu, AiOutlinePlus, AiOutlineRight } from "react-icons/ai";
 import { BiCubeAlt, BiSearchAlt } from "react-icons/bi";
-import { BsDownload, BsFillMoonStarsFill, BsQuestionCircle } from "react-icons/bs";
+import { BsDownload, BsFillJournalBookmarkFill, BsFillMoonStarsFill, BsQuestionCircle } from "react-icons/bs";
 import { CgTikcode } from "react-icons/cg";
 import { DiCss3, DiSass } from "react-icons/di";
-import { FaBalanceScale, FaBell, FaChalkboardTeacher, FaDocker, FaGitAlt, FaGithubAlt, FaHome, FaJava, FaPython, FaReact, FaSun, FaUser } from "react-icons/fa";
+import { FaBalanceScale, FaBell, FaChalkboardTeacher, FaDocker, FaGitAlt, FaGithubAlt, FaHome, FaJava, FaPencilAlt, FaPython, FaReact, FaSun, FaUser } from "react-icons/fa";
 import { FiCopy, FiFigma, FiFramer, FiPaperclip } from "react-icons/fi";
 import { GrGraphQl, GrNode } from "react-icons/gr";
 import { IoIosRocket, IoLogoJavascript, IoMdOpen, IoMdSchool } from "react-icons/io";
@@ -75,7 +75,9 @@ export const icons = {
   "menu": AiOutlineMenu,
   "add": AiOutlinePlus,
   "submit": AiOutlineRight,
-  "qrcode": CgTikcode
+  "qrcode": CgTikcode,
+  "pencil": FaPencilAlt,
+  "subject": BsFillJournalBookmarkFill
 };
 
 function NamedIcon({ name = "default", ...rest }: IconProps) {

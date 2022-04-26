@@ -85,7 +85,8 @@ function DynamicGridList({
           return (
             <Stack
               key={a}
-              w="100%" 
+              w="100%"
+              maxW={["100%", "100%", "100%", "50%", "25%", "25%"]}
               spacing={7}
               mb={["20px", 0, 0, 0, 0, 0]}
             >

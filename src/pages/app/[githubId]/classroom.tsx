@@ -1,27 +1,19 @@
-import { Heading, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
+import { CreateClassroomForm } from "../../../components/Classroom/CreateClassroomForm";
 import { InviteCodeForm } from "../../../components/Classroom/InviteCodeForm";
 import { Section } from "../../../components/Section";
-import { Span } from "../../../components/Span";
 import { WithUserProps } from "../../../utils/routes/WithUserProps";
 
-interface ClassroomPageProps extends WithUserProps {
-  user: User;
-};
+interface ClassroomPageProps extends WithUserProps {};
 
-function ClassroomPage({ user }: ClassroomPageProps) {
+function ClassroomPage({}: ClassroomPageProps) {
   return (
     <Section>
       <Stack
         spacing={10}
       >
-        <InviteCodeForm
-          user={user}
-        />
-        <Heading
-          alignSelf={["center", "center", "flex-start"]}
-        >
-          <Span color="primary.600">C</Span><Span>reate</Span> a new
-        </Heading>
+        <InviteCodeForm/>
+        <CreateClassroomForm/>
       </Stack>
     </Section>
   );

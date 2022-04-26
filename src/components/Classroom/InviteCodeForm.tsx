@@ -2,21 +2,27 @@ import { Heading, HStack, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useInputErrors } from "../../contexts/hooks/useInputErrors";
+import { useUser } from "../../contexts/hooks/useUser";
 import { Api } from "../../services/api";
 import { IconButton } from "../Buttons/IconButton";
 import { Input } from "../Inputs";
 import { NamedIcon } from "../NamedIcon";
 import { Span } from "../Span";
 
-interface InviteCodeFormProps {
-  user: User;
-};
+interface InviteCodeFormProps {};
 
-function InviteCodeForm({ user }: InviteCodeFormProps) {
+function InviteCodeForm({}: InviteCodeFormProps) {
   const router = useRouter();
   const [code, setCode] = useState("");
-  const { addInputErrors, removeInputError, inputErrors } = useInputErrors();
-  const haveError = inputErrors.some(err => err.name === "inviteCode");
+  
+  const { user } = useUser();
+  const { 
+    addInputErrors, 
+    removeInputError, 
+    inputErrors 
+  } = useInputErrors();
+
+  const error = inputErrors["inviteCode"];
 
   function handleSubmit() {
     if(code) {
@@ -24,10 +30,11 @@ function InviteCodeForm({ user }: InviteCodeFormProps) {
         console.log(res.data);
         router.push(`/app/${user.githubId}/classrooms`);
       }).catch(err => {
-        addInputErrors([{
-          name: "inviteCode",
-          message: err.response.data.message
-        }]);
+        addInputErrors({
+          inviteCode: {
+            message: err.response.data.message
+          }
+        });
       });
     };
   };
@@ -37,8 +44,11 @@ function InviteCodeForm({ user }: InviteCodeFormProps) {
       spacing={5}
       alignItems={["center", "center", "flex-start"]}
     >
-      <Heading>
-        <Span color="primary.600">U</Span><Span>se</Span> invite code
+      <Heading
+        bgGradient="linear(to-r, primary.200, primary.600)"
+        bgClip="text"
+      >
+        <Span color="primary.500">U</Span><Span>s</Span>e invite code
       </Heading>
       <HStack 
         spacing={5}
@@ -48,6 +58,7 @@ function InviteCodeForm({ user }: InviteCodeFormProps) {
           placeholder="Insert invite code..."
           name="inviteCode"
           iconName="qrcode"
+          w={[250, 300]}
           onChange={(e) => {
             removeInputError("inviteCode");
             setCode(e.target.value);
@@ -58,7 +69,7 @@ function InviteCodeForm({ user }: InviteCodeFormProps) {
           aria-label="submit-invite-code-form"
           icon={<NamedIcon name="submit"/>}
           name="left"
-          theme={haveError? "red":"primary"}
+          theme={error? "red":"primary"}
           onClick={handleSubmit}
           isDisabled={!code}
         />

@@ -1,24 +1,27 @@
-import { Heading } from "@chakra-ui/react";
-import { m } from "framer-motion";
-import { GetStaticProps } from "next";
+import { Box, Heading } from "@chakra-ui/react";
+interface NotFoundProps {};
 
-interface NotFoundProps {
-  locale: string;
-};
-
-function NotFound({ locale }: NotFoundProps) {
+function NotFound({}: NotFoundProps) {
   return (
-    <Heading>
-      404: {locale === "pt-BR"? "Página não encontrada":"Page not found"}
-    </Heading>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      w="100%"
+      h="100%"
+    >
+      <Heading>
+        404: Page not found
+      </Heading>
+    </Box>
   );
 };
 
-export const getStaticProps: GetStaticProps = async({ locale }) => {
+/*export const getStaticProps: GetStaticProps = async({ locale }) => {
   return {
     props: { locale },
     revalidate: false
   };
-};
+};*/
 
 export default NotFound;

@@ -1,31 +1,26 @@
 import { Progress } from "@chakra-ui/react";
 import { m } from "framer-motion";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useIsLoading } from "../contexts/hooks/useIsLoading";
 
 function RouterLoading() {
   const { events } = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleStartLoading = useCallback(() => {
-    setIsLoading(true);
-  }, [setIsLoading]);
-
-  const handleOnLoadingComplete = useCallback(() => {
-    setIsLoading(false);
-  }, [setIsLoading]);
+  const { 
+    startLoading, 
+    stopLoading, 
+    isLoading 
+  } = useIsLoading();
 
   useEffect(() => {
-    events.on("hashChangeStart", handleStartLoading);
-    events.on("routeChangeStart", handleStartLoading);
-    events.on("routeChangeComplete", handleOnLoadingComplete);
+    events.on("routeChangeStart", startLoading);
+    events.on("routeChangeComplete", stopLoading);
 
     return () => {
-      events.off("hashChangeStart", handleStartLoading);
-      events.off("routeChangeStart", handleStartLoading);
-      events.off("routeChangeComplete", handleOnLoadingComplete);
+      events.off("routeChangeStart", startLoading);
+      events.off("routeChangeComplete", stopLoading);
     };
-  }, [events, handleOnLoadingComplete, handleStartLoading]);
+  }, [events, stopLoading, startLoading]);
 
   if(!isLoading) {
     return null;

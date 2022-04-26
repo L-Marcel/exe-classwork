@@ -1,7 +1,7 @@
 import { Box, ButtonProps, Text } from "@chakra-ui/react";
 import { m } from "framer-motion";
-import Link from "next/link";
 import { IconButton } from "../Buttons/IconButton";
+import { Link } from "../Link";
 import { NamedIcon } from "../NamedIcon";
 interface NavigationItemProps extends ButtonProps {
   path: string;
@@ -66,3 +66,4 @@ function NavigationItem({ path, isSelected, forceExpanded = false, name, ...rest
 };
 
 export { NavigationItem };
+

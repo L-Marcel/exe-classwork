@@ -43,6 +43,23 @@ export const theme = extendTheme({
         "::-webkit-scrollbar-thumb:hover": {
           background: "primary.900"
         },
+        "textarea::-webkit-scrollbar": {
+          w: "10px",
+          mr: -2
+        },
+        "textarea::-webkit-scrollbar-track": {
+          h: 5,
+          background: "solid.200"
+        },
+        "textarea::-webkit-scrollbar-thumb": {
+          background: "primary.500"
+        },
+        "textarea::-webkit-scrollbar-thumb:hover": {
+          background: "primary.600"
+        },
+        "::-webkit-resizer": {
+          backgroundColor: "var(--chakra-colors-solid-300)"
+        },
         html: {
           height: "-webkit-fill-available",
           overscrollBehaviorY: "contain"

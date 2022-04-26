@@ -49,7 +49,7 @@ model Classroom {
 
   title String
   subject String?
-  description String
+  description String?
 
   users ClassroomRelation[]
   alerts Alert[]

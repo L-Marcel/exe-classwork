@@ -1,6 +1,6 @@
-import { Link as ChakraLink, HStack, Stack, Text, Box } from "@chakra-ui/react";
-import Link from "next/link";
+import { Box, HStack, Stack, Text } from "@chakra-ui/react";
 import { Button } from "../components/Buttons/Button";
+import { Link } from "../components/Link";
 import { Logo } from "../components/Logo";
 
 function LoginPage() {
@@ -24,14 +24,12 @@ function LoginPage() {
           A simple Github repository monitoring system with tools to improve school environment. You can create a classroom, add developers or students, make a team, and monitoring they repositories. Problems with analyzing the productivity of the projects? Try it!
         </Text>
         <HStack>
-          <Link href="/api/login" passHref>
-            <ChakraLink>
-              <Button
-                theme="primary"
-              >
-                Sign-in
-              </Button>
-            </ChakraLink>
+          <Link href="/api/login">
+            <Button
+              theme="primary"
+            >
+              Sign-in
+            </Button>
           </Link>
           <Button>
             Documentation
@@ -47,18 +45,17 @@ function LoginPage() {
         h="full"
         w="100%"
       />
-      <Link href="https://l-marcel.vercel.app" passHref>
-        <ChakraLink
-          position="absolute"
-          bottom={0}
-          m={8}
-          borderRadius={8}
-          bgColor="solid.50"
-          py={1}
-          px={3}
-        >
-          @l-marcel
-        </ChakraLink>
+      <Link
+        href="https://l-marcel.vercel.app" 
+        position="absolute"
+        bottom={0}
+        m={8}
+        borderRadius={8}
+        bgColor="solid.50"
+        py={1}
+        px={3}
+      >
+        @l-marcel
       </Link>
     </>
   );

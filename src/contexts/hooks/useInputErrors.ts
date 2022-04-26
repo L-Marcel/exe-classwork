@@ -6,7 +6,8 @@ function useInputErrors() {
     return {
       inputErrors: c.inputErrors,
       addInputErrors: c.addInputErrors,
-      removeInputError: c.removeInputError
+      removeInputError: c.removeInputError,
+      resetInputErrors: c.resetInputErrors
     };
   });
 };

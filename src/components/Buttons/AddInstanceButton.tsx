@@ -1,5 +1,4 @@
-import { Link as ChakraLink } from "@chakra-ui/react";
-import Link from "next/link";
+import { Link } from "../Link";
 import { NamedIcon } from "../NamedIcon";
 import { IconButton, IconButtonProps } from "./IconButton";
 
@@ -9,16 +8,14 @@ interface AddInstanceButtonProps extends IconButtonProps {
 
 function AddInstanceButton({ href, ...rest }: Partial<AddInstanceButtonProps>) {
   return (
-    <Link href={href} passHref>
-      <ChakraLink>
-        <IconButton
-          data-testid="add-instance-button"
-          aria-label="addInstanceButton"
-          theme="primary"
-          icon={<NamedIcon name="add"/>}
-          {...rest}
-        />
-      </ChakraLink>
+    <Link href={href}>
+      <IconButton
+        data-testid="add-instance-button"
+        aria-label="addInstanceButton"
+        theme="primary"
+        icon={<NamedIcon name="add"/>}
+        {...rest}
+      />
     </Link>
   );
 };

@@ -1,4 +1,3 @@
-import { Box } from "@chakra-ui/react";
 import { NothingHere } from "../../../components/NothingHere";
 import { WithUserProps } from "../../../utils/routes/WithUserProps";
 

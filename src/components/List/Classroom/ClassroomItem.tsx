@@ -11,7 +11,6 @@ interface ClassroomItemProps {
 function ClassroomItem({ title, description, subject, alerts = [] }: ClassroomItemProps) {
   const alertsCount = alerts.length >= 9? 9:alerts.length;
 
-
   return (
     <Box
       bgColor="solid.100"
@@ -23,17 +22,21 @@ function ClassroomItem({ title, description, subject, alerts = [] }: ClassroomIt
       p={[4, 6]}
     >
       <Box
+        position="relative"
         display="flex"
         justifyContent="space-between"
       >
         <Heading
           fontSize="1.4rem"
           color="primary.500"
+          maxW={["65vw", "70vw", "80vw", 350, 220, 300]}
+          pr={[0, 12]}
+          mt={-1}
         >
-          {title}
+          {title.slice(0, 30)}{title.length > 30 && "..."}
         </Heading>
         <Box
-          position="relative"
+          position="absolute"
           display="flex"
           justifyContent="center"
           alignItems="center"
@@ -43,6 +46,8 @@ function ClassroomItem({ title, description, subject, alerts = [] }: ClassroomIt
           maxH="28px"
           bgColor="solid.200"
           borderRadius={15}
+          right={[-8, 0]}
+          top={-1}
         >
           <NamedIcon 
             name="alerts"
@@ -74,15 +79,19 @@ function ClassroomItem({ title, description, subject, alerts = [] }: ClassroomIt
       <Text
         mt={-1}
         fontSize=".9rem"
+        maxW={["63vw", "77vw", "77vw", 330, 200, 280]}
       >
         {subject}
       </Text>
-      <Text 
-        mt={1}
-        fontSize="1rem"
-      >
-        {description}
-      </Text>
+      {
+        description && <Text 
+          mt={3}
+          fontSize="1rem"
+          maxW={["68vw", "80vw", "80vw", "50vw", 220, 300]}
+        >
+          {description?.slice(0, 200)}{description?.length > 200 && "..."}
+        </Text>
+      }
     </Box>
   );
 };
