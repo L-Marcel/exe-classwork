@@ -17,8 +17,6 @@ function Layout({ children, ...rest }: LayoutProps) {
       overflowY="auto"
       overflowX="hidden"
       {...rest}
-      py={10}
-      px={[10, 14, 28]}
     >
       <Head>
         <title>Exe: classwork</title>

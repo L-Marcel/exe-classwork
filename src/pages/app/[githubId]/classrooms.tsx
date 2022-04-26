@@ -2,6 +2,7 @@ import { Heading, HStack } from "@chakra-ui/react";
 import { AddInstanceButton } from "../../../components/Buttons/AddInstanceButton";
 import { ClassroomsList } from "../../../components/List/Classroom/ClassroomtsList";
 import { Search } from "../../../components/Search";
+import { Section } from "../../../components/Section";
 import { Span } from "../../../components/Span";
 import { WithUserProps } from "../../../utils/routes/WithUserProps";
 
@@ -9,7 +10,7 @@ interface ClassroomsPageProps extends WithUserProps {};
 
 function ClassroomsPage({ user }: ClassroomsPageProps) {
   return (
-    <>
+    <Section>
       <Heading
         alignSelf={["center", "center", "flex-start"]}
       >
@@ -23,7 +24,7 @@ function ClassroomsPage({ user }: ClassroomsPageProps) {
         <AddInstanceButton href={`/app/${user.githubId}/classroom`}/>
       </HStack>
       <ClassroomsList/>
-    </>
+    </Section>
   );
 };
 
