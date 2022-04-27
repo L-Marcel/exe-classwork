@@ -1,22 +1,21 @@
-import { Stack } from "@chakra-ui/react";
 import { CreateClassroomForm } from "../../../components/Classroom/CreateClassroomForm";
 import { InviteCodeForm } from "../../../components/Classroom/InviteCodeForm";
 import { Section } from "../../../components/Section";
 import { WithUserProps } from "../../../utils/routes/WithUserProps";
 
-interface ClassroomPageProps extends WithUserProps {};
+interface ClassroomFormPageProps extends WithUserProps {};
 
-function ClassroomPage({}: ClassroomPageProps) {
+function ClassroomFormPage({}: ClassroomFormPageProps) {
   return (
-    <Section>
-      <Stack
-        spacing={10}
-      >
+    <>
+      <Section>
         <InviteCodeForm/>
+      </Section>
+      <Section>
         <CreateClassroomForm/>
-      </Stack>
-    </Section>
+      </Section>
+    </>
   );
 };
 
-export default WithUserProps(ClassroomPage);
+export default WithUserProps(ClassroomFormPage);

@@ -1,7 +1,16 @@
 declare type _Req = import("next").NextApiRequest;
 declare type Res = import("next").NextApiResponse;
 declare type User = import("@prisma/client").User;
-declare type Classroom = import("@prisma/client").Classroom;
+declare type _Classroom = import("@prisma/client").Classroom;
+declare type _ClassroomRelation = import("@prisma/client").ClassroomRelation;
+
+declare interface ClassroomRelation extends _ClassroomRelation {
+  user: User;
+};
+
+declare interface Classroom extends _Classroom {
+  users: ClassroomRelation[];
+};
 
 declare interface Req extends _Req {
   user: import("@prisma/client").User;
@@ -69,6 +78,8 @@ declare type ErrorWithContext<T = any> = {
 declare interface AppContext {
   user: User | null;
   setUser: (user: User) => void;
+  classroom: Classroom | null;
+  setClassroom: (classroom: Classroom) => void;
   signOut: () => void;
   search: string;
   setSearch: (search: string) => void;
@@ -91,8 +102,20 @@ declare interface WithUserProps {
   user: User;
 };
 
+declare interface WithClassroomProps {
+  user: User;
+  classroom: Classroom;
+};
+
 declare type InputErrors = {
   [key: string]: {
     message: string;
   };
 };
+
+declare type MatrixOfElements = [ 
+  JSX.Element[], 
+  JSX.Element[]?, 
+  JSX.Element[]?, 
+  JSX.Element[]?
+];

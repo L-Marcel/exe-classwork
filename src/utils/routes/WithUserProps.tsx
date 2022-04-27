@@ -11,7 +11,6 @@ function WithUserProps<T = any>(Page: NextPage<T>) {
     const { user, setUser, signOut } = useUser();
 
     useEffect(() => {
-      console.log(user);
       if(!user) {
         Api.get(`/user/${router.query?.githubId}`).then(res => {
           setUser(res.data);

@@ -1,5 +1,5 @@
 
-import { Stack } from "@chakra-ui/react";
+import { HStack, Stack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -81,13 +81,21 @@ function CreateClassroomForm() {
         maxH={200}
         resize="vertical"
       />
-      <Button
-        type="submit"
-        theme="primary"
-        disabled={isLoading}
-      >
-        Create
-      </Button>
+      <HStack spacing={4}>
+        <Button
+          type="submit"
+          theme="primary"
+          disabled={isLoading}
+        >
+          Create
+        </Button>
+        <Button
+          type="reset"
+          disabled={isLoading}
+        >
+          Reset
+        </Button>
+      </HStack>
     </Stack>
   );
 };

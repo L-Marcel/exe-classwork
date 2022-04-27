@@ -75,10 +75,33 @@ export class ClassroomRelations {
           alerts: true,
           subject: true,
           description: true,
-          teams: true,
-          repository: true,
+          repositories: true,
           title: true,
-          users: true
+          teams: {
+            select: {
+              users: {
+                select: {
+                  user: true,
+                  role: true,
+                  createdAt: true,
+                  updatedAt: true,
+                  updatedBy: true
+                }
+              },
+              createdAt: true,
+              updatedAt: true,
+              updatedBy: true
+            }
+          },
+          users: {
+            select: {
+              user: true,
+              role: true,
+              createdAt: true,
+              updatedAt: true,
+              updatedBy: true
+            }
+          }
         };
       case "OBSERVER":
         return {
@@ -86,10 +109,33 @@ export class ClassroomRelations {
           alerts: true,
           subject: true,
           description: true,
-          teams: true,
-          repository: true,
+          repositories: true,
           title: true,
-          users: true
+          teams: {
+            select: {
+              users: {
+                select: {
+                  user: true,
+                  role: true,
+                  createdAt: true,
+                  updatedAt: true,
+                  updatedBy: true
+                }
+              },
+              createdAt: true,
+              updatedAt: true,
+              updatedBy: true
+            }
+          },
+          users: {
+            select: {
+              user: true,
+              role: true,
+              createdAt: true,
+              updatedAt: true,
+              updatedBy: true
+            }
+          }
         };
       case "STUDENT":
         return {
@@ -126,6 +172,20 @@ export class ClassroomRelations {
             }
           },
           teams: {
+            select: {
+              users: {
+                select: {
+                  user: true,
+                  role: true,
+                  createdAt: true,
+                  updatedAt: true,
+                  updatedBy: true
+                }
+              },
+              createdAt: true,
+              updatedAt: true,
+              updatedBy: true
+            },
             where: {
               users: {
                 some: {
@@ -134,7 +194,7 @@ export class ClassroomRelations {
               }
             }
           },
-          repository: {
+          repositories: {
             where: {
               ownerId: userId
             }
@@ -142,7 +202,15 @@ export class ClassroomRelations {
           subject: true,
           description: true,
           title: true,
-          users: true
+          users: {
+            select: {
+              user: true,
+              role: true,
+              createdAt: true,
+              updatedAt: true,
+              updatedBy: true
+            }
+          }
         };
       default:
         throw new UnauthorizedError();

@@ -1,18 +1,24 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
+import { m } from "framer-motion";
+import { useRouter } from "next/router";
+import { scaleOnInteract } from "../../../theme/animations/motion";
 import { NamedIcon } from "../../NamedIcon";
 
 interface ClassroomItemProps {
   title: string;
+  id: string;
   description?: string;
   subject?: string;
   alerts?: any[];
 };
 
-function ClassroomItem({ title, description, subject, alerts = [] }: ClassroomItemProps) {
+function ClassroomItem({ title, description, subject, id, alerts = [] }: ClassroomItemProps) {
+  const router = useRouter();
   const alertsCount = alerts.length >= 9? 9:alerts.length;
 
   return (
     <Box
+      as={m.div}
       bgColor="solid.100"
       w="fill"
       minW={["85%", "80%", "80%", "40%", "20%", "20.1%"]}
@@ -20,6 +26,9 @@ function ClassroomItem({ title, description, subject, alerts = [] }: ClassroomIt
       borderLeft="2px solid"
       borderColor="primary.500"
       p={[4, 6]}
+      onClick={() => router.push(`/app/${router.query?.githubId}/classrooms/${id}`)}
+      cursor="pointer"
+      {...scaleOnInteract}
     >
       <Box
         position="relative"

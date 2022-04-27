@@ -1,6 +1,4 @@
 import { Users } from "../../../controllers/Users";
-import { LoopError } from "../../../errors/api/LoopError";
-import { Cookies } from "../../../services/cookies";
 import { Github } from "../../../services/github";
 import { apiHandle } from "../../../utils/api/apiHandle";
 

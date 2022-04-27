@@ -54,7 +54,7 @@ model Classroom {
   users ClassroomRelation[]
   alerts Alert[]
   teams Team[]
-  repository Repository[]
+  repositories Repository[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime?

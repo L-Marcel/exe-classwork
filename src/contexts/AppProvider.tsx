@@ -13,9 +13,14 @@ function AppProvider({ children }: AppProviderProps) {
   const router = useRouter();
   const [inputErrors, setInputErrors] = useState<InputErrors>({});
   const [user, setUser] = useState<User | null>(null);
+  const [classroom, setClassroom] = useState<Classroom | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
+
+  const _setClassroom = useCallback((classroom: Classroom) => {
+    setClassroom(classroom);
+  }, [setUser]);
 
   const _setUser = useCallback((user: User) => {
     setUser(user);
@@ -84,6 +89,8 @@ function AppProvider({ children }: AppProviderProps) {
       value={{
         user,
         setUser: _setUser,
+        classroom,
+        setClassroom: _setClassroom,
         signOut,
         search,
         setSearch: _setSearch,

@@ -5,7 +5,7 @@ function Title({ children, ...rest }: HeadingProps) {
   return (
     <Heading
       textAlign={["center", "center", "left"]}
-      bgGradient="linear(to-r, primary.200, primary.600)"
+      bgGradient="linear(to-r, primary.600, primary.900)"
       bgClip="text"
       {...rest}
     >

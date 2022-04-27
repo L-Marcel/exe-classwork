@@ -1,4 +1,4 @@
-import { Box, Text, Heading, BoxProps } from "@chakra-ui/react";
+import { Box, BoxProps, Heading, Text } from "@chakra-ui/react";
 import { m } from "framer-motion";
 import { fadeToTop } from "../theme/animations/motion";
 import { Span } from "./Span";
@@ -25,7 +25,7 @@ function Logo({ ...rest }: LogoProps) {
         ex<sub>e</sub>
       </Text>
       <Heading
-        bgGradient="linear(to-r, primary.200, primary.600)"
+        bgGradient="linear(to-r, primary.600, primary.900)"
         bgClip="text"
         fontSize={[40, 40, 60, 80]}
       >
@@ -36,3 +36,4 @@ function Logo({ ...rest }: LogoProps) {
 };
 
 export { Logo };
+
