@@ -15,7 +15,7 @@ function WithUserProps<T = any>(Page: NextPage<T>) {
         Api.get(`/user/${router.query?.githubId}`).then(res => {
           setUser(res.data);
         }).catch(() => {
-          signOut();
+          //signOut();
         });
       };
     }, [

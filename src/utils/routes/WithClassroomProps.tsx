@@ -8,11 +8,16 @@ import { Api } from "../../services/api";
 function WithClassroomProps<T = any>(Page: NextPage<T>) {
   return function classroomProvider(props: any) {
     const router = useRouter();
-
     const { classroom, setClassroom } = useClassroom();
 
+    const classroomIsLoaded = classroom 
+    && router.query?.classroom 
+    && classroom?.id === router.query?.classroom;
+
+    console.log(classroomIsLoaded, classroom, router.query?.classroom);
+
     useEffect(() => {
-      if(!classroom) {
+      if(!classroomIsLoaded) {
         Api.get(`/user/classroom/${router.query?.classroom}`).then(res => {
           setClassroom(res.data);
         }).catch(() => {
@@ -25,7 +30,7 @@ function WithClassroomProps<T = any>(Page: NextPage<T>) {
       setClassroom
     ]);
     
-    if(!classroom) {
+    if(!classroomIsLoaded) {
       return (
         <PageFallback
           title="We are getting everything ready for you."

@@ -1,5 +1,5 @@
 import { Icon as ChakraIcon, IconProps as ChakraIconProps } from "@chakra-ui/react";
-import { AiFillCaretDown, AiFillCaretUp, AiFillHtml5, AiOutlineCalendar, AiOutlineCheck, AiOutlineClose, AiOutlineInfoCircle, AiOutlineMenu, AiOutlinePlus, AiOutlineRight } from "react-icons/ai";
+import { AiFillCaretDown, AiFillCaretUp, AiFillHtml5, AiOutlineCalendar, AiOutlineCheck, AiOutlineClose, AiOutlineInfoCircle, AiOutlineMenu, AiOutlinePlus, AiOutlinePoweroff, AiOutlineRight } from "react-icons/ai";
 import { BiCubeAlt, BiSearchAlt } from "react-icons/bi";
 import { BsDownload, BsFillJournalBookmarkFill, BsFillMoonStarsFill, BsQuestionCircle } from "react-icons/bs";
 import { CgTikcode } from "react-icons/cg";
@@ -77,7 +77,8 @@ export const icons = {
   "submit": AiOutlineRight,
   "qrcode": CgTikcode,
   "pencil": FaPencilAlt,
-  "subject": BsFillJournalBookmarkFill
+  "subject": BsFillJournalBookmarkFill,
+  "exit": AiOutlinePoweroff
 };
 
 function NamedIcon({ name = "default", ...rest }: IconProps) {

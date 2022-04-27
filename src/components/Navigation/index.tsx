@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useUser } from "../../contexts/hooks/useUser";
 import { IconButton } from "../Buttons/IconButton";
+import { SignOutButton } from "../Buttons/SignOutButton";
 import { ToggleColorButton } from "../Buttons/ToogleColorButton";
 import { NamedIcon } from "../NamedIcon";
 import { Overlay } from "../Overlay";
@@ -120,6 +121,12 @@ function Navigation({ ...rest }: NavigationProps) {
             />
           );
         })}
+        { (isWideOrNormalVersion || isOpen) && <SignOutButton
+          zIndex={10}
+          theme="red"
+          colorIndexes={["400", "400", "400"]}
+          forceHoverEffect
+        /> }
       </Stack>
     </Box>
   );

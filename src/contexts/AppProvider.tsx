@@ -2,6 +2,7 @@ import { User } from "@prisma/client";
 import { useRouter } from "next/router";
 import { ReactNode, useCallback, useEffect, useState } from "react";
 import { createContext } from "use-context-selector";
+import { Cookies } from "../services/cookies";
 
 interface AppProviderProps {
   children: ReactNode;
@@ -26,9 +27,13 @@ function AppProvider({ children }: AppProviderProps) {
     setUser(user);
   }, [setUser]);
 
-  const signOut = useCallback(() => {
+  const _signOut = useCallback(() => {
+    setIsLoading(true);
     setUser(null);
-  }, [setUser]);
+    setClassroom(null);
+
+    router.push("/api/logout");
+  }, [setUser, setClassroom, Cookies]);
 
   const _setSearch = useCallback((search: string) => {
     setSearch(search);
@@ -91,7 +96,7 @@ function AppProvider({ children }: AppProviderProps) {
         setUser: _setUser,
         classroom,
         setClassroom: _setClassroom,
-        signOut,
+        signOut: _signOut,
         search,
         setSearch: _setSearch,
         page,

@@ -1,5 +1,5 @@
-import ServerCookies from "cookies";
 import ClientCookies from "cookie-cutter";
+import ServerCookies from "cookies";
 
 export class Cookies {
   private static server = ServerCookies;
@@ -21,7 +21,7 @@ export class Cookies {
       const server = new this.server(req, res);
       return server.set(cookie, value);
     } else {
-      return this.client.set(cookie, value);
+      return this.client.set(cookie, value, { path: "/" });
     };
   };
 
@@ -30,8 +30,6 @@ export class Cookies {
       const { req, res } = serverParams;
       const server = new this.server(req, res);
       return server.set(cookie);
-    } else {
-      return this.client.set(cookie, '', { expires: new Date(0) });
     };
   };
 };

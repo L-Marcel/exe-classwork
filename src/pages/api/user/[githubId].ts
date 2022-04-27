@@ -4,7 +4,7 @@ import { withUser } from "../../../utils/api/middlewares/withUser";
 
 async function getAuthenticatedUser(req: Req, res: Res) {
   const { githubId } = req.query;
-
+  
   if(req.user.githubId !== githubId) {
     throw new UnauthorizedError();
   };
