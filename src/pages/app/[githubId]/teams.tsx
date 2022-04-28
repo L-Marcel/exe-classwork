@@ -1,3 +1,4 @@
+import { Layout } from "../../../components/Layout";
 import { NothingHere } from "../../../components/NothingHere";
 import { WithUserProps } from "../../../utils/routes/WithUserProps";
 
@@ -5,7 +6,9 @@ interface TeamsPageProps extends WithUserProps {};
 
 function TeamsPage({ user }: TeamsPageProps) {
   return (
-    <NothingHere/>
+    <Layout>
+      <NothingHere/>
+    </Layout>
   );
 };
 
