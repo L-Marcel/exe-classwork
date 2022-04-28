@@ -1,7 +1,6 @@
 import { Box, BoxProps } from "@chakra-ui/react";
 import { m } from "framer-motion";
 import Head from "next/head";
-import { Navigation } from "./Navigation";
 
 interface LayoutProps extends BoxProps {};
 
@@ -22,7 +21,6 @@ function Layout({ children, ...rest }: LayoutProps) {
         <title>Exe: classwork</title>
       </Head>
       {children}
-      <Navigation/>
     </Box>
   );
 };

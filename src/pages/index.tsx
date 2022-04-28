@@ -1,11 +1,12 @@
 import { Box, HStack, Stack, Text } from "@chakra-ui/react";
 import { Button } from "../components/Buttons/Button";
+import { Layout } from "../components/Layout";
 import { Link } from "../components/Link";
 import { Logo } from "../components/Logo";
 
 function LoginPage() {
   return (
-    <>
+    <Layout>
       <Stack
         display="flex"
         spacing={4}
@@ -57,7 +58,7 @@ function LoginPage() {
       >
         @l-marcel
       </Link>
-    </>
+    </Layout>
   );
 };
 

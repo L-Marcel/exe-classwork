@@ -26,13 +26,16 @@ function AppProvider({ children }: AppProviderProps) {
     setUser(user);
   }, [setUser]);
 
-  function signOut() {
+  const _signOut = useCallback(() => {
     setIsLoading(true);
-    setUser(null);
-    setClassroom(null);
 
-    router.push("/api/logout");
-  };
+    router.push("/api/logout").then(() => {
+      setUser(null);
+      setClassroom(null);
+    }).catch(() => {
+      setIsLoading(false);
+    });
+  }, [setIsLoading, setUser, setClassroom, router]);
 
   const _setSearch = useCallback((search: string) => {
     setSearch(search);
@@ -95,7 +98,7 @@ function AppProvider({ children }: AppProviderProps) {
         setUser: _setUser,
         classroom,
         setClassroom: _setClassroom,
-        signOut,
+        signOut: _signOut,
         search,
         setSearch: _setSearch,
         page,

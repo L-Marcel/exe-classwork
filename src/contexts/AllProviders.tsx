@@ -15,9 +15,9 @@ const composeProviders = (...providers) => props => {
 };
 
 export const AllProviders = composeProviders(
+  QueryClientProvider,
   ChakraProvider,
   LazyMotion,
   MotionConfig,
-  QueryClientProvider,
   AppProvider
 );

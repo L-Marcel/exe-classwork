@@ -1,3 +1,4 @@
+import { Layout } from "../../../components/Layout";
 import { NothingHere } from "../../../components/NothingHere";
 import { WithUserProps } from "../../../utils/routes/WithUserProps";
 
@@ -7,7 +8,9 @@ function HomePage({
   user
 }: HomePageProps) {
   return (
-    <NothingHere/>
+    <Layout>
+      <NothingHere/>
+    </Layout>
   );
 };
 

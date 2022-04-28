@@ -1,6 +1,7 @@
 import { Text } from "@chakra-ui/react";
 import { ClassroomBanner } from "../../../../components/Classroom/ClassroomBanner";
 import { ClassroomMembersSection } from "../../../../components/Classroom/ClassroomMemberSection";
+import { Layout } from "../../../../components/Layout";
 import { ClassroomSections } from "../../../../components/List/Classroom/ClassroomSections";
 import { Section } from "../../../../components/Section";
 import { WithClassroomProps } from "../../../../utils/routes/WithClassroomProps";
@@ -12,7 +13,7 @@ function ClassroomPage({
   classroom
 }: ClassroomPageProps) {
   return (
-    <>
+    <Layout>
       <ClassroomBanner
         {...classroom}
       />
@@ -29,7 +30,7 @@ function ClassroomPage({
       <Section forceWidth>
         <Text textAlign="center">This page will still undergo many changes.</Text>
       </Section>
-    </>
+    </Layout>
   );
 };
 
