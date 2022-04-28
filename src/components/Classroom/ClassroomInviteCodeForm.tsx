@@ -9,9 +9,9 @@ import { Input } from "../Inputs";
 import { NamedIcon } from "../NamedIcon";
 import { Title } from "../Title";
 
-interface InviteCodeFormProps {};
+interface ClassroomInviteCodeFormProps {};
 
-function InviteCodeForm({}: InviteCodeFormProps) {
+function ClassroomInviteCodeForm({}: ClassroomInviteCodeFormProps) {
   const router = useRouter();
   const [code, setCode] = useState("");
   
@@ -27,7 +27,6 @@ function InviteCodeForm({}: InviteCodeFormProps) {
   function handleSubmit() {
     if(code) {
       Api.get(`/classrooms/${code}`).then(res => {
-        console.log(res.data);
         router.push(`/app/${user.githubId}/classrooms`);
       }).catch(err => {
         addInputErrors({
@@ -42,7 +41,6 @@ function InviteCodeForm({}: InviteCodeFormProps) {
   return (
     <Stack
       spacing={5}
-      alignItems={["center", "center", "flex-start"]}
     >
       <Title
         bgGradient="linear(to-r, primary.200, primary.600)"
@@ -78,5 +76,5 @@ function InviteCodeForm({}: InviteCodeFormProps) {
   );
 };
 
-export { InviteCodeForm };
+export { ClassroomInviteCodeForm };
 

@@ -1,5 +1,5 @@
-import { CreateClassroomForm } from "../../../components/Classroom/CreateClassroomForm";
-import { InviteCodeForm } from "../../../components/Classroom/InviteCodeForm";
+import { ClassroomCreateForm } from "../../../components/Classroom/ClassroomCreateForm";
+import { ClassroomInviteCodeForm } from "../../../components/Classroom/ClassroomInviteCodeForm";
 import { Section } from "../../../components/Section";
 import { WithUserProps } from "../../../utils/routes/WithUserProps";
 
@@ -8,11 +8,13 @@ interface ClassroomFormPageProps extends WithUserProps {};
 function ClassroomFormPage({}: ClassroomFormPageProps) {
   return (
     <>
-      <Section>
-        <InviteCodeForm/>
+      <Section
+        isNeabyOfNavigation
+      >
+        <ClassroomInviteCodeForm/>
       </Section>
       <Section>
-        <CreateClassroomForm/>
+        <ClassroomCreateForm/>
       </Section>
     </>
   );

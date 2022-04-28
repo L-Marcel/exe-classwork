@@ -5,6 +5,7 @@ declare type _Classroom = import("@prisma/client").Classroom;
 declare type _ClassroomRelation = import("@prisma/client").ClassroomRelation;
 
 declare interface ClassroomRelation extends _ClassroomRelation {
+  role: ClassroomRoles;
   user: User;
 };
 

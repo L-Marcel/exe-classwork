@@ -7,9 +7,6 @@ import { NotFoundMessage } from "../NotFoundMessage";
 import { SearchingMessage } from "../SearchingMessage";
 import { ClassroomItem } from "./ClassroomItem";
 
-/*        [`&:nth-of-type(${sequence}n+${persist})`]: {
-          bgColor: "solid.25"
-        }*/
 function ClassroomsList() {
   const { search } = useSearch();
   const { page } = usePage();

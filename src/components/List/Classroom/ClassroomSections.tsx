@@ -1,16 +1,12 @@
-import { Text } from "@chakra-ui/react";
-import { Section } from "../../Section";
-import { Title } from "../../Title";
 import { DynamicGridList } from "../DynamicGridList";
 
 interface ClassroomSectionsProps {
-  classroom: Classroom;
+  sections?: JSX.Element[];
 };
 
 function ClassroomSections({
-  classroom
+  sections
 }: ClassroomSectionsProps) {
-
   return (
     <DynamicGridList
       w="100%"
@@ -39,20 +35,7 @@ function ClassroomSections({
          pr: [10, 14, 28, 8]
        }
       }}
-      items={[
-        <Section>
-          <Title>
-            {classroom.title}
-          </Title>
-          <Text>
-            Created by: {classroom.users[0].user.username}
-          </Text>
-        </Section>,
-        <></>,
-        <Section forceWidth>
-          <Text textAlign="center">This page will still undergo many changes.</Text>
-        </Section>
-      ]}
+      items={sections}
     />
   );
 };

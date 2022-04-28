@@ -8,20 +8,32 @@ interface NavigationItemProps extends ButtonProps {
   name: string;
   isSelected: boolean;
   forceExpanded?: boolean;
+  expandedAnimation: string;
+  isWideOrNormalVersion?: boolean;
 };
 
-function NavigationItem({ path, isSelected, forceExpanded = false, name, ...rest }: NavigationItemProps) {
+function NavigationItem({ 
+  path, 
+  isSelected, 
+  forceExpanded = false, 
+  name,
+  expandedAnimation,
+  isWideOrNormalVersion = true,
+  ...rest 
+}: NavigationItemProps) {
   return (
     <Box
       as={m.div}
       display="flex"
       alignItems="center"
       position="relative"
-      initial="hidden"
+      initial={isWideOrNormalVersion? 
+        "hidden":"smHidden"
+      }
       w="100%"
-      animate={forceExpanded? "expanded":undefined}
-      whileHover="expanded"
-      whileFocus="expanded"
+      animate={forceExpanded? expandedAnimation:undefined}
+      whileHover={expandedAnimation}
+      whileFocus={expandedAnimation}
     >
       <Link
         data-testid="navigation-item"
@@ -41,18 +53,31 @@ function NavigationItem({ path, isSelected, forceExpanded = false, name, ...rest
         as={m.p}
         position="absolute"
         bgColor="solid.300"
-        left={10}
+        left={isWideOrNormalVersion? 10:null}
+        right={isWideOrNormalVersion? null:10}
         px={2}
-        borderRightRadius={8}
+        borderRightRadius={isWideOrNormalVersion? 8:0}
+        borderLeftRadius={isWideOrNormalVersion? 0:8}
         pointerEvents="none"
         variants={{
           hidden: {
             opacity: 0,
             x: -3
-          }, 
+          },
           expanded: {
             opacity: 1,
             x: -1,
+            transition: {
+              duration: .3
+            }
+          },
+          smHidden: {
+            opacity: 0,
+            x: 10
+          },
+          smExpanded: {
+            opacity: 1,
+            x: 8,
             transition: {
               duration: .3
             }

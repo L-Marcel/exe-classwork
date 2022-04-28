@@ -10,7 +10,9 @@ interface ClassroomsPageProps extends WithUserProps {};
 
 function ClassroomsPage({ user }: ClassroomsPageProps) {
   return (
-    <Section>
+    <Section
+      isNeabyOfNavigation
+    >
       <Title>
         Classrooms
       </Title>

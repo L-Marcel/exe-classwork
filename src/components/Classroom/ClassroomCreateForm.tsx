@@ -14,7 +14,7 @@ import { Input } from "../Inputs";
 import { Textarea } from "../Inputs/Textarea";
 import { Title } from "../Title";
 
-function CreateClassroomForm() {
+function ClassroomCreateForm() {
   const router = useRouter();
   const { user } = useUser();
 
@@ -58,7 +58,6 @@ function CreateClassroomForm() {
     <Stack
       as="form"
       spacing={5}
-      alignItems={["center", "center", "flex-start"]}
       onSubmit={handleSubmit(onSubmit)}
     >
       <Title>
@@ -100,5 +99,5 @@ function CreateClassroomForm() {
   );
 };
 
-export { CreateClassroomForm };
+export { ClassroomCreateForm };
 
