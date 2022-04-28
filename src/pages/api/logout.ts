@@ -7,7 +7,6 @@ async function logout(req: Req, res: Res) {
     Cookies.delete("token", { req, res });
     Cookies.delete("refresh_token", { req, res });
 
-
     return res.status(300).redirect(`/`);
   } catch (err) {
     return res.status(400).redirect("/");
