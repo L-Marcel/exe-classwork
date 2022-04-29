@@ -7,6 +7,7 @@ declare type _ClassroomRelation = import("@prisma/client").ClassroomRelation;
 declare interface ClassroomRelation extends _ClassroomRelation {
   role: ClassroomRoles;
   user: User;
+  classroom: Partial<Classroom>;
 };
 
 declare interface Classroom extends _Classroom {
@@ -82,16 +83,19 @@ declare interface AppContext {
   classroom: Classroom | null;
   setClassroom: (classroom: Classroom) => void;
   signOut: () => void;
-  search: string;
-  setSearch: (search: string) => void;
-  page: number;
-  setPage: (page: number) => void;
   inputErrors: InputErrors;
   addInputErrors: (errors: InputErrors) => void;
   removeInputError: (name: string) => void;
   resetInputErrors: () => void;
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
+};
+
+declare interface SearchContext {
+  search: string;
+  setSearch: (search: string) => void;
+  page: number;
+  setPage: (page: number) => void;
 };
 
 //Fake enums to sqlite dabase

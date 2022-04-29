@@ -2,6 +2,7 @@ import { Box, BoxProps, Stack, useBreakpointValue } from "@chakra-ui/react";
 import { m } from "framer-motion";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useClassroom } from "../../contexts/hooks/useClassroom";
 import { useUser } from "../../contexts/hooks/useUser";
 import { IconButton } from "../Buttons/IconButton";
 import { SignOutButton } from "../Buttons/SignOutButton";
@@ -15,6 +16,7 @@ interface NavigationProps extends BoxProps {};
 
 function Navigation({ ...rest }: NavigationProps) {
   const { user } = useUser();
+  const { classroom } = useClassroom();
   const { asPath } = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const isWideOrNormalVersion = useBreakpointValue({
@@ -46,7 +48,9 @@ function Navigation({ ...rest }: NavigationProps) {
     {
       path: `/app/${user.githubId}/classrooms`,
       accept: [
-        `/app/${user.githubId}/classroom`
+        `/app/${user.githubId}/classroom`,
+        `/app/${user.githubId}/classrooms/${classroom?.id}`,
+        `/app/${user.githubId}/classrooms/${classroom?.id}/qrcode`
       ],
       name: "Classrooms"
     },

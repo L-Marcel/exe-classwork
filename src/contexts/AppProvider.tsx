@@ -11,12 +11,11 @@ export const appContext = createContext({} as AppContext);
 
 function AppProvider({ children }: AppProviderProps) {
   const router = useRouter();
+  
   const [inputErrors, setInputErrors] = useState<InputErrors>({});
   const [user, setUser] = useState<User | null>(null);
   const [classroom, setClassroom] = useState<Classroom | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(0);
 
   const _setClassroom = useCallback((classroom: Classroom) => {
     setClassroom(classroom);
@@ -36,14 +35,6 @@ function AppProvider({ children }: AppProviderProps) {
       setIsLoading(false);
     });
   }, [setIsLoading, setUser, setClassroom, router]);
-
-  const _setSearch = useCallback((search: string) => {
-    setSearch(search);
-  }, [setSearch]);
-
-  const _setPage = useCallback((page: number) => {
-    setPage(page);
-  }, [setPage]);
 
   const _addInputErrors = useCallback((errors: InputErrors) => {
     setInputErrors(e => {
@@ -81,13 +72,14 @@ function AppProvider({ children }: AppProviderProps) {
   }, [setIsLoading]);
 
   useEffect(() => {
-    setSearch("");
-    setPage(0);
     _resetInputErrors();
+    navigator.mediaDevices.getUserMedia({ video: true }).then((video) => {
+      video?.getTracks().forEach(function(track) {
+        track.stop();
+      });
+    }).catch(() => {});
   }, [
-    router, 
-    setSearch, 
-    setPage, 
+    router,
     _resetInputErrors
   ]);
 
@@ -99,10 +91,6 @@ function AppProvider({ children }: AppProviderProps) {
         classroom,
         setClassroom: _setClassroom,
         signOut: _signOut,
-        search,
-        setSearch: _setSearch,
-        page,
-        setPage: _setPage,
         inputErrors,
         addInputErrors: _addInputErrors,
         removeInputError: _removeInputError,

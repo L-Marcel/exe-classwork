@@ -34,7 +34,7 @@ function Textarea({
         maxW="80vw"
         bgColor="solid.100"
         border="none"
-        borderLeft={`2px solid var(--chakra-colors-${error? "red-400":"primary-500"})!important`}
+        borderLeft={`2px solid var(--chakra-colors-${error? "red-400":"primary-700"})!important`}
         borderRadius={8}
         overflowY="scroll"
         _placeholder={{

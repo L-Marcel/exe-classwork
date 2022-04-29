@@ -60,7 +60,7 @@ const scaleOnInteract = {
 };
 
 
-export { 
+export {
   fadeToTop,
   fadeLayout,
   fadeToTopOnScroll,

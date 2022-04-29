@@ -2,6 +2,7 @@ import { Prisma as P, User } from "@prisma/client";
 import { v4 as uuid } from "uuid";
 import { NotFoundError } from "../errors/api/NotFoundError";
 import { Prisma } from "../services/prisma";
+import { getApiQuery } from "../utils/getApiQuery";
 import { Alerts } from "./Alerts";
 import { ClassroomRelations } from "./ClassroomRelations";
 
@@ -133,14 +134,10 @@ export class Classrooms {
           {
             OR: [
               {
-                title: {
-                  contains: query
-                }
+                title: getApiQuery(query)
               },
               {
-                subject: {
-                  contains: query
-                }
+                subject: getApiQuery(query)
               }
             ]
           },

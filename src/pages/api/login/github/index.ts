@@ -1,13 +1,16 @@
-import { Users } from "../../../controllers/Users";
-import { AuthUserNotFoundError } from "../../../errors/api/AuthUserNotFoundError";
-import { Cookies } from "../../../services/cookies";
-import { Github } from "../../../services/github";
-import { apiHandle } from "../../../utils/api/apiHandle";
+import { Users } from "../../../../controllers/Users";
+import { AuthUserNotFoundError } from "../../../../errors/api/AuthUserNotFoundError";
+import { Api } from "../../../../services/api";
+import { Cookies } from "../../../../services/cookies";
+import { Github } from "../../../../services/github";
+import { apiHandle } from "../../../../utils/api/apiHandle";
 
-async function github(req: Req, res: Res) {
-  const { code, installation_id: installationId } = req.query;
-
+export async function github(req: Req, res: Res) {
   try {
+    const { code, installation_id: installationId } = req.query;
+
+    const qrcode = Cookies.get("qrcode", { req, res });
+
     const { data } = await Github.getAccessToken(code?.toString());
 
     let githubUser: GithubUser;
@@ -48,7 +51,18 @@ async function github(req: Req, res: Res) {
     };
 
     Cookies.set("token", data.access_token, { req, res });
-    Cookies.set("refresh_token", data.refresh_token, { req, res });
+    Cookies.set("refresh_token", data.refresh_token, { req, res })
+    
+    if(qrcode) {
+      const relation = await Api.get<ClassroomRelation>(`/classrooms/${qrcode}?token=${data.access_token}`)
+      .then(res => res.data).catch(() => false as any);
+      
+      if(!relation) {
+        return res.status(300).redirect(`/app/${user.githubId}`);
+      };
+
+      return res.status(300).redirect(`/app/${user.githubId}/classrooms/${relation.classroomId}`);
+    };
 
     return res.status(300).redirect(`/app/${user.githubId}`);
   } catch(err) {

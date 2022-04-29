@@ -12,8 +12,7 @@ function NotFoundMessage({
     <HStack
       mt={3}
       spacing={2}
-      alignSelf={["center", "center", "flex-start"]}
-      color="primary.400"
+      color="primary.700"
     >
       <NamedIcon name="info"/>
       <Text>No {instance} found.</Text>

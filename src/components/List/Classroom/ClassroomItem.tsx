@@ -24,7 +24,7 @@ function ClassroomItem({ title, description, subject, id, alerts = [] }: Classro
       minW={["85%", "80%", "80%", "40%", "20%", "20.1%"]}
       borderRadius={15}
       borderLeft="2px solid"
-      borderColor="primary.500"
+      borderColor="primary.700"
       p={[4, 6]}
       onClick={() => router.push(`/app/${router.query?.githubId}/classrooms/${id}`)}
       cursor="pointer"
@@ -37,7 +37,7 @@ function ClassroomItem({ title, description, subject, id, alerts = [] }: Classro
       >
         <Heading
           fontSize="1.4rem"
-          color="primary.500"
+          color="primary.700"
           maxW={["65vw", "70vw", "80vw", 350, 220, 300]}
           pr={[0, 12]}
           mt={-1}
@@ -70,7 +70,7 @@ function ClassroomItem({ title, description, subject, id, alerts = [] }: Classro
               position="absolute"
               top="-5px"
               right="-10px"
-              bgColor="primary.500"
+              bgColor="primary.700"
               minW="18px"
               minH="18px"
               maxW="18px"

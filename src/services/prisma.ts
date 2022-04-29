@@ -1,13 +1,20 @@
 import { PrismaClient } from "@prisma/client";
 import { serialize } from "../utils/serialize";
 
-const client = new PrismaClient();
+declare global {
+  var prisma: PrismaClient | undefined;
+};
+
+const client = global.prisma || new PrismaClient();
 
 client.$use(async(params, next) => {
   let result = await next(params);
   return serialize(result);
 })
 
+if(process.env.NODE_ENV !== "production") {
+  global.prisma = client;
+};
 export class Prisma {
   private static client = client;
 

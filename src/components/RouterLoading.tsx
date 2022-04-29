@@ -34,6 +34,7 @@ function RouterLoading() {
       isIndeterminate
       w="100%"
       h={2}
+      zIndex={1000}
     />
   );
 };

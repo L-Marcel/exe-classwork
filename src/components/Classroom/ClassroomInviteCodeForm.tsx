@@ -42,21 +42,18 @@ function ClassroomInviteCodeForm({}: ClassroomInviteCodeFormProps) {
     <Stack
       spacing={5}
     >
-      <Title
-        bgGradient="linear(to-r, primary.200, primary.600)"
-        bgClip="text"
-      >
+      <Title>
         Use invite code
       </Title>
       <HStack 
-        spacing={5}
+        spacing={[2, 3, 4]}
         alignItems="flex-start"
       >
         <Input
           placeholder="Insert invite code..."
           name="inviteCode"
           iconName="qrcode"
-          w={[250, 300]}
+          w={[200, 220, 300]}
           onChange={(e) => {
             removeInputError("inviteCode");
             setCode(e.target.value);

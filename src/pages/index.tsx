@@ -1,12 +1,14 @@
 import { Box, HStack, Stack, Text } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { Button } from "../components/Buttons/Button";
-import { Layout } from "../components/Layout";
 import { Link } from "../components/Link";
 import { Logo } from "../components/Logo";
 
 function LoginPage() {
+  const router = useRouter();
+
   return (
-    <Layout>
+    <>
       <Stack
         display="flex"
         spacing={4}
@@ -25,7 +27,7 @@ function LoginPage() {
           A simple Github repository monitoring system with tools to improve school environment. You can create a classroom, add developers or students, make a team, and monitoring they repositories. Problems with analyzing the productivity of the projects? Try it!
         </Text>
         <HStack>
-          <Link href="/api/login">
+          <Link href={`/api/login?qrcode=${router.query?.qrcode}`}>
             <Button
               theme="primary"
             >
@@ -58,7 +60,7 @@ function LoginPage() {
       >
         @l-marcel
       </Link>
-    </Layout>
+    </>
   );
 };
 

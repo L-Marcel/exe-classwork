@@ -4,7 +4,7 @@ import { ChangeEvent, useState } from "react";
 import { useInputErrors } from "../../contexts/hooks/useInputErrors";
 import { NamedIcon } from "../NamedIcon";
 
-interface InputProps extends InputGroupProps {
+export interface InputProps extends InputGroupProps {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   iconName: string;
   placeholder?: string;
@@ -20,6 +20,7 @@ function Input({
   name,
   iconName,
   register,
+  bgColor,
   as,
   ...rest 
 }: InputProps) {
@@ -43,7 +44,6 @@ function Input({
       <InputGroup
         w={[300, 350, 500]}
         maxW="80vw"
-        alignSelf={["center", "center", "flex-start"]}
         onFocus={() => {
           setIsFocused(true);
         }}
@@ -60,14 +60,14 @@ function Input({
           w={!isWideOrNormalVersion? 8:10}
           children={<NamedIcon name={iconName}/>}
           bgColor={isFocused && "alpha.50"}
-          color={isFocused && (error? "red.400":"primary.500")}
+          color={isFocused && (error? "red.400":"primary.700")}
         />
         <ChakraInput
           as={as ?? m.input}
           size={isWideOrNormalVersion? "md":"sm"}
-          bgColor="solid.100"
+          bgColor={bgColor ?? "solid.100"}
           border="none"
-          borderLeft={`2px solid var(--chakra-colors-${error? "red-400":"primary-500"})!important`}
+          borderLeft={`2px solid var(--chakra-colors-${error? "red-400":"primary-700"})!important`}
           borderRadius={8}
           _placeholder={{
             color: "alt.400"

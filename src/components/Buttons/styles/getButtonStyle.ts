@@ -1,5 +1,4 @@
-import { m} from "framer-motion";
-import { scaleOnInteract } from "../../../theme/animations/motion";
+import { m } from "framer-motion";
 
 interface ButtonStyle {
   color?: string | any;
@@ -11,7 +10,7 @@ interface ButtonStyle {
 function getButtonStyle({
   theme = "solid", 
   color = "black.50", 
-  colorIndexes = ["500", "600", "600"],
+  colorIndexes = ["700", "700", "800"],
   forceHoverEffect = false
 }: ButtonStyle) {
   if(theme === "solid") {
@@ -25,7 +24,6 @@ function getButtonStyle({
   
   return {
     as: m.button,
-    ...scaleOnInteract,
     bgColor: `${theme}.${colorIndexes[0]}`,
     color,
     _hover: {
@@ -38,3 +36,4 @@ function getButtonStyle({
 };
 
 export { getButtonStyle };
+

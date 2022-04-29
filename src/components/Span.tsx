@@ -5,7 +5,7 @@ function Span({ ...rest }: TextProps) {
     <Text
       data-testid="span"
       as="span"
-      color="primary.400"
+      color="primary.700"
       {...rest}
     />
   );

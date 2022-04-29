@@ -9,7 +9,8 @@ export class Api {
   static put = this.axios.put;
   static delete = this.axios.delete;
 
-  static setAuth(token: string) {
+  /*static setAuth(token: string) {
+    console.log(token);
     this.axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  };
+  };*/
 };

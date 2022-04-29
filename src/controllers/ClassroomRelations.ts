@@ -1,10 +1,62 @@
 import { Prisma as P, User } from "@prisma/client";
 import { AlreadyLinkedError } from "../errors/api/AlreadyLinkedError";
+import { NotFoundError } from "../errors/api/NotFoundError";
 import { UnauthorizedError } from "../errors/api/UnauthorizedError";
 import { Prisma } from "../services/prisma";
+import { getApiQuery } from "../utils/getApiQuery";
 import { Alerts } from "./Alerts";
 
 export class ClassroomRelations {
+  static async getByClassroom(classroomId: string, {
+    query = "",
+    page = 0
+  }) {
+    const relation = await Prisma.classroomRelation.findMany({
+      take: 12,
+      skip: 12 * page,
+      select: {
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+        updatedBy: true,
+        user: true
+      },
+      where: {
+        AND: [
+          {
+            OR: [
+              {
+                role: getApiQuery(query)
+              },
+              {
+                user: {
+                  name: getApiQuery(query)
+                }
+              },
+              {
+                user: {
+                  username: getApiQuery(query)
+                }
+              },
+              {
+                user: {
+                  email: getApiQuery(query)
+                }
+              }
+            ]
+          },
+          { classroomId }
+        ]
+      },
+    });
+
+    if(!relation) {
+      throw new NotFoundError("Members");
+    };
+
+    return relation;
+  };
+
   static async isAlreadyLinked(user: User, classroomId: string) {
     const currentRelation = await Prisma.classroomRelation.findFirst({
       where: {

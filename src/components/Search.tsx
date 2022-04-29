@@ -1,17 +1,22 @@
 import { useSearch } from "../contexts/hooks/useSearch";
-import { Input } from "./Inputs";
+import { Input, InputProps } from "./Inputs";
 
-function Search() {
-  const { setSaerch } = useSearch();
+interface SearchProps extends Omit<InputProps, "iconName"> {
+  placeholder: string;
+};
+
+function Search({ placeholder, ...rest }: SearchProps) {
+  const { setSearch } = useSearch();
 
   return (
     <Input
-      placeholder="Search by title or subject..."
+      placeholder={placeholder}
       iconName="search"
       w={[250, 300]}
       onChange={(e) => {
-        setSaerch(e.target.value);
+        setSearch(e.target.value);
       }}
+      {...rest}
     />
   );
 };

@@ -1,13 +1,14 @@
 import { useContextSelector } from "use-context-selector";
-import { appContext } from "../AppProvider";
+import { searchContext } from "../SearchProvider";
 
 function useSearch() {
-  return useContextSelector(appContext, c => {
+  return useContextSelector(searchContext, c => {
     return {
       search: c.search,
-      setSaerch: c.setSearch
+      setSearch: c.setSearch
     };
   });
 };
 
 export { useSearch };
+

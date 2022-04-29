@@ -3,7 +3,11 @@ import { getMiddlewareRedirect } from "../../../utils/middlewares/getMiddlewareR
 
 export default async function middleware(req: NextRequest) {
   const token = req.cookies["token"];
-  const { githubId } = req.page.params;
+  const { githubId } = req?.page?.params;
+
+  if(!req?.page) {
+    return getMiddlewareRedirect(req, "/404");
+  };
   
   const user = await fetch(`${process.env.NEXT_PUBLIC_URL}/user/${githubId}?token=${token}`, {
     method: "GET"

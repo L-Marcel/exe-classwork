@@ -1,8 +1,8 @@
 import { useContextSelector } from "use-context-selector";
-import { appContext } from "../AppProvider";
+import { searchContext } from "../SearchProvider";
 
 function usePage() {
-  return useContextSelector(appContext, c => {
+  return useContextSelector(searchContext, c => {
     return {
       page: c.page,
       setPage: c.setPage
