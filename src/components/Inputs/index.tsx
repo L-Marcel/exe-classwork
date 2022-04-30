@@ -11,6 +11,7 @@ export interface InputProps extends InputGroupProps {
   value?: string;
   name?: string;
   register?: any;
+  disableAnimation?: boolean;
 };
 
 function Input({ 
@@ -22,6 +23,7 @@ function Input({
   register,
   bgColor,
   as,
+  disableAnimation = false,
   ...rest 
 }: InputProps) {
   const { inputErrors } = useInputErrors();
@@ -59,7 +61,7 @@ function Input({
           h={!isWideOrNormalVersion? 8:10}
           w={!isWideOrNormalVersion? 8:10}
           children={<NamedIcon name={iconName}/>}
-          bgColor={isFocused && "alpha.50"}
+          bgColor={(!disableAnimation && isFocused) && "alpha.50"}
           color={isFocused && (error? "red.400":"primary.700")}
         />
         <ChakraInput
@@ -67,6 +69,7 @@ function Input({
           size={isWideOrNormalVersion? "md":"sm"}
           bgColor={bgColor ?? "solid.100"}
           border="none"
+          minW="80px"
           borderLeft={`2px solid var(--chakra-colors-${error? "red-400":"primary-700"})!important`}
           borderRadius={8}
           _placeholder={{
@@ -74,8 +77,14 @@ function Input({
           }}
           w="100%"
           placeholder={placeholder}
-          initial={!isWideOrNormalVersion? "smInitial":"initial"}
-          animate={!isWideOrNormalVersion? (isFocused? "smFocused":"smInitial"):(isFocused? "focused":"initial")}
+          initial={
+            !isWideOrNormalVersion? "smInitial":"initial"
+          }
+          animate={
+            !isWideOrNormalVersion? 
+              !disableAnimation && (isFocused? "smFocused":"smInitial"):
+              !disableAnimation && (isFocused? "focused":"initial")
+          }
           variants={{
             initial: {
               paddingLeft: 35

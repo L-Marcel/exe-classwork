@@ -8,6 +8,7 @@ interface SearchProviderProps {
 export const searchContext = createContext({} as SearchContext);
 
 function SearchProvider({ children }: SearchProviderProps) {
+  const [count, setCount] = useState(0);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
   let timer;
@@ -23,13 +24,19 @@ function SearchProvider({ children }: SearchProviderProps) {
     setPage(page);
   }, [setPage]);
 
+  const _setCount = useCallback((page: number) => {
+    setCount(page);
+  }, [setCount]);
+
   return (
     <searchContext.Provider
       value={{
         search,
         setSearch: _setSearch,
         page,
-        setPage: _setPage
+        setPage: _setPage,
+        count,
+        setCount: _setCount
       }}
     >
       {children}

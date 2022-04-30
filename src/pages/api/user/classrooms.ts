@@ -11,7 +11,14 @@ async function getClassroom(req: Req, res: Res) {
     query: query?.toString()
   });
 
-  return res.status(200).json(classrooms);
+  const { _count } = await Classrooms.countByUser(user.id, { 
+    query: query?.toString()
+  });
+
+  return res.status(200).json({ 
+    items: classrooms,
+    count: _count._all
+  });
 };
 
 export default apiHandle({

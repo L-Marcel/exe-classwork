@@ -1,10 +1,10 @@
 import { Icon as ChakraIcon, IconProps as ChakraIconProps } from "@chakra-ui/react";
-import { AiFillCaretDown, AiFillCaretUp, AiFillHtml5, AiOutlineCalendar, AiOutlineCheck, AiOutlineClose, AiOutlineInfoCircle, AiOutlineMenu, AiOutlinePlus, AiOutlinePoweroff, AiOutlineRight } from "react-icons/ai";
+import { AiFillCaretDown, AiFillCaretUp, AiFillHtml5, AiOutlineCalendar, AiOutlineCheck, AiOutlineClose, AiOutlineInfoCircle, AiOutlineMenu, AiOutlineNumber, AiOutlinePlus, AiOutlinePoweroff, AiOutlineRight } from "react-icons/ai";
 import { BiCubeAlt, BiSearchAlt } from "react-icons/bi";
 import { BsDownload, BsFillJournalBookmarkFill, BsFillMoonStarsFill, BsQuestionCircle } from "react-icons/bs";
 import { CgTikcode } from "react-icons/cg";
 import { DiCss3, DiSass } from "react-icons/di";
-import { FaBalanceScale, FaBell, FaChalkboardTeacher, FaDocker, FaGitAlt, FaGithubAlt, FaHome, FaJava, FaPencilAlt, FaPython, FaReact, FaSun, FaUser } from "react-icons/fa";
+import { FaAngleDoubleLeft, FaAngleDoubleRight, FaAngleLeft, FaAngleRight, FaBalanceScale, FaBell, FaChalkboardTeacher, FaDocker, FaGitAlt, FaGithubAlt, FaHome, FaJava, FaPencilAlt, FaPython, FaReact, FaSun, FaUser } from "react-icons/fa";
 import { FiCopy, FiFigma, FiFramer, FiPaperclip } from "react-icons/fi";
 import { GrGraphQl, GrNode } from "react-icons/gr";
 import { IoIosRocket, IoLogoJavascript, IoMdOpen, IoMdSchool } from "react-icons/io";
@@ -78,7 +78,12 @@ export const icons = {
   "qrcode": CgTikcode,
   "pencil": FaPencilAlt,
   "subject": BsFillJournalBookmarkFill,
-  "exit": AiOutlinePoweroff
+  "exit": AiOutlinePoweroff,
+  "double-prev": FaAngleDoubleLeft,
+  "prev": FaAngleLeft,
+  "double-next": FaAngleDoubleRight,
+  "next": FaAngleRight,
+  "number": AiOutlineNumber
 };
 
 function NamedIcon({ name = "default", ...rest }: IconProps) {

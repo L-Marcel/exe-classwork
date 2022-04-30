@@ -73,11 +73,6 @@ function AppProvider({ children }: AppProviderProps) {
 
   useEffect(() => {
     _resetInputErrors();
-    navigator.mediaDevices.getUserMedia({ video: true }).then((video) => {
-      video?.getTracks().forEach(function(track) {
-        track.stop();
-      });
-    }).catch(() => {});
   }, [
     router,
     _resetInputErrors

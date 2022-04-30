@@ -12,12 +12,19 @@ async function getClassroomMembers(req: Req, res: Res) {
     user.id
   );
 
-  const classroom = await ClassroomRelations.getByClassroom(id?.toString(), { 
+  const members = await ClassroomRelations.getByClassroom(id?.toString(), { 
     page: Number(page),
     query: query?.toString()
   });
 
-  return res.status(200).json(classroom);
+  const { _count } = await ClassroomRelations.countByClassroom(id?.toString(), { 
+    query: query?.toString()
+  });
+
+  return res.status(200).json({
+    items: members,
+    count: _count._all
+  });
 };
 
 export default apiHandle({

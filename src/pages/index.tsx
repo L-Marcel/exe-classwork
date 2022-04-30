@@ -27,7 +27,7 @@ function LoginPage() {
           A simple Github repository monitoring system with tools to improve school environment. You can create a classroom, add developers or students, make a team, and monitoring they repositories. Problems with analyzing the productivity of the projects? Try it!
         </Text>
         <HStack>
-          <Link href={`/api/login?qrcode=${router.query?.qrcode}`}>
+          <Link href={`/api/login${router.query?.qrcode && `?qrcode=${router.query?.qrcode}`}`}>
             <Button
               theme="primary"
             >

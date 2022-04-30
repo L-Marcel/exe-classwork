@@ -214,4 +214,35 @@ export class Classrooms {
       }
     });
   };
+
+  static async countByUser(userId: string, {
+    query = ""
+  }) {
+    return await Prisma.classroom.aggregate({
+      _count: {
+        _all: true
+      },
+      where: {
+        AND: [
+          {
+            OR: [
+              {
+                title: getApiQuery(query)
+              },
+              {
+                subject: getApiQuery(query)
+              }
+            ]
+          },
+          {
+            users: {
+              some: {
+                userId
+              }
+            }
+          }
+        ]
+      },
+    });
+  };
 };

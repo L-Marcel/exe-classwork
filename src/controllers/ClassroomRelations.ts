@@ -57,6 +57,43 @@ export class ClassroomRelations {
     return relation;
   };
 
+  static async countByClassroom(classroomId: string, {
+    query = ""
+  }) {
+    return await Prisma.classroomRelation.aggregate({
+      _count: {
+        _all: true
+      },
+      where: {
+        AND: [
+          {
+            OR: [
+              {
+                role: getApiQuery(query)
+              },
+              {
+                user: {
+                  name: getApiQuery(query)
+                }
+              },
+              {
+                user: {
+                  username: getApiQuery(query)
+                }
+              },
+              {
+                user: {
+                  email: getApiQuery(query)
+                }
+              }
+            ]
+          },
+          { classroomId }
+        ]
+      },
+    });
+  };
+
   static async isAlreadyLinked(user: User, classroomId: string) {
     const currentRelation = await Prisma.classroomRelation.findFirst({
       where: {

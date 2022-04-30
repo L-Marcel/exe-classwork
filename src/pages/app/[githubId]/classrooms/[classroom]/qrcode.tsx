@@ -1,5 +1,5 @@
 import { Box, ListItem, OrderedList, Text } from "@chakra-ui/react";
-import QRCode from "react-qr-code";
+import { QRCodeSVG as QRCode } from "qrcode.react";
 import { Link } from "../../../../../components/Link";
 import { Section } from "../../../../../components/Section";
 import { Title } from "../../../../../components/Title";
@@ -34,22 +34,29 @@ function ClassroomQrCodePage({ classroom, user }: ClassroomPageProps) {
       <Box
         mt={5}
         p={5}
-        bgColor="solid.100"
+        bgColor="white.100"
         borderRadius={8}
       >
         <QRCode
           value={`${process.env.NEXT_PUBLIC_URL}/login?qrcode=${classroom.inviteCode}`}
           bgColor="transparent"
-          fgColor="var(--chakra-colors-primary-800)"
+          fgColor="black"
+          size={256}
         />
       </Box>
       <OrderedList
         mt={4}
+        start={2}
       >
         <ListItem>
           Open QRCode URL in your browser.
         </ListItem>
       </OrderedList>
+      <Text
+        mt={4}
+      >
+        On some devices it may be necessary to copy the url and manually access the browser.
+      </Text>
     </Section>
   );
 }

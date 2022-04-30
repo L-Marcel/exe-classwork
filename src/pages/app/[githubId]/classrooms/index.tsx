@@ -1,6 +1,7 @@
-import { HStack } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 import { AddInstanceButton } from "../../../../components/Buttons/AddInstanceButton";
 import { ClassroomsList } from "../../../../components/List/Classroom/ClassroomsList";
+import { Pagination } from "../../../../components/Pagination";
 import { Search } from "../../../../components/Search";
 import { Section } from "../../../../components/Section";
 import { Title } from "../../../../components/Title";
@@ -18,15 +19,26 @@ function ClassroomsPage({ user }: ClassroomsPageProps) {
         Classrooms
       </Title>
       <SearchProvider>
-        <HStack 
-          spacing={5}
+        <Box
+          display="flex"
+          flexDir={["column", "column", "column", "row"]}
+          alignItems={["center", "flex-start"]}
+          flexWrap="wrap"
           mt={5}
+          justifyContent="space-between"
+          w="100%"
         >
-          <Search
-            placeholder="Search by title or subject..."
-          />
-          <AddInstanceButton href={`/app/${user.githubId}/classroom`}/>
-        </HStack>
+          <HStack 
+            spacing={5}
+            mb={5}
+          >
+            <Search
+              placeholder="Search by title or subject..."
+            />
+            <AddInstanceButton href={`/app/${user.githubId}/classroom`}/>
+          </HStack>
+          <Pagination/>
+        </Box>
         <ClassroomsList/>
       </SearchProvider>
     </Section>

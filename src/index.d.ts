@@ -96,6 +96,8 @@ declare interface SearchContext {
   setSearch: (search: string) => void;
   page: number;
   setPage: (page: number) => void;
+  count: number;
+  setCount: (count: number) => void;
 };
 
 //Fake enums to sqlite dabase
@@ -124,3 +126,8 @@ declare type MatrixOfElements = [
   JSX.Element[]?, 
   JSX.Element[]?
 ];
+
+declare type PaginatedData<T> = { 
+  items: T[], 
+  count: number 
+};

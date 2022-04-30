@@ -20,6 +20,23 @@ function CopyTag({ text, successMessage, time = 3000 }: CopyTagProps) {
   const [message, setMessage] = useState(null);
   let timer;
 
+  function copy() {
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        setMessage(successMessage ?? "Copied!");
+        clearTimeout(timer);
+        setTimeout(() => {
+          setMessage(null);
+        }, time);
+      }).catch(() => {
+        setMessage("Error on copy!");
+        clearTimeout(timer);
+        setTimeout(() => {
+          setMessage(null);
+        }, time);
+      });
+  };
+
   if(!text) {
     return null;
   };
@@ -30,13 +47,14 @@ function CopyTag({ text, successMessage, time = 3000 }: CopyTagProps) {
         <IconButton 
           aria-label="copy-button"
           icon={<NamedIcon name="copy"/>}
+          onClick={copy}
           theme="primary"
           h={8}
           w={8}
           minW="auto"
         />
         <Text>
-          -{'>'} Invite code
+          -{'>'} {message? message:"Invite code"}
         </Text>
       </>
     );
@@ -54,22 +72,7 @@ function CopyTag({ text, successMessage, time = 3000 }: CopyTagProps) {
         pr="44px"
         h={8}
         userSelect="text"
-        onClick={() => {
-          navigator.clipboard.writeText(text)
-          .then(() => {
-            setMessage(successMessage ?? "Copied!");
-            clearTimeout(timer);
-            setTimeout(() => {
-              setMessage(null);
-            }, time);
-          }).catch(() => {
-            setMessage("Error on copy!");
-            clearTimeout(timer);
-            setTimeout(() => {
-              setMessage(null);
-            }, time);
-          })
-        }}
+        onClick={copy}
         overflow="hidden"
         whiteSpace="nowrap"
         maxW={"auto"}

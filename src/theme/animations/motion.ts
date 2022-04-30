@@ -59,10 +59,27 @@ const scaleOnInteract = {
   }
 };
 
+const scaleIn = {
+  initial: "initial",
+  animate: "visible",
+  variants: {
+    initial: {
+      scale: 0
+    },
+    visible: {
+      scale: 1,
+      transition: {
+        duration: .1
+      }
+    }
+  }
+};
 
 export {
   fadeToTop,
   fadeLayout,
   fadeToTopOnScroll,
-  scaleOnInteract
+  scaleOnInteract,
+  scaleIn
 };
+
