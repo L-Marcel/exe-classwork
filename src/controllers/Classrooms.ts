@@ -1,4 +1,4 @@
-import { Prisma as P, User } from "@prisma/client";
+import { Prisma as P } from "@prisma/client";
 import { v4 as uuid } from "uuid";
 import { NotFoundError } from "../errors/api/NotFoundError";
 import { Prisma } from "../services/prisma";
@@ -26,7 +26,9 @@ export class Classrooms {
 
   static async create(user: User, data: P.ClassroomCreateInput) {
     const createdClassroom = await Prisma.classroom.create({
-      data
+      data: {
+        ...data
+      }
     });
 
     await ClassroomRelations.create("OWNER", user, {

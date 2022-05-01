@@ -9,10 +9,11 @@ import { Alerts } from "./Alerts";
 export class ClassroomRelations {
   static async getByClassroom(classroomId: string, {
     query = "",
-    page = 0
+    page = 0,
+    take = 12
   }) {
     const relation = await Prisma.classroomRelation.findMany({
-      take: 12,
+      take,
       skip: 12 * page,
       select: {
         role: true,

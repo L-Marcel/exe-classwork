@@ -1,6 +1,6 @@
-import { ClassroomRelations } from "../../../../../controllers/ClassroomRelations";
-import { apiHandle } from "../../../../../utils/api/apiHandle";
-import { withUser } from "../../../../../utils/api/middlewares/withUser";
+import { ClassroomRelations } from "../../../../../../controllers/ClassroomRelations";
+import { apiHandle } from "../../../../../../utils/api/apiHandle";
+import { withUser } from "../../../../../../utils/api/middlewares/withUser";
 
 
 async function getClassroomMembers(req: Req, res: Res) {

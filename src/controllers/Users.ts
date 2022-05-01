@@ -1,6 +1,8 @@
 import { Prisma as P } from "@prisma/client";
+import { AlreadyLinkedError } from "../errors/api/AlreadyLinkedError";
 import { AuthUserNotFoundError } from "../errors/api/AuthUserNotFoundError";
 import { NotFoundError } from "../errors/api/NotFoundError";
+import { NotLinkedWithError } from "../errors/api/NotLinkedWithError";
 import { Cookies } from "../services/cookies";
 import { Github } from "../services/github";
 import { Prisma } from "../services/prisma";
@@ -87,5 +89,35 @@ export class Users {
         installationId
       }
     });
+  };
+
+  static async checkIfCanLinkWithTeam(userId: string, classroomId: string) {
+    const isLinked = await Prisma.classroomRelation.findUnique({
+      where: {
+        classroomId_userId: {
+          classroomId,
+          userId,
+        }
+      },
+      select: {
+        user: {
+          select: {
+            teams: {
+              where: {
+                team: {
+                  classroomId
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+
+    if(!isLinked) {
+      throw new NotLinkedWithError("classroom");
+    } else if(isLinked.user.teams.length > 0) {
+      throw new AlreadyLinkedError("team");
+    };
   };
 };

@@ -3,6 +3,14 @@ declare type Res = import("next").NextApiResponse;
 declare type User = import("@prisma/client").User;
 declare type _Classroom = import("@prisma/client").Classroom;
 declare type _ClassroomRelation = import("@prisma/client").ClassroomRelation;
+declare type Team = import("@prisma/client").Team;
+declare type _TeamRelation = import("@prisma/client").TeamRelation;
+
+declare interface TeamRelation extends _TeamRelation {
+  role: TeamRoles;
+  user: User;
+  classroom: Partial<Classroom>;
+};
 
 declare interface ClassroomRelation extends _ClassroomRelation {
   role: ClassroomRoles;
@@ -130,4 +138,13 @@ declare type MatrixOfElements = [
 declare type PaginatedData<T> = { 
   items: T[], 
   count: number 
+};
+
+declare type GithubRepository = {
+  name: string;
+  full_name: string;
+  description: string;
+  git_url: string;
+  ssh_url: string;
+  homepage: string;
 };

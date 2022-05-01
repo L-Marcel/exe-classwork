@@ -1,5 +1,5 @@
-import { Users } from "../../controllers/Users";
-import { apiHandle } from "../../utils/api/apiHandle";
+import { Users } from "../../../controllers/Users";
+import { apiHandle } from "../../../utils/api/apiHandle";
 
 async function users(req: Req, res: Res) {
   const { secret } = req?.headers;

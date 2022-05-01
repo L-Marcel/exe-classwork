@@ -8,10 +8,14 @@ function validate(schema: Joi.ObjectSchema, callback: (req: Req, res: Res) => Pr
       abortEarly: false,
       cache: true,
       messages: {
+        "array.unique.items": "List does not contain unique values.",
+        "leader.required": "Must contain at least one leader",
         "any.invalid": "Invalid format.",
+        "any.only": "Invalid format.",
         "any.required": "Is required.",
         "object.unknown": "Is not allowed.",
         "boolean.base": "Must be a boolean.",
+        "array.min": "Length must be at least {#limit}.",
         "string.base": "Must be a string.",
         "string.max": "Length must be less than or equal to {#limit}.",
         "string.min": "Length must be at least {#limit}.",
@@ -32,3 +36,4 @@ function validate(schema: Joi.ObjectSchema, callback: (req: Req, res: Res) => Pr
 };
 
 export { validate };
+

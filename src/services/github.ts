@@ -1,16 +1,17 @@
-import jwt from "jsonwebtoken";
 import axios from "axios";
+import jwt from "jsonwebtoken";
 
+import { createHmac } from "crypto";
 import { buffer } from "micro";
 import { NextApiRequest } from "next";
-import { createHmac } from "crypto";
-import { haveNecessaryPermissions } from "../utils/api/webhooks/haveNecessariesPermissions";
-import { PermissionsNotMatchError } from "../errors/api/PermissionsNotMatchError";
-import { EventNotFoundError } from "../errors/api/EventNotFoundError";
-import { Api } from "./api";
-import { GithubUnauthorizedError } from "../errors/api/GithubUnauthorizedError";
-import { UnauthorizedError } from "../errors/api/UnauthorizedError";
+import { ClassroomRelations } from "../controllers/ClassroomRelations";
 import { Users } from "../controllers/Users";
+import { EventNotFoundError } from "../errors/api/EventNotFoundError";
+import { GithubUnauthorizedError } from "../errors/api/GithubUnauthorizedError";
+import { PermissionsNotMatchError } from "../errors/api/PermissionsNotMatchError";
+import { UnauthorizedError } from "../errors/api/UnauthorizedError";
+import { haveNecessaryPermissions } from "../utils/api/webhooks/haveNecessariesPermissions";
+import { Api } from "./api";
 
 export class Github {
   static privateKey = process.env.GITHUB_PRIVATE_KEY.replace(/\|/gm, '\n');
@@ -159,5 +160,30 @@ export class Github {
     };
 
     throw new EventNotFoundError();
+  };
+
+  static async getAllRepositoriesByClassroomMembers(classroomId: string) {
+    const membersLength = await ClassroomRelations.countByClassroom(classroomId, {});
+
+    const members = await ClassroomRelations.getByClassroom(classroomId, {
+      take: membersLength._count._all
+    });
+
+    return await Promise.all(members.map(async(m) => {
+      const repositories: GithubRepository[] = await this.api.get<GithubRepository[]>(`users/${m.user.username}/repos`)
+      .then(res => res.data).catch(() => []);
+      
+      return repositories.map(data => {
+        return {
+          owner: m.user,
+          name: data.name,
+          fullname: data.full_name,
+          description: data.description,
+          gitUrl: data.git_url,
+          sshUrl: data.ssh_url,
+          homepage: data.homepage
+        };
+      })
+    }));
   };
 };
