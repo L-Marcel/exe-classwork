@@ -148,3 +148,11 @@ declare type GithubRepository = {
   ssh_url: string;
   homepage: string;
 };
+
+declare interface SelectOption {
+  value: any;
+  label: string;
+  color: string;
+  isFixed?: boolean;
+  isDisabled?: boolean;
+};

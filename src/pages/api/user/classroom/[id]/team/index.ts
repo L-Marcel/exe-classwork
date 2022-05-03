@@ -14,7 +14,7 @@ async function createTeam(req: Req, res: Res) {
   await Promise.all(users.map(async(m: TeamRelation) => {
     await Users.checkIfCanLinkWithTeam(m.user.id, String(classroomId));
   }));
-  console.log("a");
+
   const team = await Teams.create(user, String(classroomId), users, data);
 
   return res.status(200).json(team);

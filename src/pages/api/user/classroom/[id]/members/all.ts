@@ -2,9 +2,8 @@ import { ClassroomRelations } from "../../../../../../controllers/ClassroomRelat
 import { apiHandle } from "../../../../../../utils/api/apiHandle";
 import { withUser } from "../../../../../../utils/api/middlewares/withUser";
 
-
 async function getClassroomMembers(req: Req, res: Res) {
-  const { id, page, query } = req.query;
+  const { id, query } = req.query;
   const user = req.user;
   
   await ClassroomRelations.havePermissionsToSelectClassrroomValues(
@@ -17,14 +16,11 @@ async function getClassroomMembers(req: Req, res: Res) {
   });
 
   const members = await ClassroomRelations.getByClassroom(id?.toString(), { 
-    page: page && Number(page),
-    query: query?.toString()
+    query: query?.toString(),
+    take: _count._all
   });
 
-  return res.status(200).json({
-    items: members,
-    count: _count._all
-  });
+  return res.status(200).json(members);
 };
 
 export default apiHandle({

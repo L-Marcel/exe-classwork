@@ -2,6 +2,7 @@ import { User } from "@prisma/client";
 import { useRouter } from "next/router";
 import { ReactNode, useCallback, useEffect, useState } from "react";
 import { createContext } from "use-context-selector";
+import { getInputErrorMessage } from "../utils/getInputErrorMessage";
 
 interface AppProviderProps {
   children: ReactNode;
@@ -19,7 +20,7 @@ function AppProvider({ children }: AppProviderProps) {
 
   const _setClassroom = useCallback((classroom: Classroom) => {
     setClassroom(classroom);
-  }, [setUser]);
+  }, [setClassroom]);
 
   const _setUser = useCallback((user: User) => {
     setUser(user);
@@ -37,24 +38,8 @@ function AppProvider({ children }: AppProviderProps) {
   }, [setIsLoading, setUser, setClassroom, router]);
 
   const _addInputErrors = useCallback((errors: InputErrors) => {
-    setInputErrors(e => {
-      const entries = Object.entries(errors);
-      
-      let _errors: InputErrors = {};
-  
-      for(let e in entries) {
-        const [key, value] = entries[e];
-  
-        const message: string = value.message.replaceAll(`${key} `, "");
-  
-        _errors[key] = {
-          message: `${message[0].toUpperCase()}${message.slice(1, message.length)}.`
-        };
-      };
-
-      return { ...e, ..._errors };
-    });
-  }, [setInputErrors]);
+    setInputErrors(e => getInputErrorMessage(errors, e));
+  }, [setInputErrors, getInputErrorMessage]);
 
   const _removeInputError = useCallback((name: string) => {
     setInputErrors(errors => {

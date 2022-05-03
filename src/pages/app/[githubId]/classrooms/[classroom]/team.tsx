@@ -1,4 +1,5 @@
 import { Section } from "../../../../../components/Section";
+import { TeamCreateForm } from "../../../../../components/Team/TeamCreateForm";
 import { WithClassroomProps } from "../../../../../utils/routes/WithClassroomProps";
 import { WithUserProps } from "../../../../../utils/routes/WithUserProps";
 
@@ -9,6 +10,7 @@ function TeamFormPage({}: TeamFormPageProps) {
     <Section
       isNeabyOfNavigation
     >
+      <TeamCreateForm/>
     </Section>
   );
 };

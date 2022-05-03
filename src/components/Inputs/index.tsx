@@ -12,6 +12,7 @@ export interface InputProps extends InputGroupProps {
   name?: string;
   register?: any;
   disableAnimation?: boolean;
+  list?: string;
 };
 
 function Input({ 
@@ -22,6 +23,7 @@ function Input({
   iconName,
   register,
   bgColor,
+  list,
   as,
   disableAnimation = false,
   ...rest 
@@ -108,6 +110,7 @@ function Input({
           _focus={{
             bgColor: "search.100"
           }}
+          list={list}
           onChange={onChange}
           value={value}
           name={name}

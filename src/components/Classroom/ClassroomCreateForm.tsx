@@ -64,7 +64,7 @@ function ClassroomCreateForm() {
         Create a classroom
       </Title>
       <Input
-        placeholder="Title"
+        placeholder="Title *"
         iconName="pencil"
         register={register("title")}
       />
@@ -85,6 +85,7 @@ function ClassroomCreateForm() {
           type="submit"
           theme="primary"
           disabled={isLoading}
+          onClick={resetInputErrors}
         >
           Create
         </Button>

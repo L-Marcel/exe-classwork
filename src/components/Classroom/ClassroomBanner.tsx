@@ -44,12 +44,12 @@ function ClassroomBanner({
           {description}
         </Text>
       }
-      <HStack
+      { authorizedUser && <HStack
         mt={5}
         spacing={2}
         mb={-3}
       >
-        <Link href={`/app/${authorizedUser.user.githubId}/classrooms/${id}/qrcode`}>
+        <Link href={`/app/${authorizedUser?.user.githubId}/classrooms/${id}/qrcode`}>
           <IconButton
             aria-label="redirect-to-qrcode"
             icon={<NamedIcon name="qrcode"/>}
@@ -63,7 +63,7 @@ function ClassroomBanner({
           text={inviteCode}
           successMessage="Invite code is copied!"
         />
-      </HStack>
+      </HStack> }
     </Section>
   );
 };

@@ -9,7 +9,7 @@ function validate(schema: Joi.ObjectSchema, callback: (req: Req, res: Res) => Pr
       cache: true,
       messages: {
         "array.unique.items": "List does not contain unique values.",
-        "leader.required": "Must contain at least one leader",
+        "leader.required": "Must contain at least one leader.",
         "any.invalid": "Invalid format.",
         "any.only": "Invalid format.",
         "any.required": "Is required.",

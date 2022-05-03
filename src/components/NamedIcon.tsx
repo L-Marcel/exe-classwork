@@ -1,5 +1,5 @@
 import { Icon as ChakraIcon, IconProps as ChakraIconProps } from "@chakra-ui/react";
-import { AiFillCaretDown, AiFillCaretUp, AiFillHtml5, AiOutlineCalendar, AiOutlineCheck, AiOutlineClose, AiOutlineInfoCircle, AiOutlineMenu, AiOutlineNumber, AiOutlinePlus, AiOutlinePoweroff, AiOutlineRight } from "react-icons/ai";
+import { AiFillCaretDown, AiFillCaretUp, AiFillHtml5, AiFillStar, AiOutlineCalendar, AiOutlineCheck, AiOutlineClose, AiOutlineInfoCircle, AiOutlineMenu, AiOutlineNumber, AiOutlinePlus, AiOutlinePoweroff, AiOutlineRight, AiOutlineStar } from "react-icons/ai";
 import { BiCubeAlt, BiSearchAlt } from "react-icons/bi";
 import { BsDownload, BsFillJournalBookmarkFill, BsFillMoonStarsFill, BsQuestionCircle } from "react-icons/bs";
 import { CgTikcode } from "react-icons/cg";
@@ -8,7 +8,7 @@ import { FaAngleDoubleLeft, FaAngleDoubleRight, FaAngleLeft, FaAngleRight, FaBal
 import { FiCopy, FiFigma, FiFramer, FiPaperclip } from "react-icons/fi";
 import { GrGraphQl, GrNode } from "react-icons/gr";
 import { IoIosRocket, IoLogoJavascript, IoMdOpen, IoMdSchool } from "react-icons/io";
-import { RiFilePaper2Line, RiFlashlightFill, RiFlutterFill, RiGitRepositoryLine } from "react-icons/ri";
+import { RiFilePaper2Line, RiFlashlightFill, RiFlutterFill, RiGitRepositoryLine, RiListCheck2 } from "react-icons/ri";
 import { SiApachekafka, SiApollographql, SiChakraui, SiDart, SiExpress, SiGnubash, SiJest, SiNestjs, SiNextdotjs, SiPrisma, SiTailwindcss, SiTypescript, SiVisualstudiocode } from "react-icons/si";
 import { TiGroup } from "react-icons/ti";
 interface IconProps extends ChakraIconProps {
@@ -83,7 +83,10 @@ export const icons = {
   "prev": FaAngleLeft,
   "double-next": FaAngleDoubleRight,
   "next": FaAngleRight,
-  "number": AiOutlineNumber
+  "number": AiOutlineNumber,
+  "list": RiListCheck2,
+  "leader": AiFillStar,
+  "not-leader": AiOutlineStar
 };
 
 function NamedIcon({ name = "default", ...rest }: IconProps) {

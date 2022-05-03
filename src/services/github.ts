@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import jwt from "jsonwebtoken";
 
 import { createHmac } from "crypto";
@@ -12,6 +12,7 @@ import { PermissionsNotMatchError } from "../errors/api/PermissionsNotMatchError
 import { UnauthorizedError } from "../errors/api/UnauthorizedError";
 import { haveNecessaryPermissions } from "../utils/api/webhooks/haveNecessariesPermissions";
 import { Api } from "./api";
+import { Cookies } from "./cookies";
 
 export class Github {
   static privateKey = process.env.GITHUB_PRIVATE_KEY.replace(/\|/gm, '\n');
@@ -23,6 +24,28 @@ export class Github {
   static api = axios.create({
     baseURL: "https://api.github.com/"
   });
+
+  authenticatedApi: AxiosInstance;
+  token: string;
+  refreshToken: string;
+
+  constructor(req: Req, res: Res) {
+    this.token = Cookies.get("token", { req, res });
+    this.refreshToken = Cookies.get("refresh_token", { req, res });
+    this.authenticatedApi = axios.create({
+      baseURL: "https://api.github.com/",
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+      }
+    });
+
+    //this.authenticatedApi.interceptors();
+    /* 
+    if(err.response.statusText === "rate limit exceeded") {
+      console.log("Rate limit exceeded");
+    };
+    */
+  };
 
   static async getAccessToken(code?: string) {
     return await Api.post("https://github.com/login/oauth/access_token", {
@@ -162,18 +185,21 @@ export class Github {
     throw new EventNotFoundError();
   };
 
-  static async getAllRepositoriesByClassroomMembers(classroomId: string) {
+  async getAllRepositoriesByClassroomMembers(classroomId: string) {
     const membersLength = await ClassroomRelations.countByClassroom(classroomId, {});
 
     const members = await ClassroomRelations.getByClassroom(classroomId, {
       take: membersLength._count._all
     });
 
-    return await Promise.all(members.map(async(m) => {
-      const repositories: GithubRepository[] = await this.api.get<GithubRepository[]>(`users/${m.user.username}/repos`)
-      .then(res => res.data).catch(() => []);
+    let allRepositories = [];
+
+    await Promise.all(members.map(async(m) => {
+      const repositories: GithubRepository[] = await this.authenticatedApi.get<GithubRepository[]>
+      (`users/${m.user.username}/repos`)
+      .then(res => res.data).catch((err) => []);
       
-      return repositories.map(data => {
+      allRepositories = [ ...allRepositories, ...repositories.map(data => {
         return {
           owner: m.user,
           name: data.name,
@@ -183,7 +209,9 @@ export class Github {
           sshUrl: data.ssh_url,
           homepage: data.homepage
         };
-      })
+      })]
     }));
+
+    return allRepositories;
   };
 };
