@@ -1,6 +1,6 @@
 {
   "name": "Next Classwork",
-  "translatedDescription": "O template criado e usado por mim para iniciar meus projetos. Este modelo tem toda a configuração da interface do usuário do Chakra, a configuração do meu portfólio, Typescript, GraphQL e estrutura de pastas comuns.",
+  "translatedDescription": "Reconstrução da antiga Dev Classwork.",
   "technologies": [
     "Next.js",
     "React.js",
