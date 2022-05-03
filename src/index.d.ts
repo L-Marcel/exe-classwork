@@ -3,13 +3,18 @@ declare type Res = import("next").NextApiResponse;
 declare type User = import("@prisma/client").User;
 declare type _Classroom = import("@prisma/client").Classroom;
 declare type _ClassroomRelation = import("@prisma/client").ClassroomRelation;
-declare type Team = import("@prisma/client").Team;
+declare type _Team = import("@prisma/client").Team;
 declare type _TeamRelation = import("@prisma/client").TeamRelation;
+declare type Repository = import("@prisma/client").Repository;
 
 declare interface TeamRelation extends _TeamRelation {
   role: TeamRoles;
   user: User;
   classroom: Partial<Classroom>;
+};
+
+declare interface Team extends _Classroom {
+  users: TeamRelation[];
 };
 
 declare interface ClassroomRelation extends _ClassroomRelation {
@@ -155,4 +160,13 @@ declare interface SelectOption {
   color: string;
   isFixed?: boolean;
   isDisabled?: boolean;
+};
+
+
+declare interface RepositoryInputData extends Repository {
+  owner: Partial<User>;
+};
+declare interface TeamInputData extends Team {
+  leader: TeamRelation;
+  repository?: RepositoryInputData;
 };

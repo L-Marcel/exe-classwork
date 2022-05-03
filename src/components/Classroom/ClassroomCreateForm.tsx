@@ -31,7 +31,8 @@ function ClassroomCreateForm() {
 
   const { 
     register, 
-    handleSubmit, 
+    handleSubmit,
+    reset, 
     formState: { 
       errors
     }
@@ -92,6 +93,7 @@ function ClassroomCreateForm() {
         <Button
           type="reset"
           disabled={isLoading}
+          onClick={reset}
         >
           Reset
         </Button>

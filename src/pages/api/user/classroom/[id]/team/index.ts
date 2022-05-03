@@ -8,7 +8,7 @@ import { withUser } from "../../../../../../utils/api/middlewares/withUser";
 
 async function createTeam(req: Req, res: Res) {
   const { id: classroomId } = req.query;
-  const { team: data, users } = req.body;
+  const { users, repository, ...data } = req.body;
   const user = req.user;
 
   await Promise.all(users.map(async(m: TeamRelation) => {

@@ -12,10 +12,8 @@ class TeamValidation {
   }).required();
 
   static create = Joi.object({
-    team: Joi.object({
-      title: Joi.string().required().min(3).max(30),
-      description: Joi.string().optional().max(800).allow(null, '')
-    }).required(),
+    title: Joi.string().required().min(3).max(30),
+    description: Joi.string().optional().max(800).allow(null, ''),
     users: Joi.array().items(this.relation).min(2).custom((values: Partial<TeamRelation>[], helpers) => {
       for(let n in values) {
         const relation = values[n];
@@ -32,7 +30,16 @@ class TeamValidation {
       };
 
       return values;
-    })
+    }),
+    repository: Joi.object({
+      description: Joi.string().optional().allow(null, ''),
+      fullname: Joi.string().required(),
+      gitUrl: Joi.string().optional().allow(null, ''),
+      homepage:Joi.string().optional().allow(null, ''),
+      name: Joi.string().required(),
+      owner: this.user.required(),
+      sshUrl: Joi.string().optional().allow(null, ''),
+    }).optional()
   }).required();
 };
 

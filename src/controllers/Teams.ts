@@ -5,10 +5,10 @@ import { TeamRelations } from "./TeamRelations";
 
 export class Teams {
   static async create(
-      user: User,
-      classroomId: string,
-      members: TeamRelation[],
-      data: P.TeamCreateInput
+    user: User,
+    classroomId: string,
+    members: TeamRelation[],
+    data: P.TeamCreateInput
   ) {
     const createdTeam = await Prisma.team.create({
       data: {

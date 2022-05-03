@@ -1,5 +1,4 @@
 import { Prisma as P } from "@prisma/client";
-import { AlreadyLinkedError } from "../errors/api/AlreadyLinkedError";
 import { AuthUserNotFoundError } from "../errors/api/AuthUserNotFoundError";
 import { NotFoundError } from "../errors/api/NotFoundError";
 import { NotLinkedWithError } from "../errors/api/NotLinkedWithError";
@@ -98,26 +97,11 @@ export class Users {
           classroomId,
           userId,
         }
-      },
-      select: {
-        user: {
-          select: {
-            teams: {
-              where: {
-                team: {
-                  classroomId
-                }
-              }
-            }
-          }
-        }
       }
     });
 
     if(!isLinked) {
       throw new NotLinkedWithError("classroom");
-    } else if(isLinked.user.teams.length > 0) {
-      throw new AlreadyLinkedError("team");
     };
   };
 };

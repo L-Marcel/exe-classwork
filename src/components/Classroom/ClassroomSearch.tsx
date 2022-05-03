@@ -1,6 +1,7 @@
-import { Box, Stack, Text } from "@chakra-ui/react";
+import { Box, HStack, Stack, Text } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { SearchProvider } from "../../contexts/SearchProvider";
+import { AddInstanceButton } from "../Buttons/AddInstanceButton";
 import { InputProps } from "../Inputs";
 import { Search } from "../Search";
 import { Section, SectionProps } from "../Section";
@@ -12,6 +13,7 @@ interface ClassroomSearchProps extends SectionProps {
   placeholder: string;
   children: ReactNode;
   inputProps?: Omit<InputProps, "iconName">;
+  addInstanceUrl?: string;
 };
 
 function ClassroomSearch({
@@ -20,6 +22,7 @@ function ClassroomSearch({
   placeholder,
   children,
   inputProps,
+  addInstanceUrl,
   ...rest
 }: ClassroomSearchProps) {
   return (
@@ -46,10 +49,16 @@ function ClassroomSearch({
           </Text>
         </Box>
         <SearchProvider>
-          <Search
-            placeholder={placeholder}
-            {...inputProps}
-          />
+          <HStack 
+            spacing={5}
+            mb={5}
+          >
+            <Search
+              placeholder={placeholder}
+              {...inputProps}
+            />
+            { addInstanceUrl && <AddInstanceButton href={addInstanceUrl}/> }
+          </HStack>
           {children}
         </SearchProvider>
       </Stack>

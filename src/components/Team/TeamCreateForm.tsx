@@ -10,6 +10,7 @@ import { useClassroom } from "../../contexts/hooks/useClassroom";
 import { useInputErrors } from "../../contexts/hooks/useInputErrors";
 import { useIsLoading } from "../../contexts/hooks/useIsLoading";
 import { useUser } from "../../contexts/hooks/useUser";
+import { Api } from "../../services/api";
 import { TeamFormValidations } from "../../services/forms/validations/TeamFormValidations";
 import { selectStyle } from "../../theme/select/selectStyle";
 import { Button } from "../Buttons/Button";
@@ -48,28 +49,59 @@ function TeamCreateForm() {
     register, 
     handleSubmit,
     watch,
+    reset,
     formState: { 
       errors
     }
   } = useForm({
     resolver: yupResolver(TeamFormValidations.create)
   });
+
+  console.log(watch("users"));
   
   useEffect(() => {
     addInputErrors(errors);
   }, [errors]);
 
-  function onSubmit(team: Team) {
+  function onSubmit(team: TeamInputData) {
     resetInputErrors();
-    //startLoading();
+    startLoading();
 
-    console.log(team);
+    const leaderIndex = team.users.findIndex(u => u.user.id === team.leader.user.id);
 
-    /*Api.post(`/user/classroom/${classroom.id}/team`, team).then(() => {
-      router.push(`/app/${user.githubId}/classrooms`);
+    if(leaderIndex < 0) {
+      addInputErrors({
+        leader: {
+          message: "Not found in members."
+        }
+      });
+      stopLoading();
+      return null;
+    };
+
+    team.users[leaderIndex] = team.leader;
+    team.leader = undefined;
+
+    team.users = team.users.map(u => ({
+      role: u.role,
+      user: {
+        id: u.user.id,
+        username: u.user.username
+      }
+    })) as any;
+
+    if(team.repository) {
+      team.repository.owner = {
+        id: team.repository.owner.id,
+        username: team.repository.owner.username
+      };
+    };
+
+    Api.post(`/user/classroom/${classroom.id}/team`, team).then(() => {
+      router.push(`/app/${user.githubId}/classrooms/${classroom.id}`);
     }).catch((err) => {
       stopLoading();
-    });*/
+    });
   };
   
   return (
@@ -130,7 +162,10 @@ function TeamCreateForm() {
           },
           ...members?.map(m => {
             return {
-              value: m,
+              value: {
+                ...m,
+                role: "MEMBER"
+              },
               label: m.user.name ?? m.user.username,
               color: "var(--chakra-color-solid-200)"
             };
@@ -157,7 +192,10 @@ function TeamCreateForm() {
           },
           ...(watch("users") ?? []).map(m => {
             return {
-              value: m,
+              value: {
+                ...m,
+                role: "LEADER"
+              },
               label: m.user.name ?? m.user.username,
               color: "var(--chakra-color-solid-200)"
             };
@@ -177,6 +215,7 @@ function TeamCreateForm() {
         <Button
           type="reset"
           disabled={isLoading}
+          onClick={reset}
         >
           Reset
         </Button>
