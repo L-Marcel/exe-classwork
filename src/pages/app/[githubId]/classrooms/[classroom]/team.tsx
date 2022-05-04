@@ -16,5 +16,15 @@ function TeamFormPage({}: TeamFormPageProps) {
 };
 
 export default WithUserProps(
-  WithClassroomProps(TeamFormPage)
+  WithClassroomProps(TeamFormPage, (classroom, user) => {
+    if(!classroom.users.some(u => 
+      u.user.id === user.id && 
+      u.role !== "STUDENT" && 
+      u.role !== "OBSERVER")
+    ) {
+      return false;
+    };
+
+    return true;
+  })
 );

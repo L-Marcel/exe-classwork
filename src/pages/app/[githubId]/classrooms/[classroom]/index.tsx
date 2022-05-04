@@ -58,7 +58,7 @@ function ClassroomPage({
           subtitle="Find all teams here"
           placeholder="Search by name, user or repo..."
           bgColor="solid.10"
-          addInstanceUrl={`/app/${user.githubId}/classrooms/${classroom.id}/team`}
+          addInstanceUrl={authorizedUser && `/app/${user.githubId}/classrooms/${classroom.id}/team`}
         >
           <Text>In work...</Text>
         </ClassroomSearch>
