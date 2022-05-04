@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { SearchProvider } from "../../contexts/SearchProvider";
 import { AddInstanceButton } from "../Buttons/AddInstanceButton";
 import { InputProps } from "../Inputs";
+import { Pagination } from "../Pagination";
 import { Search } from "../Search";
 import { Section, SectionProps } from "../Section";
 import { Title } from "../Title";
@@ -49,16 +50,27 @@ function ClassroomSearch({
           </Text>
         </Box>
         <SearchProvider>
-          <HStack 
-            spacing={5}
-            mb={5}
+          <Box
+            display="flex"
+            flexDir={["column", "column", "column", "row"]}
+            alignItems={["center", "flex-start"]}
+            flexWrap="wrap"
+            mt={5}
+            justifyContent="space-between"
+            w="100%"
           >
-            <Search
-              placeholder={placeholder}
-              {...inputProps}
-            />
-            { addInstanceUrl && <AddInstanceButton href={addInstanceUrl}/> }
-          </HStack>
+            <HStack 
+              spacing={5}
+              mb={5}
+            >
+              <Search
+                placeholder={placeholder}
+                {...inputProps}
+              />
+              { addInstanceUrl && <AddInstanceButton href={addInstanceUrl}/> }
+            </HStack>
+            <Pagination/>
+          </Box>
           {children}
         </SearchProvider>
       </Stack>

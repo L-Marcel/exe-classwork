@@ -2,6 +2,7 @@ import { Box, Text } from "@chakra-ui/react";
 import { ClassroomBanner } from "../../../../../components/Classroom/ClassroomBanner";
 import { ClassroomSearch } from "../../../../../components/Classroom/ClassroomSearch";
 import { ClassroomMembersList } from "../../../../../components/List/Classroom/ClassroomMembersList";
+import { ClassroomTeamsList } from "../../../../../components/List/Classroom/ClassroomTeamsList";
 import { Section } from "../../../../../components/Section";
 import { WithClassroomProps } from "../../../../../utils/routes/WithClassroomProps";
 import { WithUserProps } from "../../../../../utils/routes/WithUserProps";
@@ -15,11 +16,12 @@ function ClassroomPage({
 }: ClassroomPageProps) {
   const { 
     id, 
-    users, 
+    users,
     title, 
     description, 
     subject,
-    inviteCode
+    inviteCode,
+    teams
   } = classroom;
 
   const authorizedUser = users.find(
@@ -60,7 +62,10 @@ function ClassroomPage({
           bgColor="solid.10"
           addInstanceUrl={authorizedUser && `/app/${user.githubId}/classrooms/${classroom.id}/team`}
         >
-          <Text>In work...</Text>
+          <ClassroomTeamsList
+            classroomId={id}
+            initialData={teams}
+          />
         </ClassroomSearch>
       </Box>
       <Section>

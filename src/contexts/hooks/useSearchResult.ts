@@ -35,13 +35,15 @@ function useSearchResult<T = any>({
   });
 
   useEffect(() => {
-    if(data.count !== count) {
+    if(data.count !== count && process.env.NODE_ENV !== "development") {
       setCount(Number(data.count));
+    } else if(data.count !== count) {
+      setCount(Number(data.count) + 20);
     };
   }, [data.count]);
 
   return {
-    data: search === "" && initialData? initialData:data.items,
+    data: data.items,
     isFetching
   };
 };

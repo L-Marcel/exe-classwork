@@ -1,5 +1,7 @@
 import { Prisma as P, User } from "@prisma/client";
+import { NotFoundError } from "../errors/api/NotFoundError";
 import { Prisma } from "../services/prisma";
+import { getApiQuery } from "../utils/getApiQuery";
 import { Alerts } from "./Alerts";
 import { TeamRelations } from "./TeamRelations";
 
@@ -36,5 +38,117 @@ export class Teams {
     }));
 
     return { createdTeam, relations };
+  };
+
+  static async getByClassroom(classroomId: string, {
+    query = "",
+    page = 0,
+    take = 12
+  }) {
+    const relation = await Prisma.team.findMany({
+      take,
+      skip: 12 * page,
+      include: {
+        users: {
+          include: {
+            user: true
+          }
+        }
+      },
+      where: {
+        AND: [
+          {
+            OR: [
+              {
+                title: getApiQuery(query)
+              },
+              {
+                repository: {
+                  name: getApiQuery(query)
+                }
+              },
+              {
+                users: {
+                  some: {
+                    role: "LEADER",
+                    user: {
+                      name: getApiQuery(query),
+                    }
+                  }
+                }
+              },
+              {
+                users: {
+                  some: {
+                    role: "LEADER",
+                    user: {
+                      username: getApiQuery(query),
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          { 
+            classroomId
+          }
+        ]
+      },
+    });
+
+    if(!relation) {
+      throw new NotFoundError("Teams");
+    };
+
+    return relation;
+  };
+
+  static async countByClassroom(classroomId: string, {
+    query = ""
+  }) {
+    return await Prisma.team.aggregate({
+      _count: {
+        _all: true
+      },
+      where: {
+        AND: [
+          {
+            OR: [
+              {
+                title: getApiQuery(query)
+              },
+              {
+                repository: {
+                  name: getApiQuery(query)
+                }
+              },
+              {
+                users: {
+                  some: {
+                    role: "LEADER",
+                    user: {
+                      name: getApiQuery(query),
+                    }
+                  }
+                }
+              },
+              {
+                users: {
+                  some: {
+                    role: "LEADER",
+                    user: {
+                      username: getApiQuery(query),
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          { 
+            classroomId
+          }
+        ]
+      },
+    });
   };
 };

@@ -1,5 +1,6 @@
 import { HStack, Stack, Text } from "@chakra-ui/react";
 import { Profile } from "../../Profile";
+import { Title } from "../../Title";
 
 interface ClassroomMemberItem {
   member: ClassroomRelation;
@@ -12,7 +13,8 @@ function ClassroomMemberItem({ member }: ClassroomMemberItem) {
     <HStack
       spacing={3}
       minW="100%"
-      p={2}
+      p={4}
+      bgColor="solid.10"
       borderRadius={16}
       _hover={{
         bgColor: "solid.100"
@@ -24,16 +26,18 @@ function ClassroomMemberItem({ member }: ClassroomMemberItem) {
       <Stack
         spacing={1}
       >
-        <Text
-          lineHeight="15px"
+        <Title
+          mt={-1}
+          fontSize="1.3rem"
           fontWeight={600}
         >
-          {member.role}
-        </Text>
+          {user.name ?? user.username}
+        </Title>
         <Text
           lineHeight="15px"
+          fontSize=".8rem"
         >
-          {user.name ?? user.username}
+          {member.role}
         </Text>
       </Stack>
     </HStack>

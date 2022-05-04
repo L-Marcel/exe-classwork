@@ -5,7 +5,11 @@ declare type _Classroom = import("@prisma/client").Classroom;
 declare type _ClassroomRelation = import("@prisma/client").ClassroomRelation;
 declare type _Team = import("@prisma/client").Team;
 declare type _TeamRelation = import("@prisma/client").TeamRelation;
-declare type Repository = import("@prisma/client").Repository;
+declare type _Repository = import("@prisma/client").Repository;
+
+declare interface Repository extends _Repository {
+  owner: User;
+};
 
 declare interface TeamRelation extends _TeamRelation {
   role: TeamRoles;
@@ -13,8 +17,9 @@ declare interface TeamRelation extends _TeamRelation {
   classroom: Partial<Classroom>;
 };
 
-declare interface Team extends _Classroom {
+declare interface Team extends _Team {
   users: TeamRelation[];
+  repository?: Repository;
 };
 
 declare interface ClassroomRelation extends _ClassroomRelation {
@@ -25,6 +30,7 @@ declare interface ClassroomRelation extends _ClassroomRelation {
 
 declare interface Classroom extends _Classroom {
   users: ClassroomRelation[];
+  teams: Team[];
 };
 
 declare interface Req extends _Req {
@@ -166,6 +172,7 @@ declare interface SelectOption {
 declare interface RepositoryInputData extends Repository {
   owner: Partial<User>;
 };
+
 declare interface TeamInputData extends Team {
   leader: TeamRelation;
   repository?: RepositoryInputData;

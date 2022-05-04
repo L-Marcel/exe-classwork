@@ -26,7 +26,6 @@ function ClassroomMembersList({ initialData, classroomId }: ClassroomMembersList
       <Stack
         display="flex"
         w="100%"
-        pt={5}
       >
         {members.map((m) => {
           return (

@@ -26,7 +26,7 @@ export const theme = extendTheme({
       return {
         "*": {
           userSelect: "none",
-          transition: "filter .2s linear !important, color .2s linear !important, background-colors .2s linear !important",
+          transition: "filter .2s linear !important, color .2s linear !important, background-color .5s linear !important",
           WebkitTapHighlightColor: "transparent"
         },
         "::-webkit-scrollbar": {
