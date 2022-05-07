@@ -13,7 +13,10 @@ function ClassroomQrCodePage({ classroom, user }: ClassroomPageProps) {
     <Section
       isNeabyOfNavigation
     >
-      <Link href={`/app/${user.githubId}/classrooms/${classroom.id}`}>
+      <Link 
+        href={`/app/${user.githubId}/classrooms/${classroom.id}`}
+        tabIndex={0}
+      >
         {'<'}- return
       </Link>
       <Title
@@ -63,10 +66,12 @@ function ClassroomQrCodePage({ classroom, user }: ClassroomPageProps) {
 
 export default WithUserProps(
   WithClassroomProps(ClassroomQrCodePage, (classroom, user) => {
-    if(!classroom.users.some(u => 
-      u.user.id === user.id && 
-      u.role !== "STUDENT" && 
-      u.role !== "OBSERVER")
+    if(
+      !classroom.users.some(u => 
+        u.user.id === user.id && 
+        u.role !== "STUDENT" && 
+        u.role !== "OBSERVER"
+      ) && classroom.rolesAreRestricted
     ) {
       return false;
     };

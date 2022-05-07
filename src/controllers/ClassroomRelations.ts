@@ -7,16 +7,59 @@ import { getApiQuery } from "../utils/getApiQuery";
 import { Alerts } from "./Alerts";
 
 export class ClassroomRelations {
-  static async getByClassroom(classroomId: string, {
+  static async get(classroomId: string, userId: string) {
+    const relation = await Prisma.classroomRelation.findUnique({
+      where: {
+        classroomId_userId: {
+          classroomId,
+          userId
+        }
+      },
+      select: {
+        classroom: true,
+        user: true,
+        role: true
+      }
+    });
+
+
+    if(!relation) {
+      throw new NotFoundError("Member");
+    };
+
+    return relation;
+  };
+
+  static async getByClassroom(classroomId: string, userId: string, {
     query = "",
     page = 0,
     take = 12
   }) {
+    const classroomRelation = await Prisma.classroomRelation.findUnique({
+      where: {
+        classroomId_userId: {
+          classroomId,
+          userId
+        }
+      },
+      select: {
+        classroom: {
+          select: {
+            rolesAreRestricted: true
+          }
+        },
+        role: true
+      }
+    });
+
+    const rolesAreRestricted = classroomRelation.classroom.rolesAreRestricted &&
+    classroomRelation.role !== "OWNER" && classroomRelation.role !== "ADMIN";
+
     const relation = await Prisma.classroomRelation.findMany({
       take,
       skip: 12 * page,
       select: {
-        role: true,
+        role: !rolesAreRestricted,
         createdAt: true,
         updatedAt: true,
         updatedBy: true,
@@ -26,9 +69,9 @@ export class ClassroomRelations {
         AND: [
           {
             OR: [
-              {
+              !rolesAreRestricted? {
                 role: getApiQuery(query)
-              },
+              }:undefined,
               {
                 user: {
                   name: getApiQuery(query)
@@ -145,7 +188,15 @@ export class ClassroomRelations {
         classroomId
       },
       select: {
-        role: true
+        role: true,
+        classroom: {
+          select: {
+            inviteCodeIsRestricted: true,
+            teamsAreRestricted: true,
+            rolesAreRestricted: true,
+            repositoriesAreRestricted: true
+          }
+        }
       }
     });
 
@@ -167,6 +218,10 @@ export class ClassroomRelations {
           description: true,
           repositories: true,
           title: true,
+          inviteCodeIsRestricted: true,
+          rolesAreRestricted: true,
+          teamsAreRestricted: true,
+          repositoriesAreRestricted: true,
           teams: {
             select: {
               users: {
@@ -200,6 +255,11 @@ export class ClassroomRelations {
           subject: true,
           description: true,
           repositories: true,
+          inviteCode: !relation.classroom.inviteCodeIsRestricted,
+          inviteCodeIsRestricted: true,
+          rolesAreRestricted: true,
+          teamsAreRestricted: true,
+          repositoriesAreRestricted: true,
           title: true,
           teams: {
             select: {
@@ -220,7 +280,7 @@ export class ClassroomRelations {
           users: {
             select: {
               user: true,
-              role: true,
+              role: !relation.classroom.rolesAreRestricted,
               createdAt: true,
               updatedAt: true,
               updatedBy: true
@@ -230,6 +290,11 @@ export class ClassroomRelations {
       case "STUDENT":
         return {
           id: true,
+          inviteCode: !relation.classroom.inviteCodeIsRestricted,
+          inviteCodeIsRestricted: true,
+          rolesAreRestricted: true,
+          teamsAreRestricted: true,
+          repositoriesAreRestricted: true,
           alerts: {
             where: {
               OR: [
@@ -276,15 +341,15 @@ export class ClassroomRelations {
               updatedAt: true,
               updatedBy: true
             },
-            where: {
+            where: relation.classroom.teamsAreRestricted? {
               users: {
                 some: {
                   userId
                 }
               }
-            }
+            }:undefined
           },
-          repositories: {
+          repositories: !relation.classroom.repositoriesAreRestricted || {
             where: {
               ownerId: userId
             }
@@ -295,7 +360,7 @@ export class ClassroomRelations {
           users: {
             select: {
               user: true,
-              role: true,
+              role: !relation.classroom.rolesAreRestricted,
               createdAt: true,
               updatedAt: true,
               updatedBy: true

@@ -49,7 +49,7 @@ export const theme = extendTheme({
         },
         "textarea::-webkit-scrollbar-track": {
           h: 5,
-          background: "solid.200"
+          background: getColorMode("solid.200")(props),
         },
         "textarea::-webkit-scrollbar-thumb": {
           background: "primary.500"
@@ -58,7 +58,7 @@ export const theme = extendTheme({
           background: "primary.600"
         },
         "::-webkit-resizer": {
-          backgroundColor: "var(--chakra-colors-solid-300)"
+          backgroundColor: getColorMode("solid.300")(props),
         },
         html: {
           height: "-webkit-fill-available",
@@ -78,20 +78,21 @@ export const theme = extendTheme({
         'div[role="progressbar"]': {
           bgGradient: "linear(to-r, transparent, primary.700)",
         },
+        '.chakra-switch__track[data-checked]': {
+          bgColor: "var(--chakra-colors-primary-600) !important"
+        },
         "a:hover": {
           textDecoration: "none!important",
         },
         "button:hover": {
           filter: "brightness(0.95)"
         },
-        ".js-focus-visible :focus:not([data-focus-visible-added])": { 
-          outline: "none",
-          boxShadow: "none" 
+        "button:focus-visible, input:focus-visible, select:focus-visible, section:focus-visible, .focus-visible:focus-visible": {
+          outline: "2px solid var(--chakra-colors-primary-600)"
         },
-        /*".chakra-checkbox__control:not([data-checked])": {
-          color: "var(--primary) !important",
-          bgColor: "primary.100"
-        },*/
+        ".js-focus-visible :focus:not(.focus-visible)": { 
+          outline: "none"
+        },
         ".chakra-avatar__svg": {
           color: "var(--chakra-colors-solid-450)!important",
           "& path:last-of-type": {

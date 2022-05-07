@@ -24,6 +24,7 @@ function getButtonStyle({
   
   return {
     as: m.button,
+    tabIndex: 0,
     bgColor: `${theme}.${colorIndexes[0]}`,
     color,
     _hover: {

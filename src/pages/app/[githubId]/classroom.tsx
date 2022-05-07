@@ -1,20 +1,28 @@
-import { ClassroomCreateForm } from "../../../components/Classroom/ClassroomCreateForm";
+import { ClassroomForm } from "../../../components/Classroom/ClassroomForm";
 import { ClassroomInviteCodeForm } from "../../../components/Classroom/ClassroomInviteCodeForm";
 import { Section } from "../../../components/Section";
 import { WithUserProps } from "../../../utils/routes/WithUserProps";
 
-interface ClassroomFormPageProps extends WithUserProps {};
+interface ClassroomFormPageProps extends WithClassroomProps {};
 
-function ClassroomFormPage({}: ClassroomFormPageProps) {
+export function ClassroomFormPage({
+  classroom
+}: ClassroomFormPageProps) {
   return (
     <>
+      {
+        !classroom && <Section
+          isNeabyOfNavigation
+        >
+          <ClassroomInviteCodeForm/>
+        </Section>
+      }
       <Section
-        isNeabyOfNavigation
+        isNeabyOfNavigation={classroom? true:false}
       >
-        <ClassroomInviteCodeForm/>
-      </Section>
-      <Section>
-        <ClassroomCreateForm/>
+        <ClassroomForm
+          classroom={classroom}
+        />
       </Section>
     </>
   );

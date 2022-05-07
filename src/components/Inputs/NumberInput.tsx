@@ -1,9 +1,10 @@
 import { Box, NumberDecrementStepper, NumberIncrementStepper, NumberInput as ChakraNumberInput, NumberInputField, NumberInputProps as ChakraNumberInputProps, NumberInputStepper, Text, useBreakpointValue } from "@chakra-ui/react";
+import { UseFormRegisterReturn } from "react-hook-form";
 import { useInputErrors } from "../../contexts/hooks/useInputErrors";
 
 export interface NumberInputProps extends ChakraNumberInputProps {
   iconName: string;
-  register?: any;
+  register?: UseFormRegisterReturn;
 };
 
 function NumberInput({ 
@@ -41,7 +42,7 @@ function NumberInput({
         _focus={{
           bgColor: "search.100"
         }}
-        {...register}
+        {...register as any}
         {...rest}
       >
         <NumberInputField

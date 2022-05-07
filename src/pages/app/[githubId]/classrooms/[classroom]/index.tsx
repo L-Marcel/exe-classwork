@@ -17,27 +17,23 @@ function ClassroomPage({
   const { 
     id, 
     users,
-    title, 
-    description, 
-    subject,
-    inviteCode,
-    teams
+    teams,
   } = classroom;
 
-  const authorizedUser = users.find(
+  const userIsAuthorized = users.some(
     u => u.user.id === user.id && 
     (u.role === "ADMIN" || u.role === "OWNER")
   );
 
+  const teamsAreRestricted = classroom.teamsAreRestricted && !userIsAuthorized;
+  console.log(teamsAreRestricted);
+
   return (
     <>
       <ClassroomBanner
-        id={id}
-        authorizedUser={authorizedUser}
-        title={title}
-        description={description}
-        subject={subject}
-        inviteCode={inviteCode}
+        user={user}
+        userIsAuthorized={userIsAuthorized}
+        {...classroom}
       />
       <Box
         w="100%"
@@ -57,12 +53,12 @@ function ClassroomPage({
           />
         </ClassroomSearch>
         <ClassroomSearch
-          title="Teams"
-          subtitle="Find all teams here"
+          title={teamsAreRestricted? "Your teams":"Teams"}
+          subtitle={teamsAreRestricted? "Find your teams here":"Find all teams here"}
           maxW={["auto", "auto", "auto", "50%"]}
           placeholder="Search by name, user or repo..."
           bgColor="solid.10"
-          addInstanceUrl={authorizedUser && `/app/${user.githubId}/classrooms/${classroom.id}/team`}
+          addInstanceUrl={userIsAuthorized && `/app/${user.githubId}/classrooms/${classroom.id}/team`}
         >
           <ClassroomTeamsList
             classroomId={id}

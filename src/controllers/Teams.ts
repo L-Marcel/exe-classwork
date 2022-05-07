@@ -3,6 +3,7 @@ import { NotFoundError } from "../errors/api/NotFoundError";
 import { Prisma } from "../services/prisma";
 import { getApiQuery } from "../utils/getApiQuery";
 import { Alerts } from "./Alerts";
+import { ClassroomRelations } from "./ClassroomRelations";
 import { TeamRelations } from "./TeamRelations";
 
 export class Teams {
@@ -40,11 +41,19 @@ export class Teams {
     return { createdTeam, relations };
   };
 
-  static async getByClassroom(classroomId: string, {
+  static async getByClassroom(classroomId: string, userId: string, {
     query = "",
     page = 0,
     take = 12
   }) {
+    const classroomRelation = await ClassroomRelations.get(
+      classroomId,
+      userId
+    );
+
+    const teamsAreRestricted = classroomRelation.classroom.teamsAreRestricted &&
+    classroomRelation.role !== "OWNER" && classroomRelation.role !== "ADMIN";
+
     const relation = await Prisma.team.findMany({
       take,
       skip: 12 * page,
@@ -91,7 +100,14 @@ export class Teams {
           },
           { 
             classroomId
-          }
+          },
+          teamsAreRestricted? {
+            users: {
+              some: {
+                userId
+              }
+            }
+          }:undefined
         ]
       },
     });
@@ -103,9 +119,17 @@ export class Teams {
     return relation;
   };
 
-  static async countByClassroom(classroomId: string, {
+  static async countByClassroom(classroomId: string, userId: string, {
     query = ""
   }) {
+    const classroomRelation = await ClassroomRelations.get(
+      classroomId,
+      userId
+    );
+
+    const teamsAreRestricted = classroomRelation.classroom.teamsAreRestricted &&
+    classroomRelation.role !== "OWNER" && classroomRelation.role !== "ADMIN";
+
     return await Prisma.team.aggregate({
       _count: {
         _all: true
@@ -146,7 +170,14 @@ export class Teams {
           },
           { 
             classroomId
-          }
+          },
+          teamsAreRestricted? {
+            users: {
+              some: {
+                userId
+              }
+            }
+          }:undefined
         ]
       },
     });

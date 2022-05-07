@@ -12,11 +12,11 @@ async function getClassroomTeams(req: Req, res: Res) {
     user.id
   );
 
-  const { _count } = await Teams.countByClassroom(id?.toString(), { 
+  const { _count } = await Teams.countByClassroom(id?.toString(), user.id, { 
     query: query?.toString()
   });
 
-  const teams = await Teams.getByClassroom(id?.toString(), { 
+  const teams = await Teams.getByClassroom(id?.toString(), user.id, { 
     page: page && Number(page),
     query: query?.toString()
   });

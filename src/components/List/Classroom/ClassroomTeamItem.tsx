@@ -12,6 +12,7 @@ function ClassroomTeamItem({ team }: ClassroomTeamItem) {
   
   return (
     <HStack
+      as={m.button}
       spacing={3}
       minW="100%"
       p={4}
@@ -20,6 +21,10 @@ function ClassroomTeamItem({ team }: ClassroomTeamItem) {
       _hover={{
         bgColor: "solid.100"
       }}
+      display="flex"
+      alignItems="center"
+      justifyContent="flex-start"
+      textAlign="start"
     >
       <Stack
         spacing={1}

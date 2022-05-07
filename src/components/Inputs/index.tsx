@@ -1,6 +1,7 @@
 import { Box, Input as ChakraInput, InputGroup, InputGroupProps, InputLeftElement, Text, useBreakpointValue } from "@chakra-ui/react";
 import { m } from "framer-motion";
 import { ChangeEvent, useState } from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
 import { useInputErrors } from "../../contexts/hooks/useInputErrors";
 import { NamedIcon } from "../NamedIcon";
 
@@ -10,7 +11,7 @@ export interface InputProps extends InputGroupProps {
   placeholder?: string;
   value?: string;
   name?: string;
-  register?: any;
+  register?: UseFormRegisterReturn;
   disableAnimation?: boolean;
   list?: string;
 };

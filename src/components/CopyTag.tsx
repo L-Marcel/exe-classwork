@@ -10,13 +10,14 @@ interface CopyTagProps {
 };
 
 function CopyTag({ text, successMessage, time = 3000 }: CopyTagProps) {
-  const isWideOrNormalVersion = useBreakpointValue({
-    base: false,
-    sm: false,
-    md: true,
-    xl: true,
-    lg: true
+  const [isWideOrNormalVersion, isSmallVersion] = useBreakpointValue({
+    base: [false, true],
+    sm: [false, false],
+    md: [true, true],
+    xl: [true, true],
+    lg: [true, true]
   });
+
   const [message, setMessage] = useState(null);
   let timer;
 
@@ -25,13 +26,13 @@ function CopyTag({ text, successMessage, time = 3000 }: CopyTagProps) {
       .then(() => {
         setMessage(successMessage ?? "Copied!");
         clearTimeout(timer);
-        setTimeout(() => {
+        timer = setTimeout(() => {
           setMessage(null);
         }, time);
       }).catch(() => {
         setMessage("Error on copy!");
         clearTimeout(timer);
-        setTimeout(() => {
+        timer = setTimeout(() => {
           setMessage(null);
         }, time);
       });
@@ -54,7 +55,7 @@ function CopyTag({ text, successMessage, time = 3000 }: CopyTagProps) {
           minW="auto"
         />
         <Text>
-          -{'>'} {message? message:"Invite code"}
+          {message? '-> ' + message:!isSmallVersion && "-> Invite code"}
         </Text>
       </>
     );

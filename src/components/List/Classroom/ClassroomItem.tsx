@@ -18,7 +18,7 @@ function ClassroomItem({ title, description, subject, id, alerts = [] }: Classro
 
   return (
     <Box
-      as={m.div}
+      as={m.button}
       bgColor="solid.100"
       w="fill"
       minW={["85%", "80%", "80%", "40%", "20%", "20.1%"]}
@@ -26,6 +26,11 @@ function ClassroomItem({ title, description, subject, id, alerts = [] }: Classro
       borderLeft="2px solid"
       borderColor="primary.700"
       p={[4, 6]}
+      flexDir="column"
+      display="flex"
+      alignItems="flex-start"
+      justifyContent="flex-start"
+      textAlign="start"
       onClick={() => router.push(`/app/${router.query?.githubId}/classrooms/${id}`)}
       cursor="pointer"
       {...scaleOnInteract}
@@ -34,6 +39,7 @@ function ClassroomItem({ title, description, subject, id, alerts = [] }: Classro
         position="relative"
         display="flex"
         justifyContent="space-between"
+        w="100%"
       >
         <Heading
           fontSize="1.4rem"

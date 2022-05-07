@@ -35,7 +35,7 @@ function ClassroomSearch({
       <Accordion
         allowMultiple
         allowToggle
-        defaultIndex={[0]}
+        defaultIndex={[-1]}
         w="100%"
         left={0}
         top={0}

@@ -1,6 +1,7 @@
 import { Box, Text, Textarea as ChakraTextarea, TextareaProps as ChakraTextareaProps } from "@chakra-ui/react";
 import { m } from "framer-motion";
 import { ChangeEvent } from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
 import { useInputErrors } from "../../contexts/hooks/useInputErrors";
 
 interface TextareaProps extends ChakraTextareaProps {
@@ -8,7 +9,7 @@ interface TextareaProps extends ChakraTextareaProps {
   placeholder?: string;
   value?: string;
   name?: string;
-  register?: any;
+  register?: UseFormRegisterReturn;
 };
 
 function Textarea({ 

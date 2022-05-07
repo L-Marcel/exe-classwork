@@ -16,7 +16,7 @@ async function getClassroomMembers(req: Req, res: Res) {
     query: query?.toString()
   });
 
-  const members = await ClassroomRelations.getByClassroom(id?.toString(), { 
+  const members = await ClassroomRelations.getByClassroom(id?.toString(), user.id, { 
     page: page && Number(page),
     query: query?.toString()
   });

@@ -56,6 +56,11 @@ model Classroom {
   teams Team[]
   repositories Repository[]
 
+  rolesAreRestricted Boolean @default(false)
+  teamsAreRestricted Boolean @default(false)
+  inviteCodeIsRestricted Boolean @default(true)
+  repositoriesAreRestricted Boolean @default(true)
+
   createdAt DateTime @default(now())
   updatedAt DateTime?
   updatedBy String?
