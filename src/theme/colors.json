@@ -85,7 +85,7 @@
         "_dark": "blackAlpha.800"
       },
       "solid.10": {
-        "default": "#FFFFFF",
+        "default": "#F5F5F5",
         "_dark": "#151515"
       },
       "solid.25": {

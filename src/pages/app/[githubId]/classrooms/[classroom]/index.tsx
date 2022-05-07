@@ -48,6 +48,7 @@ function ClassroomPage({
         <ClassroomSearch
           title="Members"
           subtitle="Find all members here"
+          maxW={["auto", "auto", "auto", "50%"]}
           placeholder="Search by name, email or role..."
         >
           <ClassroomMembersList
@@ -58,6 +59,7 @@ function ClassroomPage({
         <ClassroomSearch
           title="Teams"
           subtitle="Find all teams here"
+          maxW={["auto", "auto", "auto", "50%"]}
           placeholder="Search by name, user or repo..."
           bgColor="solid.10"
           addInstanceUrl={authorizedUser && `/app/${user.githubId}/classrooms/${classroom.id}/team`}
