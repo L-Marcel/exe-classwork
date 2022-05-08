@@ -8,6 +8,10 @@ interface ClassroomTeamItem {
 };
 
 function ClassroomTeamItem({ team }: ClassroomTeamItem) {
+  if(!team) {
+    return null;
+  };
+
   const { users, title, repository } = team;
   
   return (

@@ -185,10 +185,10 @@ export class Github {
     throw new EventNotFoundError();
   };
 
-  async getAllRepositoriesByClassroomMembers(classroomId: string) {
+  async getAllRepositoriesByClassroomMembers(classroomId: string, userId: string) {
     const membersLength = await ClassroomRelations.countByClassroom(classroomId, {});
 
-    const members = await ClassroomRelations.getByClassroom(classroomId, {
+    const members = await ClassroomRelations.getByClassroom(classroomId,userId, {
       take: membersLength._count._all
     });
 

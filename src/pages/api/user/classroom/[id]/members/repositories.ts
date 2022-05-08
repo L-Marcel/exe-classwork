@@ -4,10 +4,11 @@ import { withUser } from "../../../../../../utils/api/middlewares/withUser";
 
 async function repositories(req: Req, res: Res) {
   const { id } = req.query;
+  const user = req.user;
 
   const github = new Github(req, res);
 
-  const repositories = await github.getAllRepositoriesByClassroomMembers(id?.toString());
+  const repositories = await github.getAllRepositoriesByClassroomMembers(id?.toString(), user.id);
 
   return res.status(200).json(repositories);
 };
