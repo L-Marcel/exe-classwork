@@ -1,3 +1,4 @@
+import { Repositories } from "../../../../../../controllers/Repositories";
 import { Teams } from "../../../../../../controllers/Teams";
 import { Users } from "../../../../../../controllers/Users";
 import { TeamValidation } from "../../../../../../services/api/validations/TeamValidation";
@@ -16,8 +17,20 @@ async function createTeam(req: Req, res: Res) {
   }));
 
   const team = await Teams.create(user, String(classroomId), users, data);
+  await Repositories.link({
+    repository: {
+      ...repository,
+      owner: {
+        connect: {
+          id: repository.owner.id?.toString() || ""
+        }
+      }
+    },
+    classroomId: classroomId?.toString() || "",
+    teamId: team.team.id
+  });
 
-  return res.status(200).json(team);
+  return res.status(201).send("");
 };
 
 export default apiHandle({

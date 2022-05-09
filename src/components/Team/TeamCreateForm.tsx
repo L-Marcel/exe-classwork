@@ -57,8 +57,6 @@ function TeamCreateForm() {
   } = useForm({
     resolver: yupResolver(TeamFormValidations.create)
   });
-
-  console.log(watch("users"));
   
   useEffect(() => {
     addInputErrors(errors);
@@ -101,6 +99,7 @@ function TeamCreateForm() {
     Api.post(`/user/classroom/${classroom.id}/team`, team).then(() => {
       router.push(`/app/${user.githubId}/classrooms/${classroom.id}`);
     }).catch((err) => {
+      console.log(err);
       stopLoading();
     });
   };

@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DB_URL")
 }
 
 model User {
@@ -106,7 +106,7 @@ model Repository {
   id String @id @default(uuid())
 
   name String
-  fullname String
+  fullname String @unique
   description String?
 
   homepage String?
@@ -132,22 +132,23 @@ model Commit {
   id String @id @default(uuid())
 
   sha String @unique
-  shaBefore String?
 
   message String?
   
   isForced Boolean @default(false)
 
-  author String
-  tree String
   url String
 
   filesAdded Int @default(0)
   filesRemoved Int @default(0)
-  filesModifed Int @default(0)
+  filesModified Int @default(0)
 
-  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String?
+  totalChanges Int @default(0)
+  totalAdditions Int @default(0)
+  totalDeletions Int @default(0)
+
+  user User? @relation(fields: [userGithubId], references: [githubId], onDelete: Cascade)
+  userGithubId String?
 
   repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
   repositoryId String

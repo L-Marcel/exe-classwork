@@ -6,6 +6,7 @@ declare type _ClassroomRelation = import("@prisma/client").ClassroomRelation;
 declare type _Team = import("@prisma/client").Team;
 declare type _TeamRelation = import("@prisma/client").TeamRelation;
 declare type _Repository = import("@prisma/client").Repository;
+declare type Commit = import("@prisma/client").Commit;
 
 declare interface Repository extends _Repository {
   owner: User;
@@ -183,4 +184,34 @@ declare type ModalDisclosureData = {
   text?: string;
   body?: import("react").ReactNode;
   options: JSX.Element[];
+};
+
+declare type RepositoriesLinkInput = {
+  repository: import("@prisma/client").Prisma.RepositoryCreateInput;
+  classroomId?: string;
+  teamId?: string;
+};
+
+declare type GithubRepositoryCommitRef = {
+  sha: string;
+  commit: {
+    message: string;
+  };
+};
+
+declare type GithubRepositoryCommit = {
+  sha: string;
+  html_url: string;
+  stats: {
+    total: number;
+    additions: number;
+    deletions: number;
+  };
+  committer?: {
+    login: string;
+    id: number;
+  };
+  files: {
+    status: "added" | "removed" | "modified" | "renamed" | "copied" | "changed" | "unchanged"
+  }[];
 };

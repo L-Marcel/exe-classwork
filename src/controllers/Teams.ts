@@ -38,7 +38,7 @@ export class Teams {
       });
     }));
 
-    return { createdTeam, relations };
+    return { team: createdTeam, relations };
   };
 
   static async getByClassroom(classroomId: string, userId: string, {

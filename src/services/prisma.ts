@@ -1,4 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma as P, PrismaClient } from "@prisma/client";
+import { Repositories } from "../controllers/Repositories";
 import { serialize } from "../utils/serialize";
 
 declare global {
@@ -7,14 +8,28 @@ declare global {
 
 const client = global.prisma || new PrismaClient();
 
-client.$use(async(params, next) => {
-  let result = await next(params);
-  return serialize(result);
-})
+if(!global.prisma) {
+  client.$use(async(params, next) => {
+    let result = await next(params);
+    return serialize(result);
+  })
+
+  client.$use(async(params, next) => {
+    const result = await next(params);
+
+    if(params.model === "Repository" && params.action === "create") {
+      const { owner, fullname } = params.args.data as P.RepositoryCreateInput;
+      await Repositories.sync(owner.connect?.id, fullname, true);
+    };
+    
+    return result;
+  });
+};
 
 if(process.env.NODE_ENV !== "production") {
   global.prisma = client;
 };
+
 export class Prisma {
   private static client = client;
 

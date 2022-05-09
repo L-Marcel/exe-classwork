@@ -6,6 +6,7 @@ import { buffer } from "micro";
 import { NextApiRequest } from "next";
 import { ClassroomRelations } from "../controllers/ClassroomRelations";
 import { Users } from "../controllers/Users";
+import { CannotGetRepository } from "../errors/api/CannotGetRespository";
 import { EventNotFoundError } from "../errors/api/EventNotFoundError";
 import { GithubUnauthorizedError } from "../errors/api/GithubUnauthorizedError";
 import { PermissionsNotMatchError } from "../errors/api/PermissionsNotMatchError";
@@ -45,6 +46,18 @@ export class Github {
       console.log("Rate limit exceeded");
     };
     */
+  };
+
+  static async getAppApi(userId: string) {
+    const user = await Users.getById(userId);
+    const token = await this.generateAppAccessToken(user.installationId);
+    
+    return axios.create({
+      baseURL: "https://api.github.com/",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
   };
 
   static async getAccessToken(code?: string) {
@@ -130,7 +143,7 @@ export class Github {
       }
     }).then(res => {
       return res.data.token;
-    }).catch(() => {
+    }).catch((err) => {
       throw new Error("Can't access Github app token.");
     });
   };
@@ -183,6 +196,64 @@ export class Github {
     };
 
     throw new EventNotFoundError();
+  };
+
+  static async getRepositoryCommits(authUserId: string, repositoryFullname: string) {
+    const appApi = await this.getAppApi(authUserId);
+
+    const commitsRef = await appApi.get<GithubRepositoryCommitRef[]>(`repos/${repositoryFullname}/commits`)
+    .then(res => {
+      return res.data.map(c => {
+        return {
+          sha: c.sha,
+          commit: {
+            message: c.commit.message
+          }
+        } as GithubRepositoryCommitRef;
+      });
+    }).catch(err => {
+      throw new CannotGetRepository(repositoryFullname);
+    });
+
+    const commits = await Promise.all(commitsRef.map(async(c) => {
+      const data: GithubRepositoryCommit = await appApi.get<GithubRepositoryCommit>(`repos/${repositoryFullname}/commits/${c.sha}`)
+      .then(res => res.data).catch(err => false as any);
+
+      if(!data) {
+        return null;
+      };
+
+      const count = data.files.reduce((prev, cur) => {
+        if(cur.status === "added" || cur.status === "copied") {
+          prev.added++;
+        } else if(cur.status === "changed" || cur.status === "modified" || cur.status === "renamed") {
+          prev.modified++;
+        } else if(cur.status === "removed") {
+          prev.removed++;
+        };
+
+        return prev;
+      }, {
+        added: 0,
+        modified: 0,
+        removed: 0
+      });
+
+      return {
+        userGithubId: data.committer?.id?.toString(),
+        filesAdded: count.added,
+        filesModified: count.modified,
+        filesRemoved: count.removed,
+        message: c.commit.message,
+        sha: c.sha,
+        totalAdditions: data.stats.additions,
+        totalChanges: data.stats.total,
+        totalDeletions: data.stats.deletions,
+        url: data.html_url
+      } as Partial<Commit>;
+    }))
+
+    return commits.filter(c => c);
   };
 
   async getAllRepositoriesByClassroomMembers(classroomId: string, userId: string) {

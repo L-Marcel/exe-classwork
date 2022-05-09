@@ -8,9 +8,9 @@ async function createClassroom(req: Req, res: Res) {
   const data = req.body;
   const user = req.user;
 
-  const classroom = await Classrooms.create(user, data);
+  await Classrooms.create(user, data);
 
-  return res.status(200).json(classroom);
+  return res.status(201).send("");
 };
 
 export default apiHandle({

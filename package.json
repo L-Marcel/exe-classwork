@@ -3,13 +3,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate --schema=./prisma/schema-prod.prisma && next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watchAll",
-    "generate:prisma": "prisma generate --schema=./prisma/schema-prod.prisma",
-    "studio:db": "prisma studio --schema=./prisma/schema-prod.prisma",
-    "push:db": "prisma db push --schema=./prisma/schema-prod.prisma"
+    "test": "jest --watchAll"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.8.3",
