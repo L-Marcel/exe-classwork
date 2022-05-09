@@ -177,3 +177,10 @@ declare interface TeamInputData extends Team {
   leader: TeamRelation;
   repository?: RepositoryInputData;
 };
+
+declare type ModalDisclosureData = {
+  title: string;
+  text?: string;
+  body?: import("react").ReactNode;
+  options: JSX.Element[];
+};

@@ -87,7 +87,7 @@ export const theme = extendTheme({
         "button:hover": {
           filter: "brightness(0.95)"
         },
-        "button:focus-visible, input:focus-visible, select:focus-visible, section:focus-visible, .focus-visible:focus-visible": {
+        "button:focus-visible, input:focus-visible, select:focus-visible, section:focus-visible, label.chakra-switch:focus-visible, .focus-visible:focus-visible": {
           outline: "2px solid var(--chakra-colors-primary-600)"
         },
         ".js-focus-visible :focus:not(.focus-visible)": { 

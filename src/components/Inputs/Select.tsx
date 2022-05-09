@@ -1,6 +1,6 @@
 import { Box, BoxProps, Text } from "@chakra-ui/react";
 import { m } from "framer-motion";
-import { ReactNode } from "react";
+import { ReactNode, useCallback } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import ReactSelect, { StylesConfig } from "react-select";
 import { useInputErrors } from "../../contexts/hooks/useInputErrors";
@@ -33,11 +33,29 @@ function Select({
   labelFormat,
   isMulti,
   name,
-  value,
   ...rest 
 }: SelectProps) {
   const { inputErrors } = useInputErrors();
   const error = inputErrors[name ?? register?.name];
+
+  const handleChangeValue = useCallback((newValue: SelectOption) => {
+    let ev;
+  
+    if(Array.isArray(newValue)) {
+      ev = { target: { 
+        value: newValue.map(v => v.value),
+        name: register?.name
+      }};
+    } else {
+      ev = { target: { 
+        value: newValue.value,
+        name: register?.name
+      }};
+    };
+
+    register?.onChange(ev);
+    onChange && onChange(ev.target.value);
+  }, [onChange, register]);
 
   return (
     <>
@@ -62,10 +80,17 @@ function Select({
           as={m.div}
           w="100%"
           animate="visible"
+          _focusWithin={{
+            outline: "2px solid var(--chakra-colors-primary-600)",
+            outlineOffset: 3,
+            borderRadius: 8
+          }}
         >
           <ReactSelect
+            id="select"
+            tabIndex={0}
             placeholder={placeholder}
-            className={rest.className}      
+            className={"focus-visible " + rest.className}      
             styles={selectStyles}
             isMulti={isMulti}
             options={options}
@@ -78,24 +103,7 @@ function Select({
             noOptionsMessage={() => {
               return (<Text>No data found...</Text>);
             }}
-            onChange={(newValue: SelectOption) => {
-              let ev;
-  
-              if(Array.isArray(newValue)) {
-                ev = { target: { 
-                  value: newValue.map(v => v.value),
-                  name: register?.name
-                }};
-              } else {
-                ev = { target: { 
-                  value: newValue.value,
-                  name: register?.name
-                }};
-              };
-
-              register?.onChange(ev);
-              onChange && onChange(ev.target.value);
-            }}
+            onChange={handleChangeValue}
             components={{
               MultiValue: ({ children, ...rest }) => {
                 return (

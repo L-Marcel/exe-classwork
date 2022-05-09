@@ -69,15 +69,15 @@ export class Classrooms {
   };
 
   static async delete(user: User, id: string) {
-    await Promise.all([
-      ClassroomRelations.havePermissionsToDeleteClassrroom(id, user.id),
-      Prisma.classroom.delete({
-        where: {
-          id
-        }
-      }),
-      Alerts.deleteAllByClassroom(id)
-    ]);
+    await ClassroomRelations.havePermissionsToDeleteClassrroom(id, user.id);
+
+    await Prisma.classroom.delete({
+      where: {
+        id
+      }
+    });
+
+    await Alerts.deleteAllByClassroom(id);
   };
 
   static async generateInviteCode(user: User, id: string) {

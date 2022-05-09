@@ -6,14 +6,17 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useInputErrors } from "../../contexts/hooks/useInputErrors";
 import { useIsLoading } from "../../contexts/hooks/useIsLoading";
+import { useModalDisclosure } from "../../contexts/hooks/useModalDisclosure";
 import { useUser } from "../../contexts/hooks/useUser";
 import { Api } from "../../services/api";
 import { ClassroomFormValidation } from "../../services/forms/validations/ClassroomFormValidations";
+import { handlePreventFormSubmitOnEnter } from "../../utils/preventFormtSubmitOnEnter";
 import { Button } from "../Buttons/Button";
 import { Input } from "../Inputs";
 import { Switch } from "../Inputs/Switch";
 import { Textarea } from "../Inputs/Textarea";
 import { Link } from "../Link";
+import { Dialog } from "../Modal/Dialog";
 import { Span } from "../Span";
 import { Title } from "../Title";
 
@@ -24,7 +27,9 @@ interface ClassroomFormProps {
 function ClassroomForm({
   classroom
 }: ClassroomFormProps) {
+  const { callModal, onClose, isOpen, modalData } = useModalDisclosure();
   const [oldClassroom, setOldClassroom] = useState(classroom ?? null);
+  
   const [message, setMessage] = useState<{
     text: string,
     type: AlertProps["status"]
@@ -32,6 +37,8 @@ function ClassroomForm({
 
   const router = useRouter();
   const { user } = useUser();
+
+  const relation = classroom && classroom.users.find(u => u.user.id === user.id);
 
   let timer;
 
@@ -134,12 +141,51 @@ function ClassroomForm({
     };
   };
 
+  async function onConfirmClassroomDelete() {
+    if(classroom && relation) {
+      startLoading();
+      onClose();
+      await Api.delete(`/user/classroom/${classroom.id}`)
+      .then(() => {
+        router.push(`/app/${user.githubId}/classrooms`);
+      }).catch(() => {
+        sendMessage({
+          text: `Error on delete classroom`,
+          type: "error"
+        });
+        stopLoading();
+      });
+    };  
+  };
+
+  async function handleDeleteClassroom() {
+    callModal({
+      title: "Do you want to delete this classroom?",
+      options: [
+        <Button
+          theme="red"
+          colorIndexes={["400", "500", "500"]}
+          onClick={onConfirmClassroomDelete}
+        >
+          Delete
+        </Button>
+      ],
+      text: "Warning: this action cannot be reversed, all users will be unlinked from their respective teams and all data will be lost. Repository data will not be deleted.\n\nDo you want to continue?",
+    });
+  };
+
   return (
     <Stack
       as="form"
       spacing={5}
       onSubmit={handleSubmit(onSubmit)}
+      onKeyDown={handlePreventFormSubmitOnEnter}
     >
+      <Dialog
+        data={modalData}
+        onClose={onClose} 
+        isOpen={isOpen}
+      />
       {classroom && 
         <Link 
           href={`/app/${user.githubId}/classrooms/${classroom.id}`}
@@ -189,23 +235,12 @@ function ClassroomForm({
         maxH={200}
         resize="vertical"
       />
-      { message && 
-        <Alert 
-          status={message.type}
-          variant="left-accent"
-          borderRadius={8}
-          borderLeftWidth={2}
-          w={[300, 350, 500]}
-          maxW="80vw"
-          alignItems="flex-start"
-        >
-          <AlertIcon/>
-          {message.text}
-        </Alert>
-      }
       <Title>
         Additional configuration
       </Title>
+      <Text>
+        Restricted -{'>'} only visible for authorized users.
+      </Text>
       <Stack
         pb={2}
       >
@@ -230,6 +265,20 @@ function ClassroomForm({
           watch={watch}
         />
       </Stack>
+      { message && 
+        <Alert 
+          status={message.type}
+          variant="left-accent"
+          borderRadius={8}
+          borderLeftWidth={2}
+          w={[300, 350, 500]}
+          maxW="80vw"
+          alignItems="flex-start"
+        >
+          <AlertIcon/>
+          {message.text}
+        </Alert>
+      }
       <HStack
         spacing={4}
       >
@@ -241,23 +290,23 @@ function ClassroomForm({
         >
           {classroom? "Save":"Create"}
         </Button>
-        { !classroom && <Button
+        <Button
           type="button"
           disabled={isLoading}
-          onClick={reset}
+          onClick={classroom? handleForceReset:reset}
         >
           Reset
-        </Button> }
+        </Button>
         {
-          classroom && <>
-            <Button
-              type="button"
-              disabled={isLoading}
-              onClick={handleForceReset}
-            >
-              Reset
-            </Button>
-          </>
+          (classroom && relation && relation.role === "OWNER") && <Button
+            type="button"
+            theme="red"
+            disabled={isLoading}
+            colorIndexes={["400", "500", "500"]}
+            onClick={handleDeleteClassroom}
+          >
+            Delete
+          </Button>
         }
       </HStack>
     </Stack>

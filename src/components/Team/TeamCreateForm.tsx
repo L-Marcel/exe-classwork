@@ -13,6 +13,7 @@ import { useUser } from "../../contexts/hooks/useUser";
 import { Api } from "../../services/api";
 import { TeamFormValidations } from "../../services/forms/validations/TeamFormValidations";
 import { selectStyle } from "../../theme/select/selectStyle";
+import { handlePreventFormSubmitOnEnter } from "../../utils/preventFormtSubmitOnEnter";
 import { Button } from "../Buttons/Button";
 import { Input } from "../Inputs";
 import { Select } from "../Inputs/Select";
@@ -109,6 +110,7 @@ function TeamCreateForm() {
       as="form"
       spacing={5}
       onSubmit={handleSubmit(onSubmit)}
+      onKeyDown={handlePreventFormSubmitOnEnter}
     >
       <Title>
         Create a team
