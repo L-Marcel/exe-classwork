@@ -198,10 +198,12 @@ export class Github {
     throw new EventNotFoundError();
   };
 
-  static async getRepositoryCommits(authUserId: string, repositoryFullname: string) {
-    const appApi = await this.getAppApi(authUserId);
+  static async getCommitsRefs(repositoryFullname: string, authUserId: string, appApi?: AxiosInstance, page = 1, per_page = 30) {
+    if(!appApi) {
+      appApi = await this.getAppApi(authUserId);
+    };
 
-    const commitsRef = await appApi.get<GithubRepositoryCommitRef[]>(`repos/${repositoryFullname}/commits`)
+    const refs = await appApi.get<GithubRepositoryCommitRef[]>(`repos/${repositoryFullname}/commits?per_page=${per_page}&page=${page}`)
     .then(res => {
       return res.data.map(c => {
         return {
@@ -214,6 +216,21 @@ export class Github {
     }).catch(err => {
       throw new CannotGetRepository(repositoryFullname);
     });
+
+    console.log(refs.length);
+    if(refs.length >= per_page) {
+      const nextPage = page + 1;
+      const nextPageRefs = await this.getCommitsRefs(repositoryFullname, authUserId, appApi, nextPage, per_page);
+      return [ ...refs, ...nextPageRefs ];
+    };
+
+    return refs;
+  };
+
+  static async getRepositoryCommits(authUserId: string, repositoryFullname: string) {
+    const appApi = await this.getAppApi(authUserId);
+
+    const commitsRef = await this.getCommitsRefs(repositoryFullname, authUserId, appApi);
 
     const commits = await Promise.all(commitsRef.map(async(c) => {
       const data: GithubRepositoryCommit = await appApi.get<GithubRepositoryCommit>(`repos/${repositoryFullname}/commits/${c.sha}`)
