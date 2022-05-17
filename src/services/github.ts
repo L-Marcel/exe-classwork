@@ -12,6 +12,7 @@ import { GithubUnauthorizedError } from "../errors/api/GithubUnauthorizedError";
 import { PermissionsNotMatchError } from "../errors/api/PermissionsNotMatchError";
 import { UnauthorizedError } from "../errors/api/UnauthorizedError";
 import { haveNecessaryPermissions } from "../utils/api/webhooks/haveNecessariesPermissions";
+import { writeLog } from "../utils/writeLog";
 import { Api } from "./api";
 import { Cookies } from "./cookies";
 
@@ -209,7 +210,10 @@ export class Github {
         return {
           sha: c.sha,
           commit: {
-            message: c.commit.message
+            message: c.commit.message,
+            tree: {
+              sha: c.commit.tree.sha
+            }
           }
         } as GithubRepositoryCommitRef;
       });
@@ -217,7 +221,6 @@ export class Github {
       throw new CannotGetRepository(repositoryFullname);
     });
 
-    console.log(refs.length);
     if(refs.length >= per_page) {
       const nextPage = page + 1;
       const nextPageRefs = await this.getCommitsRefs(repositoryFullname, authUserId, appApi, nextPage, per_page);
@@ -230,7 +233,7 @@ export class Github {
   static async getRepositoryCommits(authUserId: string, repositoryFullname: string) {
     const appApi = await this.getAppApi(authUserId);
 
-    const commitsRef = await this.getCommitsRefs(repositoryFullname, authUserId, appApi);
+    const commitsRef: GithubRepositoryCommitRef[] = await this.getCommitsRefs(repositoryFullname, authUserId, appApi);
 
     const commits = await Promise.all(commitsRef.map(async(c) => {
       const data: GithubRepositoryCommit = await appApi.get<GithubRepositoryCommit>(`repos/${repositoryFullname}/commits/${c.sha}`)
@@ -266,11 +269,110 @@ export class Github {
         totalAdditions: data.stats.additions,
         totalChanges: data.stats.total,
         totalDeletions: data.stats.deletions,
+        tree: c.commit.tree.sha,
         url: data.html_url
       } as Partial<Commit>;
     }))
 
     return commits.filter(c => c);
+  };
+
+  static async getFileData({ 
+    path, 
+    type, 
+    url, 
+    commitId,
+    folderGroup,
+    folderSha
+  }: GithubTreesFile, authUserId: string, appApi?: AxiosInstance) {
+    if(!appApi) {
+      appApi = await this.getAppApi(authUserId);
+    };
+
+    if(type === "blob") {
+      const data = await appApi.get(url).then(res => res.data).catch(err => "");
+
+      return {
+        blob: data?.content,
+        encoding: data?.encoding,
+        commitId,
+        path,
+        sha: data?.sha,
+        folderGroup,
+        folderSha,
+        type,
+        url
+      } as Partial<Tree>;
+    } else {
+      const data = await appApi.get(url).then(res => res.data).catch(err => false as any);
+
+      if(!data) {
+        return url;
+      };
+
+      const files = await Promise.all(data.tree.map(async(f) => {
+        const file = await this.getFileData({ 
+          path: f.path,
+          type: f.type,
+          commitId,
+          folderGroup,
+          folderSha: data.sha,
+          url: f.url
+        }, authUserId, appApi);
+
+        return file;
+      }));
+
+      return {
+        path,
+        type,
+        sha: data.sha,
+        folderGroup,
+        folderSha,
+        url,
+        files
+      } as Partial<Tree>;
+    };
+  };
+
+  static async getCommitsFiles(authUserId: string, repositoryFullname: string, commits: Partial<Commit>[]) {
+    const appApi = await this.getAppApi(authUserId);
+
+    const trees = await Promise.all(commits.map(async(c) => {
+      const data = await appApi.get(`repos/${repositoryFullname}/git/trees/${c.tree}`)
+      .then(res => res.data).catch(err => false as any);
+
+      if(!data) {
+        return null;
+      };
+
+      const files = await Promise.all(data.tree.map(async(f) => {
+        const file = await this.getFileData({ 
+          path: f.path,
+          type: f.type,
+          commitId: c.id,
+          folderGroup: c.tree,
+          folderSha: data.sha,
+          url: f.url
+        }, authUserId, appApi);
+
+        return file;
+      }));
+
+      return {
+        group: c.tree,
+        sha: data.sha,
+        commitId: c.id,
+        path: "/",
+        url: data.url,
+        type: "tree",
+        files,
+      } as Partial<Tree>;
+    }));
+
+    writeLog(trees);
+
+    return trees;
   };
 
   async getAllRepositoriesByClassroomMembers(classroomId: string, userId: string) {

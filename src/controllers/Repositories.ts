@@ -2,6 +2,7 @@ import { Prisma as P } from "@prisma/client";
 import { NotFoundError } from "../errors/api/NotFoundError";
 import { Github } from "../services/github";
 import { Prisma } from "../services/prisma";
+import { writeLog } from "../utils/writeLog";
 import { Commits } from "./Commits";
 
 export class Repositories {
@@ -71,6 +72,9 @@ export class Repositories {
     try {
       if(force) {
         const commits = await Github.getRepositoryCommits(authUserId, repositoryFullname);
+        const files = await Github.getCommitsFiles(authUserId, repositoryFullname, commits);
+
+        writeLog(files);
 
         const repository = await Prisma.repository.findUnique({
           where: {
@@ -89,10 +93,13 @@ export class Repositories {
           return {
             ...c,
             repositoryId: repository.id,
-            userGithubId: c.userGithubId
+            userGithubId: c.userGithubId,
+            tree: undefined
           } as P.CommitCreateManyInput;
         }) as P.Enumerable<P.CommitCreateManyInput>);
       };
+
+      console.log("Repository is loaded: ", repositoryFullname, " - in: ", new Date().toString());
     } catch (error) {
       console.log(error);
     };

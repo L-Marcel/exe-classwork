@@ -132,6 +132,7 @@ model Commit {
   id String @id @default(uuid())
 
   sha String @unique
+  trees Tree[]
 
   message String?
   
@@ -156,6 +157,36 @@ model Commit {
   alerts Alert[]
 
   createdAt DateTime @default(now())
+}
+
+model Tree {
+  group String @unique
+  sha String @unique
+  
+  path String
+  type String
+  url String
+
+  blob String?
+  encoding String? @default("base64")
+
+  churn Int @default(0)
+  complexity Int @default(0)
+  sloc Int @default(0)
+
+  methods String[]
+  classes String[]
+
+  files Tree[] @relation("files")
+
+  folder Tree? @relation("files", fields: [folderSha, folderGroup], references: [sha, group], onDelete: Cascade)
+  folderSha String?
+  folderGroup String?
+
+  commit Commit? @relation(fields: [commitId], references: [id], onDelete: Cascade)
+  commitId String
+
+  @@id([group, sha])
 }
 
 model Alert {

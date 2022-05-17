@@ -1194,6 +1194,13 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@lmarcel/exe-code-analytics@^3.9.3":
+  version "3.9.3"
+  resolved "https://registry.yarnpkg.com/@lmarcel/exe-code-analytics/-/exe-code-analytics-3.9.3.tgz#589b5074403dcfa48c1e30b4c459df8464fd023a"
+  integrity sha512-2wWD4CtmFRT4qAvOVbk1cxxk7ZIMFnlGfeUgdF9LK1y30evz9rNL3JtnZyNNzofp+pgQT3uOQT9o8S38+bsTzQ==
+  dependencies:
+    node "^17.7.2"
+
 "@next/env@12.1.5":
   version "12.1.5"
   resolved "https://registry.yarnpkg.com/@next/env/-/env-12.1.5.tgz#a21ba6708022d630402ca2b340316e69a0296dfc"
@@ -3539,6 +3546,11 @@ nextjs-progressbar@^0.0.14:
     nprogress "^0.2.0"
     prop-types "^15.7.2"
 
+node-bin-setup@^1.0.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/node-bin-setup/-/node-bin-setup-1.1.0.tgz#9df94c41335a8f41958a639b2736f860582a209c"
+  integrity sha512-pTeU6NgUrexiLNtd+AKwvg6cngHMvj5FZ5e2bbv2ogBSIc9yhkXSSaTScfSRZnwHIh5YFmYSYlemLWkiKD7rog==
+
 node-int64@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/node-int64/-/node-int64-0.4.0.tgz#87a9065cdb355d3182d8f94ce11188b825c68a3b"
@@ -3548,6 +3560,13 @@ node-releases@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.3.tgz#225ee7488e4a5e636da8da52854844f9d716ca96"
   integrity sha512-maHFz6OLqYxz+VQyCAtA3PTX4UP/53pa05fyDNc9CwjvJ0yEh6+xBwKsgCxMNhS8taUKBFYxfuiaD9U/55iFaw==
+
+node@^17.7.2:
+  version "17.7.2"
+  resolved "https://registry.yarnpkg.com/node/-/node-17.7.2.tgz#855d617466fefb458b2b985155bdbbd23befaacc"
+  integrity sha512-1hLwQfuA39nUDxCTwKqS8l27E9OEzfAdK5xU4Wcr3h2FrQao6qWNnurgWn4GJn9g6tfHuuupyrBl1lvMLNnecw==
+  dependencies:
+    node-bin-setup "^1.0.0"
 
 normalize-path@^3.0.0:
   version "3.0.0"

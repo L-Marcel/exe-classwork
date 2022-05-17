@@ -6,7 +6,16 @@ declare type _ClassroomRelation = import("@prisma/client").ClassroomRelation;
 declare type _Team = import("@prisma/client").Team;
 declare type _TeamRelation = import("@prisma/client").TeamRelation;
 declare type _Repository = import("@prisma/client").Repository;
-declare type Commit = import("@prisma/client").Commit;
+declare type _Commit = import("@prisma/client").Commit;
+declare type _Tree = import("@prisma/client").Tree;
+
+declare interface Tree extends _Tree {
+  files?: Tree[];
+};
+
+declare interface Commit extends _Commit {
+  tree?: string;
+};
 
 declare interface Repository extends _Repository {
   owner: User;
@@ -196,6 +205,9 @@ declare type GithubRepositoryCommitRef = {
   sha: string;
   commit: {
     message: string;
+    tree: {
+      sha: string
+    }
   };
 };
 
@@ -215,3 +227,19 @@ declare type GithubRepositoryCommit = {
     status: "added" | "removed" | "modified" | "renamed" | "copied" | "changed" | "unchanged"
   }[];
 };
+
+declare type GithubTreesFile = {
+  type: "blob" | "tree";
+  url: string;
+  path: string;
+  commitId?: string;
+  folderSha?: string;
+  folderGroup?: string;
+};
+
+declare type GithubTrees = {
+  sha: string;
+  tree: GithubTreesFile[];
+};
+
+declare type TaskEventTypes = "@commits:refresh" | "@tasks:status:commits";

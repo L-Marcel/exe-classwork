@@ -1,6 +1,6 @@
 import { Prisma as P, PrismaClient } from "@prisma/client";
-import { Repositories } from "../controllers/Repositories";
 import { serialize } from "../utils/serialize";
+import { Tasks } from "./tasks";
 
 declare global {
   var prisma: PrismaClient | undefined;
@@ -19,7 +19,7 @@ if(!global.prisma) {
 
     if(params.model === "Repository" && params.action === "create") {
       const { owner, fullname } = params.args.data as P.RepositoryCreateInput;
-      await Repositories.sync(owner.connect?.id, fullname, true);
+      Tasks.refreshCommit(owner.connect?.id, fullname);
     };
     
     return result;
