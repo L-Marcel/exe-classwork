@@ -1,30 +1,21 @@
 import { EventEmitter } from "stream";
 import { Repositories } from "../controllers/Repositories";
 
-declare global {
-  var emitter: EventEmitter | undefined;
+const emitter = new EventEmitter();
+
+emitter.on("@commits:refresh", (authUserId: string, repositoryFullname: string) => {
+  console.log("Task required: commit refresh");
+  Repositories.sync(authUserId, repositoryFullname, true);
+});
+
+function emit(event: TaskEventTypes, ...args: any) {
+  emitter.emit(event, ...args);
 };
 
-const emitter = global.emitter || new EventEmitter();
-
-
-if(!global.emitter) {
-  emitter.on("@commits:refresh", async(authUserId: string, repositoryFullname: string) => {
-    await Repositories.sync(authUserId, repositoryFullname, true);
-  });
+function refreshCommit(authUserId: string, repositoryFullname: string) {
+  emitter.emit("@commits:refresh", authUserId, repositoryFullname);
 };
 
-class Tasks {
-  private static emitter = emitter;
 
-  static emit(event: TaskEventTypes, ...args: any) {
-    this.emitter.emit(event, ...args);
-  };
-
-  static refreshCommit(authUserId: string, repositoryFullname: string) {
-    this.emitter.emit("@commits:refresh", authUserId, repositoryFullname);
-  };
-};
-
-export { Tasks };
+export { emit, refreshCommit, emitter };
 

@@ -52,13 +52,32 @@ export class Github {
   static async getAppApi(userId: string) {
     const user = await Users.getById(userId);
     const token = await this.generateAppAccessToken(user.installationId);
+    console.log(token);
     
-    return axios.create({
+    const appApi = axios.create({
       baseURL: "https://api.github.com/",
       headers: {
         Authorization: `Bearer ${token}`,
+        Accept: "application/vnd.github.v3+json"
       }
     });
+
+    appApi.interceptors.response.use(res => res, async(err) => {
+      const oldRequest = err.config;
+
+      if(err.response.headers["x-ratelimit-remaining"] === "0" && !oldRequest._retry) {
+        oldRequest._retry = true;
+
+        const token = await this.generateAppAccessToken(user.installationId);
+        appApi.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+        return await appApi(oldRequest);
+      };
+
+      return Promise.reject(err);
+    });
+
+    return appApi;
   };
 
   static async getAccessToken(code?: string) {
