@@ -54,8 +54,10 @@ class GithubCommits {
     });
 
     appApi.interceptors.response.use(res => res, async(err) => {
+      console.log(err.response.headers["x-ratelimit-remaining"], err.message);
       if(err.response.headers["x-ratelimit-remaining"] === "0") {
-        await RequestHistories.create(this.operation, this.data, user);
+        console.log("Not ratelimit remaining... ", this.operation, this.data);
+        await RequestHistories.create(this.operation, this.data, user).then(() => {}).catch(e => console.log(e));
       };
 
       return Promise.reject(err);
