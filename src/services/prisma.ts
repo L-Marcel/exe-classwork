@@ -41,5 +41,5 @@ export class Prisma {
   static repository = this.client.repository;
   static commit = this.client.commit;
   static alert = this.client.alert;
-  static history = this.client.history;
+  static requestHistory = this.client.requestHistory;
 };

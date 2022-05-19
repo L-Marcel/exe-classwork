@@ -22,7 +22,7 @@ model User {
   teams TeamRelation[]
   repositories Repository[]
   commits Commit[]
-  histories History[]
+  histories RequestHistory[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime?
@@ -210,11 +210,11 @@ model Alert {
   commitId String?
 }
 
-model History {
+model RequestHistory {
   id String @id @default(uuid())
   title String
-  oldRequest Json
-  data Json
+
+  oldData Json?
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String

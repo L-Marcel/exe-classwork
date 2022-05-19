@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import jwt from "jsonwebtoken";
-import { Histories } from "../controllers/History";
+import { RequestHistories } from "../controllers/RequestHistories";
 import { Users } from "../controllers/Users";
 import { CannotGetFile } from "../errors/api/CannotGetFile";
 import { CannotGetRepository } from "../errors/api/CannotGetRespository";
@@ -54,10 +54,8 @@ class GithubCommits {
     });
 
     appApi.interceptors.response.use(res => res, async(err) => {
-      const oldRequest = err.config;
-      
       if(err.response.headers["x-ratelimit-remaining"] === "0") {
-        await Histories.create(this.operation, this.data, oldRequest, user);
+        await RequestHistories.create(this.operation, this.data, user);
       };
 
       return Promise.reject(err);
