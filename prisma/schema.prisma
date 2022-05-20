@@ -21,8 +21,6 @@ model User {
   classrooms ClassroomRelation[]
   teams TeamRelation[]
   repositories Repository[]
-  commits Commit[]
-  histories RequestHistory[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime?
@@ -149,7 +147,6 @@ model Commit {
   totalAdditions Int @default(0)
   totalDeletions Int @default(0)
 
-  user User? @relation(fields: [userGithubId], references: [githubId], onDelete: Cascade)
   userGithubId String?
 
   repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
@@ -216,6 +213,5 @@ model RequestHistory {
 
   oldData Json?
 
-  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 }

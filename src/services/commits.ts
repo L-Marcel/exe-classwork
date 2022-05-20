@@ -4,6 +4,7 @@ import { RequestHistories } from "../controllers/RequestHistories";
 import { Users } from "../controllers/Users";
 import { CannotGetFile } from "../errors/api/CannotGetFile";
 import { CannotGetRepository } from "../errors/api/CannotGetRespository";
+import { writeLog } from "../utils/writeLog";
 import { Github } from "./github";
 
 class GithubCommits {
@@ -57,7 +58,7 @@ class GithubCommits {
       console.log(err.response.headers["x-ratelimit-remaining"], err.message);
       if(err.response.headers["x-ratelimit-remaining"] === "0") {
         console.log("Not ratelimit remaining... ", this.operation, this.data);
-        await RequestHistories.create(this.operation, this.data, user).then(() => {}).catch(e => console.log(e));
+        await RequestHistories.create(this.operation, this.data, user).then((res) => console.log(res)).catch(e => console.log(e));
       };
 
       return Promise.reject(err);
@@ -164,7 +165,7 @@ class GithubCommits {
       } as Partial<Commit>;
     }))
 
-    return commits.filter(c => c);
+    return commits.filter(c => c !== null);
   };
 
   async getFileData({ 
@@ -178,6 +179,8 @@ class GithubCommits {
     if(!appApi) {
       appApi = await this.getAppApi(authUserId);
     };
+
+    console.log(path, type);
 
     if(type === "blob") {
       const data = await appApi.get(url).then(res => res.data).catch(err => false as any);
@@ -214,7 +217,7 @@ class GithubCommits {
           url: result.url
         }, authUserId, appApi, repoFiles);
 
-        return file;
+        files.push(file);
       };
 
       return {
@@ -232,10 +235,13 @@ class GithubCommits {
   async getCommitsFiles(authUserId: string, repositoryFullname: string, commits: Partial<Commit>[]) {
     const appApi = await this.getAppApi(authUserId);
 
+    writeLog(authUserId);
+
     const trees = [];
     
     for(let c in commits) {
       const commit = commits[c];
+      console.log(commit.message);
 
       this.operation = "commitFiles";
       this.data = {
@@ -258,13 +264,14 @@ class GithubCommits {
       });
 
       if(!data) {
-        return null;
+        continue;
       };
 
       const files = [];
       
       for(let t in data.tree) {
         const result = data.tree[t];
+        console.log(result.path);
         
         this.operation = "commitFilesData";
         this.data = {
@@ -292,9 +299,8 @@ class GithubCommits {
           url: result.url
         }, authUserId, appApi, files);
 
-        return file;
+        files.push(file);
       };
-
 
       trees.push({
         group: commit.tree,
@@ -307,6 +313,7 @@ class GithubCommits {
       } as Partial<Tree>);
     };
     
+    writeLog({ name: "trees", trees });
     return trees;
   };
 };

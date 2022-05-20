@@ -2,6 +2,7 @@ import { Prisma as P } from "@prisma/client";
 import { NotFoundError } from "../errors/api/NotFoundError";
 import { GithubCommits } from "../services/commits";
 import { Prisma } from "../services/prisma";
+import { writeLog } from "../utils/writeLog";
 import { Commits } from "./Commits";
 
 export class Repositories {
@@ -74,6 +75,7 @@ export class Repositories {
 
         const commits = await ghCommits.getRepositoryCommits(authUserId, repositoryFullname);
         const files = await ghCommits.getCommitsFiles(authUserId, repositoryFullname, commits);
+        writeLog({ name: "files", files });
 
         const repository = await Prisma.repository.findUnique({
           where: {
