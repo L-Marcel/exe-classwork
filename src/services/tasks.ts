@@ -16,6 +16,5 @@ function refreshCommit(authUserId: string, repositoryFullname: string) {
   emitter.emit("@commits:refresh", authUserId, repositoryFullname);
 };
 
-
 export { emit, refreshCommit, emitter };
 

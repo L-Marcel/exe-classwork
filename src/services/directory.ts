@@ -1,19 +1,15 @@
 import axios, { AxiosInstance } from "axios";
 import jwt from "jsonwebtoken";
-import { RequestHistories } from "../controllers/RequestHistories";
 import { Users } from "../controllers/Users";
 import { CannotGetFile } from "../errors/api/CannotGetFile";
 import { CannotGetRepository } from "../errors/api/CannotGetRespository";
-import { writeLog } from "../utils/writeLog";
 import { Github } from "./github";
 
-class GithubCommits {
+class Directory {
   static privateKey = process.env.GITHUB_PRIVATE_KEY.replace(/\|/gm, '\n');
   static appId = process.env.GITHUB_APP_ID;
   static clientId = process.env.GITHUB_CLIENT_ID;
   static appName = process.env.APP_NAME;
-
-  constructor(private operation: string, private data: any) {};
 
   static async generateAppAccessToken(installationId: string) {
     const now = Math.floor(Date.now() / 1000) - 30;
@@ -42,9 +38,9 @@ class GithubCommits {
     });
   };
 
-  async getAppApi(userId: string) {
+  static async getAppApi(userId: string) {
     const user = await Users.getById(userId);
-    const token = await GithubCommits.generateAppAccessToken(user.installationId);
+    const token = await this.generateAppAccessToken(user.installationId);
     
     const appApi = axios.create({
       baseURL: "https://api.github.com/",
@@ -54,11 +50,13 @@ class GithubCommits {
       }
     });
 
-    appApi.interceptors.response.use(res => res, async(err) => {
-      console.log(err.response.headers["x-ratelimit-remaining"], err.message);
+    appApi.interceptors.response.use(res => {
+      console.log("\nRemaining: " + res.headers["x-ratelimit-remaining"] + ":");
+      return res;
+    }, async(err) => {
+      console.log("Error: " + err.response.headers["x-ratelimit-remaining"], err.message);
       if(err.response.headers["x-ratelimit-remaining"] === "0") {
-        console.log("Not ratelimit remaining... ", this.operation, this.data);
-        await RequestHistories.create(this.operation, this.data, user).then((res) => console.log(res)).catch(e => console.log(e));
+        console.log("Not ratelimit remaining... ");
       };
 
       return Promise.reject(err);
@@ -67,25 +65,15 @@ class GithubCommits {
     return appApi;
   };
 
-  async getCommitsRefs(
+  static async getCommitsRefs(
     repositoryFullname: string, 
     authUserId: string, 
     appApi?: AxiosInstance, 
     page = 1, 
-    per_page = 30,
-    lastRefs: any[] = []
+    per_page = 30
   ) {
     if(!appApi) {
       appApi = await this.getAppApi(authUserId);
-    };
-
-    this.operation = "commitsRef";
-    this.data = {
-      repositoryFullname,
-      authUserId,
-      page,
-      per_page,
-      lastRefs
     };
       
     const refs = await appApi.get<GithubRepositoryCommitRef[]>(`repos/${repositoryFullname}/commits?per_page=${per_page}&page=${page}`)
@@ -107,24 +95,17 @@ class GithubCommits {
 
     if(refs.length >= per_page) {
       const nextPage = page + 1;
-      const nextPageRefs = await this.getCommitsRefs(repositoryFullname, authUserId, appApi, nextPage, per_page, refs);
+      const nextPageRefs = await this.getCommitsRefs(repositoryFullname, authUserId, appApi, nextPage, per_page);
       return [ ...refs, ...nextPageRefs ];
     };
 
     return refs;
   };
 
-  async getRepositoryCommits(authUserId: string, repositoryFullname: string) {
+  static async getRepositoryCommits(authUserId: string, repositoryFullname: string) {
     const appApi = await this.getAppApi(authUserId);
 
     const commitsRef: GithubRepositoryCommitRef[] = await this.getCommitsRefs(repositoryFullname, authUserId, appApi);
-
-    this.operation = "commits";
-    this.data = {
-      repositoryFullname,
-      authUserId,
-      commitsRef
-    };
 
     const commits = await Promise.all(commitsRef.map(async(c) => {
       const data: GithubRepositoryCommit = await appApi.get<GithubRepositoryCommit>(`repos/${repositoryFullname}/commits/${c.sha}`)
@@ -168,93 +149,40 @@ class GithubCommits {
     return commits.filter(c => c !== null);
   };
 
-  async getFileData({ 
+  static async getFileData({ 
     path, 
     type, 
     url, 
-    commitId,
-    folderGroup,
-    folderSha
-  }: GithubTreesFile, authUserId: string, appApi?: AxiosInstance, repoFiles?: any, fileIndex?: number[]) {
+    commitSha
+  }: GithubTreesFile, authUserId: string, appApi?: AxiosInstance) {
     if(!appApi) {
       appApi = await this.getAppApi(authUserId);
     };
 
-    console.log(path, type);
-
     if(type === "blob") {
       const data = await appApi.get(url).then(res => res.data).catch(err => false as any);
+      console.log(path);
 
       return {
         blob: data?.content,
         encoding: data?.encoding,
-        commitId,
+        commitSha,
         path,
         sha: data?.sha,
-        folderGroup,
-        folderSha,
         type,
         url
       } as Partial<Tree>;
-    } else {
-      const data = await appApi.get(url).then(res => res.data).catch(err => false as any);
-
-      if(!data) {
-        return url;
-      };
-
-      const files = [];
-      
-      for(let t in data.tree) {
-        const result = data.tree[t];
-        
-        const file = await this.getFileData({ 
-          path: result.path,
-          type: result.type,
-          commitId,
-          folderGroup,
-          folderSha: data.sha,
-          url: result.url
-        }, authUserId, appApi, repoFiles);
-
-        files.push(file);
-      };
-
-      return {
-        path,
-        type,
-        sha: data.sha,
-        folderGroup,
-        folderSha,
-        url,
-        files
-      } as Partial<Tree>;
     };
+
+    return null;
   };
 
-  async getCommitsFiles(authUserId: string, repositoryFullname: string, commits: Partial<Commit>[]) {
+  static async getCommitsFiles(authUserId: string, repositoryFullname: string, commits: Partial<Commit>[]) {
     const appApi = await this.getAppApi(authUserId);
 
-    writeLog(authUserId);
-
-    const trees = [];
-    
-    for(let c in commits) {
-      const commit = commits[c];
-      console.log(commit.message);
-
-      this.operation = "commitFiles";
-      this.data = {
-        repositoryFullname,
-        authUserId,
-        commits: {
-          all: commits,
-          loaded: trees,
-          index: c
-        },
-      };
-
-      const data = await appApi.get(`repos/${repositoryFullname}/git/trees/${commit.tree}`)
+    const trees = await Promise.all(commits.map(async(commit) => {
+      console.log("\n\n----\n" + commit.message + "\n----\n\n")
+      const data = await appApi.get(`repos/${repositoryFullname}/git/trees/${commit.tree}?recursive=true`)
       .then(res => res.data).catch(err => {
         if(err.response.headers["x-ratelimit-remaining"] === "0") {
           throw new CannotGetFile(repositoryFullname);
@@ -263,60 +191,21 @@ class GithubCommits {
         return false;
       });
 
-      if(!data) {
-        continue;
-      };
+      return await Promise.all(data.tree.map(async(tree) => {
+        return await this.getFileData({ 
+          path: tree.path,
+          type: tree.type,
+          commitSha: commit.sha,
+          url: tree.url
+        }, authUserId, appApi);
+      }) as Partial<Tree>[]);
+    }));
 
-      const files = [];
-      
-      for(let t in data.tree) {
-        const result = data.tree[t];
-        console.log(result.path);
-        
-        this.operation = "commitFilesData";
-        this.data = {
-          repositoryFullname,
-          authUserId,
-          commits: {
-            all: commits,
-            loaded: trees,
-            index: c
-          },
-          files: {
-            sha: data.sha,
-            all: data.tree,
-            loaded: files,
-            index: t
-          }
-        };
-
-        const file = await this.getFileData({ 
-          path: result.path,
-          type: result.type,
-          commitId: commit.id,
-          folderGroup: commit.tree,
-          folderSha: data.sha,
-          url: result.url
-        }, authUserId, appApi, files);
-
-        files.push(file);
-      };
-
-      trees.push({
-        group: commit.tree,
-        sha: data.sha,
-        commitId: commit.id,
-        path: "/",
-        url: data.url,
-        type: "tree",
-        files,
-      } as Partial<Tree>);
-    };
-    
-    writeLog({ name: "trees", trees });
-    return trees;
+    return trees.filter(t => t !== null).map(e => {
+      return e.filter(f => f !== null);
+    });
   };
 };
 
-export { GithubCommits };
+export { Directory };
 

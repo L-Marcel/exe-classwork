@@ -1194,10 +1194,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@lmarcel/exe-code-analytics@^3.9.3":
-  version "3.9.3"
-  resolved "https://registry.yarnpkg.com/@lmarcel/exe-code-analytics/-/exe-code-analytics-3.9.3.tgz#589b5074403dcfa48c1e30b4c459df8464fd023a"
-  integrity sha512-2wWD4CtmFRT4qAvOVbk1cxxk7ZIMFnlGfeUgdF9LK1y30evz9rNL3JtnZyNNzofp+pgQT3uOQT9o8S38+bsTzQ==
+"@lmarcel/exe-code-analytics@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@lmarcel/exe-code-analytics/-/exe-code-analytics-4.0.1.tgz#a0cbe2a39888cf776aa6b81545f82500d04c1d36"
+  integrity sha512-KNQHnKG1OjB3vfL6ccflH4TdDAC5j/yT1bxSk3a6YZAADlxc8EQZoIRAyA0KmSEnzJ2onfqcTmJWk5LW1kmW6w==
   dependencies:
     node "^17.7.2"
 

@@ -1,9 +1,11 @@
+import { Analytic } from "@lmarcel/exe-code-analytics";
 import { Prisma as P } from "@prisma/client";
 import { NotFoundError } from "../errors/api/NotFoundError";
-import { GithubCommits } from "../services/commits";
+import { Directory } from "../services/directory";
 import { Prisma } from "../services/prisma";
-import { writeLog } from "../utils/writeLog";
+import { blobToString } from "../utils/blobToString";
 import { Commits } from "./Commits";
+import { Trees } from "./Trees";
 
 export class Repositories {
   static async link({
@@ -71,11 +73,8 @@ export class Repositories {
   static async sync(authUserId: string, repositoryFullname: string, force = false) {
     try {
       if(force) {
-        const ghCommits = new GithubCommits("sync", { authUserId, repositoryFullname });
-
-        const commits = await ghCommits.getRepositoryCommits(authUserId, repositoryFullname);
-        const files = await ghCommits.getCommitsFiles(authUserId, repositoryFullname, commits);
-        writeLog({ name: "files", files });
+        const commits = await Directory.getRepositoryCommits(authUserId, repositoryFullname);
+        const commitsWithfiles = await Directory.getCommitsFiles(authUserId, repositoryFullname, commits);
 
         const repository = await Prisma.repository.findUnique({
           where: {
@@ -98,6 +97,49 @@ export class Repositories {
             tree: undefined
           } as P.CommitCreateManyInput;
         }) as P.Enumerable<P.CommitCreateManyInput>);
+
+        const allFiles = commitsWithfiles.reduce((prev, cur) => {
+          prev = [ ...prev, ...cur ];
+
+          return prev;
+        }, []);
+
+        console.log("Starting code analytic...");
+
+        const analytics = new Analytic<Partial<Tree>>(allFiles.map(f => {
+          return {
+            content: blobToString(f.blob, f.encoding),
+            path: f.path,
+            blob: f.blob,
+            commitSha: f.commitSha,
+            encoding: f.encoding,
+            sha: f.sha,
+            type: f.type,
+            url: f.url
+          };
+        }));
+
+        const analyticResult = analytics.execute();
+
+        console.log("Starting create files function...");
+
+        await Trees.createMany(analyticResult.map(f => {
+          //Typescript problems
+          return {
+            commitSha: f.commitSha,
+            path: f.path,
+            sha: f.sha,
+            type: f.type,
+            url: f.url,
+            blob: f.blob,
+            churn: f.churn,
+            classes: f.classes,
+            complexity: f.complexity,
+            encoding: f.encoding,
+            methods: f.methods,
+            sloc: f.sloc
+          };
+        }));
       };
 
       console.log("Repository is loaded: ", repositoryFullname, " - in: ", new Date().toString());

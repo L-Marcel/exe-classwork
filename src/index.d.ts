@@ -232,7 +232,7 @@ declare type GithubTreesFile = {
   type: "blob" | "tree";
   url: string;
   path: string;
-  commitId?: string;
+  commitSha?: string;
   folderSha?: string;
   folderGroup?: string;
 };

@@ -158,8 +158,7 @@ model Commit {
 }
 
 model Tree {
-  group String @unique
-  sha String @unique
+  sha String
   
   path String
   type String
@@ -175,16 +174,10 @@ model Tree {
   methods String[]
   classes String[]
 
-  files Tree[] @relation("files")
+  commit Commit? @relation(fields: [commitSha], references: [id], onDelete: Cascade)
+  commitSha String
 
-  folder Tree? @relation("files", fields: [folderSha, folderGroup], references: [sha, group], onDelete: Cascade)
-  folderSha String?
-  folderGroup String?
-
-  commit Commit? @relation(fields: [commitId], references: [id], onDelete: Cascade)
-  commitId String
-
-  @@id([group, sha])
+  @@id([sha, path])
 }
 
 model Alert {
@@ -205,13 +198,4 @@ model Alert {
 
   commit Commit? @relation(fields: [commitId], references: [id], onDelete: Cascade)
   commitId String?
-}
-
-model RequestHistory {
-  id String @id @default(uuid())
-  title String
-
-  oldData Json?
-
-  userId String
 }
