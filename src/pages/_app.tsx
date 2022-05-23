@@ -7,7 +7,6 @@ import { theme } from "../theme/default";
 import "focus-visible/dist/focus-visible.min.js";
 import { QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import { GithubRequestLimit } from "../components/GithubRequestLimit";
 import { Layout } from "../components/Layout";
 import { Navigation } from "../components/Navigation";
 import { RouterLoading } from "../components/RouterLoading";
@@ -25,7 +24,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     >
       <ReactQueryDevtools/>
       <RouterLoading/>
-      <GithubRequestLimit/>
       <Navigation/>
       <Layout>
         <Component {...pageProps}/>

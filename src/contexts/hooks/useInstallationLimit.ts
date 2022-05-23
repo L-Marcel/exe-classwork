@@ -14,7 +14,7 @@ function useInstallationLimit(): InstallationLimit {
   const { user } = useUser();
   const [token, setToken] = useState<string | null>(null);
 
-  const { data: rate } = useQuery(token, async() => {
+  const { data: rate, isFetching } = useQuery(token, async() => {
     if(!user?.installationId || token === null) {
       return initialData;
     };
@@ -56,7 +56,8 @@ function useInstallationLimit(): InstallationLimit {
     limit: rate?.limit || initialData.limit,
     used: rate?.used || initialData.used,
     remaining: rate?.remaining || initialData.remaining,
-    reset: rate?.reset || initialData.reset
+    reset: rate?.reset || initialData.reset,
+    isFetching
   };
 };
 

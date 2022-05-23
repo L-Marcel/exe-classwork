@@ -10,6 +10,7 @@ import { ToggleColorButton } from "../Buttons/ToogleColorButton";
 import { NamedIcon } from "../NamedIcon";
 import { Overlay } from "../Overlay";
 import { Profile } from "../Profile";
+import { GithubRequestLimit } from "./GithubRequestLimit";
 import { NavigationItem } from "./NavigationItem";
 
 interface NavigationProps extends BoxProps {};
@@ -70,7 +71,10 @@ function Navigation({ ...rest }: NavigationProps) {
 
   return (
     <>
-      { (!isWideOrNormalVersion && !isOpen) && <Box
+      <GithubRequestLimit
+        haveOverlay={isOpen}
+      />
+      { (!isWideOrNormalVersion) && <Box
         position="absolute"
         display="flex"
         top={0}
@@ -116,7 +120,7 @@ function Navigation({ ...rest }: NavigationProps) {
           w="min-content"
           bgColor={(isWideOrNormalVersion || isOpen)? "solid.100":"solid.25"}
           top={[2, 2, "90px"]}
-          zIndex={902}
+          zIndex={903}
           p={2}
         >
           { !isWideOrNormalVersion && 

@@ -249,4 +249,5 @@ declare type InstallationLimit = {
   used: number;
   remaining: number;
   reset: number;
+  isFetching: boolean;
 };
