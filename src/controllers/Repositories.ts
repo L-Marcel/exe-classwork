@@ -1,4 +1,4 @@
-import { Analytic } from "@lmarcel/exe-code-analytics";
+import { CodeAnalytic } from "@lmarcel/exe-code-analytics";
 import { Prisma as P } from "@prisma/client";
 import { NotFoundError } from "../errors/api/NotFoundError";
 import { Directory } from "../services/directory";
@@ -106,7 +106,7 @@ export class Repositories {
 
         console.log("Starting code analytic...");
 
-        const analytics = new Analytic<Partial<Tree>>(allFiles.map(f => {
+        const analytics = new CodeAnalytic<Partial<Tree>>(allFiles.map(f => {
           return {
             content: blobToString(f.blob, f.encoding),
             path: f.path,
@@ -123,23 +123,25 @@ export class Repositories {
 
         console.log("Starting create files function...");
 
-        await Trees.createMany(analyticResult.map(f => {
-          //Typescript problems
-          return {
-            commitSha: f.commitSha,
-            path: f.path,
-            sha: f.sha,
-            type: f.type,
-            url: f.url,
-            blob: f.blob,
-            churn: f.churn,
-            classes: f.classes,
-            complexity: f.complexity,
-            encoding: f.encoding,
-            methods: f.methods,
-            sloc: f.sloc
-          };
-        }));
+        if(process.env.NODE_ENV === "development") {
+          await Trees.createMany(analyticResult.map(f => {
+            //Typescript problems
+            return {
+              commitSha: f.commitSha,
+              path: f.path,
+              sha: f.sha,
+              type: f.type,
+              url: f.url,
+              blob: f.blob,
+              churn: f.churn,
+              classes: f.classes.all,
+              complexity: f.complexity,
+              encoding: f.encoding,
+              methods: f.methods.all,
+              sloc: f.sloc
+            };
+          }));
+        };
       };
 
       console.log("Repository is loaded: ", repositoryFullname, " - in: ", new Date().toString());

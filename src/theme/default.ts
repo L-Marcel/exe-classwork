@@ -75,7 +75,7 @@ export const theme = extendTheme({
           overflowX: "hidden",
           isRandom: true
         },
-        'div[role="progressbar"]': {
+        'div[role="progressbar"]:not(.circle)': {
           bgGradient: "linear(to-r, transparent, primary.700)",
         },
         '.chakra-switch__track[data-checked]': {

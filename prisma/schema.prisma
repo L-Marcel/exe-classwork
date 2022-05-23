@@ -131,7 +131,6 @@ model Commit {
   id String @id @default(uuid())
 
   sha String @unique
-  trees Tree[]
 
   message String?
   
@@ -158,7 +157,9 @@ model Commit {
 }
 
 model Tree {
-  sha String
+  id String @id @default(uuid())
+
+  sha String?
   
   path String
   type String
@@ -174,10 +175,7 @@ model Tree {
   methods String[]
   classes String[]
 
-  commit Commit? @relation(fields: [commitSha], references: [id], onDelete: Cascade)
-  commitSha String
-
-  @@id([sha, path])
+  commitSha String?
 }
 
 model Alert {

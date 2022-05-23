@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
-
 import { createHmac } from "crypto";
+import jwt from "jsonwebtoken";
 import { buffer } from "micro";
 import { NextApiRequest } from "next";
 import { ClassroomRelations } from "../controllers/ClassroomRelations";
@@ -57,6 +57,33 @@ export class Github {
     });
   };
 
+  static async generateAppAccessToken(installationId: string) {
+    const now = Math.floor(Date.now() / 1000) - 30;
+  
+    const expiration = now + 60 * 10;
+  
+    const payload = {
+      iat: now,
+      exp: expiration,
+      iss: this.appId
+    };
+  
+    const token = jwt.sign(payload, this.privateKey, { algorithm: "RS256" });
+    
+    return await this.api.post<{ token: string }>(
+      `app/installations/${installationId}/access_tokens`,
+      payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/vnd.github.machine-man-preview+json"
+      }
+    }).then(res => {
+      return res.data.token;
+    }).catch((err) => {
+      throw new Error("Can't access Github app token.");
+    });
+  };
+  
   static async checkIfTokenIsValid(token: string): Promise<GithubUser> {
     const { user } = await this.api.post(`/applications/${this.clientId}/token`, {
       access_token: token

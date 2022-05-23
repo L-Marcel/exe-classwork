@@ -1,46 +1,13 @@
 import axios, { AxiosInstance } from "axios";
-import jwt from "jsonwebtoken";
 import { Users } from "../controllers/Users";
 import { CannotGetFile } from "../errors/api/CannotGetFile";
 import { CannotGetRepository } from "../errors/api/CannotGetRespository";
 import { Github } from "./github";
 
 class Directory {
-  static privateKey = process.env.GITHUB_PRIVATE_KEY.replace(/\|/gm, '\n');
-  static appId = process.env.GITHUB_APP_ID;
-  static clientId = process.env.GITHUB_CLIENT_ID;
-  static appName = process.env.APP_NAME;
-
-  static async generateAppAccessToken(installationId: string) {
-    const now = Math.floor(Date.now() / 1000) - 30;
-
-    const expiration = now + 60 * 10;
-
-    const payload = {
-      iat: now,
-      exp: expiration,
-      iss: this.appId
-    };
-
-    const token = jwt.sign(payload, this.privateKey, { algorithm: "RS256" });
-    
-    return await Github.api.post<{ token: string }>(
-      `app/installations/${installationId}/access_tokens`,
-      payload, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/vnd.github.machine-man-preview+json"
-      }
-    }).then(res => {
-      return res.data.token;
-    }).catch((err) => {
-      throw new Error("Can't access Github app token.");
-    });
-  };
-
   static async getAppApi(userId: string) {
     const user = await Users.getById(userId);
-    const token = await this.generateAppAccessToken(user.installationId);
+    const token = await Github.generateAppAccessToken(user.installationId);
     
     const appApi = axios.create({
       baseURL: "https://api.github.com/",
@@ -51,7 +18,7 @@ class Directory {
     });
 
     appApi.interceptors.response.use(res => {
-      console.log("\nRemaining: " + res.headers["x-ratelimit-remaining"] + ":");
+      res.headers["x-ratelimit-remaining"] && console.log("\nRate limit remaining: " + res.headers["x-ratelimit-remaining"]);
       return res;
     }, async(err) => {
       console.log("Error: " + err.response.headers["x-ratelimit-remaining"], err.message);

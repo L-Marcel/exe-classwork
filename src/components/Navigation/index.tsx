@@ -148,15 +148,15 @@ function Navigation({ ...rest }: NavigationProps) {
                 }
             />
           );
-        })}
-        { (isWideOrNormalVersion || isOpen) && <SignOutButton
-          zIndex={10}
-          theme="red"
-          colorIndexes={["400", "400", "400"]}
-          forceHoverEffect
-        /> }
-      </Stack>
-    </Box>
+          })}
+          { (isWideOrNormalVersion || isOpen) && <SignOutButton
+            zIndex={10}
+            theme="red"
+            colorIndexes={["400", "400", "400"]}
+            forceHoverEffect
+          /> }
+        </Stack>
+      </Box>
     </>
   );
 };

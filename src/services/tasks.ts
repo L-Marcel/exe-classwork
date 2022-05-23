@@ -13,7 +13,7 @@ function emit(event: TaskEventTypes, ...args: any) {
 };
 
 function refreshCommit(authUserId: string, repositoryFullname: string) {
-  emitter.emit("@commits:refresh", authUserId, repositoryFullname);
+  emit("@commits:refresh", authUserId, repositoryFullname);
 };
 
 export { emit, refreshCommit, emitter };

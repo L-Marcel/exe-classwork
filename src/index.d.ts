@@ -242,4 +242,11 @@ declare type GithubTrees = {
   tree: GithubTreesFile[];
 };
 
-declare type TaskEventTypes = "@commits:refresh" | "@tasks:status:commits";
+declare type TaskEventTypes = "@commits:refresh";
+
+declare type InstallationLimit = {
+  limit: number;
+  used: number;
+  remaining: number;
+  reset: number;
+};
