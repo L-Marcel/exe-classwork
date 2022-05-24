@@ -5,4 +5,16 @@ function getFormattedDate(date: string, locale?: string) {
   }).format(new Date(date));
 };
 
-export { getFormattedDate };
+function getFormattedDateTime(date: string, locale?: string) {
+  return new Intl.DateTimeFormat(locale ?? "en-US", {
+    day: "2-digit",
+    year: "numeric",
+    month: "long",
+    hour: "numeric",
+    minute: "2-digit"
+  }).format(new Date(date));
+};
+
+
+export { getFormattedDate, getFormattedDateTime };
+

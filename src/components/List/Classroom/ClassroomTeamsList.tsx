@@ -20,7 +20,7 @@ function ClassroomTeamsList({ initialData, classroomId }: ClassroomTeamsListProp
       {teams.length === 0 && (isFetching? 
         <SearchingMessage/>:
         <NotFoundMessage
-          instance="member"
+          instance="team"
         />
       )}
       <Stack

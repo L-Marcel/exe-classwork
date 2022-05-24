@@ -1,3 +1,4 @@
+import { Alerts } from "../../../../../../controllers/Alerts";
 import { Repositories } from "../../../../../../controllers/Repositories";
 import { Teams } from "../../../../../../controllers/Teams";
 import { Users } from "../../../../../../controllers/Users";
@@ -17,6 +18,7 @@ async function createTeam(req: Req, res: Res) {
   }));
 
   const team = await Teams.create(user, String(classroomId), users, data);
+  
   await Repositories.link({
     repository: {
       ...repository,
@@ -28,6 +30,25 @@ async function createTeam(req: Req, res: Res) {
     },
     classroomId: classroomId?.toString() || "",
     teamId: team.team.id
+  }).then(async(res) => {
+    try {
+      await Alerts.create("TEAM", {
+        description: `Repository ${repository.fullname} was been linked.`,
+        avatarUrl: user.avatarUrl,
+        classroomId: String(classroomId),
+        repositoryId: res.id,
+        teamId: team.team.id
+      });
+    } catch (error) {};
+
+    return res;
+  }).catch(async() => {
+    await Alerts.create("TEAM", {
+      description: `Can't link ${repository.fullname}.`,
+      avatarUrl: user.avatarUrl,
+      classroomId: String(classroomId),
+      teamId: team.team.id
+    });
   });
 
   return res.status(201).send("");

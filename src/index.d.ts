@@ -8,6 +8,18 @@ declare type _TeamRelation = import("@prisma/client").TeamRelation;
 declare type _Repository = import("@prisma/client").Repository;
 declare type _Commit = import("@prisma/client").Commit;
 declare type _Tree = import("@prisma/client").Tree;
+declare type _Alert = import("@prisma/client").Alert;
+declare type _Visualization = import("@prisma/client").Visualization;
+
+declare interface Visualization extends _Visualization {};
+
+declare interface Alert extends _Alert {
+  type: AlertTypes;
+  classroom?: Partial<Classroom>;
+  commit?: Partial<Commit>;
+  repository?: Partial<Repository>;
+  team?: Partial<Team>;
+};
 
 declare interface Tree extends _Tree {
   files?: Tree[];
@@ -250,4 +262,11 @@ declare type InstallationLimit = {
   remaining: number;
   reset: number;
   isFetching: boolean;
+};
+
+declare type AlertTypeTagParams = {
+  type: AlertTypes;
+  classroom?: string;
+  repository?: string;
+  team?: string;
 };

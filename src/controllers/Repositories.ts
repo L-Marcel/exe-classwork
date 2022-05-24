@@ -4,6 +4,7 @@ import { NotFoundError } from "../errors/api/NotFoundError";
 import { Directory } from "../services/directory";
 import { Prisma } from "../services/prisma";
 import { blobToString } from "../utils/blobToString";
+import { Alerts } from "./Alerts";
 import { Commits } from "./Commits";
 import { Trees } from "./Trees";
 
@@ -67,6 +68,15 @@ export class Repositories {
   static async create(data: P.RepositoryCreateInput) {
     return await Prisma.repository.create({
       data
+    }).then(async(res) => {
+      try {
+        await Alerts.create("REPOSITORY", {
+          description: `Repository ${res.fullname} was been required by server.`,
+          repositoryId: res.id
+        });
+      } catch (error) {};
+
+      return res;
     });
   };
 
@@ -81,7 +91,8 @@ export class Repositories {
             fullname: repositoryFullname
           },
           select: {
-            id: true
+            id: true,
+            fullname: true
           }
         });
 
@@ -89,7 +100,8 @@ export class Repositories {
           throw new NotFoundError("Repository");
         };
 
-        await Commits.createMany(commits.map((c: Commit) => {
+
+        const commitsCount = await Commits.createMany(commits.map((c: Commit) => {
           return {
             ...c,
             repositoryId: repository.id,
@@ -97,6 +109,16 @@ export class Repositories {
             tree: undefined
           } as P.CommitCreateManyInput;
         }) as P.Enumerable<P.CommitCreateManyInput>);
+
+        await Alerts.create("REPOSITORY", {
+          description: `Repository ${repository.fullname} was been loaded (${commitsCount.count} commits).`,
+          repositoryId: repository.id
+        });
+
+        await Alerts.create("REPOSITORY", {
+          description: `Can't load files of ${repository.fullname} commits (blocked in production).`,
+          repositoryId: repository.id
+        });
 
         const allFiles = commitsWithfiles.reduce((prev, cur) => {
           prev = [ ...prev, ...cur ];
