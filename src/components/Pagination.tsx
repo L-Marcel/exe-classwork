@@ -16,10 +16,6 @@ function Pagination({ ...rest }: PaginationProps) {
   const max = Math.ceil(count/12);
   const min = 1;
 
-  if(max <= 1) {
-    return null;
-  };
-
   return (
     <HStack
       spacing={2}
