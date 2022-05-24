@@ -27,6 +27,9 @@ export class Alerts {
     return await Prisma.alert.findMany({
       take: 12,
       skip: 12 * page,
+      orderBy: {
+        createdAt: "desc"
+      },
       where: {
         AND: [
           {
@@ -55,6 +58,12 @@ export class Alerts {
                 team: {
                   title: getApiQuery(query)
                 }
+              },
+              {
+                description: getApiQuery(query)
+              },
+              {
+                type: getApiQuery(query)
               }
             ]
           },
@@ -180,6 +189,12 @@ export class Alerts {
                 team: {
                   title: getApiQuery(query)
                 }
+              },
+              {
+                description: getApiQuery(query)
+              },
+              {
+                type: getApiQuery(query)
               }
             ]
           },

@@ -267,6 +267,5 @@ declare type InstallationLimit = {
 declare type AlertTypeTagParams = {
   type: AlertTypes;
   classroom?: string;
-  repository?: string;
   team?: string;
 };

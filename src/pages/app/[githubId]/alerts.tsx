@@ -30,7 +30,7 @@ function AlertsPage() {
             mb={5}
           >
             <Search
-              placeholder="Search by title..."
+              placeholder="Search by message, classroom, commit, or team..."
             />
           </HStack>
           <Pagination/>

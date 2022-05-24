@@ -24,7 +24,6 @@ function AlertItem({
         {getAlertTags({
           type: alert.type,
           classroom: alert.classroom?.title,
-          repository: alert.repository?.fullname,
           team: alert.team?.title
         })}
       </Text>

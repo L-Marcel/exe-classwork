@@ -12,8 +12,6 @@ async function getAlerts(req: Req, res: Res) {
     query: query?.toString()
   });
 
-  console.log(alerts);
-
   try {
     await Visualizations.alertsVisualizedBy(alerts.map((a) => {
       return {
