@@ -22,7 +22,7 @@ function ClassroomsPage({ user }: ClassroomsPageProps) {
         <Box
           display="flex"
           flexDir={["column", "column", "column", "row"]}
-          alignItems={["center", "flex-start"]}
+          alignItems={["flex-start"]}
           flexWrap="wrap"
           mt={5}
           justifyContent="space-between"

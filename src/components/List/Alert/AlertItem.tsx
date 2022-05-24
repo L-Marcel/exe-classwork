@@ -36,6 +36,7 @@ function AlertItem({
           <Avatar
             src={alert.avatarUrl}
             size="sm"
+            display={["none", "none", "inline-flex", "inline-flex", "inline-flex", "inline-flex"]}
             mr={2}
           />
         }
