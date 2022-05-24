@@ -1,9 +1,26 @@
 import { Prisma as P } from "@prisma/client";
 import { Prisma } from "../services/prisma";
+import { Alerts } from "./Alerts";
 
 export class Visualizations {
-  static async isVisualized(alertId: string, userId) {
-    const visualization = Prisma.visualization.findUnique({
+  static async isNotVisualizedByUser(userId: string) {
+    const alerts = await Alerts.getAllByUser(userId);
+
+    let alertsNotVisualized = [];
+    
+    for(let a in alerts) {
+      const isVisualized = await this.isVisualized(alerts[a].id, userId);
+
+      if(!isVisualized) {
+        alertsNotVisualized.push(alerts[a]);
+      };
+    };
+
+    return alertsNotVisualized as typeof alerts;
+  };
+
+  static async isVisualized(alertId: string, userId: string) {
+    const visualization = await Prisma.visualization.findUnique({
       where: {
         userId_alertId: {
           alertId,
@@ -11,7 +28,6 @@ export class Visualizations {
         }
       }
     });
-
 
     if(visualization) {
       return true;

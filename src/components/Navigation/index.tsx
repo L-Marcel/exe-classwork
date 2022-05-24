@@ -10,6 +10,7 @@ import { ToggleColorButton } from "../Buttons/ToogleColorButton";
 import { NamedIcon } from "../NamedIcon";
 import { Overlay } from "../Overlay";
 import { Profile } from "../Profile";
+import { AlertsCount } from "./AlertsCount";
 import { GithubRequestLimit } from "./GithubRequestLimit";
 import { NavigationItem } from "./NavigationItem";
 
@@ -124,14 +125,25 @@ function Navigation({ ...rest }: NavigationProps) {
           p={2}
         >
           { !isWideOrNormalVersion && 
-            <IconButton
-              aria-label="navigation-menu"
-              icon={<NamedIcon name={isOpen? "close":"menu"}/>}
-              zIndex={10}
-              theme={isOpen? "red":"primary"}
-              colorIndexes={isOpen? ["400", "400", "400"]:undefined}
-              onClick={() => setIsOpen(o => !o)}
-            /> }
+            <Box
+              position="relative"
+              display="flex"
+              alignItems="center"
+            >
+              <AlertsCount
+                isForced
+                isMenu
+              />
+              <IconButton
+                aria-label="navigation-menu"
+                icon={<NamedIcon name={isOpen? "close":"menu"}/>}
+                zIndex={10}
+                theme={isOpen? "red":"primary"}
+                colorIndexes={isOpen? ["400", "400", "400"]:undefined}
+                onClick={() => setIsOpen(o => !o)}
+              />
+            </Box>
+          }
           { (isWideOrNormalVersion || isOpen) && <ToggleColorButton
             zIndex={10}
             colorIndexes={isOpen? ["400", "400", "400"]:undefined}

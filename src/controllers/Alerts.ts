@@ -20,6 +20,72 @@ export class Alerts {
     });
   };
 
+  static async getAllByUser(userId: string) {
+    return await Prisma.alert.findMany({
+      orderBy: {
+        createdAt: "desc"
+      },
+      where: {
+        OR: [
+          {
+            classroom: {
+              users: {
+                some: {
+                  userId,
+                  role: "OWNER"
+                }
+              }
+            }
+          },
+          {
+            classroom: {
+              users: {
+                some: {
+                  userId,
+                  role: "ADMIN"
+                }
+              }
+            }
+          },
+          {
+            classroom: {
+              users: {
+                some: {
+                  userId,
+                  role: "OBSERVER"
+                }
+              }
+            }
+          },
+          {
+            commit: {
+              repository: {
+                ownerId: userId
+              }
+            }
+          },
+          {
+            repository: {
+              ownerId: userId
+            }
+          },
+          {
+            team: {
+              users: {
+                some: {
+                  userId
+                }
+              }
+            }
+          }
+        ]
+      },
+      select: {
+        id: true
+      }
+    });
+  };
+
   static async getByUser(userId: string, {
     page = 0,
     query = ""

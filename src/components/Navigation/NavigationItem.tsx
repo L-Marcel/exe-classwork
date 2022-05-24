@@ -3,6 +3,7 @@ import { m } from "framer-motion";
 import { IconButton } from "../Buttons/IconButton";
 import { Link } from "../Link";
 import { NamedIcon } from "../NamedIcon";
+import { AlertsCount } from "./AlertsCount";
 interface NavigationItemProps extends ButtonProps {
   path: string;
   name: string;
@@ -49,6 +50,12 @@ function NavigationItem({
           {...rest}
         />
       </Link>
+      {
+        path.endsWith("alerts") && 
+        <AlertsCount
+          isForced={forceExpanded}
+        />
+      }
       <Text
         as={m.p}
         position="absolute"
