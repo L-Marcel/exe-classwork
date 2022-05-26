@@ -6,6 +6,11 @@ class Commits {
     return await Prisma.commit.createMany({
       skipDuplicates: true,
       data
+    }).then(res => res).catch(err => {
+      console.log(err);
+      return {
+        count: 0
+      };
     });
   };
 };

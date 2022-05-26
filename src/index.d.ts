@@ -236,22 +236,17 @@ declare type GithubRepositoryCommit = {
     id: number;
   };
   files: {
-    status: "added" | "removed" | "modified" | "renamed" | "copied" | "changed" | "unchanged"
+    status: "added" | "removed" | "modified" | "renamed" | "copied" | "changed" | "unchanged";
+    filename: string;
+    raw_url: string;
   }[];
 };
 
 declare type GithubTreesFile = {
-  type: "blob" | "tree";
   url: string;
   path: string;
-  commitSha?: string;
-  folderSha?: string;
-  folderGroup?: string;
-};
-
-declare type GithubTrees = {
-  sha: string;
-  tree: GithubTreesFile[];
+  content: string;
+  commit: string;
 };
 
 declare type TaskEventTypes = "@commits:refresh";

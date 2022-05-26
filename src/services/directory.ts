@@ -1,7 +1,8 @@
+import { CodeAnalytic, CodeAnalyticFile } from "@lmarcel/exe-code-analytics";
 import axios, { AxiosInstance } from "axios";
 import { Users } from "../controllers/Users";
-import { CannotGetFile } from "../errors/api/CannotGetFile";
 import { CannotGetRepository } from "../errors/api/CannotGetRespository";
+import { getRawString } from "../utils/getRawString";
 import { Github } from "./github";
 
 class Directory {
@@ -74,7 +75,9 @@ class Directory {
 
     const commitsRef: GithubRepositoryCommitRef[] = await this.getCommitsRefs(repositoryFullname, authUserId, appApi);
 
-    const commits = await Promise.all(commitsRef.map(async(c) => {
+    let oldCommitFiles: GithubTreesFile[] = [];
+
+    const commits = await Promise.all(commitsRef.reverse().map(async(c) => {
       const data: GithubRepositoryCommit = await appApi.get<GithubRepositoryCommit>(`repos/${repositoryFullname}/commits/${c.sha}`)
       .then(res => res.data).catch(err => false as any);
 
@@ -98,6 +101,77 @@ class Directory {
         removed: 0
       });
 
+      const files: GithubTreesFile[] = await Promise.all(data.files.map(async(f) => {
+        return await this.getFileData({ 
+          path: f.filename,
+          url: f.raw_url,
+          commit: c.sha
+        }, authUserId, appApi);
+      }));
+
+      const allFiles = [ 
+        ...oldCommitFiles,
+        ...files
+      ];
+
+      const analytics = new CodeAnalytic<typeof allFiles[0]>(allFiles.map(f => {
+        return {
+          content: f.content,
+          path: f.path,
+          commit: f.commit,
+          url: f.url
+        };
+      }));
+
+      const analyticResult = analytics.execute();
+
+      console.log("Commit loaded");
+
+      oldCommitFiles = analyticResult.map((r) => {
+        return {
+          content: r.content,
+          path: r.path,
+          commit: r.commit,
+          url: r.url
+        };
+      });
+
+      console.log("Old commits updated");
+
+      const currentCommitResult = analyticResult.reduce((prev, cur) => {
+        const pathIndex = prev.findIndex(r => r.path === cur.path);
+
+        if(pathIndex >= 0) {
+          prev[pathIndex] = cur;
+        } else {
+          prev.push(cur);
+        };
+
+        return prev;
+      }, [] as (CodeAnalyticFile & GithubTreesFile)[]);
+
+      console.log("Result filtered");
+
+      const commitMetrics = currentCommitResult.reduce((prev, cur) => {
+        prev.churn += cur.churn;
+      
+        prev.sloc += cur.sloc;
+        prev.complexity += cur.complexity;
+
+        prev.classes = [ ...prev.classes, ...cur.classes.all ];
+        prev.methods = [ ...prev.methods, ...cur.methods.all ];
+
+        return prev;
+      }, {
+        churn: 0,
+        complexity: 0,
+        sloc: 0,
+        methods: [],
+        classes: []
+      });
+
+      console.log("Metrics saved");
+
       return {
         userGithubId: data.committer?.id?.toString(),
         filesAdded: count.added,
@@ -108,7 +182,11 @@ class Directory {
         totalAdditions: data.stats.additions,
         totalChanges: data.stats.total,
         totalDeletions: data.stats.deletions,
-        tree: c.commit.tree.sha,
+        classes: commitMetrics.classes,
+        methods: commitMetrics.methods,
+        complexity: commitMetrics.complexity,
+        churn: commitMetrics.churn,
+        sloc: commitMetrics.sloc,
         url: data.html_url
       } as Partial<Commit>;
     }))
@@ -118,59 +196,21 @@ class Directory {
 
   static async getFileData({ 
     path, 
-    type, 
-    url, 
-    commitSha
-  }: GithubTreesFile, authUserId: string, appApi?: AxiosInstance) {
+    url,
+    commit
+  }: Partial<GithubTreesFile>, authUserId: string, appApi?: AxiosInstance): Promise<GithubTreesFile> {
     if(!appApi) {
       appApi = await this.getAppApi(authUserId);
     };
 
-    if(type === "blob") {
-      const data = await appApi.get(url).then(res => res.data).catch(err => false as any);
-      console.log(path);
+    const data = await appApi.get(url).then(res => res.data).catch(err => false as any);
 
-      return {
-        blob: data?.content,
-        encoding: data?.encoding,
-        commitSha,
-        path,
-        sha: data?.sha,
-        type,
-        url
-      } as Partial<Tree>;
-    };
-
-    return null;
-  };
-
-  static async getCommitsFiles(authUserId: string, repositoryFullname: string, commits: Partial<Commit>[]) {
-    const appApi = await this.getAppApi(authUserId);
-
-    const trees = await Promise.all(commits.map(async(commit) => {
-      console.log("\n\n----\n" + commit.message + "\n----\n\n")
-      const data = await appApi.get(`repos/${repositoryFullname}/git/trees/${commit.tree}?recursive=true`)
-      .then(res => res.data).catch(err => {
-        if(err.response.headers["x-ratelimit-remaining"] === "0") {
-          throw new CannotGetFile(repositoryFullname);
-        };
-
-        return false;
-      });
-
-      return await Promise.all(data.tree.map(async(tree) => {
-        return await this.getFileData({ 
-          path: tree.path,
-          type: tree.type,
-          commitSha: commit.sha,
-          url: tree.url
-        }, authUserId, appApi);
-      }) as Partial<Tree>[]);
-    }));
-
-    return trees.filter(t => t !== null).map(e => {
-      return e.filter(f => f !== null);
-    });
+    return {
+      content: getRawString(data),
+      commit,
+      path,
+      url
+    } as GithubTreesFile;
   };
 };
 

@@ -147,6 +147,13 @@ model Commit {
   totalAdditions Int @default(0)
   totalDeletions Int @default(0)
 
+  churn Int @default(0)
+  complexity Int @default(0)
+  sloc Int @default(0)
+
+  methods String[]
+  classes String[]
+
   userGithubId String?
 
   repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
@@ -155,28 +162,6 @@ model Commit {
   alerts Alert[]
 
   createdAt DateTime @default(now())
-}
-
-model Tree {
-  id String @id @default(uuid())
-
-  sha String?
-  
-  path String
-  type String
-  url String
-
-  blob String?
-  encoding String? @default("base64")
-
-  churn Int @default(0)
-  complexity Int @default(0)
-  sloc Int @default(0)
-
-  methods String[]
-  classes String[]
-
-  commitSha String?
 }
 
 model Visualization {
