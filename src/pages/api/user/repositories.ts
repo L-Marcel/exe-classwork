@@ -1,26 +1,26 @@
-import { Classrooms } from "../../../controllers/Classrooms";
+import { Repositories } from "../../../controllers/Repositories";
 import { apiHandle } from "../../../utils/api/apiHandle";
 import { withUser } from "../../../utils/api/middlewares/withUser";
 
-async function getClassrooms(req: Req, res: Res) {
+async function getRepositories(req: Req, res: Res) {
   const { page, query } = req.query;
   const user = req.user;
   
-  const classrooms = await Classrooms.getByUser(user.id, { 
+  const repositories = await Repositories.getByUser(user.id, { 
     page: Number(page),
     query: query?.toString()
   });
 
-  const { _count } = await Classrooms.countByUser(user.id, { 
+  const { _count } = await Repositories.countByUser(user.id, { 
     query: query?.toString()
   });
 
   return res.status(200).json({ 
-    items: classrooms,
+    items: repositories,
     count: _count._all
   });
 };
 
 export default apiHandle({
-  "GET": withUser(getClassrooms)
+  "GET": withUser(getRepositories)
 });

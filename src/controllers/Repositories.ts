@@ -2,6 +2,7 @@ import { Prisma as P } from "@prisma/client";
 import { NotFoundError } from "../errors/api/NotFoundError";
 import { Directory } from "../services/directory";
 import { Prisma } from "../services/prisma";
+import { getApiQuery } from "../utils/getApiQuery";
 import { Alerts } from "./Alerts";
 import { Commits } from "./Commits";
 
@@ -117,5 +118,126 @@ export class Repositories {
     } catch (error) {
       console.log(error);
     };
+  };
+
+  static async getByUser(userId: string, {
+    page = 0,
+    query = ""
+  }) {
+    return await Prisma.repository.findMany({
+      take: 12,
+      skip: 12 * page,
+      orderBy: {
+        createdAt: "desc"
+      },
+      where: {
+        AND: [
+          {
+            OR: [
+              {
+                classroom: {
+                  title: getApiQuery(query)
+                }
+              },
+              {
+                team: {
+                  title: getApiQuery(query)
+                }
+              },
+              {
+                fullname: getApiQuery(query)
+              },
+              {
+                name: getApiQuery(query)
+              }
+            ]
+          },
+          {
+            OR: [
+              {
+                ownerId: userId
+              }
+            ]
+          }
+        ]
+      },
+      select: {
+        id: true,
+        description: true,
+        fullname: true,
+        name: true,
+        updatedAt: true,
+        updatedBy: true,
+        team: {
+          select: {
+            title: true,
+            id: true
+          }
+        },
+        classroom: {
+          select: {
+            title: true,
+            id: true
+          }
+        }
+      }
+    });
+  };
+
+  static async countByUser(userId: string, {
+    query = ""
+  }) {
+    return await Prisma.repository.aggregate({
+      _count: {
+        _all: true
+      },
+      where: {
+        AND: [
+          {
+            OR: [
+              {
+                classroom: {
+                  title: getApiQuery(query)
+                }
+              },
+              {
+                team: {
+                  title: getApiQuery(query)
+                }
+              },
+              {
+                fullname: getApiQuery(query)
+              },
+              {
+                name: getApiQuery(query)
+              }
+            ]
+          },
+          {
+            OR: [
+              {
+                ownerId: userId
+              }
+            ]
+          }
+        ]
+      },
+    });
+  };
+
+  static async get(id: string, canReturnFalse: boolean = false) {
+    const repository = await Prisma.repository.findUnique({
+      where: {
+        id
+      }
+    });
+
+    if(!repository && !canReturnFalse) {
+      throw new NotFoundError();
+    } else if(!repository) {
+      return false;
+    };
+
+    return repository;
   };
 };

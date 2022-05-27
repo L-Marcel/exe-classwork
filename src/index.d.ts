@@ -123,6 +123,8 @@ declare interface AppContext {
   setUser: (user: User) => void;
   classroom: Classroom | null;
   setClassroom: (classroom: Classroom) => void;
+  repository: Repository | null;
+  setRepository: (repository: Repository) => void;
   signOut: () => void;
   inputErrors: InputErrors;
   addInputErrors: (errors: InputErrors) => void;
@@ -154,6 +156,12 @@ declare interface WithClassroomProps {
   user: User;
   classroom: Classroom;
 };
+
+declare interface WithRepositoryProps {
+  user: User;
+  repository: Repository;
+};
+
 
 declare type InputErrors = {
   [key: string]: {

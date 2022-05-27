@@ -121,7 +121,7 @@ model Repository {
 
   commits Commit[]
   alerts Alert[]
-  team Team?
+  team Team[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime?

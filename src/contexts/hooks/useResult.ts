@@ -25,7 +25,9 @@ function useResult<T = any>({
     initialData: {
       items: initialData,
       count: 0
-    }
+    },
+    refetchIntervalInBackground: true,
+    refetchInterval: 2000
   });
 
   return {

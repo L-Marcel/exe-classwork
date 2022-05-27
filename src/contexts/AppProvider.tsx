@@ -16,7 +16,12 @@ function AppProvider({ children }: AppProviderProps) {
   const [inputErrors, setInputErrors] = useState<InputErrors>({});
   const [user, setUser] = useState<User | null>(null);
   const [classroom, setClassroom] = useState<Classroom | null>(null);
+  const [repository, setRepository] = useState<Repository | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const _setRepository = useCallback((repository: Repository) => {
+    setRepository(repository);
+  }, [setRepository]);
 
   const _setClassroom = useCallback((classroom: Classroom) => {
     setClassroom(classroom);
@@ -70,6 +75,8 @@ function AppProvider({ children }: AppProviderProps) {
         setUser: _setUser,
         classroom,
         setClassroom: _setClassroom,
+        repository,
+        setRepository: _setRepository,
         signOut: _signOut,
         inputErrors,
         addInputErrors: _addInputErrors,

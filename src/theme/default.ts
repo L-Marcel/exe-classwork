@@ -31,6 +31,7 @@ export const theme = extendTheme({
         },
         "::-webkit-scrollbar": {
           w: 2,
+          h: 2,
           mr: -2
         },
         "::-webkit-scrollbar-track": {
