@@ -7,7 +7,6 @@ declare type _Team = import("@prisma/client").Team;
 declare type _TeamRelation = import("@prisma/client").TeamRelation;
 declare type _Repository = import("@prisma/client").Repository;
 declare type _Commit = import("@prisma/client").Commit;
-declare type _Tree = import("@prisma/client").Tree;
 declare type _Alert = import("@prisma/client").Alert;
 declare type _Visualization = import("@prisma/client").Visualization;
 
@@ -19,10 +18,6 @@ declare interface Alert extends _Alert {
   commit?: Partial<Commit>;
   repository?: Partial<Repository>;
   team?: Partial<Team>;
-};
-
-declare interface Tree extends _Tree {
-  files?: Tree[];
 };
 
 declare interface Commit extends _Commit {

@@ -41,6 +41,5 @@ export class Prisma {
   static repository = this.client.repository;
   static commit = this.client.commit;
   static alert = this.client.alert;
-  static tree = this.client.tree;
   static visualization = this.client.visualization;
 };
