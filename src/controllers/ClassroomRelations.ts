@@ -305,10 +305,12 @@ export class ClassroomRelations {
                 },
                 {
                   repository: {
-                    team: {
-                      users: {
-                        some: {
-                          userId
+                    teams: {
+                      some: {
+                        users: {
+                          some: {
+                            userId
+                          }
                         }
                       }
                     }
