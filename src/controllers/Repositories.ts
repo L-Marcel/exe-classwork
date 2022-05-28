@@ -78,10 +78,10 @@ export class Repositories {
     });
   };
 
-  static async sync(authUserId: string, repositoryFullname: string, force = false) {
+  static async sync(authUserId: string, token: string, repositoryFullname: string, force = false) {
     try {
       if(force) {
-        const commits = await Directory.getRepositoryCommits(authUserId, repositoryFullname);
+        const commits = await Directory.getRepositoryCommits(authUserId, String(repositoryFullname), token);
 
         const repository = await Prisma.repository.findUnique({
           where: {

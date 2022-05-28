@@ -1,5 +1,6 @@
 import { Box, CircularProgress, CircularProgressLabel, Text } from "@chakra-ui/react";
-import { useInstallationLimit } from "../../contexts/hooks/useInstallationLimit";
+import { useEffect, useState } from "react";
+import { useSocket } from "../../contexts/hooks/useSocket";
 import { useUser } from "../../contexts/hooks/useUser";
 import { getDynamicProgressColor } from "../../utils/getDynamicProgressColor";
 import { NamedIcon } from "../NamedIcon";
@@ -11,8 +12,26 @@ interface GithubRequestLimitProps {
 function GithubRequestLimit({
   haveOverlay
 }: GithubRequestLimitProps) {
-  const { limit, remaining, isFetching } = useInstallationLimit();
   const { user } = useUser();
+  const { socket } = useSocket();
+
+  const [rateLimit, setRateLimit] = useState({
+    limit: 0,
+    remaining: 0
+  });
+
+  useEffect(() => {
+    if(socket !== null && user !== null) {
+      socket.on("rate_limit", (data) => {
+        console.log("evend received: ", data);
+        setRateLimit({
+          ...data
+        });
+      });
+
+      socket.emit("@request/rate_limit", user.id);
+    };
+  }, [socket, setRateLimit]);
 
   if(!user || !user?.installationId) {
     return null;
@@ -44,7 +63,7 @@ function GithubRequestLimit({
         <Text
           px={2}
         >
-          {remaining}/{limit}
+          {rateLimit.remaining}/{rateLimit.limit}
         </Text>
         <CircularProgress 
           size={8}
@@ -55,10 +74,10 @@ function GithubRequestLimit({
         >
           <CircularProgressLabel>
             <CircularProgress 
-              value={(remaining/limit) * 100}
+              value={(rateLimit.remaining/rateLimit.limit) * 100}
               size={7}
               trackColor="solid.200"
-              color={getDynamicProgressColor((remaining/limit) * 100)} 
+              color={getDynamicProgressColor((rateLimit.remaining/rateLimit.limit) * 100)} 
               className="circle"
             >
               <CircularProgressLabel>

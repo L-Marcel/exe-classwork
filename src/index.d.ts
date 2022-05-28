@@ -1,5 +1,5 @@
 declare type _Req = import("next").NextApiRequest;
-declare type Res = import("next").NextApiResponse;
+declare type _Res = import("next").NextApiResponse;
 declare type User = import("@prisma/client").User;
 declare type _Classroom = import("@prisma/client").Classroom;
 declare type _ClassroomRelation = import("@prisma/client").ClassroomRelation;
@@ -59,6 +59,15 @@ declare interface Classroom extends _Classroom {
 
 declare interface Req extends _Req {
   user: import("@prisma/client").User;
+  token: string;
+};
+
+declare interface Res extends _Res {
+  socket?: {
+    server?: {
+      io: import("socket.io").Server
+    }
+  }
 };
 
 declare type WebhookEventType = "installation" | "repository";
@@ -123,6 +132,7 @@ declare type ErrorWithContext<T = any> = {
 declare interface AppContext {
   user: User | null;
   setUser: (user: User) => void;
+  socket: import("socket.io-client").Socket | null;
   classroom: Classroom | null;
   setClassroom: (classroom: Classroom) => void;
   repository: Repository | null;

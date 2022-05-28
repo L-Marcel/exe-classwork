@@ -1,47 +1,21 @@
 import { CodeAnalytic, CodeAnalyticFile } from "@lmarcel/exe-code-analytics";
-import axios, { AxiosInstance } from "axios";
-import { Users } from "../controllers/Users";
+import { AxiosInstance } from "axios";
 import { CannotGetRepository } from "../errors/api/CannotGetRespository";
 import { getRawString } from "../utils/getRawString";
-import { Github } from "./github";
+import { Installation } from "./installation";
 
 class Directory {
-  static async getAppApi(userId: string) {
-    const user = await Users.getById(userId);
-    const token = await Github.generateAppAccessToken(user.installationId);
-    
-    const appApi = axios.create({
-      baseURL: "https://api.github.com/",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/vnd.github.v3+json"
-      }
-    });
-
-    appApi.interceptors.response.use(res => {
-      res.headers["x-ratelimit-remaining"] && console.log("\nRate limit remaining: " + res.headers["x-ratelimit-remaining"]);
-      return res;
-    }, async(err) => {
-      console.log("Error: " + err.response.headers["x-ratelimit-remaining"], err.message);
-      if(err.response.headers["x-ratelimit-remaining"] === "0") {
-        console.log("Not ratelimit remaining... ");
-      };
-
-      return Promise.reject(err);
-    });
-
-    return appApi;
-  };
-
   static async getCommitsRefs(
     repositoryFullname: string, 
     authUserId: string, 
     appApi?: AxiosInstance, 
     page = 1, 
-    per_page = 30
+    per_page = 30,
+    token?: string
   ) {
     if(!appApi) {
-      appApi = await this.getAppApi(authUserId);
+      const installation = new Installation(authUserId);
+      appApi = await installation.getAppApi(token);
     };
       
     const refs = await appApi.get<GithubRepositoryCommitRef[]>(`repos/${repositoryFullname}/commits?per_page=${per_page}&page=${page}`)
@@ -58,6 +32,7 @@ class Directory {
         } as GithubRepositoryCommitRef;
       });
     }).catch(err => {
+      console.log(err.message);
       throw new CannotGetRepository(repositoryFullname);
     });
 
@@ -70,8 +45,9 @@ class Directory {
     return refs;
   };
 
-  static async getRepositoryCommits(authUserId: string, repositoryFullname: string) {
-    const appApi = await this.getAppApi(authUserId);
+  static async getRepositoryCommits(authUserId: string, repositoryFullname: string, token?: string) {
+    const installation = new Installation(authUserId);
+    const appApi = await installation.getAppApi(token);
 
     const commitsRef: GithubRepositoryCommitRef[] = await this.getCommitsRefs(repositoryFullname, authUserId, appApi);
 
@@ -195,13 +171,14 @@ class Directory {
     return commits.filter(c => c !== null);
   };
 
-  static async getFileData({ 
+  private static async getFileData({ 
     path, 
     url,
     commit
   }: Partial<GithubTreesFile>, authUserId: string, appApi?: AxiosInstance): Promise<GithubTreesFile> {
     if(!appApi) {
-      appApi = await this.getAppApi(authUserId);
+      const installation = new Installation(authUserId);
+      appApi = await installation.getAppApi();
     };
 
     const data = await appApi.get(url).then(res => res.data).catch(err => false as any);

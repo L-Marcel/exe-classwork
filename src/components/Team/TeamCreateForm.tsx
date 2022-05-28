@@ -128,7 +128,7 @@ function TeamCreateForm() {
       />
       <Select
         register={register("repository")}
-        placeholder="Selecte the repository..."
+        placeholder="Select the repository..."
         isLoading={repositoriesIsLoading}
         options={[
           {

@@ -3,6 +3,7 @@ import { Repositories } from "../../../../../../controllers/Repositories";
 import { Teams } from "../../../../../../controllers/Teams";
 import { Users } from "../../../../../../controllers/Users";
 import { TeamValidation } from "../../../../../../services/api/validations/TeamValidation";
+import { refreshCommit } from "../../../../../../services/tasks";
 import { apiHandle } from "../../../../../../utils/api/apiHandle";
 import { validate } from "../../../../../../utils/api/middlewares/validate";
 import { withUser } from "../../../../../../utils/api/middlewares/withUser";
@@ -19,37 +20,41 @@ async function createTeam(req: Req, res: Res) {
 
   const team = await Teams.create(user, String(classroomId), users, data);
   
-  await Repositories.link({
-    repository: {
-      ...repository,
-      owner: {
-        connect: {
-          id: repository.owner.id?.toString() || ""
+  if(repository) {
+    await Repositories.link({
+      repository: {
+        ...repository,
+        owner: {
+          connect: {
+            id: repository.owner.id?.toString() || ""
+          }
         }
-      }
-    },
-    classroomId: classroomId?.toString() || "",
-    teamId: team.team.id
-  }).then(async(res) => {
-    try {
+      },
+      classroomId: classroomId?.toString() || "",
+      teamId: team.team.id
+    }).then(async(res) => {
+      try {
+        await Alerts.create("TEAM", {
+          description: `Repository ${repository.fullname} was been linked.`,
+          avatarUrl: user.avatarUrl,
+          classroomId: String(classroomId),
+          repositoryId: res.id,
+          teamId: team.team.id
+        });
+      } catch (error) {};
+  
+      return res;
+    }).catch(async() => {
       await Alerts.create("TEAM", {
-        description: `Repository ${repository.fullname} was been linked.`,
+        description: `Can't link ${repository.fullname}.`,
         avatarUrl: user.avatarUrl,
         classroomId: String(classroomId),
-        repositoryId: res.id,
         teamId: team.team.id
       });
-    } catch (error) {};
-
-    return res;
-  }).catch(async() => {
-    await Alerts.create("TEAM", {
-      description: `Can't link ${repository.fullname}.`,
-      avatarUrl: user.avatarUrl,
-      classroomId: String(classroomId),
-      teamId: team.team.id
     });
-  });
+
+    refreshCommit(user.id, req.token, repository?.fullname);
+  };
 
   return res.status(201).send("");
 };

@@ -1,7 +1,9 @@
 import { User } from "@prisma/client";
 import { useRouter } from "next/router";
 import { ReactNode, useCallback, useEffect, useState } from "react";
+import { Socket } from "socket.io-client";
 import { createContext } from "use-context-selector";
+import { ServerSocket } from "../services/serverSocket";
 import { getInputErrorMessage } from "../utils/getInputErrorMessage";
 
 interface AppProviderProps {
@@ -15,9 +17,17 @@ function AppProvider({ children }: AppProviderProps) {
   
   const [inputErrors, setInputErrors] = useState<InputErrors>({});
   const [user, setUser] = useState<User | null>(null);
+  
+  const [socket, setSocket] = useState<Socket | null>(null);
+
   const [classroom, setClassroom] = useState<Classroom | null>(null);
   const [repository, setRepository] = useState<Repository | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [rateLimit, setRateLimit] = useState({
+    limit: 0,
+    remaining: 0
+  });
 
   const _setRepository = useCallback((repository: Repository) => {
     setRepository(repository);
@@ -61,12 +71,26 @@ function AppProvider({ children }: AppProviderProps) {
     setIsLoading(isLoading);
   }, [setIsLoading]);
 
+  const _setSocket = useCallback((socket: Socket | null) => {
+    setSocket(socket);
+  }, [setSocket]);
+
   useEffect(() => {
     _resetInputErrors();
   }, [
     router,
     _resetInputErrors
   ]);
+
+  useEffect(() => {
+    if(socket === null && user !== null) {
+      ServerSocket.initialize(`/${user.id}`, (_socket) => {
+        _setSocket(_socket);
+      }, () => {
+        //remember...
+      });
+    };
+  }, [_setSocket, socket, user]);
 
   return (
     <appContext.Provider
@@ -83,7 +107,8 @@ function AppProvider({ children }: AppProviderProps) {
         removeInputError: _removeInputError,
         resetInputErrors: _resetInputErrors,
         isLoading,
-        setIsLoading: _setIsLoading
+        setIsLoading: _setIsLoading,
+        socket
       }}
     >
       {children}

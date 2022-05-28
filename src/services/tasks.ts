@@ -3,17 +3,17 @@ import { Repositories } from "../controllers/Repositories";
 
 const emitter = new EventEmitter();
 
-emitter.on("@commits:refresh", (authUserId: string, repositoryFullname: string) => {
+emitter.on("@commits:refresh", (userId: string, token: string, repositoryFullname: string) => {
   console.log("Task required: commit refresh");
-  Repositories.sync(authUserId, repositoryFullname, true);
+  Repositories.sync(userId, token, repositoryFullname, true);
 });
 
 function emit(event: TaskEventTypes, ...args: any) {
   emitter.emit(event, ...args);
 };
 
-function refreshCommit(authUserId: string, repositoryFullname: string) {
-  emit("@commits:refresh", authUserId, repositoryFullname);
+function refreshCommit(userId: string, token: string, repositoryFullname: string) {
+  emit("@commits:refresh", userId, token, repositoryFullname);
 };
 
 export { emit, refreshCommit, emitter };

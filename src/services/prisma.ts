@@ -1,6 +1,5 @@
-import { Prisma as P, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { serialize } from "../utils/serialize";
-import { refreshCommit } from "./tasks";
 
 declare global {
   var prisma: PrismaClient | undefined;
@@ -13,17 +12,6 @@ if(!global.prisma) {
     let result = await next(params);
     return serialize(result);
   })
-
-  client.$use(async(params, next) => {
-    const result = await next(params);
-
-    if(params.model === "Repository" && params.action === "create") {
-      const { owner, fullname } = params.args.data as P.RepositoryCreateInput;
-      refreshCommit(owner.connect?.id, fullname);
-    };
-    
-    return result;
-  });
 };
 
 if(process.env.NODE_ENV !== "production") {
