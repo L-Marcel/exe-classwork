@@ -3,7 +3,6 @@ import axios, { AxiosInstance } from "axios";
 import { Users } from "../controllers/Users";
 import { CannotGetRepository } from "../errors/api/CannotGetRespository";
 import { getRawString } from "../utils/getRawString";
-import { writeLog } from "../utils/writeLog";
 import { Github } from "./github";
 
 class Directory {
@@ -76,15 +75,10 @@ class Directory {
 
     const commitsRef: GithubRepositoryCommitRef[] = await this.getCommitsRefs(repositoryFullname, authUserId, appApi);
 
-
-    
-    writeLog(commitsRef);
-
     commitsRef.reverse();
 
-    writeLog(commitsRef);
-
     const commits = [];
+    
     let oldCommitFiles: GithubTreesFile[] = [];
 
     for(let ci in commitsRef) {
