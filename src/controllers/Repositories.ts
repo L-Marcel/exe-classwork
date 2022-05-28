@@ -36,7 +36,7 @@ export class Repositories {
               id: classroomId
             }
           }:undefined,
-          team: teamId? {
+          teams: teamId? {
             connect: {
               id: teamId
             }
@@ -54,7 +54,7 @@ export class Repositories {
             id: classroomId
           }
         }:undefined,
-        team: teamId? {
+        teams: teamId? {
           connect: {
             id: teamId
           }
@@ -140,8 +140,10 @@ export class Repositories {
                 }
               },
               {
-                team: {
-                  title: getApiQuery(query)
+                teams: {
+                  some: {
+                    title: getApiQuery(query)
+                  }
                 }
               },
               {
@@ -168,7 +170,7 @@ export class Repositories {
         name: true,
         updatedAt: true,
         updatedBy: true,
-        team: {
+        teams: {
           select: {
             title: true,
             id: true
@@ -201,8 +203,10 @@ export class Repositories {
                 }
               },
               {
-                team: {
-                  title: getApiQuery(query)
+                teams: {
+                  some: {
+                    title: getApiQuery(query)
+                  }
                 }
               },
               {
@@ -229,6 +233,11 @@ export class Repositories {
     const repository = await Prisma.repository.findUnique({
       where: {
         id
+      }, 
+      include: {
+        alerts: true,
+        commits: true,
+        teams: true
       }
     });
 

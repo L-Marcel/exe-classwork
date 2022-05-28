@@ -29,8 +29,15 @@ declare interface Commit extends _Commit {
   tree?: string;
 };
 
+declare interface CommitChart extends Commit {
+  methods: number;
+  classes: number;
+};
+
 declare interface Repository extends _Repository {
   owner: User;
+  commits?: Commit[];
+  alerts?: Alerts[];
 };
 
 declare interface TeamRelation extends _TeamRelation {

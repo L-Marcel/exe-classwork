@@ -3,6 +3,7 @@ import axios, { AxiosInstance } from "axios";
 import { Users } from "../controllers/Users";
 import { CannotGetRepository } from "../errors/api/CannotGetRespository";
 import { getRawString } from "../utils/getRawString";
+import { writeLog } from "../utils/writeLog";
 import { Github } from "./github";
 
 class Directory {
@@ -75,14 +76,24 @@ class Directory {
 
     const commitsRef: GithubRepositoryCommitRef[] = await this.getCommitsRefs(repositoryFullname, authUserId, appApi);
 
+
+    
+    writeLog(commitsRef);
+
+    commitsRef.reverse();
+
+    writeLog(commitsRef);
+
+    const commits = [];
     let oldCommitFiles: GithubTreesFile[] = [];
 
-    const commits = await Promise.all(commitsRef.reverse().map(async(c) => {
+    for(let ci in commitsRef) {
+      const c = commitsRef[ci];
       const data: GithubRepositoryCommit = await appApi.get<GithubRepositoryCommit>(`repos/${repositoryFullname}/commits/${c.sha}`)
       .then(res => res.data).catch(err => false as any);
 
       if(!data) {
-        return null;
+        continue;
       };
 
       const count = data.files.reduce((prev, cur) => {
@@ -121,11 +132,11 @@ class Directory {
           commit: f.commit,
           url: f.url
         };
-      }));
+      }), {
+        printLog: "none"
+      });
 
       const analyticResult = analytics.execute();
-
-      console.log("Commit loaded");
 
       oldCommitFiles = analyticResult.map((r) => {
         return {
@@ -135,8 +146,6 @@ class Directory {
           url: r.url
         };
       });
-
-      console.log("Old commits updated");
 
       const currentCommitResult = analyticResult.reduce((prev, cur) => {
         const pathIndex = prev.findIndex(r => r.path === cur.path);
@@ -149,8 +158,6 @@ class Directory {
 
         return prev;
       }, [] as (CodeAnalyticFile & GithubTreesFile)[]);
-
-      console.log("Result filtered");
 
       const commitMetrics = currentCommitResult.reduce((prev, cur) => {
         prev.churn += cur.churn;
@@ -170,9 +177,9 @@ class Directory {
         classes: []
       });
 
-      console.log("Metrics saved");
+      console.log(ci, c.commit.message);
 
-      return {
+      commits.push({
         userGithubId: data.committer?.id?.toString(),
         filesAdded: count.added,
         filesModified: count.modified,
@@ -188,8 +195,8 @@ class Directory {
         churn: commitMetrics.churn,
         sloc: commitMetrics.sloc,
         url: data.html_url
-      } as Partial<Commit>;
-    }))
+      } as Partial<Commit>);
+    };
 
     return commits.filter(c => c !== null);
   };
