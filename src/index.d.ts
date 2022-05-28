@@ -1,5 +1,5 @@
 declare type _Req = import("next").NextApiRequest;
-declare type _Res = import("next").NextApiResponse;
+declare type Res = import("next").NextApiResponse;
 declare type User = import("@prisma/client").User;
 declare type _Classroom = import("@prisma/client").Classroom;
 declare type _ClassroomRelation = import("@prisma/client").ClassroomRelation;
@@ -62,10 +62,10 @@ declare interface Req extends _Req {
   token: string;
 };
 
-declare interface Res extends _Res {
+declare interface ResWithSocket extends Res {
   socket?: {
     server?: {
-      io: import("socket.io").Server
+      io?: import("socket.io").Server
     }
   }
 };
