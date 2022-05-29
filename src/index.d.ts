@@ -62,14 +62,6 @@ declare interface Req extends _Req {
   token: string;
 };
 
-declare interface ResWithSocket extends Res {
-  socket?: {
-    server?: {
-      io?: import("socket.io").Server
-    }
-  }
-};
-
 declare type WebhookEventType = "installation" | "repository";
 
 declare type WebhookEventData = {
@@ -276,7 +268,6 @@ declare type InstallationLimit = {
   used: number;
   remaining: number;
   reset: number;
-  isFetching: boolean;
 };
 
 declare type AlertTypeTagParams = {

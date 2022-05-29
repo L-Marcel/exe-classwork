@@ -2,6 +2,7 @@ import { Box, CircularProgress, CircularProgressLabel, Text } from "@chakra-ui/r
 import { useEffect, useState } from "react";
 import { useSocket } from "../../contexts/hooks/useSocket";
 import { useUser } from "../../contexts/hooks/useUser";
+import { Api } from "../../services/api";
 import { getDynamicProgressColor } from "../../utils/getDynamicProgressColor";
 import { NamedIcon } from "../NamedIcon";
 
@@ -29,9 +30,13 @@ function GithubRequestLimit({
         });
       });
 
-      socket.emit("@request/rate_limit", user.id);
+      Api.post("user/connect/rate_limit")
+      .then((res) => {
+        console.log(res.data);
+        setRateLimit(res.data);
+      }).catch(() => {});
     };
-  }, [socket, setRateLimit]);
+  }, [Api, socket, setRateLimit]);
 
   if(!user || !user?.installationId) {
     return null;
