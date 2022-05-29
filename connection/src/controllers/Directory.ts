@@ -56,6 +56,7 @@ export type Commit = {
   churn: number;
   sloc: number;
   url: string;
+  order: number;
 };
 
 class Directory {
@@ -231,6 +232,7 @@ class Directory {
       console.log(ci, c.commit.message);
 
       commits.push({
+        order: Number(ci || 0),
         userGithubId: data.committer?.id?.toString(),
         filesAdded: count.added,
         filesModified: count.modified,

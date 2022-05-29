@@ -214,11 +214,14 @@ export class Repositories {
     const repository = await Prisma.repository.findUnique({
       where: {
         id
-      }, 
+      },
       include: {
-        alerts: true,
-        commits: true,
-        teams: true
+        alerts: {
+          take: 10
+        },
+        teams: {
+          take: 10
+        }
       }
     });
 

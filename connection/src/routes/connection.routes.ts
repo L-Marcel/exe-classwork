@@ -37,6 +37,7 @@ connectionRoutes.post("/connect", (req, res) => {
                 id,
                 commits
               }).then((res) => {
+                console.log(commits.length, commits[0].message);
                 console.log("Repository loaded: " + repositoryFullname);
               }).catch((err) => console.log("c", err.message));
             }).catch((err) => console.log("b", err.message));

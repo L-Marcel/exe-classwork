@@ -162,6 +162,8 @@ model Commit {
   alerts Alert[]
 
   createdAt DateTime @default(now())
+
+  order Int @default(0)
 }
 
 model Visualization {

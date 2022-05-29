@@ -5,9 +5,11 @@ import { Logo } from "./Logo";
 
 interface PageFallbackProps extends BoxProps {
   title?: string;
+  progress?: number;
+  subtitle?: string;
 };
 
-function PageFallback({ title = "exe classwork prod", ...rest }: PageFallbackProps) {
+function PageFallback({ title = "Loading.", subtitle, progress, ...rest }: PageFallbackProps) {
   return (
     <Box
       data-testid="page-fallback"
@@ -24,9 +26,10 @@ function PageFallback({ title = "exe classwork prod", ...rest }: PageFallbackPro
       />
       <Progress
         as={m.div}
-        isIndeterminate
+        isIndeterminate={!progress}
         w={["80%", "50%"]}
         h={2}
+        value={progress}
         {...fadeToTop}
       />
       <Text
@@ -38,8 +41,19 @@ function PageFallback({ title = "exe classwork prod", ...rest }: PageFallbackPro
       >
         {title}
       </Text>
+      { subtitle && <Text
+        as={m.p}
+        mt={3}
+        w={["78%", "40%"]}
+        textAlign="center"
+        fontSize=".8rem"
+        {...fadeToTop}
+      >
+        {subtitle}
+      </Text> }
     </Box> 
   );
 };
 
 export { PageFallback };
+

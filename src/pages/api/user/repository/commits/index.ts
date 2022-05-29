@@ -15,7 +15,7 @@ async function createCommits(req: Req, res: Res) {
       ...c,
       repositoryId: id,
       userGithubId: c.userGithubId,
-      tree: undefined
+      order: c.order
     } as P.CommitCreateManyInput;
   }) as P.Enumerable<P.CommitCreateManyInput>);
 
