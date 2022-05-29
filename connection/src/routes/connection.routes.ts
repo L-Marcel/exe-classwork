@@ -27,9 +27,9 @@ connectionRoutes.post("/connect", (req, res) => {
           api.post(`user/repository/commits/refresh?token=${token}`, {
             repositoryFullname
           }).then((res) => {
-            const { id } = res.data;
+            const { id, appToken } = res.data;
         
-            Directory.getRepositoryCommits(userId, repositoryFullname, token, (rateLimit) => {
+            Directory.getRepositoryCommits(userId, repositoryFullname, appToken, (rateLimit) => {
               server.emit("rate_limit", rateLimit);
             }).then((commits) => {
               api.post(`user/repository/commits?token=${token}`, {
