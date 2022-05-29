@@ -5,12 +5,13 @@
   "author": "l-marcel",
   "license": "MIT",
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "node dist/server.js",
     "build": "tsc",
     "prebuild": "rm -rf ./dist",
-    "dev": "ts-node-dev src/index.ts"
+    "dev": "ts-node-dev src/server.ts"
   },
   "dependencies": {
+    "@lmarcel/exe-code-analytics": "^4.4.8",
     "axios": "^0.27.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",

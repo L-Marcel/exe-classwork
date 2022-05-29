@@ -27,6 +27,13 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@lmarcel/exe-code-analytics@^4.4.8":
+  version "4.4.8"
+  resolved "https://registry.yarnpkg.com/@lmarcel/exe-code-analytics/-/exe-code-analytics-4.4.8.tgz#0f71c542a249201ac4a166a736dba61cae018607"
+  integrity sha512-WkPWEtCGi/6q50m59VldjckY7VNoPuAlxskPKwh8ILyz2H+SVpzXaOg4RcCh/0quvEYjlso8vAYSiZM6wyWa2Q==
+  dependencies:
+    node "^17.7.2"
+
 "@tsconfig/node10@^1.0.7":
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/@tsconfig/node10/-/node10-1.0.8.tgz#c1e4e80d6f964fbecb3359c43bd48b40f7cadad9"

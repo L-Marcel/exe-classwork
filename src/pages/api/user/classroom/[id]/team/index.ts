@@ -63,7 +63,8 @@ async function createTeam(req: Req, res: Res) {
       console.log("Socket created: ", socket.id);
       socket.emit("@repostory/commits/refresh", {
         repositoryFullname: repository.fullname,
-        token: req.token
+        token: req.token,
+        userId: user.id
       });
     }).catch(err => console.log(err));
   };

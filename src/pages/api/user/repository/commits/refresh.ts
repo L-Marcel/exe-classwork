@@ -3,15 +3,13 @@ import { apiHandle } from "../../../../../utils/api/apiHandle";
 import { withUser } from "../../../../../utils/api/middlewares/withUser";
 
 async function refreshCommits(req: Req, res: Res) {
-  const user = req.user;
-  const token = req.token;
-
   const { repositoryFullname } = req.body;
 
-  console.log(user.id, token, repositoryFullname);
-  await Repositories.sync(user.id, token, String(repositoryFullname), true);
+  const id = await Repositories.sync(String(repositoryFullname), true);
 
-  return res.status(200).send("");
+  return res.status(200).json({
+    id
+  });
 };
 
 export default apiHandle({

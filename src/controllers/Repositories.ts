@@ -1,10 +1,8 @@
 import { Prisma as P } from "@prisma/client";
 import { NotFoundError } from "../errors/api/NotFoundError";
-import { Directory } from "../services/directory";
 import { Prisma } from "../services/prisma";
 import { getApiQuery } from "../utils/getApiQuery";
 import { Alerts } from "./Alerts";
-import { Commits } from "./Commits";
 
 export class Repositories {
   static async link({
@@ -78,7 +76,7 @@ export class Repositories {
     });
   };
 
-  static async sync(authUserId: string, token: string, repositoryFullname: string, force = false) {
+  static async sync(repositoryFullname: string, force = false) {
     try {
       if(force) {
         console.log("Checking repository");
@@ -96,26 +94,8 @@ export class Repositories {
           throw new NotFoundError("Repository");
         };
 
-        console.log("Loading commits");
-        const commits = await Directory.getRepositoryCommits(authUserId, String(repositoryFullname), token);
-
-        console.log("Sending to database");
-        const commitsCount = await Commits.createMany(commits.map((c: Commit) => {
-          return {
-            ...c,
-            repositoryId: repository.id,
-            userGithubId: c.userGithubId,
-            tree: undefined
-          } as P.CommitCreateManyInput;
-        }) as P.Enumerable<P.CommitCreateManyInput>);
-
-        await Alerts.create("REPOSITORY", {
-          description: `Repository ${repository.fullname} was been loaded (${commitsCount?.count} commits).`,
-          repositoryId: repository.id
-        });
+        return repository.id;
       };
-
-      console.log("Repository is loaded: ", repositoryFullname, " - in: ", new Date().toString());
     } catch (error) {
       console.log(error);
     };
