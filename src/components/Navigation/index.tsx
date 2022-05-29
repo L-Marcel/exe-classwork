@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useClassroom } from "../../contexts/hooks/useClassroom";
 import { useUser } from "../../contexts/hooks/useUser";
+import { boxShadow } from "../../theme/effects/shadow";
 import { IconButton } from "../Buttons/IconButton";
 import { SignOutButton } from "../Buttons/SignOutButton";
 import { ToggleColorButton } from "../Buttons/ToogleColorButton";
@@ -141,6 +142,7 @@ function Navigation({ ...rest }: NavigationProps) {
                 theme={isOpen? "red":"primary"}
                 colorIndexes={isOpen? ["400", "400", "400"]:undefined}
                 onClick={() => setIsOpen(o => !o)}
+                { ...boxShadow() }
               />
             </Box>
           }
@@ -148,6 +150,7 @@ function Navigation({ ...rest }: NavigationProps) {
             zIndex={10}
             colorIndexes={isOpen? ["400", "400", "400"]:undefined}
             forceHoverEffect
+            { ...boxShadow() }
           /> }
           { (isWideOrNormalVersion || isOpen) && paths.map(n => {
             return (
@@ -170,6 +173,7 @@ function Navigation({ ...rest }: NavigationProps) {
             theme="red"
             colorIndexes={["400", "400", "400"]}
             forceHoverEffect
+            { ...boxShadow() }
           /> }
         </Stack>
       </Box>

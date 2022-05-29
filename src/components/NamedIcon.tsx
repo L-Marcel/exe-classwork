@@ -4,7 +4,7 @@ import { BiCog, BiCubeAlt, BiSearchAlt } from "react-icons/bi";
 import { BsDownload, BsFillJournalBookmarkFill, BsFillMoonStarsFill, BsQuestionCircle } from "react-icons/bs";
 import { CgTikcode } from "react-icons/cg";
 import { DiCss3, DiSass } from "react-icons/di";
-import { FaAngleDoubleLeft, FaAngleDoubleRight, FaAngleLeft, FaAngleRight, FaBalanceScale, FaBell, FaChalkboardTeacher, FaDocker, FaGitAlt, FaGithubAlt, FaHome, FaJava, FaPencilAlt, FaPython, FaReact, FaSun, FaUser } from "react-icons/fa";
+import { FaAngleDoubleLeft, FaAngleDoubleRight, FaAngleLeft, FaAngleRight, FaBalanceScale, FaBell, FaChalkboardTeacher, FaDocker, FaGitAlt, FaGithubAlt, FaHome, FaJava, FaPencilAlt, FaProjectDiagram, FaPython, FaReact, FaSun, FaUser } from "react-icons/fa";
 import { FiCopy, FiFigma, FiFramer, FiPaperclip } from "react-icons/fi";
 import { GrGraphQl, GrNode } from "react-icons/gr";
 import { IoIosRocket, IoLogoJavascript, IoMdOpen, IoMdSchool } from "react-icons/io";
@@ -88,7 +88,8 @@ export const icons = {
   "leader": AiFillStar,
   "not-leader": AiOutlineStar,
   "cog": BiCog,
-  "refresh": AiOutlineReload
+  "refresh": AiOutlineReload,
+  "project": FaProjectDiagram
 };
 
 function NamedIcon({ name = "default", ...rest }: IconProps) {

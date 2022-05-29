@@ -1,5 +1,6 @@
 import { Box, ButtonProps, Text } from "@chakra-ui/react";
 import { m } from "framer-motion";
+import { boxShadow } from "../../theme/effects/shadow";
 import { IconButton } from "../Buttons/IconButton";
 import { Link } from "../Link";
 import { NamedIcon } from "../NamedIcon";
@@ -35,6 +36,7 @@ function NavigationItem({
       animate={forceExpanded? expandedAnimation:undefined}
       whileHover={expandedAnimation}
       whileFocus={expandedAnimation}
+      { ...boxShadow() }
     >
       <Link
         data-testid="navigation-item"
