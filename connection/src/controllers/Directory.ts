@@ -1,11 +1,10 @@
 import { CodeAnalytic, CodeAnalyticFile } from "@lmarcel/exe-code-analytics";
 import { AxiosInstance } from "axios";
-import { Namespace } from "socket.io";
 import { CannotGetRepository } from "../errors/CannotGetRespository";
 import { getRawString } from "../utils/getRawString";
-import { GithubApp } from "./GithubApp";
+import { GithubApp, RateLimit } from "./GithubApp";
 
-declare type GithubRepositoryCommitRef = {
+export type GithubRepositoryCommitRef = {
   sha: string;
   commit: {
     message: string;
@@ -15,14 +14,14 @@ declare type GithubRepositoryCommitRef = {
   };
 };
 
-declare type GithubTreesFile = {
+export type GithubTreesFile = {
   url: string;
   path: string;
   content: string;
   commit: string;
 };
 
-declare type GithubRepositoryCommit = {
+export type GithubRepositoryCommit = {
   sha: string;
   html_url: string;
   stats: {
@@ -41,7 +40,7 @@ declare type GithubRepositoryCommit = {
   }[];
 };
 
-declare type Commit = {
+export type Commit = {
   userGithubId: string;
   filesAdded: number;
   filesModified: number;
@@ -63,15 +62,15 @@ class Directory {
   static async getCommitsRefs(
     repositoryFullname: string, 
     authUserId: string,
-    server: Namespace,
     token: string,
     appApi: AxiosInstance,
+    onChangeRateLimit: (rateLimit: RateLimit) => void,
     page = 1, 
     per_page = 30,
   ) {
     if(!appApi) {
-      const githubApp = new GithubApp(server, token);
-      appApi = await githubApp.getApi();
+      const githubApp = new GithubApp(token);
+      appApi = await githubApp.getApi(onChangeRateLimit);
     };
 
     const refs = await appApi.get<GithubRepositoryCommitRef[]>(`repos/${repositoryFullname}/commits?per_page=${per_page}&page=${page}`)
@@ -97,11 +96,11 @@ class Directory {
       const nextPageRefs: any = await this.getCommitsRefs(
         repositoryFullname, 
         authUserId, 
-        server, 
-        token, 
+        token,
         appApi, 
+        onChangeRateLimit,
         nextPage, 
-        per_page
+        per_page,
       );
 
       return [ ...refs, ...nextPageRefs ];
@@ -113,17 +112,23 @@ class Directory {
   static async getRepositoryCommits(
     authUserId: string, 
     repositoryFullname: string,
-    server: Namespace,
-    token: string
+    token: string,
+    onChangeRateLimit: (rateLimit: RateLimit) => void
   ) {
     console.log("Getting api instance...");
 
-    const githubApp = new GithubApp(server, token);
-    const appApi = await githubApp.getApi();
+    const githubApp = new GithubApp(token);
+    const appApi = await githubApp.getApi(onChangeRateLimit);
 
 
     console.log("Getting commits refs...");
-    const commitsRef: any[] = await this.getCommitsRefs(repositoryFullname, authUserId, server, token, appApi);
+    const commitsRef: any[] = await this.getCommitsRefs(
+      repositoryFullname, 
+      authUserId, 
+      token, 
+      appApi, 
+      onChangeRateLimit
+    );
 
     console.log("Changing commits refs order...");
     commitsRef.reverse();

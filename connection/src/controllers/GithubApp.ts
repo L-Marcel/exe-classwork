@@ -1,9 +1,14 @@
 
 import axios from "axios";
-import { Namespace } from "socket.io";
 
+export type RateLimit = {
+  remaining: number;
+  reset: number;
+  used: number;
+  limit: number;
+};
 class GithubApp {
-  rateLimit = {
+  rateLimit: RateLimit = {
     remaining: 0,
     reset: 0,
     used: 0,
@@ -11,11 +16,10 @@ class GithubApp {
   };
 
   constructor(
-    private server: Namespace, 
     private token: string
   ) {};
 
-  async getApi() {        
+  async getApi(onChangeRateLimit: (rateLimit: RateLimit) => void) {        
     const appApi = axios.create({
       baseURL: "https://api.github.com/",
       headers: {
@@ -32,13 +36,13 @@ class GithubApp {
         used: Number(res.headers["x-ratelimit-used"] || 0)
       };
 
-      if(this.server !== null && (
+      if(!Object.is(this.rateLimit, rateLimit) && (
         res.headers["x-ratelimit-remaining"] ||
         res.headers["x-ratelimit-limit"] ||
         res.headers["x-ratelimit-reset"] ||
         res.headers["x-ratelimit-used"]
-      ) && !Object.is(this.rateLimit, rateLimit)) { 
-        this.server.emit("rate_limit", rateLimit);
+      )) { 
+        onChangeRateLimit(rateLimit);
         this.rateLimit = rateLimit;
       };
       
