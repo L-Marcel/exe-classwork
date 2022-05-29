@@ -4,7 +4,6 @@ import { withUser } from "../../../../utils/api/middlewares/withUser";
 
 async function getRepository(req: Req, res: Res) {
   const { id } = req.query;
-  const user = req.user;
   
   const repository = await Repositories.get(id?.toString());
 

@@ -1,3 +1,4 @@
+import axios from "axios";
 import cors from "cors";
 import express from "express";
 
@@ -22,28 +23,51 @@ const io = new Server({
   }
 });
 
+const api = axios.create({
+  baseURL: process.env.ALLOWED_ORIGIN + "/api"
+});
+
+console.log("api: ", process.env.ALLOWED_ORIGIN + "/api");
+
 app.post("/connect", (req, res) => {
   try {
-    console.log(req.body);
     const userId = req.body.id;
-    const server = io.of(`/${userId}`);
+    const namespace = `/${userId}`;
+    
+    if(!io._nsps.has(namespace)) {
+      const server = io.of(namespace);
+      server.on("connection", (socket) => {    
+        socket.on("@update/rate_limit", (data) => {
+          server.emit("rate_limit", data);
+        });
 
-    server.on("connection", (socket) => {    
-      socket.on("@update/rate_limit", (data) => {
-        server.emit("rate_limit", data);
+        console.log("Connected user: ", socket.id + " : " + userId);
+
+        socket.on("@repostory/commits/refresh", ({
+          repositoryFullname,
+          token
+        }) => {
+          console.log("Commits refresh event received: ", {
+            repositoryFullname,
+            token
+          });
+          
+          api.post(`user/repository/commits/refresh?token=${token}`, {
+            repositoryFullname
+          }).then(() => {
+            socket.disconnect();
+            console.log("Success on refresh commit...")
+          })
+          .catch((err) => console.log(err.message));
+        })
       });
-    });
+    };
 
     return res.status(201).send("");
   } catch (error) {
     return res.status(400).send("");
   };
 });
-
-io.on("connect", () => {
-  console.log("connected outside");
-})
-
 
 io.listen(http.listen(process.env.PORT || 3333));
 

@@ -2,7 +2,6 @@
 import axios from "axios";
 import { Socket } from "socket.io-client";
 import { Users } from "../controllers/Users";
-import { TimeoutConnection } from "../errors/api/TimeoutConnection";
 import { Github } from "./github";
 import { ServerSocket } from "./serverSocket";
 
@@ -18,20 +17,8 @@ class Installation {
   constructor(private userId: string) {};
 
   protected async prepare(token?: string) {
-    const socketConnection = await new Promise((resolve) => {      
-      ServerSocket.initialize(`/${this.userId}`, (socket) => {
-        this.socket = socket;
-        resolve(socket);
-      }, (err) => {
-        console.log(err);
-        resolve(null);
-      }, token);
-    });
-
-    const timer = new Promise((_, reject) =>  
-      setTimeout(() => reject(new TimeoutConnection()), 10000));
-
-    return await Promise.race([socketConnection, timer]);
+    this.socket = await ServerSocket.getSocket(this.userId, token);
+    return this.socket;
   };
 
   async getAppApi(token?: string) {

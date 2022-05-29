@@ -3,7 +3,7 @@ import { Repositories } from "../../../../../../controllers/Repositories";
 import { Teams } from "../../../../../../controllers/Teams";
 import { Users } from "../../../../../../controllers/Users";
 import { TeamValidation } from "../../../../../../services/api/validations/TeamValidation";
-import { refreshCommit } from "../../../../../../services/tasks";
+import { ServerSocket } from "../../../../../../services/serverSocket";
 import { apiHandle } from "../../../../../../utils/api/apiHandle";
 import { validate } from "../../../../../../utils/api/middlewares/validate";
 import { withUser } from "../../../../../../utils/api/middlewares/withUser";
@@ -57,7 +57,15 @@ async function createTeam(req: Req, res: Res) {
     });
 
     console.log("Requesting commits...");
-    refreshCommit(user.id, req.token, repository?.fullname);
+
+    await ServerSocket.getSocket(user.id, req.token)
+    .then(socket => {
+      console.log("Socket created: ", socket.id);
+      socket.emit("@repostory/commits/refresh", {
+        repositoryFullname: repository.fullname,
+        token: req.token
+      });
+    }).catch(err => console.log(err));
   };
 
   return res.status(201).send("");
