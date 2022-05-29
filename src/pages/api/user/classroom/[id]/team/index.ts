@@ -13,14 +13,17 @@ async function createTeam(req: Req, res: Res) {
   const { id: classroomId } = req.query;
   const { users, repository, ...data } = req.body;
   const user = req.user;
-
+  
+  console.log("Checking users...");
   await Promise.all(users.map(async(m: TeamRelation) => {
     await Users.checkIfCanLinkWithTeam(m.user.id, String(classroomId));
   }));
 
+  console.log("Creating teams...");
   const team = await Teams.create(user, String(classroomId), users, data);
   
   if(repository) {
+    console.log("Linking repositories...");
     await Repositories.link({
       repository: {
         ...repository,
@@ -53,6 +56,7 @@ async function createTeam(req: Req, res: Res) {
       });
     });
 
+    console.log("Requesting commits...");
     refreshCommit(user.id, req.token, repository?.fullname);
   };
 

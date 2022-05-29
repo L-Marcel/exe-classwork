@@ -13,6 +13,7 @@ function emit(event: TaskEventTypes, ...args: any) {
 };
 
 function refreshCommit(userId: string, token: string, repositoryFullname: string) {
+  console.log("Requesting task: commit refresh");
   emit("@commits:refresh", userId, token, repositoryFullname);
 };
 

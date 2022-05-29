@@ -81,8 +81,7 @@ export class Repositories {
   static async sync(authUserId: string, token: string, repositoryFullname: string, force = false) {
     try {
       if(force) {
-        const commits = await Directory.getRepositoryCommits(authUserId, String(repositoryFullname), token);
-
+        console.log("Checking repository");
         const repository = await Prisma.repository.findUnique({
           where: {
             fullname: repositoryFullname
@@ -97,8 +96,10 @@ export class Repositories {
           throw new NotFoundError("Repository");
         };
 
-        console.log("Sending to database");
+        console.log("Loading commits");
+        const commits = await Directory.getRepositoryCommits(authUserId, String(repositoryFullname), token);
 
+        console.log("Sending to database");
         const commitsCount = await Commits.createMany(commits.map((c: Commit) => {
           return {
             ...c,

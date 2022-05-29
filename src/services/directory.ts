@@ -46,11 +46,14 @@ class Directory {
   };
 
   static async getRepositoryCommits(authUserId: string, repositoryFullname: string, token?: string) {
+    console.log("Getting api instance...");
     const installation = new Installation(authUserId);
     const appApi = await installation.getAppApi(token);
 
+    console.log("Getting commits refs...");
     const commitsRef: GithubRepositoryCommitRef[] = await this.getCommitsRefs(repositoryFullname, authUserId, appApi);
 
+    console.log("Changing commits refs order...");
     commitsRef.reverse();
 
     const commits = [];

@@ -27,7 +27,6 @@ function useResult<T = any>({
       count: 0
     },
     refetchIntervalInBackground: true,
-    refetchInterval: 2000
   });
 
   return {
