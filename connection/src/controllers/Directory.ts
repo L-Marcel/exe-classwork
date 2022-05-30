@@ -4,6 +4,11 @@ import { CannotGetRepository } from "../errors/CannotGetRespository";
 import { getRawString } from "../utils/getRawString";
 import { GithubApp, RateLimit } from "./GithubApp";
 
+export type Progress = {
+  target?: number;
+  value?: number;
+};
+
 export type GithubRepositoryCommitRef = {
   sha: string;
   commit: {
@@ -114,13 +119,13 @@ class Directory {
     authUserId: string, 
     repositoryFullname: string,
     token: string,
-    onChangeRateLimit: (rateLimit: RateLimit) => void
+    onChangeRateLimit: (rateLimit: RateLimit) => void,
+    onChangeProgress: (progress: Progress) => void,
   ) {
     console.log("Getting api instance...");
 
     const githubApp = new GithubApp(token);
     const appApi = await githubApp.getApi(onChangeRateLimit);
-
 
     console.log("Getting commits refs...");
     const commitsRef: any[] = await this.getCommitsRefs(
@@ -130,6 +135,10 @@ class Directory {
       appApi, 
       onChangeRateLimit
     );
+
+    onChangeProgress({
+      target: commitsRef.length
+    });
 
     console.log("Changing commits refs order...");
     commitsRef.reverse();
@@ -249,6 +258,10 @@ class Directory {
         sloc: commitMetrics.sloc,
         url: data.html_url
       } as Commit);
+
+      onChangeProgress({
+        value: 1
+      });
     };
 
     return commits.filter(c => c !== null);

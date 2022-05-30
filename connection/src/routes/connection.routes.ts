@@ -31,13 +31,19 @@ connectionRoutes.post("/connect", (req, res) => {
         
             Directory.getRepositoryCommits(userId, repositoryFullname, appToken, (rateLimit) => {
               server.emit("rate_limit", rateLimit);
+            }, (progress) => {
+              server.emit("progress", progress);
             }).then((commits) => {
               api.post(`user/repository/commits?token=${token}`, {
                 fullname: repositoryFullname,
                 id,
                 commits
               }).then((res) => {
-                console.log(commits.length, commits[0].message);
+                server.emit("progress", {
+                  target: -commits.length,
+                  value: -commits.length
+                });
+
                 console.log("Repository loaded: " + repositoryFullname);
               }).catch((err) => console.log("c", err.message));
             }).catch((err) => console.log("b", err.message));

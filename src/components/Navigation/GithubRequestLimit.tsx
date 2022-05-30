@@ -38,25 +38,14 @@ function GithubRequestLimit({
         });
       });
 
-      socket.on("load_progress", (data) => {
+      socket.on("progress", (data) => {
         setProgress(p => {
           return {
-            target: Math.min(p.target + data.target, p.target),
-            value: Math.min(p.value + data.value, p.value)
+            target: Math.max(p.target + (data.target || 0), 0),
+            value: Math.max(p.value + (data.value || 0), 0)
           };
         });
       });
-
-      socket.on("complete_progress", (data) => {
-        setProgress(p => {
-          const min = Math.min(p.value - data.value, 0);
-
-          return {
-            target: Math.min(p.target - data.target, 0),
-            value: Math.max(min, p.target)
-          };
-        });
-      })
 
       Api.post("user/connect/rate_limit")
       .then((res) => {
