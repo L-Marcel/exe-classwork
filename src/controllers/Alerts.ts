@@ -167,8 +167,6 @@ export class Alerts {
       }
     }).then(res => res).catch(err => console.log(err));
 
-    console.log(a);
-
     return alerts;
   };
 
@@ -280,6 +278,7 @@ export class Alerts {
     query = ""
   }) {
     return await Prisma.alert.aggregate({
+      take: 12,
       _count: {
         _all: true
       },
