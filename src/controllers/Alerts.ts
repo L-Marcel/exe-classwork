@@ -20,77 +20,11 @@ export class Alerts {
     });
   };
 
-  static async getAllByUser(userId: string) {
-    return await Prisma.alert.findMany({
-      orderBy: {
-        createdAt: "desc"
-      },
-      where: {
-        OR: [
-          {
-            classroom: {
-              users: {
-                some: {
-                  userId,
-                  role: "OWNER"
-                }
-              }
-            }
-          },
-          {
-            classroom: {
-              users: {
-                some: {
-                  userId,
-                  role: "ADMIN"
-                }
-              }
-            }
-          },
-          {
-            classroom: {
-              users: {
-                some: {
-                  userId,
-                  role: "OBSERVER"
-                }
-              }
-            }
-          },
-          {
-            commit: {
-              repository: {
-                ownerId: userId
-              }
-            }
-          },
-          {
-            repository: {
-              ownerId: userId
-            }
-          },
-          {
-            team: {
-              users: {
-                some: {
-                  userId
-                }
-              }
-            }
-          }
-        ]
-      },
-      select: {
-        id: true
-      }
-    });
-  };
-
   static async getByUser(userId: string, {
     page = 0,
     query = ""
   }) {
-    return await Prisma.alert.findMany({
+    const alerts = await Prisma.alert.findMany({
       take: 12,
       skip: 12 * page,
       orderBy: {
@@ -196,6 +130,7 @@ export class Alerts {
         avatarUrl: true,
         createdAt: true,
         type: true,
+        visualizedBy: true,
         team: {
           select: {
             title: true
@@ -218,6 +153,23 @@ export class Alerts {
         }
       }
     });
+
+    const a = await Prisma.alert.updateMany({
+      data: {
+        visualizedBy: {
+          push: userId
+        }
+      },
+      where: {
+        id: {
+          in: alerts.filter(a => !a.visualizedBy.includes(userId)).map(a => a.id)
+        },
+      }
+    }).then(res => res).catch(err => console.log(err));
+
+    console.log(a);
+
+    return alerts;
   };
 
   static async countByUser(userId: string, {
@@ -318,6 +270,117 @@ export class Alerts {
                 }
               }
             ]
+          }
+        ]
+      },
+    });
+  };
+
+  static async countNotVisualizedByUser(userId: string, {
+    query = ""
+  }) {
+    return await Prisma.alert.aggregate({
+      _count: {
+        _all: true
+      },
+      where: {
+        AND: [
+          {
+            OR: [
+              {
+                classroom: {
+                  title: getApiQuery(query)
+                }
+              },
+              {
+                commit: {
+                  message: getApiQuery(query)
+                }
+              },
+              {
+                repository: {
+                  name: getApiQuery(query)
+                }
+              },
+              {
+                repository: {
+                  fullname: getApiQuery(query)
+                }
+              },
+              {
+                team: {
+                  title: getApiQuery(query)
+                }
+              },
+              {
+                description: getApiQuery(query)
+              },
+              {
+                type: getApiQuery(query)
+              }
+            ]
+          },
+          {
+            OR: [
+              {
+                classroom: {
+                  users: {
+                    some: {
+                      userId,
+                      role: "OWNER"
+                    }
+                  }
+                }
+              },
+              {
+                classroom: {
+                  users: {
+                    some: {
+                      userId,
+                      role: "ADMIN"
+                    }
+                  }
+                }
+              },
+              {
+                classroom: {
+                  users: {
+                    some: {
+                      userId,
+                      role: "OBSERVER"
+                    }
+                  }
+                }
+              },
+              {
+                commit: {
+                  repository: {
+                    ownerId: userId
+                  }
+                }
+              },
+              {
+                repository: {
+                  ownerId: userId
+                }
+              },
+              {
+                team: {
+                  users: {
+                    some: {
+                      userId
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            NOT: {
+              visualizedBy: {
+                has: userId
+              }
+            }
           }
         ]
       },

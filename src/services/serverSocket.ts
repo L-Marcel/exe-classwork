@@ -4,6 +4,19 @@ import { Api } from "./api";
 
 class ServerSocket {
   static domain = process.env.NEXT_PUBLIC_SOCKET_DOMAIN;
+
+  static connect(
+    events: (
+      client: Socket
+    ) => void
+  ) {
+    const client = io(this.domain, {
+      timeout: 10000,
+      reconnectionAttempts: 10
+    });
+    
+    client.on("connect", () => events(client));
+  };
   
   static initialize(
     subdomain: string, 
@@ -14,7 +27,6 @@ class ServerSocket {
     token?: string
   ) {
     Api.post(token? `/user/connect?token=${token}`:"user/connect").then((res) => {
-      console.log(this.domain, subdomain);
       const client = io(this.domain + subdomain, {
         timeout: 10000,
         reconnectionAttempts: 10

@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export class Api {
+export class SocketApi {
   static axios = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_URL
+    baseURL: process.env.NEXT_PUBLIC_SOCKET_DOMAIN
   });
   static get = this.axios.get;
   static post = this.axios.post;

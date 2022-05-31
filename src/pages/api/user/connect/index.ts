@@ -1,11 +1,11 @@
-import { Api } from "../../../../services/api";
+import { SocketApi } from "../../../../services/api/socketApi";
 import { apiHandle } from "../../../../utils/api/apiHandle";
 import { withUser } from "../../../../utils/api/middlewares/withUser";
 
 async function connectWithSocket(req: Req, res: Res) {
   const user = req.user;
   
-  await Api.post(`${process.env.NEXT_PUBLIC_SOCKET_DOMAIN}/connect`, {
+  await SocketApi.post("connect", {
     id: user.id
   });
 

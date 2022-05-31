@@ -4,7 +4,6 @@ import { boxShadow } from "../../theme/effects/shadow";
 import { IconButton } from "../Buttons/IconButton";
 import { Link } from "../Link";
 import { NamedIcon } from "../NamedIcon";
-import { AlertsCount } from "./AlertsCount";
 interface NavigationItemProps extends ButtonProps {
   path: string;
   name: string;
@@ -12,6 +11,7 @@ interface NavigationItemProps extends ButtonProps {
   forceExpanded?: boolean;
   expandedAnimation: string;
   isWideOrNormalVersion?: boolean;
+  needPayAttention?: boolean;
 };
 
 function NavigationItem({ 
@@ -21,6 +21,7 @@ function NavigationItem({
   name,
   expandedAnimation,
   isWideOrNormalVersion = true,
+  needPayAttention = false,
   ...rest 
 }: NavigationItemProps) {
   return (
@@ -46,18 +47,13 @@ function NavigationItem({
           aria-label={`${path}-navigation`}
           icon={<NamedIcon name={name}/>}
           forceHoverEffect={forceExpanded}
-          theme={isSelected? "primary":"solid"}
+          theme={isSelected? "primary":needPayAttention? "orange":"solid"}
+          colorIndexes={(needPayAttention && !isSelected)? ["400", "400", "400"]:undefined}
           color={isSelected && "black.100"}
           zIndex={10}
           {...rest}
         />
       </Link>
-      {
-        path.endsWith("alerts") && 
-        <AlertsCount
-          isForced={forceExpanded}
-        />
-      }
       <Text
         as={m.p}
         position="absolute"

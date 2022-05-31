@@ -13,6 +13,7 @@ connectionRoutes.post("/connect", (req, res) => {
     if(!io._nsps.has(namespace)) {
       const server = io.of(namespace);
       server.on("connection", (socket) => {    
+        socket.join("app");
         socket.on("@update/rate_limit", (data) => {
           server.emit("rate_limit", data);
         });
@@ -33,19 +34,25 @@ connectionRoutes.post("/connect", (req, res) => {
               server.emit("rate_limit", rateLimit);
             }, (progress) => {
               server.emit("progress", progress);
-            }).then((commits) => {
-              api.post(`user/repository/commits?token=${token}`, {
-                fullname: repositoryFullname,
-                id,
-                commits
-              }).then((res) => {
-                server.emit("progress", {
-                  target: -commits.length,
-                  value: -commits.length
-                });
+            }).then(async(commits) => {
+              for(let c = 0; c <= Math.ceil(commits.length/10); c++) {
+                const pieceOfCommits = commits.slice((c*10), (c*10) + 10);
+                console.log(pieceOfCommits.length);
 
-                console.log("Repository loaded: " + repositoryFullname);
-              }).catch((err) => console.log("c", err.message));
+                await api.post(`user/repository/commits?token=${token}`, {
+                  fullname: repositoryFullname,
+                  id,
+                  commits: pieceOfCommits
+                }).then((res) => {
+                  server.emit("progress", {
+                    target: -pieceOfCommits.length,
+                    value: -pieceOfCommits.length
+                  });
+                }).catch((err) => console.log("c", err.message));
+              };
+              
+              console.log("Repository loaded: " + repositoryFullname);
+              socket.disconnect();
             }).catch((err) => console.log("b", err.message));
             
           }).catch((err) => console.log("a", err));
@@ -58,6 +65,15 @@ connectionRoutes.post("/connect", (req, res) => {
     return res.status(400).send("");
   };
 });
+
+connectionRoutes.post("/alerts/new", (_, res) => {
+  try {
+    io.sockets.emit("@alerts/new");
+    return res.status(200).send("");
+  } catch (error) {
+    return res.status(400).send("");
+  };
+})
 
 export { connectionRoutes };
 

@@ -1,5 +1,5 @@
 function serialize(obj: Object) {
-  if(obj === null || obj === undefined) {
+  if(obj === null || obj === undefined || typeof obj === "string") {
     return obj;
   } else if(Array.isArray(obj)) {
     return obj.map(item => serialize(item));
@@ -25,3 +25,4 @@ function serialize(obj: Object) {
 };
 
 export { serialize };
+

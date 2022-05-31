@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { serialize } from "../utils/serialize";
+import { SocketApi } from "./api/socketApi";
 
 declare global {
   var prisma: PrismaClient | undefined;
@@ -11,7 +12,22 @@ if(!global.prisma) {
   client.$use(async(params, next) => {
     let result = await next(params);
     return serialize(result);
-  })
+  });
+
+  client.$use(async(params, next) => {
+    let result = await next(params);
+
+    if(
+      (params.action === "create" || params.action === "createMany")
+      && params.model === "Alert"
+    ) {
+      await SocketApi.post("alerts/new")
+      .then(() => {})
+      .catch(err => console.log(err));
+    };
+
+    return result;
+  });
 };
 
 if(process.env.NODE_ENV !== "production") {
@@ -29,5 +45,4 @@ export class Prisma {
   static repository = this.client.repository;
   static commit = this.client.commit;
   static alert = this.client.alert;
-  static visualization = this.client.visualization;
 };

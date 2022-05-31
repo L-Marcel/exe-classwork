@@ -8,9 +8,6 @@ declare type _TeamRelation = import("@prisma/client").TeamRelation;
 declare type _Repository = import("@prisma/client").Repository;
 declare type _Commit = import("@prisma/client").Commit;
 declare type _Alert = import("@prisma/client").Alert;
-declare type _Visualization = import("@prisma/client").Visualization;
-
-declare interface Visualization extends _Visualization {};
 
 declare interface Alert extends _Alert {
   type: AlertTypes;
@@ -125,6 +122,7 @@ declare interface AppContext {
   user: User | null;
   setUser: (user: User) => void;
   socket: import("socket.io-client").Socket | null;
+  global: import("socket.io-client").Socket | null;
   classroom: Classroom | null;
   setClassroom: (classroom: Classroom) => void;
   repository: Repository | null;

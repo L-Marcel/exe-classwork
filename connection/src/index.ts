@@ -4,6 +4,7 @@ import express from "express";
 import { config } from "dotenv";
 import { createServer } from "http";
 import { Server } from "socket.io";
+
 import { connectionRoutes } from "./routes/connection.routes";
 
 config();

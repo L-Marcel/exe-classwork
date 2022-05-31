@@ -19,6 +19,7 @@ function AppProvider({ children }: AppProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   
   const [socket, setSocket] = useState<Socket | null>(null);
+  const [global, setGlobal] = useState<Socket | null>(null);
 
   const [classroom, setClassroom] = useState<Classroom | null>(null);
   const [repository, setRepository] = useState<Repository | null>(null);
@@ -71,10 +72,6 @@ function AppProvider({ children }: AppProviderProps) {
     setIsLoading(isLoading);
   }, [setIsLoading]);
 
-  const _setSocket = useCallback((socket: Socket | null) => {
-    setSocket(socket);
-  }, [setSocket]);
-
   useEffect(() => {
     _resetInputErrors();
   }, [
@@ -85,12 +82,22 @@ function AppProvider({ children }: AppProviderProps) {
   useEffect(() => {
     if(socket === null && user !== null) {
       ServerSocket.initialize(`/${user.id}`, (_socket) => {
-        _setSocket(_socket);
+        setSocket(_socket);
       }, () => {
         //remember...
       });
     };
-  }, [_setSocket, socket, user]);
+  }, [setSocket, socket, user]);
+
+  useEffect(() => {
+    if(global === null && user !== null) {
+      ServerSocket.initialize("", (_socket) => {
+        setGlobal(_socket);
+      }, () => {
+        //remember...
+      });
+    };
+  }, [setGlobal, global, user]);
 
   return (
     <appContext.Provider
@@ -108,7 +115,8 @@ function AppProvider({ children }: AppProviderProps) {
         resetInputErrors: _resetInputErrors,
         isLoading,
         setIsLoading: _setIsLoading,
-        socket
+        socket,
+        global
       }}
     >
       {children}

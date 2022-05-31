@@ -21,7 +21,6 @@ model User {
   classrooms ClassroomRelation[]
   teams TeamRelation[]
   repositories Repository[]
-  alertsVisualized Visualization[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime?
@@ -166,18 +165,6 @@ model Commit {
   order Int @default(0)
 }
 
-model Visualization {
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-
-  alert Alert @relation(fields: [alertId], references: [id], onDelete: Cascade)
-  alertId String
-
-  createdAt DateTime @default(now())
-
-  @@id([userId, alertId])
-}
-
 model Alert {
   id String @id @default(uuid())
 
@@ -197,7 +184,7 @@ model Alert {
   commit Commit? @relation(fields: [commitId], references: [id], onDelete: Cascade)
   commitId String?
 
-  visualizedBy Visualization[]
+  visualizedBy String[]
 
   createdAt DateTime @default(now())
 }

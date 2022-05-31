@@ -1,9 +1,11 @@
 import { Box, BoxProps, Stack, useBreakpointValue } from "@chakra-ui/react";
 import { m } from "framer-motion";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useClassroom } from "../../contexts/hooks/useClassroom";
+import { useGlobal } from "../../contexts/hooks/useGlobal";
 import { useUser } from "../../contexts/hooks/useUser";
+import { Api } from "../../services/api";
 import { boxShadow } from "../../theme/effects/shadow";
 import { IconButton } from "../Buttons/IconButton";
 import { SignOutButton } from "../Buttons/SignOutButton";
@@ -11,7 +13,6 @@ import { ToggleColorButton } from "../Buttons/ToogleColorButton";
 import { NamedIcon } from "../NamedIcon";
 import { Overlay } from "../Overlay";
 import { Profile } from "../Profile";
-import { AlertsCount } from "./AlertsCount";
 import { GithubRequestLimit } from "./GithubRequestLimit";
 import { NavigationItem } from "./NavigationItem";
 
@@ -29,6 +30,29 @@ function Navigation({ ...rest }: NavigationProps) {
     xl: true,
     lg: true
   });
+
+  const { global: globalSocket } = useGlobal();
+  const [haveAlert, setHaveAlert] = useState(false);
+
+  const checkIfHaveAlerts = useCallback(() => {
+    Api.get("user/alerts/check").then(res => {
+      if(res.data.count >= 0) {
+        setHaveAlert(true);
+      } else {
+        setHaveAlert(false);
+      };
+    }).catch(() => {});
+  }, [setHaveAlert]);
+  
+  useEffect(() => {
+    if(globalSocket !== null && user !== null) {
+      checkIfHaveAlerts();
+      
+      globalSocket.on("@alerts/new", () => {
+        checkIfHaveAlerts();
+      })
+    };
+  }, [globalSocket, setHaveAlert, checkIfHaveAlerts]);
  
   if(!user) {
     return (
@@ -131,10 +155,6 @@ function Navigation({ ...rest }: NavigationProps) {
               display="flex"
               alignItems="center"
             >
-              <AlertsCount
-                isForced
-                isMenu
-              />
               <IconButton
                 aria-label="navigation-menu"
                 icon={<NamedIcon name={isOpen? "close":"menu"}/>}
@@ -161,6 +181,7 @@ function Navigation({ ...rest }: NavigationProps) {
                 forceExpanded={!isWideOrNormalVersion && isOpen}
                 isWideOrNormalVersion={isWideOrNormalVersion}
                 expandedAnimation={isWideOrNormalVersion? "expanded":"smExpanded"}
+                needPayAttention={haveAlert && n.name === "Alerts"}
                 isSelected={
                   asPath.toLowerCase() === n.path.toLowerCase() ||
                   n.accept?.includes(asPath.toLowerCase())
