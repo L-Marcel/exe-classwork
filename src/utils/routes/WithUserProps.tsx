@@ -6,7 +6,15 @@ import { useIsLoading } from "../../contexts/hooks/useIsLoading";
 import { useUser } from "../../contexts/hooks/useUser";
 import { Api } from "../../services/api";
 
-function WithUserProps<T = any>(Page: NextPage<T>) {
+type WithUserPropsFallback = {
+  title?: string;
+  subtitle?: string;
+};
+
+function WithUserProps<T = any>(Page: NextPage<T>, {
+  title = "We are getting everything ready for you.",
+  subtitle
+}: WithUserPropsFallback) {
   return function UserProvider(props: any) {
     const router = useRouter();
     const { user, setUser, signOut } = useUser();
@@ -26,10 +34,11 @@ function WithUserProps<T = any>(Page: NextPage<T>) {
       signOut
     ]);
     
-    if(!user) {
+    if(!user || router.isFallback) {
       return (
         <PageFallback
-          title="We are getting everything ready for you."
+          title={title}
+          subtitle={subtitle}
         />
       );
     };

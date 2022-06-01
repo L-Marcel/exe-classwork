@@ -3,8 +3,6 @@ import { RepositoryBanner } from "../../../../components/Repository/RepositoryBa
 import { Section } from "../../../../components/Section";
 
 import { GetStaticPaths, GetStaticProps } from "next";
-import { useRouter } from "next/router";
-import { PageFallback } from "../../../../components/PageFallback";
 import { RepositoryChart } from "../../../../components/Repository/RepositoryChart";
 import { CannotGetCommits } from "../../../../errors/api/CannotGetCommits";
 import { Api } from "../../../../services/api";
@@ -13,17 +11,6 @@ import { WithUserProps } from "../../../../utils/routes/WithUserProps";
 function RepositoryPage({
   repository
 }) {
-  const router = useRouter();
-
-  if(router.isFallback) {
-    return (
-      <PageFallback
-        title="We are loading the repository commits."
-        subtitle="This process is required for every push event."
-      />
-    );
-  };
-  
   const {
     commits,
     description,
@@ -113,5 +100,8 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
 };
 
 export default WithUserProps(
-  RepositoryPage
+  RepositoryPage, {
+    title: "We are loading the repository commits.",
+    subtitle: "This process is required for every push event."
+  }
 );
