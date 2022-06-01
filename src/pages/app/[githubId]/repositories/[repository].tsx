@@ -18,8 +18,7 @@ function RepositoryPage({
     sshUrl,
     description,
     homepage,
-    commits,
-    alerts
+    commits
   } = repository;
 
   return (
@@ -31,12 +30,11 @@ function RepositoryPage({
         sshUrl={sshUrl}
         description={description}
         homepage={homepage}
+        commits={commits?.map(c => c.message) || []}
       />
-      <Text>
-        {commits?.length}
-      </Text>
       <Section
-        minH={1200}
+        pl={["0!important", "0!important", "var(--chakra-space-14)!important"]}
+        pr={["0!important", "0!important", "var(--chakra-space-14)!important"]}
       >
         <RepositoryChart
           commits={commits || []}

@@ -1,8 +1,6 @@
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-
-const labels = ["January", "February", "March", "April", "May", "June", "July", "January", "February", "March", "April", "May", "June", "July"];
-
-
+import { RepositoryTooltips } from "./RepositoryTooltips";
 
 interface RepositoryChartProps {
   commits: Commit[]
@@ -25,85 +23,109 @@ function RepositoryChart({
   }, [] as CommitChart[]);
 
   return (
-    <>
-      <ResponsiveContainer
-        width="100%"
-        height="33%"
+    <Tabs>
+      <TabList>
+        <Tab>Metrics</Tab>
+        <Tab>Changes</Tab>
+        <Tab>Files</Tab>
+      </TabList>
+      <TabPanels
+        w="100%"
+        minW="93vw"
+        maxW="100vw"
+        overflowX="auto"
       >
-        <AreaChart
-          width={500}
-          height={400}
-          data={data}
-          syncId="commit"
-          margin={{
-            top: 10,
-            right: 30,
-            left: 0,
-            bottom: 0,
-          }}
+        <TabPanel
+          h="500px"
+          w={["1000px", "1000px", "900px", "100%"]}
         >
-          <CartesianGrid strokeDasharray="3 3"/>
-          <XAxis dataKey="message"/>
-          <YAxis/>
-          <Tooltip/>
-          <Area type="monotone" dataKey="complexity" stackId="1" stroke="#82a6ca" fill="#82a6ca"/>
-          <Area type="monotone" dataKey="churn" stackId="1" stroke="#8884d8" fill="#8884d8"/>
-          <Area type="monotone" dataKey="methods" stackId="1" stroke="#ffc658" fill="#ffc658"/>
-          <Area type="monotone" dataKey="classes" stackId="1" stroke="#82ca9d" fill="#82ca9d"/>
-        </AreaChart>
-      </ResponsiveContainer>
-      <ResponsiveContainer
-        width="100%"
-        height="33%"
-      >
-        <AreaChart
-          width={500}
-          height={400}
-          data={data}
-          syncId="commit"
-          margin={{
-            top: 10,
-            right: 30,
-            left: 0,
-            bottom: 0,
-          }}
+          <ResponsiveContainer
+            width="100%"
+          >
+            <AreaChart
+              width={500}
+              height={400}
+              data={data}
+              syncId="commit"
+              margin={{
+                top: 10,
+                right: 30,
+                left: 0,
+                bottom: 0,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3"/>
+              <XAxis dataKey="message"/>
+              <YAxis/>
+              <Tooltip content={RepositoryTooltips}/>
+              <Area type="monotone" dataKey="complexity" stackId="1" stroke="#82a6ca" fill="#82a6ca"/>
+              <Area type="monotone" dataKey="churn" stackId="1" stroke="#8884d8" fill="#8884d8"/>
+              <Area type="monotone" dataKey="methods" stackId="1" stroke="#ffc658" fill="#ffc658"/>
+              <Area type="monotone" dataKey="classes" stackId="1" stroke="#82ca9d" fill="#82ca9d"/>
+            </AreaChart>
+          </ResponsiveContainer>
+        </TabPanel>
+        <TabPanel
+          h="500px"
+          w={["1000px", "1000px", "900px", "100%"]}
         >
-          <CartesianGrid strokeDasharray="3 3"/>
-          <XAxis dataKey="message"/>
-          <YAxis/>
-          <Tooltip/>
-          <Area type="monotone" dataKey="totalAdditions" stackId="1" stroke="#82a6ca" fill="#82a6ca"/>
-          <Area type="monotone" dataKey="totalDeletions" stackId="1" stroke="#82a6ca" fill="#82a6ca"/>
-          <Area type="monotone" dataKey="totalChanges" stackId="1" stroke="#82a6ca" fill="#82a6ca"/>
-          <Area type="monotone" dataKey="sloc" stackId="1" stroke="#82a6ca" fill="#82a6ca"/>
-        </AreaChart>
-      </ResponsiveContainer>
-      <ResponsiveContainer
-        width="100%"
-        height="33%"
-      >
-        <AreaChart
-          width={500}
-          height={400}
-          data={data}
-          syncId="commit"
-          margin={{
-            top: 10,
-            right: 30,
-            left: 0,
-            bottom: 0,
-          }}
+          <ResponsiveContainer
+            width="100%"
+          >
+            <AreaChart
+              width={500}
+              height={400}
+              data={data}
+              syncId="commit"
+              margin={{
+                top: 10,
+                right: 30,
+                left: 0,
+                bottom: 0,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3"/>
+              <XAxis dataKey="message"/>
+              <YAxis/>
+              <Tooltip content={RepositoryTooltips}/>
+              <Area type="monotone" dataKey="totalAdditions" stackId="1" stroke="#82ca9d" fill="#82ca9d"/>
+              <Area type="monotone" dataKey="totalDeletions" stackId="1" stroke="#ca8282" fill="#ca8282"/>
+              <Area type="monotone" dataKey="totalChanges" stackId="1" stroke="#ffc658" fill="#ffc658"/>
+              <Area type="monotone" dataKey="sloc" stackId="1" stroke="#82a6ca" fill="#82a6ca"/>
+            </AreaChart>
+          </ResponsiveContainer>
+        </TabPanel>
+        <TabPanel
+          h="500px"
+          w={["1000px", "1000px", "900px", "100%"]}
         >
-          <CartesianGrid strokeDasharray="3 3"/>
-          <XAxis dataKey="message"/>
-          <YAxis/>
-          <Tooltip/>
-          <Area type="monotone" dataKey="filesAdded" stackId="1" stroke="#82a6ca" fill="#82a6ca"/>
-          <Area type="monotone" dataKey="filesRemoved" stackId="1" stroke="#ffc658" fill="#ffc658"/>
-          <Area type="monotone" dataKey="filesModified" stackId="1" stroke="#8884d8" fill="#8884d8"/>
-        </AreaChart>
-      </ResponsiveContainer>
-    </>
+          <ResponsiveContainer
+            width="100%"
+          >
+            <AreaChart
+              width={500}
+              height={400}
+              data={data}
+              syncId="commit"
+              margin={{
+                top: 10,
+                right: 30,
+                left: 0,
+                bottom: 0,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3"/>
+              <XAxis dataKey="message"/>
+              <YAxis/>
+              <Tooltip content={RepositoryTooltips}/>
+              <Area type="monotone" dataKey="filesAdded" stackId="1" stroke="#82ca9d" fill="#82ca9d"/>
+              <Area type="monotone" dataKey="filesRemoved" stackId="1" stroke="#ca8282" fill="#ca8282"/>
+              <Area type="monotone" dataKey="filesModified" stackId="1" stroke="#ffc658" fill="#ffc658"/>
+            </AreaChart>
+          </ResponsiveContainer>
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
   );
 };
 

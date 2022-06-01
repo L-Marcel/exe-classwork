@@ -1,4 +1,4 @@
-import { Text } from "@chakra-ui/react";
+import { Tag, Text } from "@chakra-ui/react";
 import { Section } from "../Section";
 import { Title } from "../Title";
 
@@ -44,8 +44,17 @@ function RepositoryBanner({
           {description}
         </Text>
       }
+      { commits && <Tag
+          fontWeight="bold"
+          bgColor="primary.700"
+          mt={5}
+        >
+          Commits: {commits.length}
+        </Tag>
+      }
     </Section>
   );
 };
 
 export { RepositoryBanner };
+
