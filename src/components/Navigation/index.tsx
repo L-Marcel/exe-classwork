@@ -128,9 +128,7 @@ function Navigation({ ...rest }: NavigationProps) {
           padding={isWideOrNormalVersion? 2:"none"}
           showUsername={!isWideOrNormalVersion}
           avatarProps={{
-            size: isWideOrNormalVersion? "md":"sm",
-            pr: isWideOrNormalVersion? "2px":0,
-            pt: isWideOrNormalVersion? "2px":0
+            size: isWideOrNormalVersion? "md":"sm"
           }}
         />
         <Stack

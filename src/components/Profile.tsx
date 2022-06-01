@@ -33,8 +33,6 @@ function Profile({
           src={user.avatarUrl}
           name={user.name ?? user.username}
           bgColor="solid.250"
-          pr="2px"
-          pt="2px"
           {...avatarProps}
         />
       </Box>

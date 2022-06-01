@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Avatar, Box, Text } from "@chakra-ui/react";
 import { boxShadow } from "../../theme/effects/shadow";
 import { Span } from "../Span";
 
@@ -27,7 +27,6 @@ function RepositoryTooltips({
   };
 
   if(active && payload && payload.length > 0) {
-    console.log(payload);
     return (
       <Box
         p={5}
@@ -42,7 +41,11 @@ function RepositoryTooltips({
         </Text>
         { payload.reverse().map((p) => {
           return (
-            <Text key={p.name} fontWeight="hairline">
+            <Text 
+              key={p.name} 
+              fontWeight="hairline"
+              mr={20}
+            >
               <Span
                 fontWeight="bold"
                 color={p.stroke}
@@ -52,6 +55,13 @@ function RepositoryTooltips({
             </Text>
           );
         }) }
+        { (payload.length > 0 && payload[0]?.payload?.userGithubId) && <Avatar
+          position="absolute"
+          bottom={5}
+          right={5}
+          src={`https://avatars.githubusercontent.com/u/${payload[0]?.payload.userGithubId}?v=4`}
+          border="5px solid var(--chakra-colors-solid-100)"
+        /> }
       </Box>
     );
   };

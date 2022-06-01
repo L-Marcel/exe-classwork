@@ -12,9 +12,11 @@ type WithUserPropsFallback = {
 };
 
 function WithUserProps<T = any>(Page: NextPage<T>, {
-  title = "We are getting everything ready for you.",
+  title,
   subtitle
-}: WithUserPropsFallback) {
+}: WithUserPropsFallback = {
+  title: "We are getting everything ready for you."
+}) {
   return function UserProvider(props: any) {
     const router = useRouter();
     const { user, setUser, signOut } = useUser();

@@ -3,7 +3,9 @@ import { RepositoryBanner } from "../../../../components/Repository/RepositoryBa
 import { Section } from "../../../../components/Section";
 
 import { GetStaticPaths, GetStaticProps } from "next";
+import { useEffect } from "react";
 import { RepositoryChart } from "../../../../components/Repository/RepositoryChart";
+import { useRepository } from "../../../../contexts/hooks/useRepository";
 import { CannotGetCommits } from "../../../../errors/api/CannotGetCommits";
 import { Api } from "../../../../services/api";
 import { WithUserProps } from "../../../../utils/routes/WithUserProps";
@@ -11,6 +13,8 @@ import { WithUserProps } from "../../../../utils/routes/WithUserProps";
 function RepositoryPage({
   repository
 }) {
+  const { setRepository } = useRepository();
+
   const {
     commits,
     description,
@@ -20,6 +24,10 @@ function RepositoryPage({
     name,
     sshUrl
   } = repository;
+
+  useEffect(() => {
+    setRepository(repository);
+  }, [repository]);
 
   return (
     <>
@@ -33,7 +41,7 @@ function RepositoryPage({
         commits={commits?.map(c => c.message) || []}
       />
       <Section
-        pt="0!important"
+        py="0!important"
         pl={["0!important", "0!important", "var(--chakra-space-14)!important"]}
         pr={["0!important", "0!important", "var(--chakra-space-14)!important"]}
       >

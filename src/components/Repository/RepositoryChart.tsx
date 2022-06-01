@@ -33,7 +33,7 @@ function RepositoryChart({
         w="100%"
         minW="93vw"
         maxW="100vw"
-        overflowX="auto"
+        overflowX={["auto", "auto", "auto", "hidden"]}
       >
         <TabPanel
           h="500px"
