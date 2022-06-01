@@ -1,6 +1,5 @@
 import { Repositories } from "../../../../../controllers/Repositories";
 import { apiHandle } from "../../../../../utils/api/apiHandle";
-import { withUser } from "../../../../../utils/api/middlewares/withUser";
 
 async function getRepository(req: Req, res: Res) {
   const { id } = req.query;
@@ -11,5 +10,5 @@ async function getRepository(req: Req, res: Res) {
 };
 
 export default apiHandle({
-  "GET": withUser(getRepository)
+  "GET": getRepository
 });

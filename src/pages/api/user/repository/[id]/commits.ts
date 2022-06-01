@@ -1,6 +1,5 @@
 import { Commits } from "../../../../../controllers/Commits";
 import { apiHandle } from "../../../../../utils/api/apiHandle";
-import { withUser } from "../../../../../utils/api/middlewares/withUser";
 
 async function getCommits(req: Req, res: Res) {
   const { id, page, take } = req.query;
@@ -15,5 +14,5 @@ async function getCommits(req: Req, res: Res) {
 };
 
 export default apiHandle({
-  "GET": withUser(getCommits)
+  "GET": getCommits
 });
