@@ -39,8 +39,8 @@ function WithUserProps<T = any>(Page: NextPage<T>, {
     if(!user || router.isFallback) {
       return (
         <PageFallback
-          title={title}
-          subtitle={subtitle}
+          title={router.isFallback? title:"We are getting everything ready for you."}
+          subtitle={router.isFallback && subtitle}
         />
       );
     };
