@@ -36,7 +36,7 @@ function Navigation({ ...rest }: NavigationProps) {
 
   const checkIfHaveAlerts = useCallback(() => {
     Api.get("user/alerts/check").then(res => {
-      if(res.data.count >= 0) {
+      if(res.data.count > 0) {
         setHaveAlert(true);
       } else {
         setHaveAlert(false);

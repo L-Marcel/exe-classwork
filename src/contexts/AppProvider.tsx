@@ -25,11 +25,6 @@ function AppProvider({ children }: AppProviderProps) {
   const [repository, setRepository] = useState<Repository | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [rateLimit, setRateLimit] = useState({
-    limit: 0,
-    remaining: 0
-  });
-
   const _setRepository = useCallback((repository: Repository) => {
     setRepository(repository);
   }, [setRepository]);

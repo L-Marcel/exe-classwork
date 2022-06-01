@@ -17,7 +17,10 @@ function useApiResult<T = any>({
       return [] as T[];
     });
   }, {
-    initialData
+    initialData,
+    refetchOnReconnect: true,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true
   });
 
   return {

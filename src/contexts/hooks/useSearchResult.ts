@@ -18,7 +18,7 @@ function useSearchResult<T = any>({
   const { search } = useSearch();
   const { setCount, count } = useCount();
 
-  const { data, isFetching } = useQuery([queryTo, page, search], async() => {
+  const { data, isFetching, refetch } = useQuery([queryTo, page, search], async() => {
     return await Api.get<PaginatedData<T>>(`${queryTo}?page=${page}&query=${search}`)
     .then(res => res.data)
     .catch(() => {
@@ -31,7 +31,10 @@ function useSearchResult<T = any>({
     initialData: {
       items: initialData,
       count: 0
-    }
+    },
+    refetchOnReconnect: true,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true
   });
 
   useEffect(() => {
@@ -44,6 +47,7 @@ function useSearchResult<T = any>({
 
   return {
     data: data.items,
+    refetch,
     isFetching
   };
 };

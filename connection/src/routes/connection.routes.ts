@@ -37,7 +37,6 @@ connectionRoutes.post("/connect", (req, res) => {
             }).then(async(commits) => {
               for(let c = 0; c <= Math.ceil(commits.length/10); c++) {
                 const pieceOfCommits = commits.slice((c*10), (c*10) + 10);
-                console.log(pieceOfCommits.length);
 
                 await api.post(`user/repository/commits?token=${token}`, {
                   fullname: repositoryFullname,

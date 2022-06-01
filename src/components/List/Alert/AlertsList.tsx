@@ -5,7 +5,10 @@ import { SearchingMessage } from "../SearchingMessage";
 import { AlertItem } from "./AlertItem";
 
 function AlertsList() {
-  const { data: alerts, isFetching } = useSearchResult<Alert>({
+  const { 
+    data: alerts,
+    isFetching
+  } = useSearchResult<Alert>({
     queryTo: `/user/alerts`,
     initialData: []
   });

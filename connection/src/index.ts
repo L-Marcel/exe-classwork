@@ -26,4 +26,3 @@ const io = new Server({
 app.use(connectionRoutes);
 
 export { app, http, io };
-
