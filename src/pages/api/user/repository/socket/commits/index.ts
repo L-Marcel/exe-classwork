@@ -25,9 +25,10 @@ async function createCommits(req: Req, res: Res) {
       description: `Repository ${fullname} was been loaded (${count} commits).`,
       repositoryId: id
     });
+    
+    console.log("Repository is loaded: ", fullname, " - in: ", new Date().toString());
   };
 
-  console.log("Repository is loaded: ", fullname, " - in: ", new Date().toString());
   return res.status(200).send("");
 };
 

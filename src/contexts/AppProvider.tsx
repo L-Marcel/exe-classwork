@@ -23,6 +23,13 @@ function AppProvider({ children }: AppProviderProps) {
 
   const [classroom, setClassroom] = useState<Classroom | null>(null);
   const [repository, setRepository] = useState<Repository | null>(null);
+
+  const [progress, setProgress] = useState<AllNamedProgress>({
+    target: 0,
+    value: 0,
+    all: []
+  });
+
   const [isLoading, setIsLoading] = useState(false);
 
   const _setRepository = useCallback((repository: Repository) => {
@@ -62,6 +69,38 @@ function AppProvider({ children }: AppProviderProps) {
   const _resetInputErrors = useCallback(() => {
     setInputErrors({});
   }, [setInputErrors]);
+
+  const _setProgress = useCallback((progress: AllNamedProgress) => {
+    setProgress(progress);
+  }, [setProgress]);
+
+  const _addNamedProgress = useCallback((progress: NamedProgress) => {
+    setProgress(p => {
+      const nameAlreadyDefined = p.all.find(p => p.name === progress?.name);
+
+      return {
+        target: Math.max(p.target + (progress.target || 0), 0),
+        value: Math.max(p.value + (progress.value || 0), 0),
+        all: nameAlreadyDefined? p.all.map(n => {
+          if(n.name === progress?.name) {
+            n = {
+              ...n,
+              target: Math.max((n?.target || 0) + (progress.target || 0), 0),
+              value: Math.max((n?.value || 0) + (progress.value || 0), 0),
+            };
+          };
+
+          return {
+            ...n
+          };
+        }):[ ...p.all, progress ]
+      };
+    });
+  }, [setProgress]);
+
+  const _getProgressByName = useCallback((name: string) => {
+    return progress.all.find(p => p.name === name);
+  }, [progress])
 
   const _setIsLoading = useCallback((isLoading: boolean) => {
     setIsLoading(isLoading);
@@ -103,6 +142,10 @@ function AppProvider({ children }: AppProviderProps) {
         setClassroom: _setClassroom,
         repository,
         setRepository: _setRepository,
+        progress,
+        setProgress: _setProgress,
+        addNamedProgress: _addNamedProgress,
+        getProgressByName: _getProgressByName,
         signOut: _signOut,
         inputErrors,
         addInputErrors: _addInputErrors,

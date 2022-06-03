@@ -79,6 +79,9 @@ export const theme = extendTheme({
         'div[role="progressbar"]:not(.circle)': {
           bgGradient: "linear(to-r, transparent, primary.700)",
         },
+        '.orange > div[role="progressbar"]': {
+          bgGradient: "linear(to-r, orange.700, orange.700)",
+        },
         '.chakra-switch__track[data-checked]': {
           bgColor: "var(--chakra-colors-primary-600) !important"
         },

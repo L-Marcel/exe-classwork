@@ -128,6 +128,10 @@ declare interface AppContext {
   setClassroom: (classroom: Classroom) => void;
   repository: Repository | null;
   setRepository: (repository: Repository) => void;
+  progress: AllNamedProgress;
+  setProgress: (progress: AllNamedProgress) => void;
+  addNamedProgress: (progress: NamedProgress) => void;
+  getProgressByName: (name: string) => NamedProgress;
   signOut: () => void;
   inputErrors: InputErrors;
   addInputErrors: (errors: InputErrors) => void;
@@ -274,4 +278,17 @@ declare type AlertTypeTagParams = {
   type: AlertTypes;
   classroom?: string;
   team?: string;
+};
+
+declare type NamedProgress = {
+  value: number;
+  target: number;
+  name: string;
+  status: RepositoryStatus;
+};
+
+declare type AllNamedProgress = {
+  value: number;
+  target: number;
+  all: NamedProgress[];
 };

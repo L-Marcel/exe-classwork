@@ -1,6 +1,7 @@
 import { Box, CircularProgress, CircularProgressLabel, Text } from "@chakra-ui/react";
 import { m } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useProgress } from "../../contexts/hooks/useProgress";
 import { useSocket } from "../../contexts/hooks/useSocket";
 import { useUser } from "../../contexts/hooks/useUser";
 import { Api } from "../../services/api";
@@ -20,10 +21,7 @@ function GithubRequestLimit({
 
   const [displayed, setDisplayed] = useState("rate_limit");
 
-  const [progress, setProgress] = useState({
-    value: 0,
-    target: 0
-  });
+  const { progress, addNamedProgress } = useProgress();
 
   const [rateLimit, setRateLimit] = useState({
     limit: 0,
@@ -39,12 +37,7 @@ function GithubRequestLimit({
       });
 
       socket.on("progress", (data) => {
-        setProgress(p => {
-          return {
-            target: Math.max(p.target + (data.target || 0), 0),
-            value: Math.max(p.value + (data.value || 0), 0)
-          };
-        });
+        addNamedProgress(data);
       });
 
       Api.post("user/connect/rate_limit")

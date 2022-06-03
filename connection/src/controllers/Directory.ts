@@ -137,7 +137,8 @@ class Directory {
     );
 
     onChangeProgress({
-      target: commitsRef.length
+      target: commitsRef.length,
+      value: 0
     });
 
     console.log("Changing commits refs order...");

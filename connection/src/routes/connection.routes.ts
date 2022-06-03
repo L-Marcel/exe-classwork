@@ -33,7 +33,7 @@ connectionRoutes.post("/connect", (req, res) => {
         }) => {
           console.log("Commit refresh event");
 
-          api.post<RefreshCommitsData>(`user/repository/commits/refresh?token=${token}`, {
+          api.post<RefreshCommitsData>(`user/repository/socket/commits/refresh?token=${token}`, {
             repositoryFullname
           }).then((res) => {
             const {
@@ -56,7 +56,7 @@ connectionRoutes.post("/connect", (req, res) => {
                 for(let c = 0; c <= Math.ceil(commits.length/10); c++) {
                   const pieceOfCommits = commits.slice((c*10), (c*10) + 10);
   
-                  await api.post(`user/repository/commits?token=${token}`, {
+                  await api.post(`user/repository/socket/commits?token=${token}`, {
                     fullname: repositoryFullname,
                     id,
                     commits: pieceOfCommits,
@@ -67,6 +67,8 @@ connectionRoutes.post("/connect", (req, res) => {
                     server.emit("progress", {
                       target: -pieceOfCommits.length,
                       value: -pieceOfCommits.length,
+                      name: fullname,
+                      status: "REQUESTED"
                     });
                   }).catch((err) => console.log("c", err.message));
                 };
