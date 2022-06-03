@@ -122,6 +122,8 @@ model Repository {
   alerts Alert[]
   teams Team[]
 
+  status String @default("NOT REQUESTED")
+
   createdAt DateTime @default(now())
   updatedAt DateTime?
   updatedBy String?
@@ -160,6 +162,7 @@ model Commit {
 
   alerts Alert[]
 
+  commitedAt DateTime @default(now())
   createdAt DateTime @default(now())
 
   order Int @default(0)

@@ -10,19 +10,23 @@ function RepositoryTooltips({
   function getTooltipPayloadName(name: string) {
     switch(name) {
       case "totalAdditions":
-        return "total additions";
+        return "<- total additions";
       case "totalDeletions":
-        return "total deletions";
+        return "<- total deletions";
       case "totalChanges":
-        return "total changes";
+        return "<- total changes";
       case "filesAdded":
-        return "files added";
+        return "<- files added";
       case "filesRemoved":
-        return "files removed";
+        return "<- files removed";
       case "filesModified":
-        return "files modified";
+        return "<- files modified";
+      case "files":
+        return "-> files";
+      case "sloc":
+        return "-> sloc";
       default:
-        return name;
+        return "<- " + name;
     };
   };
 

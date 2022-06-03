@@ -35,7 +35,7 @@ export class Teams {
       return await TeamRelations.create(m.role, m.user, classroomId, {
         teamId: createdTeam.id,
         userId: m.user.id
-      });
+      }, false);
     }));
 
     return { team: createdTeam, relations };

@@ -23,7 +23,8 @@ export class TeamRelations {
     role: TeamRoles,
     user: User,
     classroomId: string,
-    data: Omit<P.TeamRelationUncheckedCreateInput, "role">
+    data: Omit<P.TeamRelationUncheckedCreateInput, "role">,
+    needAlert = false
   ) {
     await this.isAlreadyLinked(user, data.teamId);
 
@@ -34,12 +35,14 @@ export class TeamRelations {
       }
     });
 
-    await Alerts.create("TEAM_RELATION", {
-      description: `Team have a new ${role.toLowerCase()}: Welcome, ${user?.username}!`,
-      avatarUrl: user?.avatarUrl,
-      teamId: relation.teamId,
-      classroomId
-    });
+    if(needAlert) {
+      await Alerts.create("TEAM_RELATION", {
+        description: `Team have a new ${role.toLowerCase()}: Welcome, ${user?.username}!`,
+        avatarUrl: user?.avatarUrl,
+        teamId: relation.teamId,
+        classroomId
+      });
+    };
 
     return relation;
   };

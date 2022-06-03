@@ -24,6 +24,7 @@ declare interface Commit extends _Commit {
 declare interface CommitChart extends Commit {
   methods: number;
   classes: number;
+  files: number;
 };
 
 declare interface Repository extends _Repository {
@@ -149,6 +150,7 @@ declare interface SearchContext {
 declare type AlertTypes = "CLASSROOM" | "CLASSROOM_RELATION" | "TEAM" | "TEAM_RELATION" | "REPOSITORY" | "COMMIT";
 declare type ClassroomRoles = "OWNER" | "ADMIN" | "OBSERVER" | "STUDENT";
 declare type TeamRoles = "LEADER" | "MEMBER";
+declare type RepositoryStatus = "NOT REQUESTED" | "REQUESTED" | "LOADED";
 
 declare interface WithUserProps {
   user: User;

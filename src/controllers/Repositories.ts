@@ -76,28 +76,24 @@ export class Repositories {
     });
   };
 
-  static async sync(repositoryFullname: string, force = false) {
-    try {
-      if(force) {
-        console.log("Checking repository");
-        const repository = await Prisma.repository.findUnique({
-          where: {
-            fullname: repositoryFullname
-          },
-          select: {
-            id: true,
-            fullname: true
-          }
-        });
+  static async getInfoToRefreshCommits(repositoryFullname: string) {
+    const repository = await Prisma.repository.findUnique({
+      where: {
+        fullname: repositoryFullname
+      },
+      select: {
+        id: true,
+        status: true,
+        fullname: true
+      }
+    });
 
-        if(!repository) {
-          throw new NotFoundError("Repository");
-        };
+    if(!repository) {
+      throw new NotFoundError("Repository");
+    };
 
-        return repository.id;
-      };
-    } catch (error) {
-      console.log(error);
+    return {
+      ...repository
     };
   };
 
@@ -232,5 +228,16 @@ export class Repositories {
     };
 
     return repository;
+  };
+
+  static async changeStatus(id: string, status: RepositoryStatus) {
+    return await Prisma.repository.update({
+      where: {
+        id
+      },
+      data: {
+        status
+      }
+    });
   };
 };

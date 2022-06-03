@@ -14,7 +14,7 @@ class TeamValidation {
   static create = Joi.object({
     title: Joi.string().required().min(3).max(30),
     description: Joi.string().optional().max(800).allow(null, ''),
-    users: Joi.array().items(this.relation).min(2).custom((values: Partial<TeamRelation>[], helpers) => {
+    users: Joi.array().items(this.relation).min(1).custom((values: Partial<TeamRelation>[], helpers) => {
       for(let n in values) {
         const relation = values[n];
 

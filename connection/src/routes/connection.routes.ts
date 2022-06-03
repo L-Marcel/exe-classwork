@@ -3,6 +3,14 @@ import { io } from "..";
 import { Directory } from "../controllers/Directory";
 import { api } from "../services/api";
 
+export type RepositoryStatus = "NOT REQUESTED" | "REQUESTED" | "LOADED";
+export type RefreshCommitsData = {
+  id: string;
+  status: RepositoryStatus;
+  fullname: string;
+  appToken: string;
+}; 
+
 const connectionRoutes = express.Router();
 
 connectionRoutes.post("/connect", (req, res) => {
@@ -25,35 +33,56 @@ connectionRoutes.post("/connect", (req, res) => {
         }) => {
           console.log("Commit refresh event");
 
-          api.post(`user/repository/commits/refresh?token=${token}`, {
+          api.post<RefreshCommitsData>(`user/repository/commits/refresh?token=${token}`, {
             repositoryFullname
           }).then((res) => {
-            const { id, appToken } = res.data;
+            const {
+              id,
+              fullname,
+              status,
+              appToken 
+            } = res.data;
         
-            Directory.getRepositoryCommits(userId, repositoryFullname, appToken, (rateLimit) => {
-              server.emit("rate_limit", rateLimit);
-            }, (progress) => {
-              server.emit("progress", progress);
-            }).then(async(commits) => {
-              for(let c = 0; c <= Math.ceil(commits.length/10); c++) {
-                const pieceOfCommits = commits.slice((c*10), (c*10) + 10);
+            if(status === "NOT REQUESTED") {
+              Directory.getRepositoryCommits(userId, fullname, appToken, (rateLimit) => {
+                server.emit("rate_limit", rateLimit);
+              }, (progress) => {
+                server.emit("progress", {
+                  ...progress,
+                  name: fullname,
+                  status: "REQUESTED"
+                });
+              }).then(async(commits) => {
+                for(let c = 0; c <= Math.ceil(commits.length/10); c++) {
+                  const pieceOfCommits = commits.slice((c*10), (c*10) + 10);
+  
+                  await api.post(`user/repository/commits?token=${token}`, {
+                    fullname: repositoryFullname,
+                    id,
+                    commits: pieceOfCommits,
+                    isFinished: c >= Math.ceil(commits.length/10),
+                    count: commits.length
+                  }).then((res) => {
+                    console.log("IsFinished: " + (c >= Math.ceil(commits.length/10)));
+                    server.emit("progress", {
+                      target: -pieceOfCommits.length,
+                      value: -pieceOfCommits.length,
+                    });
+                  }).catch((err) => console.log("c", err.message));
+                };
 
-                await api.post(`user/repository/commits?token=${token}`, {
-                  fullname: repositoryFullname,
-                  id,
-                  commits: pieceOfCommits
-                }).then((res) => {
-                  server.emit("progress", {
-                    target: -pieceOfCommits.length,
-                    value: -pieceOfCommits.length
-                  });
-                }).catch((err) => console.log("c", err.message));
-              };
-              
-              console.log("Repository loaded: " + repositoryFullname);
-              socket.disconnect();
-            }).catch((err) => console.log("b", err.message));
-            
+                server.emit("progress", {
+                  target: 0,
+                  value: 0,
+                  name: fullname,
+                  status: "LOADED"
+                });
+                
+                console.log("Repository loaded: " + repositoryFullname);
+                socket.disconnect();
+              }).catch((err) => console.log("b", err.message));
+            };
+
           }).catch((err) => console.log("a", err));
         });
       });

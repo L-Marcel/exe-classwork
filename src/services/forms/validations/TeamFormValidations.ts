@@ -10,7 +10,7 @@ class TeamFormValidations {
     title: yup.string().required().min(3).max(30),
     description: yup.string().optional().max(800),
     repository: yup.object().optional(),
-    users: yup.array(this.relation).min(2).test("users", "Must contain unique users.", value => {
+    users: yup.array(this.relation).min(1).test("users", "Must contain unique users.", value => {
       for(let n in value) {
         const relation = value[Number(n)];
   
