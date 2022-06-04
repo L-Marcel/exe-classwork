@@ -1,6 +1,6 @@
 import { Prisma as P } from "@prisma/client";
 import { Prisma } from "../services/prisma";
-import { getApiQuery } from "../utils/getApiQuery";
+import { getApiAlertsType, getApiQuery } from "../utils/getApiQuery";
 
 export class Alerts {
   static async create(type: AlertTypes, data: Omit<P.AlertUncheckedCreateInput, "type">) {
@@ -63,7 +63,7 @@ export class Alerts {
                 description: getApiQuery(query)
               },
               {
-                type: getApiQuery(query)
+                type: getApiAlertsType(query)
               }
             ]
           },
@@ -210,7 +210,7 @@ export class Alerts {
                 description: getApiQuery(query)
               },
               {
-                type: getApiQuery(query)
+                type: getApiAlertsType(query)
               }
             ]
           },
@@ -315,7 +315,7 @@ export class Alerts {
                 description: getApiQuery(query)
               },
               {
-                type: getApiQuery(query)
+                type: getApiAlertsType(query)
               }
             ]
           },

@@ -6,7 +6,7 @@ import { withUser } from "../../../../../../utils/api/middlewares/withUser";
 async function getClassroomMembers(req: Req, res: Res) {
   const { id, page, query } = req.query;
   const user = req.user;
-  
+
   await ClassroomRelations.havePermissionsToSelectClassrroomValues(
     id?.toString(),
     user.id

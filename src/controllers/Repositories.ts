@@ -230,6 +230,19 @@ export class Repositories {
     return repository;
   };
 
+  static async getByFullname(fullname: string) {
+    return await Prisma.repository.findFirst({
+      where: {
+        fullname: {
+          contains: fullname,
+          mode: "insensitive"
+        }
+      }
+    }).then(res => res).catch((err) => {
+      throw new NotFoundError("Repository");
+    });
+  };
+
   static async changeStatus(id: string, status: RepositoryStatus) {
     return await Prisma.repository.update({
       where: {

@@ -154,7 +154,8 @@ declare interface SearchContext {
 declare type AlertTypes = "CLASSROOM" | "CLASSROOM_RELATION" | "TEAM" | "TEAM_RELATION" | "REPOSITORY" | "COMMIT";
 declare type ClassroomRoles = "OWNER" | "ADMIN" | "OBSERVER" | "STUDENT";
 declare type TeamRoles = "LEADER" | "MEMBER";
-declare type RepositoryStatus = "NOT REQUESTED" | "REQUESTED" | "LOADED";
+declare type RepositoryStatus = "NOT_REQUESTED" | "REQUESTED" | "LOADED";
+declare type RepositoryVisibility = "PUBLIC" | "PRIVATE" | "VISIBLE_FOR_TEAMS" | "VISIBLE_FOR_CLASSROOMS";
 
 declare interface WithUserProps {
   user: User;

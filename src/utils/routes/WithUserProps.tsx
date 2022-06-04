@@ -6,12 +6,20 @@ import { useIsLoading } from "../../contexts/hooks/useIsLoading";
 import { useUser } from "../../contexts/hooks/useUser";
 import { Api } from "../../services/api";
 
+type WithUserOptions = {
+  isPublic?: boolean
+};
+
 type WithUserPropsFallback = {
   title?: string;
   subtitle?: string;
 };
 
 function WithUserProps<T = any>(Page: NextPage<T>, {
+  isPublic
+}: WithUserOptions = {
+  isPublic: false
+}, {
   title,
   subtitle
 }: WithUserPropsFallback = {
@@ -36,7 +44,7 @@ function WithUserProps<T = any>(Page: NextPage<T>, {
       signOut
     ]);
     
-    if(!user || router.isFallback) {
+    if((!user && !isPublic) || router.isFallback) {
       return (
         <PageFallback
           title={router.isFallback? title:"We are getting everything ready for you."}

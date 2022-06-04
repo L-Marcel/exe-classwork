@@ -27,6 +27,9 @@ async function createCommits(req: Req, res: Res) {
     });
     
     console.log("Repository is loaded: ", fullname, " - in: ", new Date().toString());
+    res.unstable_revalidate(`/repositories/${fullname?.toLocaleLowerCase()}`)
+    .then(() => console.log("Repository revalidated: " + fullname))
+    .catch(err => console.log(err));
   };
 
   return res.status(200).send("");

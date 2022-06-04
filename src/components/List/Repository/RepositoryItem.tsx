@@ -55,7 +55,7 @@ function RepositoryItem({ name, fullname, description, subject, id, alerts = [] 
       alignItems="flex-start"
       justifyContent="flex-start"
       textAlign="start"
-      onClick={() => !isLoading && router.push(`/app/${router.query?.githubId}/repositories/${id}`)}
+      onClick={() => !isLoading && router.push(`/repositories/${fullname?.toLocaleLowerCase()}`)}
       cursor={isLoading? "progress":"pointer"}
       {...scaleOnInteract}
     >

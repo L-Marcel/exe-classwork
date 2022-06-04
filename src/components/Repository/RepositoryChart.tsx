@@ -1,5 +1,6 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { Area, CartesianGrid, ComposedChart, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { useUser } from "../../contexts/hooks/useUser";
 import { RepositoryTooltips } from "./RepositoryTooltips";
 
 interface RepositoryChartProps {
@@ -9,6 +10,8 @@ interface RepositoryChartProps {
 function RepositoryChart({
   commits
 }: RepositoryChartProps) {
+  const { user } = useUser();
+  
   const data = commits.reduce((prev, cur, i) => {
     prev.push({
       ...cur,
@@ -23,8 +26,6 @@ function RepositoryChart({
     return prev;
   }, [] as CommitChart[]);
 
-  console.log(data);
-
   return (
     <Tabs>
       <TabList>
@@ -34,13 +35,14 @@ function RepositoryChart({
       </TabList>
       <TabPanels
         w="100%"
-        minW="93vw"
+        minW={user? "93vw":"100vw"}
         maxW="100vw"
         overflowX={["auto", "auto", "auto", "hidden"]}
+        pt={3}
       >
         <TabPanel
           h="500px"
-          w={["1000px", "1000px", "900px", "100%"]}
+          w={["1000px", "1000px", "900px", user? "100%":"93vw"]}
         >
           <ResponsiveContainer
             width="100%"

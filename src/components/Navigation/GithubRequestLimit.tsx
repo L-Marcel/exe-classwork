@@ -1,5 +1,6 @@
 import { Box, CircularProgress, CircularProgressLabel, Text } from "@chakra-ui/react";
 import { m } from "framer-motion";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useProgress } from "../../contexts/hooks/useProgress";
 import { useSocket } from "../../contexts/hooks/useSocket";
@@ -16,6 +17,7 @@ interface GithubRequestLimitProps {
 function GithubRequestLimit({
   haveOverlay
 }: GithubRequestLimitProps) {
+  const router = useRouter(); 
   const { user } = useUser();
   const { socket } = useSocket();
 
@@ -47,7 +49,7 @@ function GithubRequestLimit({
     };
   }, [Api, socket, setRateLimit]);
 
-  if(!user || !user?.installationId) {
+  if(!user || !user?.installationId || router.isFallback) {
     return null;
   };
   

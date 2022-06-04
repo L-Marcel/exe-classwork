@@ -3,7 +3,7 @@ import { AlreadyLinkedError } from "../errors/api/AlreadyLinkedError";
 import { NotFoundError } from "../errors/api/NotFoundError";
 import { UnauthorizedError } from "../errors/api/UnauthorizedError";
 import { Prisma } from "../services/prisma";
-import { getApiQuery } from "../utils/getApiQuery";
+import { getApiClassroomRole, getApiQuery } from "../utils/getApiQuery";
 import { Alerts } from "./Alerts";
 
 export class ClassroomRelations {
@@ -69,9 +69,9 @@ export class ClassroomRelations {
         AND: [
           {
             OR: [
-              !rolesAreRestricted? {
-                role: getApiQuery(query)
-              }:undefined,
+              {
+                role: getApiClassroomRole(query)
+              },
               {
                 user: {
                   name: getApiQuery(query)
@@ -113,7 +113,7 @@ export class ClassroomRelations {
           {
             OR: [
               {
-                role: getApiQuery(query)
+                role: getApiClassroomRole(query)
               },
               {
                 user: {
@@ -204,7 +204,7 @@ export class ClassroomRelations {
       throw new UnauthorizedError();
     };
 
-    switch(relation.role as ClassroomRoles) {
+    switch(relation.role) {
       case "OWNER":
       case "ADMIN":
         return {
@@ -384,10 +384,10 @@ export class ClassroomRelations {
           {
             OR: [
               {
-                role: "OWNER" as ClassroomRoles
+                role: "OWNER"
               },
               {
-                role: "ADMIN" as ClassroomRoles
+                role: "ADMIN"
               }
             ]
           },
@@ -412,7 +412,7 @@ export class ClassroomRelations {
   ) {
     const relation = await Prisma.classroomRelation.findFirst({
       where: {
-        role: "OWNER" as ClassroomRoles,
+        role: "OWNER",
         userId,
         classroomId
       }
@@ -435,10 +435,10 @@ export class ClassroomRelations {
           {
             OR: [
               {
-                role: "OWNER" as ClassroomRoles
+                role: "OWNER"
               },
               {
-                role: "ADMIN" as ClassroomRoles
+                role: "ADMIN"
               }
             ]
           },

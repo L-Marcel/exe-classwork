@@ -27,7 +27,7 @@ model User {
 }
 
 model ClassroomRelation {
-  role String @default("STUDENT")
+  role ClassroomRoles @default(STUDENT)
   
   classroom Classroom @relation(fields: [classroomId], references: [id], onDelete: Cascade)
   classroomId String
@@ -86,7 +86,7 @@ model Team {
 }
 
 model TeamRelation {
-  role String @default("MEMBER")
+  role TeamRoles @default(MEMBER)
 
   team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId String
@@ -122,7 +122,9 @@ model Repository {
   alerts Alert[]
   teams Team[]
 
-  status String @default("NOT REQUESTED")
+  visibility RepositoryVisibility @default(PUBLIC)
+
+  status RepositoryStatus @default(NOT_REQUESTED)
 
   createdAt DateTime @default(now())
   updatedAt DateTime?
@@ -171,7 +173,7 @@ model Commit {
 model Alert {
   id String @id @default(uuid())
 
-  type String
+  type AlertTypes
   avatarUrl String?
   description String
 
@@ -190,4 +192,38 @@ model Alert {
   visualizedBy String[]
 
   createdAt DateTime @default(now())
+}
+
+enum AlertTypes { 
+  CLASSROOM
+  CLASSROOM_RELATION
+  TEAM
+  TEAM_RELATION
+  REPOSITORY
+  COMMIT
+}
+
+enum ClassroomRoles { 
+  OWNER
+  ADMIN
+  OBSERVER
+  STUDENT
+}
+
+enum TeamRoles { 
+  LEADER
+  MEMBER
+}
+
+enum RepositoryStatus { 
+  NOT_REQUESTED
+  REQUESTED
+  LOADED
+}
+
+enum RepositoryVisibility { 
+  PUBLIC
+  PRIVATE
+  VISIBLE_FOR_TEAMS
+  VISIBLE_FOR_CLASSROOMS
 }

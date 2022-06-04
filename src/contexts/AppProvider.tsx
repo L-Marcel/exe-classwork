@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { ReactNode, useCallback, useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import { createContext } from "use-context-selector";
+import createPersistedState from "use-persisted-state";
 import { ServerSocket } from "../services/serverSocket";
 import { getInputErrorMessage } from "../utils/getInputErrorMessage";
 
@@ -12,11 +13,13 @@ interface AppProviderProps {
 
 export const appContext = createContext({} as AppContext);
 
+const usePersistedUser = createPersistedState("user");
+
 function AppProvider({ children }: AppProviderProps) {
   const router = useRouter();
   
   const [inputErrors, setInputErrors] = useState<InputErrors>({});
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = usePersistedUser<User | null>(null);
   
   const [socket, setSocket] = useState<Socket | null>(null);
   const [global, setGlobal] = useState<Socket | null>(null);

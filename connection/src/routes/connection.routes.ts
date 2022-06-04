@@ -3,7 +3,7 @@ import { io } from "..";
 import { Directory } from "../controllers/Directory";
 import { api } from "../services/api";
 
-export type RepositoryStatus = "NOT REQUESTED" | "REQUESTED" | "LOADED";
+export type RepositoryStatus = "NOT_REQUESTED" | "REQUESTED" | "LOADED";
 export type RefreshCommitsData = {
   id: string;
   status: RepositoryStatus;
@@ -43,7 +43,7 @@ connectionRoutes.post("/connect", (req, res) => {
               appToken 
             } = res.data;
         
-            if(status === "NOT REQUESTED") {
+            if(status === "NOT_REQUESTED") {
               Directory.getRepositoryCommits(userId, fullname, appToken, (rateLimit) => {
                 server.emit("rate_limit", rateLimit);
               }, (progress) => {

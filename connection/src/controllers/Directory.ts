@@ -128,6 +128,7 @@ class Directory {
     const appApi = await githubApp.getApi(onChangeRateLimit);
 
     console.log("Getting commits refs...");
+    console.log(authUserId, repositoryFullname, token);
     const commitsRef: any[] = await this.getCommitsRefs(
       repositoryFullname, 
       authUserId, 

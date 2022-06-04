@@ -1,18 +1,20 @@
 import { Text } from "@chakra-ui/react";
-import { RepositoryBanner } from "../../../../components/Repository/RepositoryBanner";
-import { Section } from "../../../../components/Section";
+import { RepositoryBanner } from "../../../components/Repository/RepositoryBanner";
+import { Section } from "../../../components/Section";
 
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useEffect } from "react";
-import { RepositoryChart } from "../../../../components/Repository/RepositoryChart";
-import { useRepository } from "../../../../contexts/hooks/useRepository";
-import { CannotGetCommits } from "../../../../errors/api/CannotGetCommits";
-import { Api } from "../../../../services/api";
-import { WithUserProps } from "../../../../utils/routes/WithUserProps";
+import { RepositoryChart } from "../../../components/Repository/RepositoryChart";
+import { useRepository } from "../../../contexts/hooks/useRepository";
+import { useUser } from "../../../contexts/hooks/useUser";
+import { CannotGetCommits } from "../../../errors/api/CannotGetCommits";
+import { Api } from "../../../services/api";
+import { WithUserProps } from "../../../utils/routes/WithUserProps";
 
 function RepositoryPage({
   repository
 }) {
+  const { user } = useUser();
   const { setRepository } = useRepository();
 
   const {
@@ -42,8 +44,8 @@ function RepositoryPage({
       />
       <Section
         py="0!important"
-        pl={["0!important", "0!important", "var(--chakra-space-14)!important"]}
-        pr={["0!important", "0!important", "var(--chakra-space-14)!important"]}
+        pl={user? ["0!important", "0!important", "var(--chakra-space-14)!important"]:"0!important"}
+        pr={user? ["0!important", "0!important", "var(--chakra-space-14)!important"]:"0!important"}
       >
         <RepositoryChart
           commits={commits || []}
@@ -64,16 +66,16 @@ export const getStaticPaths: GetStaticPaths = () => {
 };
 
 export const getStaticProps: GetStaticProps = async({ params }) => {
-  async function getRepositoryCommits(id: string, page = 0, take = 10) {
+  async function getRepositoryCommits(fullname: string, id: string, page = 0, take = 10) {
     const { items: commits, count } = await Api.get(`/user/repository/${id}/commits?page=${page}&take=${take}`).then(res => {
       return res.data;
     }).catch((err) => {
-      throw new Error();
+      throw new CannotGetCommits(id);
     });
 
     if(count >= (page * take)) {
       const nextPage = page + 1;
-      const nextCommits = await getRepositoryCommits(id, nextPage, take);
+      const nextCommits = await getRepositoryCommits(fullname, id, nextPage, take);
       return [ ...commits, ...(nextCommits || []) ];
     };
   
@@ -81,14 +83,16 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
   };
 
   try {
-    const repository = await Api.get(`/user/repository/${params.repository}`).then(async(res) => {
-      const commits: any[] = await getRepositoryCommits(res.data.id, 0, 10);
+    const fullname = `${params.username}/${params.repository}`;
+    const repository = await Api.get(`/repository/${fullname}`).then(async(res) => {
+      const commits: any[] = await getRepositoryCommits(fullname, res.data.id, 0, 10);
       
       return {
         ...res.data,
         commits
       };
     }).catch((err) => {
+      console.log(err);
       throw new CannotGetCommits(params.repository?.toString());
     });
   
@@ -100,15 +104,14 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
   } catch (error) {};
 
   return {
-    redirect: {
-      destination: `/app/${params.githubId}/repositories`,
-      permanent: false
-    }
+    notFound: true
   };
 };
 
 export default WithUserProps(
   RepositoryPage, {
+    isPublic: true
+  }, {
     title: "We are loading the repository commits.",
     subtitle: "This process is required for every push event."
   }
