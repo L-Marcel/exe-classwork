@@ -81,7 +81,6 @@ connectionRoutes.post("/connect", (req, res) => {
                 });
                 
                 console.log("Repository loaded: " + repositoryFullname);
-                socket.disconnect();
               }).catch((err) => console.log("b", err.message));
             };
 

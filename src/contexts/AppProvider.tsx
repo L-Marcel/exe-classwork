@@ -85,14 +85,13 @@ function AppProvider({ children }: AppProviderProps) {
           if(n.name === progress?.name) {
             n = {
               ...n,
+              status: (progress?.status || n?.status || "LOADED"),
               target: Math.max((n?.target || 0) + (progress.target || 0), 0),
               value: Math.max((n?.value || 0) + (progress.value || 0), 0),
             };
           };
 
-          return {
-            ...n
-          };
+          return n;
         }):[ ...p.all, progress ]
       };
     });

@@ -1,6 +1,7 @@
 import { Box, Heading, Progress, Text } from "@chakra-ui/react";
 import { m } from "framer-motion";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useProgress } from "../../../contexts/hooks/useProgress";
 import { scaleOnInteract } from "../../../theme/animations/motion";
 import { NamedIcon } from "../../NamedIcon";
@@ -18,14 +19,25 @@ function RepositoryItem({ name, fullname, description, subject, id, alerts = [] 
   const router = useRouter();
   const alertsCount = alerts.length >= 9? 9:alerts.length;
 
+  const [progress, setProgress] = useState<NamedProgress>({
+    target: 0,
+    value: 0,
+    status: "LOADED",
+    name: fullname
+  });
+
   const { getProgressByName } = useProgress();
 
-  const progress = getProgressByName(fullname);
+  const _progress = getProgressByName(fullname);
 
-  const isLoading = progress?.status === "REQUESTED";
+  const isLoading = progress?.status === "REQUESTED"; //&& (progress?.target !== 0 && progress?.value !== 0);
   const theme = !isLoading? "primary.700":"orange.700";
-
-  console.log(fullname, progress);
+  
+  useEffect(() => {
+    if(_progress && _progress !== progress) {
+      setProgress(_progress);
+    };
+  }, [_progress, setProgress]);
 
   return (
     <Box

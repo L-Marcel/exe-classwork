@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { useClassroom } from "../../contexts/hooks/useClassroom";
 import { useGlobal } from "../../contexts/hooks/useGlobal";
+import { useIsLoading } from "../../contexts/hooks/useIsLoading";
 import { useUser } from "../../contexts/hooks/useUser";
 import { Api } from "../../services/api";
 import { boxShadow } from "../../theme/effects/shadow";
@@ -33,6 +34,10 @@ function Navigation({ ...rest }: NavigationProps) {
 
   const { global: globalSocket } = useGlobal();
   const [haveAlert, setHaveAlert] = useState(false);
+
+  const { 
+    isLoading 
+  } = useIsLoading();
 
   const checkIfHaveAlerts = useCallback(() => {
     Api.get("user/alerts/check").then(res => {
@@ -160,6 +165,7 @@ function Navigation({ ...rest }: NavigationProps) {
                 theme={isOpen? "red":"primary"}
                 colorIndexes={isOpen? ["400", "400", "400"]:undefined}
                 onClick={() => setIsOpen(o => !o)}
+                isDisabled={isLoading}
                 { ...boxShadow() }
               />
             </Box>
@@ -167,6 +173,7 @@ function Navigation({ ...rest }: NavigationProps) {
           { (isWideOrNormalVersion || isOpen) && <ToggleColorButton
             zIndex={10}
             colorIndexes={isOpen? ["400", "400", "400"]:undefined}
+            isDisabled={isLoading}
             forceHoverEffect
             { ...boxShadow() }
           /> }
@@ -184,12 +191,14 @@ function Navigation({ ...rest }: NavigationProps) {
                   asPath.toLowerCase() === n.path.toLowerCase() ||
                   n.accept?.includes(asPath.toLowerCase())
                 }
+                isDisabled={isLoading}
             />
           );
           })}
           { (isWideOrNormalVersion || isOpen) && <SignOutButton
             zIndex={10}
             theme="red"
+            isDisabled={isLoading}
             colorIndexes={["400", "400", "400"]}
             forceHoverEffect
             { ...boxShadow() }
