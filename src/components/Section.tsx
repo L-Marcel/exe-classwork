@@ -19,7 +19,7 @@ function Section({
     <Box
       display="flex"
       flexDir="column"
-      mt={isNeabyOfNavigation? [16, 16, 0]:null}
+      mt={isNeabyOfNavigation? user? [16, 16, 0]:0:null}
       alignItems="flex-start"
       px={user? [10, 14, 28, 28, 28, 28]:10}
       py={10}
