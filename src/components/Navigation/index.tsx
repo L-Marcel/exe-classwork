@@ -1,5 +1,6 @@
 import { Box, BoxProps, Stack, useBreakpointValue } from "@chakra-ui/react";
 import { m } from "framer-motion";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { useClassroom } from "../../contexts/hooks/useClassroom";
@@ -14,8 +15,11 @@ import { ToggleColorButton } from "../Buttons/ToogleColorButton";
 import { NamedIcon } from "../NamedIcon";
 import { Overlay } from "../Overlay";
 import { Profile } from "../Profile";
-import { GithubRequestLimit } from "./GithubRequestLimit";
 import { NavigationItem } from "./NavigationItem";
+
+interface GithubRequestLimitProps {
+  haveOverlay: boolean;
+};
 
 interface NavigationProps extends BoxProps {};
 
@@ -99,6 +103,8 @@ function Navigation({ ...rest }: NavigationProps) {
       name: "Alerts"
     }
   ];
+
+  const GithubRequestLimit = dynamic<GithubRequestLimitProps>(() => import("./GithubRequestLimit").then(mod => mod.GithubRequestLimit).catch(() => null));
 
   return (
     <>
