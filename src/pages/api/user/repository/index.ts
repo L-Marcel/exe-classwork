@@ -12,13 +12,18 @@ async function createRepository(req: Req, res: Res) {
   const repository = await Repositories.create({ ...data, 
     owner: undefined,
     ownerId: data?.owner?.id 
+  }).then(res => res).catch(err => {
+    console.log(err);
+    return null;
   });
+
+  console.log("Creating socket...");
   
   await ServerSocket.getSocket(user.id, req.token)
   .then(socket => {
     console.log("Socket created: ", socket.id);
-    socket.emit("@repostory/commits/refresh", {
-      repositoryFullname: repository.fullname,
+    repository?.fullname && socket.emit("@repostory/commits/refresh", {
+      repositoryFullname: repository?.fullname,
       token: req.token,
       userId: user.id
     });

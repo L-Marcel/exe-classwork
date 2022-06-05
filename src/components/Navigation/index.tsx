@@ -103,8 +103,6 @@ function Navigation({ ...rest }: NavigationProps) {
     }
   ];
 
-  console.log(asPath, "/repositories", asPath);
-
   return (
     <>
       <NavigationDataInfo
