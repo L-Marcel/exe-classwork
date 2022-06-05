@@ -206,4 +206,22 @@ export class Github {
 
     return allRepositories;
   };
+
+  async getAllRepositoriesByUser(user: User) {
+    const repositories: GithubRepository[] = await this.authenticatedApi.get<GithubRepository[]>
+    (`users/${user.username}/repos`)
+    .then(res => res.data).catch((err) => []);
+    
+    return repositories.map(data => {
+      return {
+        owner: user,
+        name: data.name,
+        fullname: data.full_name,
+        description: data.description,
+        gitUrl: data.git_url,
+        sshUrl: data.ssh_url,
+        homepage: data.homepage
+      };
+    });
+  };
 };
