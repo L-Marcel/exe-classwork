@@ -1,10 +1,10 @@
 import { Box, ListItem, OrderedList, Text } from "@chakra-ui/react";
 import { QRCodeSVG as QRCode } from "qrcode.react";
-import { Link } from "../../../../../components/Link";
-import { Section } from "../../../../../components/Section";
-import { Title } from "../../../../../components/Title";
-import { WithClassroomProps } from "../../../../../utils/routes/WithClassroomProps";
-import { WithUserProps } from "../../../../../utils/routes/WithUserProps";
+import { Link } from "../../../../components/Link";
+import { Section } from "../../../../components/Section";
+import { Title } from "../../../../components/Title";
+import { WithClassroomProps } from "../../../../utils/routes/WithClassroomProps";
+import { WithUserProps } from "../../../../utils/routes/WithUserProps";
 
 interface ClassroomPageProps extends WithClassroomProps {};
 
@@ -14,7 +14,7 @@ function ClassroomQrCodePage({ classroom, user }: ClassroomPageProps) {
       isNeabyOfNavigation
     >
       <Link 
-        href={`/app/${user.githubId}/classrooms/${classroom.id}`}
+        href={`/app/classrooms/${classroom.id}`}
         tabIndex={0}
       >
         {'<'}- return

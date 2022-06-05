@@ -10,13 +10,13 @@ import { boxShadow } from "../../theme/effects/shadow";
 import { getDynamicProgressColor } from "../../utils/getDynamicProgressColor";
 import { NamedIcon } from "../NamedIcon";
 
-interface GithubRequestLimitProps {
+interface NavigationDataInfoProps {
   haveOverlay: boolean;
 };
 
-function GithubRequestLimit({
+function NavigationDataInfo({
   haveOverlay
-}: GithubRequestLimitProps) {
+}: NavigationDataInfoProps) {
   const router = useRouter(); 
   const { user } = useUser();
   const { socket } = useSocket();
@@ -188,5 +188,5 @@ function GithubRequestLimit({
   );
 };
 
-export { GithubRequestLimit };
+export { NavigationDataInfo };
 

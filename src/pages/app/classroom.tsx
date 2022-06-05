@@ -1,7 +1,7 @@
-import { ClassroomForm } from "../../../components/Classroom/ClassroomForm";
-import { ClassroomInviteCodeForm } from "../../../components/Classroom/ClassroomInviteCodeForm";
-import { Section } from "../../../components/Section";
-import { WithUserProps } from "../../../utils/routes/WithUserProps";
+import { ClassroomForm } from "../../components/Classroom/ClassroomForm";
+import { ClassroomInviteCodeForm } from "../../components/Classroom/ClassroomInviteCodeForm";
+import { Section } from "../../components/Section";
+import { WithUserProps } from "../../utils/routes/WithUserProps";
 
 interface ClassroomFormPageProps extends WithClassroomProps {};
 

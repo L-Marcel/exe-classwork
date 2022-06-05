@@ -1,15 +1,15 @@
 import { Text } from "@chakra-ui/react";
-import { RepositoryBanner } from "../../../components/Repository/RepositoryBanner";
-import { Section } from "../../../components/Section";
+import { RepositoryBanner } from "../../../../components/Repository/RepositoryBanner";
+import { Section } from "../../../../components/Section";
 
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useEffect } from "react";
-import { RepositoryChart } from "../../../components/Repository/RepositoryChart";
-import { useRepository } from "../../../contexts/hooks/useRepository";
-import { useUser } from "../../../contexts/hooks/useUser";
-import { CannotGetCommits } from "../../../errors/api/CannotGetCommits";
-import { Api } from "../../../services/api";
-import { WithUserProps } from "../../../utils/routes/WithUserProps";
+import { RepositoryChart } from "../../../../components/Repository/RepositoryChart";
+import { useRepository } from "../../../../contexts/hooks/useRepository";
+import { useUser } from "../../../../contexts/hooks/useUser";
+import { CannotGetCommits } from "../../../../errors/api/CannotGetCommits";
+import { Api } from "../../../../services/api";
+import { WithUserProps } from "../../../../utils/routes/WithUserProps";
 
 function RepositoryPage({
   repository

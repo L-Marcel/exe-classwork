@@ -253,4 +253,15 @@ export class Repositories {
       }
     });
   };
+
+  static async getAllCreatedRepositories(userId: string) {
+    return await Prisma.repository.findMany({
+      where: {
+        ownerId: userId
+      },
+      select: {
+        fullname: true
+      }
+    });
+  };
 };

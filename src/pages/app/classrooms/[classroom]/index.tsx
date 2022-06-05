@@ -1,11 +1,11 @@
 import { Box, Text } from "@chakra-ui/react";
-import { ClassroomBanner } from "../../../../../components/Classroom/ClassroomBanner";
-import { ClassroomSearch } from "../../../../../components/Classroom/ClassroomSearch";
-import { ClassroomMembersList } from "../../../../../components/List/Classroom/ClassroomMembersList";
-import { ClassroomTeamsList } from "../../../../../components/List/Classroom/ClassroomTeamsList";
-import { Section } from "../../../../../components/Section";
-import { WithClassroomProps } from "../../../../../utils/routes/WithClassroomProps";
-import { WithUserProps } from "../../../../../utils/routes/WithUserProps";
+import { ClassroomBanner } from "../../../../components/Classroom/ClassroomBanner";
+import { ClassroomSearch } from "../../../../components/Classroom/ClassroomSearch";
+import { ClassroomMembersList } from "../../../../components/List/Classroom/ClassroomMembersList";
+import { ClassroomTeamsList } from "../../../../components/List/Classroom/ClassroomTeamsList";
+import { Section } from "../../../../components/Section";
+import { WithClassroomProps } from "../../../../utils/routes/WithClassroomProps";
+import { WithUserProps } from "../../../../utils/routes/WithUserProps";
 
 
 interface ClassroomPageProps extends WithClassroomProps {};
@@ -58,7 +58,7 @@ function ClassroomPage({
           maxW={["auto", "auto", "auto", "50%"]}
           placeholder="Search by name, user or repo..."
           bgColor="solid.10"
-          addInstanceUrl={userIsAuthorized && `/app/${user.githubId}/classrooms/${classroom.id}/team`}
+          addInstanceUrl={userIsAuthorized && `/app/classrooms/${classroom.id}/team`}
         >
           <ClassroomTeamsList
             classroomId={id}

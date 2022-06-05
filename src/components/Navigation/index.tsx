@@ -1,6 +1,5 @@
 import { Box, BoxProps, Stack, useBreakpointValue } from "@chakra-ui/react";
 import { m } from "framer-motion";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { useClassroom } from "../../contexts/hooks/useClassroom";
@@ -15,11 +14,8 @@ import { ToggleColorButton } from "../Buttons/ToogleColorButton";
 import { NamedIcon } from "../NamedIcon";
 import { Overlay } from "../Overlay";
 import { Profile } from "../Profile";
+import { NavigationDataInfo } from "./NavigationDataInfo";
 import { NavigationItem } from "./NavigationItem";
-
-interface GithubRequestLimitProps {
-  haveOverlay: boolean;
-};
 
 interface NavigationProps extends BoxProps {};
 
@@ -63,7 +59,7 @@ function Navigation({ ...rest }: NavigationProps) {
     };
   }, [globalSocket, setHaveAlert, checkIfHaveAlerts]);
  
-  if(!user) {
+  if(!user || asPath === "/") {
     return (
       <ToggleColorButton
         position="absolute"
@@ -78,37 +74,40 @@ function Navigation({ ...rest }: NavigationProps) {
 
   const paths = [
     {
-      path: `/app/${user.githubId}`,
+      path: `/app`,
       name: "Home"
     },
     {
-      path: `/app/${user.githubId}/classrooms`,
+      path: `/app/classrooms`,
       accept: [
-        `/app/${user.githubId}/classroom`,
-        `/app/${user.githubId}/classrooms/${classroom?.id}`,
-        `/app/${user.githubId}/classrooms/${classroom?.id}/qrcode`
+        `/app/classroom`,
+        `/app/classrooms/${classroom?.id}`,
+        `/app/classrooms/${classroom?.id}/qrcode`
       ],
       name: "Classrooms"
     },
     {
-      path: `/app/${user.githubId}/teams`,
+      path: `/app/teams`,
       name: "Teams"
     },
     {
-      path: `/app/${user.githubId}/repositories`,
+      path: `/app/repositories`,
+      accept: [
+        "/repositories"
+      ],
       name: "Repositories"
     },
     {
-      path: `/app/${user.githubId}/alerts`,
+      path: `/app/alerts`,
       name: "Alerts"
     }
   ];
 
-  const GithubRequestLimit = dynamic<GithubRequestLimitProps>(() => import("./GithubRequestLimit").then(mod => mod.GithubRequestLimit).catch(() => null));
+  console.log(asPath, "/repositories", asPath);
 
   return (
     <>
-      <GithubRequestLimit
+      <NavigationDataInfo
         haveOverlay={isOpen}
       />
       { (!isWideOrNormalVersion) && <Box
@@ -195,7 +194,7 @@ function Navigation({ ...rest }: NavigationProps) {
                 needPayAttention={haveAlert && n.name === "Alerts"}
                 isSelected={
                   asPath.toLowerCase() === n.path.toLowerCase() ||
-                  n.accept?.includes(asPath.toLowerCase())
+                  n.accept?.some(a => asPath.toLowerCase().startsWith(a.toLowerCase()))
                 }
                 isDisabled={isLoading}
             />

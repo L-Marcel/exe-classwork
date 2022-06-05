@@ -27,7 +27,7 @@ function ClassroomInviteCodeForm({}: ClassroomInviteCodeFormProps) {
   function handleSubmit() {
     if(code) {
       Api.get(`/classrooms/${code}`).then(res => {
-        router.push(`/app/${user.githubId}/classrooms`);
+        router.push(`/app/classrooms`);
       }).catch(err => {
         addInputErrors({
           inviteCode: {

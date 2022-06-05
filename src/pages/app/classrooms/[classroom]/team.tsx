@@ -1,7 +1,7 @@
-import { Section } from "../../../../../components/Section";
-import { TeamCreateForm } from "../../../../../components/Team/TeamCreateForm";
-import { WithClassroomProps } from "../../../../../utils/routes/WithClassroomProps";
-import { WithUserProps } from "../../../../../utils/routes/WithUserProps";
+import { Section } from "../../../../components/Section";
+import { TeamCreateForm } from "../../../../components/Team/TeamCreateForm";
+import { WithClassroomProps } from "../../../../utils/routes/WithClassroomProps";
+import { WithUserProps } from "../../../../utils/routes/WithUserProps";
 
 interface TeamFormPageProps extends WithClassroomProps {};
 

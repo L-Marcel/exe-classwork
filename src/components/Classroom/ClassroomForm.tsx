@@ -123,7 +123,7 @@ function ClassroomForm({
       });
     } else if(!classroom) {
       Api.post("/user/classroom", data).then(() => {
-        router.push(`/app/${user.githubId}/classrooms`);
+        router.push(`/app/classrooms`);
       }).catch((err) => {
         sendMessage({
           text: `Error on create: ${err.message ?? "unknown"}`,
@@ -146,7 +146,7 @@ function ClassroomForm({
       onClose();
       await Api.delete(`/user/classroom/${classroom.id}`)
       .then(() => {
-        router.push(`/app/${user.githubId}/classrooms`);
+        router.push(`/app/classrooms`);
       }).catch(() => {
         sendMessage({
           text: `Error on delete classroom`,
@@ -187,7 +187,7 @@ function ClassroomForm({
       />
       {classroom && 
         <Link 
-          href={`/app/${user.githubId}/classrooms/${classroom.id}`}
+          href={`/app/classrooms/${classroom.id}`}
           tabIndex={0}
         >
           {'<'}- return

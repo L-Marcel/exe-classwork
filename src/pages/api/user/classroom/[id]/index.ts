@@ -1,9 +1,9 @@
-import { ClassroomRelations } from "../../../../controllers/ClassroomRelations";
-import { Classrooms } from "../../../../controllers/Classrooms";
-import { ClassroomValidation } from "../../../../services/api/validations/ClassroomValidation";
-import { apiHandle } from "../../../../utils/api/apiHandle";
-import { validate } from "../../../../utils/api/middlewares/validate";
-import { withUser } from "../../../../utils/api/middlewares/withUser";
+import { ClassroomRelations } from "../../../../../controllers/ClassroomRelations";
+import { Classrooms } from "../../../../../controllers/Classrooms";
+import { ClassroomValidation } from "../../../../../services/api/validations/ClassroomValidation";
+import { apiHandle } from "../../../../../utils/api/apiHandle";
+import { validate } from "../../../../../utils/api/middlewares/validate";
+import { withUser } from "../../../../../utils/api/middlewares/withUser";
 
 async function updateClassroom(req: Req, res: Res) {
   const { id } = req.query;

@@ -27,14 +27,15 @@ function WithUserProps<T = any>(Page: NextPage<T>, {
 }) {
   return function UserProvider(props: any) {
     const router = useRouter();
+    
     const { user, setUser, signOut } = useUser();
     const { isLoading } = useIsLoading();
 
     useEffect(() => {
-      if(!user && !isLoading && router.query?.githubId) {
-        Api.get(`/user/${router.query?.githubId}`).then(res => {
+      if(!user && !isLoading) {
+        Api.get(`/user`).then(res => {
           setUser(res.data);
-        }).catch(() => {});
+        }).catch((err) => { console.log( err )});
       };
     }, [
       user, 

@@ -1,11 +1,11 @@
 import { Box, HStack } from "@chakra-ui/react";
-import { AlertsList } from "../../../components/List/Alert/AlertsList";
-import { Pagination } from "../../../components/Pagination";
-import { Search } from "../../../components/Search";
-import { Section } from "../../../components/Section";
-import { Title } from "../../../components/Title";
-import { SearchProvider } from "../../../contexts/SearchProvider";
-import { WithUserProps } from "../../../utils/routes/WithUserProps";
+import { AlertsList } from "../../components/List/Alert/AlertsList";
+import { Pagination } from "../../components/Pagination";
+import { Search } from "../../components/Search";
+import { Section } from "../../components/Section";
+import { Title } from "../../components/Title";
+import { SearchProvider } from "../../contexts/SearchProvider";
+import { WithUserProps } from "../../utils/routes/WithUserProps";
 
 function AlertsPage() {
   return (

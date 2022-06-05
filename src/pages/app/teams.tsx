@@ -1,5 +1,5 @@
-import { NothingHere } from "../../../components/NothingHere";
-import { WithUserProps } from "../../../utils/routes/WithUserProps";
+import { NothingHere } from "../../components/NothingHere";
+import { WithUserProps } from "../../utils/routes/WithUserProps";
 
 interface TeamsPageProps extends WithUserProps {};
 

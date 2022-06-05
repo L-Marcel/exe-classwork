@@ -26,13 +26,13 @@ async function login(req: Req, res: Res) {
       .then(res => res.data).catch(() => false as any);
 
       if(!relation) {
-        return res.status(300).redirect(`/app/${user.githubId}`);
+        return res.status(300).redirect(`/app`);
       };
 
-      return res.status(300).redirect(`/app/${user.githubId}/classrooms/${relation.classroomId}`);
+      return res.status(300).redirect(`/app/classrooms/${relation.classroomId}`);
     };
 
-    return res.status(300).redirect(`/app/${user.githubId}`);
+    return res.status(300).redirect(`/app`);
   } catch (err) {
     return res.status(401).redirect("/");
   }

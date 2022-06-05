@@ -31,7 +31,7 @@ function ClassroomItem({ title, description, subject, id, alerts = [] }: Classro
       alignItems="flex-start"
       justifyContent="flex-start"
       textAlign="start"
-      onClick={() => router.push(`/app/${router.query?.githubId}/classrooms/${id}`)}
+      onClick={() => router.push(`/app/classrooms/${id}`)}
       cursor="pointer"
       {...scaleOnInteract}
     >

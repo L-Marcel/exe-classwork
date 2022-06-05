@@ -10,22 +10,28 @@ import { selectStyle } from "../../theme/select/selectStyle";
 import { Button } from "../Buttons/Button";
 import { Select } from "../Inputs/Select";
 
+type RepositoryData = {
+  repository: Repository;
+};
 interface AddRepositoryModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSubmit: ({ repository }: RepositoryData) => void;
 };
 
 function AddRepositoryModal({ 
   isOpen, 
-  onClose
+  onClose,
+  onSubmit
 }: AddRepositoryModalProps) {
   const { data, isFetching: repositoriesIsLoading } = useApiResult<Repository>({
-    queryTo: `/user/github/repositories`,
+    queryTo: `/user/github/repositories?excludeNotLoaded=true`,
     initialData: []
   });
 
   const { 
-    startLoading
+    startLoading,
+    isLoading
   } = useIsLoading();
 
   const { 
@@ -47,25 +53,12 @@ function AddRepositoryModal({
     addInputErrors(errors);
   }, [errors]);
 
-  function onSubmit(team: TeamInputData) {
+  function handleOnSubmit(data: RepositoryData) {
     resetInputErrors();
     startLoading();
-
-    if(team.repository) {
-      team.repository.owner = {
-        id: team.repository.owner.id,
-        username: team.repository.owner.username
-      };
-    };
-
-    /*Api.post(`/user/classroom/${classroom.id}/team`, team).then(() => {
-      router.push(`/app/${user.githubId}/classrooms/${classroom.id}`);
-    }).catch((err) => {
-      console.log(err);
-      stopLoading();
-    });*/
+    
+    onSubmit(data);
   };
-  
   
   return (
     <Modal isCentered size="lg" isOpen={isOpen} onClose={onClose}>
@@ -74,6 +67,8 @@ function AddRepositoryModal({
         backdropFilter="blur(10px) hue-rotate(10deg)"
       />
       <ModalContent
+        as="form"
+        onSubmit={handleSubmit(handleOnSubmit)}
         bgColor="solid.25"
         borderRadius={8}
         p={4}
@@ -109,7 +104,12 @@ function AddRepositoryModal({
             spacing={2}
             flexWrap="wrap"
           >
-            <Button theme="primary" onClick={() => ""}>Confirm</Button>
+            <Button 
+              theme="primary" 
+              type="submit"
+              disabled={isLoading}
+              onClick={resetInputErrors}
+            >Confirm</Button>
             <Button onClick={onClose}>Close</Button>
           </HStack>
         </ModalFooter>

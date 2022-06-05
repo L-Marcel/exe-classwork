@@ -60,7 +60,7 @@ function ClassroomBanner({
         rowGap={2}
         flexWrap="wrap"
       >
-        <Link href={`/app/${user.githubId}/classrooms/${id}/config`}>
+        <Link href={`/app/classrooms/${id}/config`}>
           <IconButton
             aria-label="redirect-to-config"
             icon={<NamedIcon name="cog"/>}
@@ -70,7 +70,7 @@ function ClassroomBanner({
             minW="auto"
           />
         </Link>
-        <Link href={`/app/${user.githubId}/classrooms/${id}/qrcode`}>
+        <Link href={`/app/classrooms/${id}/qrcode`}>
           <IconButton
             aria-label="redirect-to-qrcode"
             icon={<NamedIcon name="qrcode"/>}
@@ -100,7 +100,7 @@ function ClassroomBanner({
         rowGap={2}
         flexWrap="wrap"
       >
-        <Link href={`/app/${user.githubId}/classrooms/${id}/qrcode`}>
+        <Link href={`/app/classrooms/${id}/qrcode`}>
           <IconButton
             aria-label="redirect-to-qrcode"
             icon={<NamedIcon name="qrcode"/>}

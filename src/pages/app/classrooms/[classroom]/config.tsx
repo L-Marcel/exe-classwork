@@ -1,5 +1,5 @@
-import { WithClassroomProps } from "../../../../../utils/routes/WithClassroomProps";
-import { WithUserProps } from "../../../../../utils/routes/WithUserProps";
+import { WithClassroomProps } from "../../../../utils/routes/WithClassroomProps";
+import { WithUserProps } from "../../../../utils/routes/WithUserProps";
 import { ClassroomFormPage } from "../../classroom";
 
 export default WithUserProps(

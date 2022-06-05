@@ -32,7 +32,7 @@ function RepositoryBanner({
       isNeabyOfNavigation
     >
       <Link 
-        href={user? `/app/${user.githubId}/repositories`:`/`}
+        href={user? `/app/repositories`:`/`}
         tabIndex={0}
       >
         {'<'}- {user? "return":"login"}
