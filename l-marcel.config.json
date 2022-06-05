@@ -8,6 +8,9 @@
     "Framer Motion",
     "Prisma",
     "CSS"
-  ]
+  ],
+  "links": {
+    "self": "https://exe-classwork.vercel.app"
+  }
 }
  
