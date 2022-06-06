@@ -22,7 +22,8 @@ export class Alerts {
 
   static async getByUser(userId: string, {
     page = 0,
-    query = ""
+    query = "",
+    updateVisualizedBy = false
   }) {
     const alerts = await Prisma.alert.findMany({
       take: 12,
@@ -154,18 +155,20 @@ export class Alerts {
       }
     });
 
-    const a = await Prisma.alert.updateMany({
-      data: {
-        visualizedBy: {
-          push: userId
-        }
-      },
-      where: {
-        id: {
-          in: alerts.filter(a => !a.visualizedBy.includes(userId)).map(a => a.id)
+    if(updateVisualizedBy) {
+      await Prisma.alert.updateMany({
+        data: {
+          visualizedBy: {
+            push: userId
+          }
         },
-      }
-    }).then(res => res).catch(err => console.log(err));
+        where: {
+          id: {
+            in: alerts.filter(a => !a.visualizedBy.includes(userId)).map(a => a.id)
+          },
+        }
+      }).then(res => res).catch(err => console.log(err));
+    };
 
     return alerts;
   };
@@ -277,112 +280,9 @@ export class Alerts {
   static async countNotVisualizedByUser(userId: string, {
     query = ""
   }) {
-    return await Prisma.alert.aggregate({
-      take: 12,
-      _count: {
-        _all: true
-      },
-      where: {
-        AND: [
-          {
-            OR: [
-              {
-                classroom: {
-                  title: getApiQuery(query)
-                }
-              },
-              {
-                commit: {
-                  message: getApiQuery(query)
-                }
-              },
-              {
-                repository: {
-                  name: getApiQuery(query)
-                }
-              },
-              {
-                repository: {
-                  fullname: getApiQuery(query)
-                }
-              },
-              {
-                team: {
-                  title: getApiQuery(query)
-                }
-              },
-              {
-                description: getApiQuery(query)
-              },
-              {
-                type: getApiAlertsType(query)
-              }
-            ]
-          },
-          {
-            OR: [
-              {
-                classroom: {
-                  users: {
-                    some: {
-                      userId,
-                      role: "OWNER"
-                    }
-                  }
-                }
-              },
-              {
-                classroom: {
-                  users: {
-                    some: {
-                      userId,
-                      role: "ADMIN"
-                    }
-                  }
-                }
-              },
-              {
-                classroom: {
-                  users: {
-                    some: {
-                      userId,
-                      role: "OBSERVER"
-                    }
-                  }
-                }
-              },
-              {
-                commit: {
-                  repository: {
-                    ownerId: userId
-                  }
-                }
-              },
-              {
-                repository: {
-                  ownerId: userId
-                }
-              },
-              {
-                team: {
-                  users: {
-                    some: {
-                      userId
-                    }
-                  }
-                }
-              }
-            ]
-          },
-          {
-            NOT: {
-              visualizedBy: {
-                has: userId
-              }
-            }
-          }
-        ]
-      },
-    });
+    //Prisma aggregate is not return the current count...
+    //So I make a query to get the count to filter the alerts
+    const alerts = await this.getByUser(userId, { query });
+    return alerts.filter(a => !a.visualizedBy.includes(userId)).length;
   };
 };

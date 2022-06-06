@@ -8,10 +8,9 @@ async function getAlerts(req: Req, res: Res) {
   
   const alerts = await Alerts.getByUser(user.id, { 
     page: Number(page || 0),
-    query: query?.toString()
+    query: query?.toString(),
+    updateVisualizedBy: true
   });
-
-  //console.log(alerts[0].visualizedBy);
 
   const { _count } = await Alerts.countByUser(user.id, { 
     query: query?.toString()

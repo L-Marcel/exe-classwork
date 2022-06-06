@@ -22,7 +22,7 @@ if(!global.prisma) {
       && params.model === "Alert"
     ) {
       await SocketApi.post("alerts/new")
-      .then(() => {})
+      .then(() => console.log("Alert created"))
       .catch(err => console.log(err));
     };
 

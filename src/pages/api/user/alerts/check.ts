@@ -6,12 +6,12 @@ async function getUnreadAlerts(req: Req, res: Res) {
   const { query } = req.query;
   const user = req.user;
   
-  const alerts = await Alerts.countNotVisualizedByUser(user.id, { 
+  const count = await Alerts.countNotVisualizedByUser(user.id, { 
     query: query?.toString()
   });
 
   return res.status(200).json({
-    count: alerts._count._all
+    count
   });
 };
 
