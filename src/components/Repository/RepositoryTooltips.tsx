@@ -1,4 +1,5 @@
-import { Avatar, Box, Text } from "@chakra-ui/react";
+import { Avatar, Box, Stack, Text } from "@chakra-ui/react";
+import { format } from "date-fns";
 import { boxShadow } from "../../theme/effects/shadow";
 import { Span } from "../Span";
 
@@ -31,42 +32,74 @@ function RepositoryTooltips({
   };
 
   if(active && payload && payload.length > 0) {
+    const data = payload[0]?.payload;
+
+    const formatedDate = data?.commitedAt? 
+      format(new Date(data?.commitedAt), "MMM d, yyyy '->' hh:mm aa"):null;
+
     return (
-      <Box
-        p={5}
-        bgColor="solid.25"
-        borderRadius={8}
-        { ...boxShadow() }
+      <Stack
+        gap={2}
       >
-        <Text
-          fontWeight="black"
-        >
-          {label}
-        </Text>
-        { payload.reverse().map((p) => {
-          return (
-            <Text 
-              key={p.name} 
-              fontWeight="hairline"
-              mr={20}
-            >
-              <Span
-                fontWeight="bold"
-                color={p.stroke}
+        { (payload[0]?.payload?.userGithubId && data?.userGithubLogin) && 
+          <Box
+            p={5}
+            bgColor="solid.25"
+            borderRadius={8}
+            display="flex"
+            alignItems="center"
+            justifyContent="flex-start"
+            { ...boxShadow() }
+          >
+            { (data?.userGithubId) && <Avatar
+              mr={3}
+              src={`https://avatars.githubusercontent.com/u/${data.userGithubId}?v=4`}
+              border="5px solid var(--chakra-colors-solid-100)"
+            /> }
+            <Box>
+
+              <Text
+                fontWeight="black"
               >
-                {getTooltipPayloadName(p.name)}:
-              </Span> {p.value}
-            </Text>
-          );
-        }) }
-        { (payload.length > 0 && payload[0]?.payload?.userGithubId) && <Avatar
-          position="absolute"
-          bottom={5}
-          right={5}
-          src={`https://avatars.githubusercontent.com/u/${payload[0]?.payload.userGithubId}?v=4`}
-          border="5px solid var(--chakra-colors-solid-100)"
-        /> }
-      </Box>
+                {data?.userGithubLogin}
+              </Text>
+              { formatedDate && <Text
+                fontSize={14}
+              >
+                {formatedDate}
+              </Text> }
+            </Box>
+          </Box> 
+        }
+        <Box
+          p={5}
+          bgColor="solid.25"
+          borderRadius={8}
+          { ...boxShadow() }
+        >
+          <Text
+            fontWeight="black"
+          >
+            {label}
+          </Text>
+          { payload.reverse().map((p) => {
+            return (
+              <Text 
+                key={p.name} 
+                fontWeight="hairline"
+                mr={20}
+              >
+                <Span
+                  fontWeight="bold"
+                  color={p.stroke}
+                >
+                  {getTooltipPayloadName(p.name)}:
+                </Span> {p.value}
+              </Text>
+            );
+          }) }
+        </Box>
+      </Stack>
     );
   };
 

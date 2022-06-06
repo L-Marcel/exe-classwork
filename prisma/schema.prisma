@@ -158,13 +158,14 @@ model Commit {
   classes String[]
 
   userGithubId String?
+  userGithubLogin String?
 
   repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
   repositoryId String
 
   alerts Alert[]
 
-  commitedAt DateTime @default(now())
+  commitedAt DateTime?
   createdAt DateTime @default(now())
 
   order Int @default(0)

@@ -15,9 +15,11 @@ async function createCommits(req: Req, res: Res) {
       ...c,
       repositoryId: id,
       userGithubId: c.userGithubId,
+      userGithubLogin: c.userGithubLogin,
+      commitedAt: c.commitedAt,
       order: c.order
     } as P.CommitCreateManyInput;
-  }) as P.Enumerable<P.CommitCreateManyInput>);
+  }) as P.Enumerable<P.CommitCreateManyInput>).then(r => r).catch(e => console.log(e));
 
   if(isFinished) {
     await Repositories.changeStatus(id, "LOADED");

@@ -34,7 +34,12 @@ export type GithubRepositoryCommit = {
     additions: number;
     deletions: number;
   };
-  committer?: {
+  commit?: {
+    author?: {
+      date: Date;
+    };
+  };
+  author?: {
     login: string;
     id: number;
   };
@@ -46,7 +51,8 @@ export type GithubRepositoryCommit = {
 };
 
 export type Commit = {
-  userGithubId: string;
+  userGithubId?: string;
+  userGithubLogin?: string;
   filesAdded: number;
   filesModified: number;
   filesRemoved: number;
@@ -244,7 +250,9 @@ class Directory {
 
       commits.push({
         order: Number(ci || 0),
-        userGithubId: data.committer?.id?.toString(),
+        userGithubId: data.author?.id?.toString() || undefined,
+        userGithubLogin: data.author?.login?.toString() || undefined,
+        commitedAt: data.commit?.author?.date || undefined,
         filesAdded: count.added,
         filesModified: count.modified,
         filesRemoved: count.removed,
