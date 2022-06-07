@@ -1,13 +1,21 @@
 import { Avatar, Box, Stack, Text } from "@chakra-ui/react";
-import { format } from "date-fns";
+import { format, formatDistance } from "date-fns";
 import { boxShadow } from "../../theme/effects/shadow";
 import { Span } from "../Span";
+
+interface RepositoryTooltipsProps {
+  commits: CommitChart[];
+  active?: boolean;
+  payload?: any;
+  label?: string;
+};
 
 function RepositoryTooltips({ 
   active, 
   payload, 
-  label 
-}) {
+  label,
+  commits
+}: RepositoryTooltipsProps) {
   function getTooltipPayloadName(name: string) {
     switch(name) {
       case "totalAdditions":
@@ -36,10 +44,14 @@ function RepositoryTooltips({
 
     const formatedDate = data?.commitedAt? 
       format(new Date(data?.commitedAt), "MMM d, yyyy '->' hh:mm aa"):null;
+    const formatedDistanceOfCommitDate = formatDistance(new Date(data?.commitedAt), new Date());
+
+    const metrics = payload.reverse();
 
     return (
       <Stack
         gap={2}
+        maxW={420}
       >
         { (payload[0]?.payload?.userGithubId && data?.userGithubLogin) && 
           <Box
@@ -57,7 +69,6 @@ function RepositoryTooltips({
               border="5px solid var(--chakra-colors-solid-100)"
             /> }
             <Box>
-
               <Text
                 fontWeight="black"
               >
@@ -80,9 +91,25 @@ function RepositoryTooltips({
           <Text
             fontWeight="black"
           >
-            {label}
+            {label.length > 58 ? label.substring(0, 55) + "..." : label}
           </Text>
-          { payload.reverse().map((p) => {
+          <Text
+            fontWeight="hairline"
+            fontSize={12}
+            mb={2}
+          >
+            {formatedDistanceOfCommitDate} ago
+          </Text>
+          { metrics.map((p, i) => {
+            let diff = 0;
+
+            try {
+              const indexOfLastItem = p.payload.order-1;
+              if(indexOfLastItem >= 0) {
+                diff = p.value - commits[indexOfLastItem][p.dataKey];
+              };
+            } catch(e) {};
+
             return (
               <Text 
                 key={p.name} 
@@ -94,7 +121,12 @@ function RepositoryTooltips({
                   color={p.stroke}
                 >
                   {getTooltipPayloadName(p.name)}:
-                </Span> {p.value}
+                </Span> {p.value} { diff !== 0 && <Span
+                  fontWeight="semibold"
+                  color={diff > 0 ? "green.50" : "red.50"}
+                > 
+                  ({diff > 0? "+":diff < 0? "-":""}{diff}) 
+                </Span> }
               </Text>
             );
           }) }

@@ -62,7 +62,7 @@ function RepositoryChart({
               <CartesianGrid strokeDasharray="3 3"/>
               <XAxis dataKey="message"/>
               <YAxis/>
-              <Tooltip content={RepositoryTooltips}/>
+              <Tooltip content={(rest) => RepositoryTooltips({ ...rest, commits: data })}/>
               
               <Line strokeWidth={2} dot={false} type="monotone" dataKey="complexity" stroke="#82a6ca"/>
               <Line strokeWidth={2} dot={false} type="monotone" dataKey="churn" stroke="#8884d8"/>
