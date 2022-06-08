@@ -5,6 +5,7 @@ import { Section } from "../../../../components/Section";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useEffect } from "react";
 import { RepositoryChart } from "../../../../components/Repository/RepositoryChart";
+import { RepositoryFrequency } from "../../../../components/Repository/RepositoryFrequency";
 import { useRepository } from "../../../../contexts/hooks/useRepository";
 import { useUser } from "../../../../contexts/hooks/useUser";
 import { CannotGetCommits } from "../../../../errors/api/CannotGetCommits";
@@ -48,6 +49,16 @@ function RepositoryPage({
         pr={user? ["0!important", "0!important", "var(--chakra-space-14)!important"]:"0!important"}
       >
         <RepositoryChart
+          commits={commits || []}
+        />
+      </Section>
+      <Section  
+        minW={user? "93vw":"100vw"}
+        maxW="100vw"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <RepositoryFrequency
           commits={commits || []}
         />
       </Section>

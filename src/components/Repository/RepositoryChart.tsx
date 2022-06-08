@@ -4,7 +4,7 @@ import { useUser } from "../../contexts/hooks/useUser";
 import { RepositoryTooltips } from "./RepositoryTooltips";
 
 interface RepositoryChartProps {
-  commits: Commit[]
+  commits: Commit[];
 };
 
 function RepositoryChart({
@@ -15,9 +15,6 @@ function RepositoryChart({
   const data = commits.reduce((prev, cur, i) => {
     prev.push({
       ...cur,
-      churn: cur.churn,
-      complexity: cur.complexity,
-      sloc: cur.sloc,
       classes: cur.classes.length,
       methods: cur.methods.length,
       files: ((prev.length > 0 && prev[i - 1].files) || 0) + (cur.filesAdded - cur.filesRemoved)
@@ -42,7 +39,7 @@ function RepositoryChart({
       >
         <TabPanel
           h="500px"
-          w={["1000px", "1000px", "900px", user? "100%":"93vw"]}
+          w={["1000px", "1000px", "900px", "100%"]}
         >
           <ResponsiveContainer
             width="100%"

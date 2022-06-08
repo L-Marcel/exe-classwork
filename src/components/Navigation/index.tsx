@@ -68,6 +68,7 @@ function Navigation({ ...rest }: NavigationProps) {
         borderRadius={60}
         w={10}
         h={10}
+        zIndex={900}
       />
     );
   };

@@ -27,6 +27,20 @@ declare interface CommitChart extends Commit {
   files: number;
 };
 
+declare interface CommitFrequency {
+  user: {
+    id: string;
+    name: string;
+  };
+  frequency: number;
+  lastDate: Date;
+};
+
+declare interface CommitTime {
+  hour: number;
+  count: number;
+};
+
 declare interface Repository extends _Repository {
   owner: User;
   commits?: Commit[];
