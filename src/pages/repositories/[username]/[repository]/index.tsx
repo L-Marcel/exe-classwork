@@ -3,9 +3,8 @@ import { RepositoryBanner } from "../../../../components/Repository/RepositoryBa
 import { Section } from "../../../../components/Section";
 
 import { GetStaticPaths, GetStaticProps } from "next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { RepositoryChart } from "../../../../components/Repository/RepositoryChart";
-import { RepositoryFrequency } from "../../../../components/Repository/RepositoryFrequency";
 import { useRepository } from "../../../../contexts/hooks/useRepository";
 import { useUser } from "../../../../contexts/hooks/useUser";
 import { CannotGetCommits } from "../../../../errors/api/CannotGetCommits";
@@ -28,6 +27,8 @@ function RepositoryPage({
     sshUrl
   } = repository;
 
+  const [commitsInterval, setCommitsInterval] = useState(commits || []);
+
   useEffect(() => {
     setRepository(repository);
   }, [repository]);
@@ -41,7 +42,8 @@ function RepositoryPage({
         sshUrl={sshUrl}
         description={description}
         homepage={homepage}
-        commits={commits?.map(c => c.message) || []}
+        commits={commits}
+        onChangeInterval={commits => setCommitsInterval(commits)}
       />
       <Section
         py="0!important"
@@ -49,17 +51,7 @@ function RepositoryPage({
         pr={user? ["0!important", "0!important", "var(--chakra-space-14)!important"]:"0!important"}
       >
         <RepositoryChart
-          commits={commits || []}
-        />
-      </Section>
-      <Section  
-        minW={user? "93vw":"100vw"}
-        maxW="100vw"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <RepositoryFrequency
-          commits={commits || []}
+          commits={commitsInterval || []}
         />
       </Section>
       <Section>

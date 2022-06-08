@@ -1,6 +1,7 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { Area, CartesianGrid, ComposedChart, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { useUser } from "../../contexts/hooks/useUser";
+import { RepositoryFrequency } from "./RepositoryFrequency";
 import { RepositoryTooltips } from "./RepositoryTooltips";
 
 interface RepositoryChartProps {
@@ -29,6 +30,7 @@ function RepositoryChart({
         <Tab>Metrics</Tab>
         <Tab>Changes</Tab>
         <Tab>Files</Tab>
+        <Tab>Commiters</Tab>
       </TabList>
       <TabPanels
         w="100%"
@@ -155,6 +157,16 @@ function RepositoryChart({
               <Line strokeWidth={2} dot={false} type="monotone" dataKey="filesModified" stroke="#ffc658"/>
             </ComposedChart>
           </ResponsiveContainer>
+        </TabPanel>
+        <TabPanel
+          minW={user? "93vw":"100vw"}
+          maxW="100vw"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <RepositoryFrequency
+            commits={commits || []}
+          />
         </TabPanel>
       </TabPanels>
     </Tabs>

@@ -15,7 +15,7 @@ function RepositoryFrequency({
   if(commits.length <= 0) {
     return null;
   };
-  
+
   const data = commits.reduce((prev, cur) => {
     const userAlreadyExistsInArray = prev.some(c => c.user.id === cur.userGithubId);
 
@@ -47,14 +47,6 @@ function RepositoryFrequency({
 
   const userFrequency = data.find(u => u.user.id === selectedUser);
 
-  //frequency ✔️
-  //time of commits frequency ✔️
-  //changes history ✔️
-  //length of commit's message ✔️
-  //need more teamwork?
-
-  //last commit date
-
   const profile = new ProfileAnalyzer(data, commits, userFrequency?.user?.id || "");
 
   const frequency = profile.getFrequency();
@@ -63,7 +55,7 @@ function RepositoryFrequency({
   const messages = profile.getChangesMessageLengthHistory();
   const teamwork = profile.getTeamwork();
 
-  const dateOfLastCommit = formatDistance(userFrequency? new Date(userFrequency?.lastDate):new Date, new Date());
+  const dateOfLastCommit = formatDistance(userFrequency? new Date(userFrequency?.lastDate):new Date(), new Date());
 
   return ( 
     <>

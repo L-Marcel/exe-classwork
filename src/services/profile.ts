@@ -8,6 +8,14 @@ class ProfileAnalyzer {
   ) {};
 
   getFrequency() {
+    if(this.data.length <= 0) {
+      return {
+        message: "No commits",
+        icon: "slepping",
+        color: "red.600"
+      };
+    };
+
     const total = this.data.reduce((prev, cur) => {
       prev += cur.frequency;
       return prev;
@@ -98,8 +106,9 @@ class ProfileAnalyzer {
 
     if(favoriteHour <= 5) return {
       message: "Ambitious programmer",
-      icon: "",
-      color: ""
+      icon: "alt-moon",
+      color: "red.600",
+      size: 5
     };
 
     if(favoriteHour <= 12) return {

@@ -61,6 +61,9 @@ export const theme = extendTheme({
         "::-webkit-resizer": {
           backgroundColor: getColorMode("solid.300")(props),
         },
+        "::-webkit-calendar-picker-indicator": {
+          filter: mode("invert(0)", "invert(1)")(props)
+        },
         html: {
           height: "-webkit-fill-available",
           overscrollBehaviorY: "contain"

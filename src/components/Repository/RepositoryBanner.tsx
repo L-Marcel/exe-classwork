@@ -3,6 +3,7 @@ import { useUser } from "../../contexts/hooks/useUser";
 import { Link } from "../Link";
 import { Section } from "../Section";
 import { Title } from "../Title";
+import { RepositoryFrequencyDateInput } from "./RepositoryFrequencyDateInput";
 
 interface RepositoryBannerProps {
   name: string;
@@ -12,7 +13,8 @@ interface RepositoryBannerProps {
   gitUrl?: string;
   sshUrl?: string;
   teams?: string[];
-  commits?: string[];
+  commits?: Commit[];
+  onChangeInterval: (commits: Commit[]) => void;
 };
 
 function RepositoryBanner({
@@ -23,7 +25,8 @@ function RepositoryBanner({
   gitUrl,
   sshUrl,
   teams = [],
-  commits = []
+  commits = [],
+  onChangeInterval
 }: RepositoryBannerProps) {
   const { user } = useUser();
 
@@ -54,6 +57,10 @@ function RepositoryBanner({
           {description}
         </Text>
       }
+      <RepositoryFrequencyDateInput
+        commits={commits || []}
+        onChangeInterval={onChangeInterval}
+      />
       { commits && <Tag
           fontWeight="bold"
           bgColor="primary.700"
