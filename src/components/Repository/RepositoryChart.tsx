@@ -30,7 +30,7 @@ function RepositoryChart({
         <Tab>Metrics</Tab>
         <Tab>Changes</Tab>
         <Tab>Files</Tab>
-        <Tab>Commiters</Tab>
+        <Tab>Committers</Tab>
       </TabList>
       <TabPanels
         w="100%"

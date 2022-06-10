@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 import { Cell, Pie, PieChart, Sector } from "recharts";
 import { getDynamicContributionColor, getDynamicFillContributionColor } from "../../utils/getDynamicContributionColor";
@@ -60,30 +61,36 @@ function RepositoryContributionChart({
   };
 
   return (
-    <PieChart width={300} height={200}>
-      <Pie
-        activeIndex={activeIndex}
-        activeShape={renderActiveShape}
-        data={data}
-        cx="50%"
-        cy="50%"
-        innerRadius={60}
-        outerRadius={80}
-        fill="#8884d8"
-        dataKey="contribution"
-        onMouseEnter={handleOnPieEnter}
-      >
-        {data.map((entry, index) => {
-          return (
-            <Cell
-              key={`cell-${index}`} 
-              stroke="var(--chakra-colors-solid-75)" 
-              fill={getDynamicContributionColor(entry.contribution, maxContribution/data.length)}
-            />
-          );
-        })}
-      </Pie>
-    </PieChart>
+    <Box
+      width={300}
+      height={200}
+      ml={-50}
+    >
+      <PieChart width={300} height={200}>
+        <Pie
+          activeIndex={activeIndex}
+          activeShape={renderActiveShape}
+          data={data}
+          cx="50%"
+          cy="50%"
+          innerRadius={60}
+          outerRadius={80}
+          fill="#8884d8"
+          dataKey="contribution"
+          onMouseEnter={handleOnPieEnter}
+        >
+          {data.map((entry, index) => {
+            return (
+              <Cell
+                key={`cell-${index}`} 
+                stroke="var(--chakra-colors-solid-75)" 
+                fill={getDynamicContributionColor(entry.contribution, maxContribution/data.length)}
+              />
+            );
+          })}
+        </Pie>
+      </PieChart>
+    </Box>
   );
 };
 

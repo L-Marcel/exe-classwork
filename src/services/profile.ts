@@ -27,38 +27,38 @@ class ProfileAnalyzer {
     const biggestCommitsCount = this.data.sort((a, b) => b.count - a.count)[0].count;
 
     if(biggestCommitsCount === count) return {
-      message: "Biggest commiter",
+      message: "Biggest committer",
       icon: "crown",
       color: "primary.800"
     };
 
     if(percentOfExpected >= 0.8) return {
-      message: "Very frequent commiter",
+      message: "Very frequent committer",
       icon: "frequency",
       color: "primary.800"
     };
 
     if(count >= 0.6) return {
-      message: "Frequent commiter",
+      message: "Frequent committer",
       icon: "frequency",
       color: "green.600"
     };
 
     if(count >= 0.5) return {
-      message: "Moderate commiter",
+      message: "Moderate committer",
       icon: "hourglass",
       color: "orange.600",
       size: 5
     };
 
     if(count >= 0.25) return {
-      message: "Occasional commiter",
+      message: "Occasional committer",
       icon: "slepping",
       color: "red.600"
     };
     
     return {
-      message: "Very occasional commiter",
+      message: "Very occasional committer",
       icon: "slepping",
       color: "red.600"
     };

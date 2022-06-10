@@ -159,11 +159,12 @@ function RepositoryProfile({
         maxW="100vw"
         justifyContent="center"
         alignItems="center"
-        flexDir={["column", "row"]}
+        flexDir={["column", "column", "row"]}
         flexWrap="wrap"
       >
         <Box
           h="100%"
+          w="100%"
           display="flex"
           justifyContent="center"
           alignItems="flex-start"
@@ -173,12 +174,14 @@ function RepositoryProfile({
         >
           <Box 
             h="100%"
+            w="100%"
+            minW={["100%", "100%", 650]}
             px={8}
             pb={4}
             display="flex"
-            justifyContent="center"
+            justifyContent="flex-start"
             alignItems="center"
-            ml={-50}
+            flexWrap="wrap"
           >
             <RepositoryContributionChart
               data={data || []}
@@ -189,8 +192,6 @@ function RepositoryProfile({
             <Box
               display="flex"
               flexDir="column"
-              w={["100%", "100%", 300]}
-              minW={["100%", "50%", 300]}
               maxW={["100%", "50%", 450]}
               mb={4}
             >
@@ -261,11 +262,10 @@ function RepositoryProfile({
                 Progress: {userCommits?.progress} - {getPercent(userCommits?.progress, total.progress)}%
               </Text>
             </Box>
-
           </Box>
           <Box
             display="grid"
-            gridTemplateColumns={["1fr", "1fr", "1fr 1fr"]}
+            gridTemplateColumns={["18rem", "18rem", "18rem 18rem"]}
             w="100%"
             gap={1}
             flexWrap="wrap"

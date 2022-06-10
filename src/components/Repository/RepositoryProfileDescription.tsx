@@ -17,9 +17,9 @@ function RepositoryProfileDescription({
       flex={2}
       minW={["100%", "100%", 400]}
       alignSelf={["flex-start", "stretch"]}
-      borderLeft={["none", "none", "2px solid"]}
-      borderTop={["2px solid", "2px solid", "none"]}
-      borderColor={[color, color, color]}
+      borderLeft={["none", "none", "none", "2px solid"]}
+      borderTop={["2px solid", "2px solid", "2px solid", "none"]}
+      borderColor={[color, color, color, color]}
     >
       <Box
         display="flex"
