@@ -16,42 +16,30 @@ class ProfileAnalyzer {
       };
     };
 
-    const total = this.data.reduce((prev, cur) => {
-      prev += cur.count;
-      return prev;
-    }, 0);
-
+    const sloc = this.commits[this.commits.length - 1].sloc;
     const currentUserCommit = this.data.find(d => d.user.id === this.user);
     const count = currentUserCommit?.count;
-    const percentOfExpected = total/this.data.length;
-    const percent = (count/percentOfExpected);
-    const biggestCommitsCount = this.data.sort((a, b) => b.count - a.count)[0].count;
+    const numberOfCommitters = this.data.length;
 
-    if(biggestCommitsCount === count) return {
-      message: "Biggest version controller",
+    if(count >= sloc/(1000 * numberOfCommitters)) return {
+      message: "Great version controller",
       icon: "crown",
       color: "primary.800"
     };
 
-    if(percent >= 0.8) return {
-      message: "Great version controller",
-      icon: "floppy-disk",
-      color: "primary.800"
-    };
-
-    if(percent >= 0.6) return {
+    if(count >= sloc/(2000 * numberOfCommitters)) return {
       message: "Nice version controller",
       icon: "floppy-disk",
       color: "green.600"
     };
 
-    if(percent >= 0.5) return {
+    if(count >= sloc/(4000 * numberOfCommitters)) return {
       message: "Version controller",
       icon: "floppy-disk",
       color: "orange.600"
     };
 
-    if(percent >= 0.25) return {
+    if(count >= sloc/(8000 * numberOfCommitters)) return {
       message: "Bad version controller",
       icon: "hater",
       color: "red.600"
@@ -252,36 +240,29 @@ class ProfileAnalyzer {
   };
 
   getOrganizationByMethods() {
-    const total = this.data.reduce((prev, cur) => {
-      prev += cur.organization.methods;
-      return prev;
-    }, 0);
-
+    const sloc = this.commits[this.commits.length - 1].sloc;
     const currentUser = this.data.find(d => d.user.id === this.user);
-    const methods = currentUser?.organization.methods;
-    const percentOfExpected = total/this.data.length;
-    const percent = methods/percentOfExpected;
 
-    if(percent <= 0) return {
+    if(currentUser?.organization.methods <= 0) return {
       message: "Doesn't know methods",
       icon: "question",
       color: "red.600",
       size: 5
     };
 
-    if(percent <= 0.25) return {
+    if(currentUser?.organization.methods <= (sloc/10000)) return {
       message: "Need more methods",
       icon: "tune",
       color: "orange.600"
     };
 
-    if(percent <= 0.5) return {
+    if(currentUser?.organization.methods <= (sloc/1000)) return {
       message: "Likes methods",
       icon: "tune",
       color: "green.600"
     };
 
-    if(percent <= 0.75) return {
+    if(currentUser?.organization.methods <= (sloc/100)) return {
       message: "Methodological programmer",
       icon: "methods-icon",
       color: "green.600"
@@ -295,38 +276,29 @@ class ProfileAnalyzer {
   };
 
   getOrganizationByClasses() {
-    const total = this.data.reduce((prev, cur) => {
-      prev += cur.organization.classes;
-      return prev;
-    }, 0);
-
+    const sloc = this.commits[this.commits.length - 1].sloc;
     const currentUser = this.data.find(d => d.user.id === this.user);
-    const classes = currentUser?.organization.classes;
-    const percentOfExpected = total/this.data.length;
-    const percent = classes/percentOfExpected;
 
-    console.log(percent);
-
-    if(percent <= 0) return {
+    if(currentUser?.organization.classes <= 0) return {
       message: "Doesn't know classes",
       icon: "question",
       color: "red.600",
       size: 5
     };
 
-    if(percent <= 0.25) return {
+    if(currentUser?.organization.classes <= (sloc/25000)) return {
       message: "Need more classes",
       icon: "class",
       color: "orange.600"
     };
 
-    if(percent <= 0.5) return {
+    if(currentUser?.organization.classes <= (sloc/2500)) return {
       message: "Likes classes",
       icon: "class",
       color: "green.600"
     };
 
-    if(percent <= 0.75) return {
+    if(currentUser?.organization.classes <= (sloc/250)) return {
       message: "Oriented by objects",
       icon: "class",
       color: "green.600"
