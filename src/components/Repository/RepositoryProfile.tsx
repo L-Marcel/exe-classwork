@@ -143,13 +143,14 @@ function RepositoryProfile({
 
   const commitsCount = profile.getNumberOfCommits();
   const time = profile.getTimeOfCommits();
-  const changes = profile.getChangesHistory();
   const messages = profile.getChangesMessageLengthHistory();
-  const teamwork = profile.getTeamwork();
+  const commitContribution = profile.getContribution();
+  const organizationByMethods = profile.getOrganizationByMethods();
+  const organizationByClasses = profile.getOrganizationByClasses();
 
   const dateOfLastCommit = formatDistance(userCommits? new Date(userCommits?.lastDate):new Date(), new Date());
 
-  const profileResult = [commitsCount, time, changes, messages, teamwork];
+  const profileResult = [commitsCount, commitContribution, time, messages, organizationByMethods, organizationByClasses];
 
   return ( 
     <>
@@ -259,13 +260,13 @@ function RepositoryProfile({
                 lineHeight="1.2"
                 fontWeight="medium"
               >
-                Progress: {userCommits?.progress} - {getPercent(userCommits?.progress, total.progress)}%
+                Changes: {userCommits?.progress} - {getPercent(userCommits?.progress, total.progress)}%
               </Text>
             </Box>
           </Box>
           <Box
             display="grid"
-            gridTemplateColumns={["18rem", "18rem", "18rem 18rem"]}
+            gridTemplateColumns={["20rem", "20rem", "20rem minmax(15rem, 20rem)"]}
             w="100%"
             gap={1}
             flexWrap="wrap"
