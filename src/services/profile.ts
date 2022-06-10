@@ -2,12 +2,12 @@ import { getHours } from "date-fns";
 
 class ProfileAnalyzer {
   constructor(
-    private data: CommitFrequency[], 
+    private data: UserCommit[], 
     private commits: Commit[],
     private user: string
   ) {};
 
-  getFrequency() {
+  getNumberOfCommits() {
     if(this.data.length <= 0) {
       return {
         message: "No commits",
@@ -17,16 +17,16 @@ class ProfileAnalyzer {
     };
 
     const total = this.data.reduce((prev, cur) => {
-      prev += cur.frequency;
+      prev += cur.count;
       return prev;
     }, 0);
 
     const currentUser = this.data.find(d => d.user.id === this.user);
-    const frequency = currentUser?.frequency;
-    const percentOfExpected = frequency/(total/this.data.length);
-    const biggestFrequency = this.data.sort((a, b) => b.frequency - a.frequency)[0].frequency;
+    const count = currentUser?.count;
+    const percentOfExpected = count/(total/this.data.length);
+    const biggestCommitsCount = this.data.sort((a, b) => b.count - a.count)[0].count;
 
-    if(biggestFrequency === frequency) return {
+    if(biggestCommitsCount === count) return {
       message: "Biggest commiter",
       icon: "crown",
       color: "primary.800"
@@ -38,20 +38,20 @@ class ProfileAnalyzer {
       color: "primary.800"
     };
 
-    if(frequency >= 0.6) return {
+    if(count >= 0.6) return {
       message: "Frequent commiter",
       icon: "frequency",
       color: "green.600"
     };
 
-    if(frequency >= 0.5) return {
+    if(count >= 0.5) return {
       message: "Moderate commiter",
       icon: "hourglass",
       color: "orange.600",
       size: 5
     };
 
-    if(frequency >= 0.25) return {
+    if(count >= 0.25) return {
       message: "Occasional commiter",
       icon: "slepping",
       color: "red.600"
@@ -199,13 +199,13 @@ class ProfileAnalyzer {
 
   getTeamwork() {
     const total = this.data.reduce((prev, cur) => {
-      prev += cur.frequency;
+      prev += cur.count;
       return prev;
     }, 0);
 
     const currentUser = this.data.find(d => d.user.id === this.user);
-    const frequency = currentUser?.frequency;
-    const percentOfExpected = frequency/(total/this.data.length);
+    const count = currentUser?.count;
+    const percentOfExpected = count/(total/this.data.length);
 
     if(percentOfExpected <= 0.4) return {
       message: "Need more help",

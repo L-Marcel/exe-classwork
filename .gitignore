@@ -42,5 +42,8 @@ yarn-error.log*
 /prisma/dev.db-journal
 /prisma/migrations
 
+# mobile
+/mobile
+
 #logs
 /logs

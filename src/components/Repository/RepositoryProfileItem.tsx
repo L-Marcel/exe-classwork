@@ -1,12 +1,15 @@
 import { Box, Text } from "@chakra-ui/react";
 import { NamedIcon } from "../NamedIcon";
 
-interface RepositoryProfileItem {
+export interface RepositoryProfileItemProps {
   color: string;
   icon: string;
   message: string;
+  description?: string;
   size?: number;
   sulfix?: string;
+  isSelected?: boolean;
+  onSelect?: () => void;
 };
 
 function RepositoryProfileItem({
@@ -14,18 +17,39 @@ function RepositoryProfileItem({
   icon,
   message,
   size,
-  sulfix
-}: RepositoryProfileItem) {
+  sulfix,
+  description,
+  isSelected,
+  onSelect
+}: RepositoryProfileItemProps ) {
   return (          
     <Box 
       display="flex"
       alignItems="flex-start"
+      cursor="pointer"
+      w="max-content"
+      p={1}
+      pl={2}
+      pr={3}
+      ml={-2}
+      bgColor={isSelected? color:undefined}
+      color={isSelected? "solid.50":undefined}
+      mb={-1}
+      borderRadius={25}
+      onClick={onSelect}
+      _hover={!isSelected && {
+        pl: 2,
+        pr: 3,
+        ml: -2,
+        bgColor: "solid.100",
+        color: "solid.900"
+      }}
     >
       <Box
         display="flex"
         justifyContent="center"
         alignItems="center"
-        color={color}
+        color={isSelected? undefined:color}
         mt="2px"
         w={6}
         h={6}

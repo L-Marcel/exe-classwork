@@ -1,32 +1,27 @@
 import { useState } from "react";
 import { Cell, Pie, PieChart, Sector } from "recharts";
-import { getDynamicFillFrequencyColor, getDynamicFrequencyColor } from "../../utils/getDynamicFrequencyColor";
+import { getDynamicContributionColor, getDynamicFillContributionColor } from "../../utils/getDynamicContributionColor";
 
-interface RepositoryFrequenceChartProps {
-  data: CommitFrequency[];
+interface RepositoryContributionChartProps {
+  data: UserCommit[];
   onChangeUser: (id: string, percent: string) => void;
 };
 
-function RepositoryFrequenceChart({
+function RepositoryContributionChart({
   data,
   onChangeUser
-}: RepositoryFrequenceChartProps) {
+}: RepositoryContributionChartProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const maxFrequency = data.reduce((prev, cur) => {
-    prev += cur.frequency;
+  const maxContribution = data.reduce((prev, cur) => {
+    prev += cur.contribution;
     return prev;
   }, 0);
   
   function renderActiveShape(props) {
-    const RADIAN = Math.PI / 180;
-    const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle, fill, payload, percent, value } = props;
-    const sin = Math.sin(-RADIAN * midAngle);
-    const cos = Math.cos(-RADIAN * midAngle);
-    const mx = cx + (outerRadius + 30) * cos;
-    const my = cy + (outerRadius + 30) * sin;
+    const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, payload, percent, value } = props;
 
-    const altFillColor = getDynamicFillFrequencyColor(value, maxFrequency/data.length);
+    const altFillColor = getDynamicFillContributionColor(value, maxContribution/data.length);
 
     onChangeUser(payload?.user?.id || "", (percent * 100).toFixed(2));
   
@@ -65,7 +60,7 @@ function RepositoryFrequenceChart({
   };
 
   return (
-    <PieChart width={300} height={300}>
+    <PieChart width={300} height={200}>
       <Pie
         activeIndex={activeIndex}
         activeShape={renderActiveShape}
@@ -75,7 +70,7 @@ function RepositoryFrequenceChart({
         innerRadius={60}
         outerRadius={80}
         fill="#8884d8"
-        dataKey="frequency"
+        dataKey="contribution"
         onMouseEnter={handleOnPieEnter}
       >
         {data.map((entry, index) => {
@@ -83,7 +78,7 @@ function RepositoryFrequenceChart({
             <Cell
               key={`cell-${index}`} 
               stroke="var(--chakra-colors-solid-75)" 
-              fill={getDynamicFrequencyColor(entry.frequency, maxFrequency/data.length)}
+              fill={getDynamicContributionColor(entry.contribution, maxContribution/data.length)}
             />
           );
         })}
@@ -92,5 +87,5 @@ function RepositoryFrequenceChart({
   );
 };
 
-export { RepositoryFrequenceChart };
+export { RepositoryContributionChart };
 

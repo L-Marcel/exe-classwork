@@ -1,6 +1,7 @@
 import { Avatar, Box, Stack, Text } from "@chakra-ui/react";
 import { format, formatDistance } from "date-fns";
 import { boxShadow } from "../../theme/effects/shadow";
+import { getDiffInCommitValue } from "../../utils/getDiffInCommitValue";
 import { Span } from "../Span";
 
 interface RepositoryTooltipsProps {
@@ -9,6 +10,7 @@ interface RepositoryTooltipsProps {
   payload?: any;
   label?: string;
 };
+
 
 function RepositoryTooltips({ 
   active, 
@@ -100,15 +102,13 @@ function RepositoryTooltips({
           >
             {formatedDistanceOfCommitDate} ago
           </Text>
-          { metrics.map((p, i) => {
-            let diff = 0;
-
-            try {
-              const indexOfLastItem = p.payload.order-1;
-              if(indexOfLastItem >= 0) {
-                diff = p.value - commits[indexOfLastItem][p.dataKey];
-              };
-            } catch(e) {};
+          { metrics.map(p => {
+            let diff = getDiffInCommitValue({
+              commits,
+              dataKey: p.dataKey,
+              order: p.payload.order,
+              value: p.value
+            });
 
             return (
               <Text 

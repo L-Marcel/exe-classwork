@@ -27,13 +27,20 @@ declare interface CommitChart extends Commit {
   files: number;
 };
 
-declare interface CommitFrequency {
+declare interface UserCommit {
   user: {
     id: string;
     name: string;
   };
-  frequency: number;
+  count: number;
+  progress: number;
+  complexity: number;
+  organization: {
+    methods: number;
+    classes: number;
+  };
   lastDate: Date;
+  contribution: number;
 };
 
 declare interface CommitTime {

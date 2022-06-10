@@ -1,7 +1,7 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { Area, CartesianGrid, ComposedChart, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { useUser } from "../../contexts/hooks/useUser";
-import { RepositoryFrequency } from "./RepositoryFrequency";
+import { RepositoryProfile } from "./RepositoryProfile";
 import { RepositoryTooltips } from "./RepositoryTooltips";
 
 interface RepositoryChartProps {
@@ -91,7 +91,7 @@ function RepositoryChart({
             >
               <CartesianGrid strokeDasharray="3 3"/>
               <XAxis dataKey="message"/>
-              <Tooltip content={RepositoryTooltips}/>
+              <Tooltip content={(rest) => RepositoryTooltips({ ...rest, commits: data })}/>
 
               <defs>
                 <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
@@ -135,7 +135,7 @@ function RepositoryChart({
             >
               <CartesianGrid strokeDasharray="3 3"/>
               <XAxis dataKey="message"/>
-              <Tooltip content={RepositoryTooltips}/>
+              <Tooltip content={(rest) => RepositoryTooltips({ ...rest, commits: data })}/>
 
               <defs>
                 <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
@@ -164,7 +164,7 @@ function RepositoryChart({
           justifyContent="center"
           alignItems="center"
         >
-          <RepositoryFrequency
+          <RepositoryProfile
             commits={commits || []}
           />
         </TabPanel>

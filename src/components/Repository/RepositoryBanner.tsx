@@ -3,7 +3,7 @@ import { useUser } from "../../contexts/hooks/useUser";
 import { Link } from "../Link";
 import { Section } from "../Section";
 import { Title } from "../Title";
-import { RepositoryFrequencyDateInput } from "./RepositoryFrequencyDateInput";
+import { RepositoryDateInput } from "./RepositoryDateInput";
 
 interface RepositoryBannerProps {
   name: string;
@@ -57,7 +57,7 @@ function RepositoryBanner({
           {description}
         </Text>
       }
-      <RepositoryFrequencyDateInput
+      <RepositoryDateInput
         commits={commits || []}
         onChangeInterval={onChangeInterval}
       />

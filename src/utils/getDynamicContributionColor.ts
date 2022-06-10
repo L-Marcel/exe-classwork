@@ -1,4 +1,4 @@
-function getDynamicFrequencyColor(value: number, max: number) {
+function getDynamicContributionColor(value: number, max: number) {
   if(value >= max) return "var(--chakra-colors-primary-600)";
   if(value >= max/1.25) return "var(--chakra-colors-green-400)";
   if(value >= max/1.5) return "var(--chakra-colors-yellow-400)";
@@ -6,7 +6,7 @@ function getDynamicFrequencyColor(value: number, max: number) {
   return "var(--chakra-colors-red-400)";  
 };
 
-function getDynamicFillFrequencyColor(value: number, max: number) {
+function getDynamicFillContributionColor(value: number, max: number) {
   if(value >= max) return "var(--chakra-colors-primary-900)";
   if(value >= max/1.25) return "var(--chakra-colors-green-600)";
   if(value >= max/1.5) return "var(--chakra-colors-yellow-600)";
@@ -15,5 +15,5 @@ function getDynamicFillFrequencyColor(value: number, max: number) {
 };
 
 
-export { getDynamicFrequencyColor, getDynamicFillFrequencyColor };
+export { getDynamicContributionColor, getDynamicFillContributionColor };
 

@@ -3,15 +3,15 @@ import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { DatePicker } from "../Inputs/DatePicker";
 
-interface RepositoryFrequencyDateInputProps {
+interface RepositoryDateInputProps {
   commits: Commit[];
   onChangeInterval: (commits: Commit[]) => void;
 };
 
-function RepositoryFrequencyDateInput({
+function RepositoryDateInput({
   onChangeInterval,
   commits
-}: RepositoryFrequencyDateInputProps) {
+}: RepositoryDateInputProps) {
   const afterDate = new Date(commits.sort((a, b) => a.order - b.order)[0].commitedAt || undefined);
   const beforeDate = new Date(commits.sort((a, b) => a.order - b.order)[commits.length - 1].commitedAt || undefined);
 
@@ -77,5 +77,5 @@ function RepositoryFrequencyDateInput({
   );
 };
 
-export { RepositoryFrequencyDateInput };
+export { RepositoryDateInput };
 
