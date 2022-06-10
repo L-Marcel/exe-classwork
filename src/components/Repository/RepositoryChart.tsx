@@ -26,7 +26,10 @@ function RepositoryChart({
 
   return (
     <Tabs>
-      <TabList>
+      <TabList
+        overflowX="auto"
+        maxW="100vw"
+      >
         <Tab>Metrics</Tab>
         <Tab>Changes</Tab>
         <Tab>Files</Tab>

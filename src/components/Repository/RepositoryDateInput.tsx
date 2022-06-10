@@ -49,7 +49,7 @@ function RepositoryDateInput({
   return (
     <Box
       display="flex"
-      justifyContent="center"
+      justifyContent="flex-start"
       alignItems="center"
       flexDirection={["column", "row"]}
       gap={[3, 3, 5]}
@@ -57,7 +57,7 @@ function RepositoryDateInput({
     >
       <Box
         display="flex"
-        justifyContent="center"
+        justifyContent="flex-start"
         alignItems="center"
         gap={[3, 3, 5]}
       >
