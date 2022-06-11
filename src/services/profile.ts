@@ -285,6 +285,7 @@ class ProfileAnalyzer {
     const currentUser = this.data.find(d => d.user.id === this.user);
     const contribution = currentUser?.contribution;
     const percentOfExpected = total/this.data.length;
+
     const percent = contribution/percentOfExpected;
 
     const equation = {
@@ -292,7 +293,11 @@ class ProfileAnalyzer {
       instruction: 'Get the  programmer  percent of: ' + 
       'changes(CH); methods (MT); classes(CS) and complexity(CM). ' +
       'In sequence, apply the following formula:',
-      calc: "C_u = \\dfrac{(2.CH_u) + (0.5.MT_u) + (0.5.CS_u) + CM_u}{4}",
+      calc: "C_u = \\dfrac{(2.CH_u) + (0.5.MT_u) + (0.5.CS_u) + CM_u}{4}\\\\ \\space \\\\E=100/N",
+      explanation: 'Based on the formula above, the expected programmer contribution (E) ' +
+      'is calculated using the number of committers (N). In this case, is expected that each programmer ' +
+      `has ${(percentOfExpected * 100).toFixed(2)}% (E) of the contribution. With these values, Classwork set ` +
+      'the classification is as this way: '
     };
 
     if(percent <= 0.4) return {
@@ -304,8 +309,7 @@ class ProfileAnalyzer {
       'Especially if he/she are someone who is starting to programming...',
       equation: {
         ...equation,
-        explanation: "Based on the formula above:",
-        explanationCalc: "Cv \\eqslantless 0,4  \\quad \\text{(the current category)}"
+        explanationCalc: `C_u/${(percentOfExpected).toFixed(2).replace(".", ",")} \\eqslantless 0,4  \\quad \\text{(the current category)}`
       }
     };
 
@@ -315,8 +319,7 @@ class ProfileAnalyzer {
       color: "orange.600",
       equation: {
         ...equation,
-        explanation: "Based on the formula above:",
-        explanationCalc: "0,5 \\eqslantless C_u < 0,6 \\quad \\text{(the current category)}"
+        explanationCalc: `0,5 \\eqslantless C_u/${(percentOfExpected).toFixed(2).replace(".", ",")} < 0,6 \\quad \\text{(the current category)}`
       }
     };
 
@@ -326,8 +329,7 @@ class ProfileAnalyzer {
       color: "green.600",
       equation: {
         ...equation,
-        explanation: "Based on the formula above:",
-        explanationCalc: "0,6 \\eqslantless C_u < 0,8 \\quad \\text{(the current category)}"
+        explanationCalc: `0,6 \\eqslantless C_u/${(percentOfExpected).toFixed(2).replace(".", ",")} < 0,8 \\quad \\text{(the current category)}`
       }
     };
 
@@ -337,8 +339,7 @@ class ProfileAnalyzer {
       color: "green.600",
       equation: {
         ...equation,
-        explanation: "Based on the formula above:",
-        explanationCalc: "0,8 \\eqslantless C_u < 1,2 \\quad \\text{(the current category)}"
+        explanationCalc: `0,8 \\eqslantless C_u/${(percentOfExpected).toFixed(2).replace(".", ",")} < 1,2 \\quad \\text{(the current category)}`
       }
     };
 
@@ -349,8 +350,7 @@ class ProfileAnalyzer {
       size: 5,
       equation: {
         ...equation,
-        explanation: "Based on the formula above:",
-        explanationCalc: "1,2 \\eqslantless C_u < 1,3 \\quad \\text{(the current category)}"
+        explanationCalc: `1,2 \\eqslantless C_u/${(percentOfExpected).toFixed(2).replace(".", ",")} < 1,3 \\quad \\text{(the current category)}`
       }
     };
 
@@ -360,8 +360,7 @@ class ProfileAnalyzer {
       color: "red.600",
       equation: {
         ...equation,
-        explanation: "Based on the formula above:",
-        explanationCalc: "1,2 < C_u \\quad \\text{(the current category)}"
+        explanationCalc: `1,2 < C_u/${(percentOfExpected).toFixed(2).replace(".", ",")} \\quad \\text{(the current category)}`
       }
     };
   };
@@ -475,7 +474,7 @@ class ProfileAnalyzer {
       color: "green.600",
       equation: {
         ...equation,
-        calc: "(SL/2500) < C \\eqslantless (SL/250)) \\quad \\text{(the current category)}"
+        calc: "(SL/2500) < C \\eqslantless (SL/250) \\quad \\text{(the current category)}"
       }
     };
 

@@ -13,6 +13,7 @@ function Equation({
 }: EquationProps) {
   const html = katex.renderToString(calc, {
     throwOnError: false,
+    displayMode: false,
     strict: false
   });
 
