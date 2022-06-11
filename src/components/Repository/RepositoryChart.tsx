@@ -40,6 +40,7 @@ function RepositoryChart({
         minW={user? "93vw":"100vw"}
         maxW="100vw"
         overflowX={["auto", "auto", "auto", "hidden"]}
+        overflowY="hidden"
         pt={3}
       >
         <TabPanel

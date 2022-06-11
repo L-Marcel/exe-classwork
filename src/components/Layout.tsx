@@ -8,6 +8,10 @@ function Layout({ children, ...rest }: LayoutProps) {
   return (
     <Box
       data-testid="layout"
+      position="fixed"
+      w="100%"
+      top={0}
+      left={0}
       as={m.div}
       display="flex"
       flexDir="column"

@@ -3,10 +3,12 @@ import katex from "katex";
 
 interface EquationProps extends BoxProps {
   calc: string;
+  theme?: string;
 };
 
 function Equation({
   calc,
+  theme,
   ...rest
 }: EquationProps) {
   const html = katex.renderToString(calc, {
@@ -23,6 +25,14 @@ function Equation({
       whiteSpace="nowrap"
       p={4}
       borderRadius={8}
+      __css={theme? {
+        "::-webkit-scrollbar-thumb": {
+          background: theme
+        },
+        "::-webkit-scrollbar-thumb:hover": {
+          background: theme
+        },
+      }:undefined}
       dangerouslySetInnerHTML={{
         __html: html,
       }}

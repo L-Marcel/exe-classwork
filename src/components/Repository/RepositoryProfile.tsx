@@ -170,6 +170,7 @@ function RepositoryProfile({
           justifyContent="center"
           alignItems="flex-start"
           flexDirection="column"
+          alignSelf="flex-start"
           flex={1}
           gap={1}
         >
@@ -181,6 +182,7 @@ function RepositoryProfile({
             pb={4}
             display="flex"
             justifyContent="flex-start"
+            alignSelf="flex-start"
             alignItems="center"
             flexWrap="wrap"
           >
