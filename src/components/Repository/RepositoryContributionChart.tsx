@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Cell, Pie, PieChart, Sector } from "recharts";
 import { getDynamicContributionColor, getDynamicFillContributionColor } from "../../utils/getDynamicContributionColor";
 
@@ -59,6 +59,12 @@ function RepositoryContributionChart({
   function handleOnPieEnter(_, index: number) {
     setActiveIndex(index);
   };
+
+  useEffect(() => {
+    if(activeIndex > (data.length - 1)) {
+      setActiveIndex(data.length - 1);
+    };
+  }, [data, activeIndex]);
 
   return (
     <Box

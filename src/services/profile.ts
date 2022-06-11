@@ -36,9 +36,12 @@ class ProfileAnalyzer {
       message: "Great version controller",
       icon: "crown",
       color: "primary.800",
+      description: 'This programmer has a great experience with version control, ' +
+      'keeping the changes safe, and resolving possible future errors in the code. ' + 
+      'Even the small changes can carry a bug, lost feature, or deleted files.',
       equation: {
         ...equation,
-        calc: " SL/(1000.N) \\eqslantless Cv \\quad \\text{(the current category)}",
+        calc: " SL/(1000.N) \\eqslantless Cv \\quad \\text{(the current category)}"
       }
     };
 
@@ -46,6 +49,9 @@ class ProfileAnalyzer {
       message: "Nice version controller",
       icon: "floppy-disk",
       color: "green.600",
+      description: 'This programmer has an experience with version control, keeping some ' +
+      'of the changes safe, and resolving some possible future errors in the code. ' + 
+      'Even the small changes can carry a bug, lost feature, or deleted files.',
       equation: {
         ...equation,
         calc: "SL/(2000.N) \\eqslantless Cv < SL/(1000.N) \\quad \\text{(the current category)}",
@@ -56,6 +62,9 @@ class ProfileAnalyzer {
       message: "Version controller",
       icon: "floppy-disk",
       color: "orange.600",
+      description: 'This programmer knows the version control but does not use it frequently. ' +
+      'Version control keeps the changes safe and resolves possible future errors in the code. ' + 
+      'Even the small changes can carry a bug, lost feature, or deleted files.',
       equation: {
         ...equation,
         calc: "SL/(4000.N) \\eqslantless Cv < SL/(2000.N) \\quad \\text{(the current category)}",
@@ -66,6 +75,9 @@ class ProfileAnalyzer {
       message: "Bad version controller",
       icon: "hater",
       color: "red.600",
+      description: 'This programmer knows the version control but does not use it properly! ' +
+      'Version control is important to keep the changes safe and resolve possible future errors ' +
+      'in the code. Even the small changes can carry a bug, lost feature, or deleted files.',
       equation: {
         ...equation,
         calc: "SL/(8000.N) \\eqslantless Cv < SL/(4000.N) \\quad \\text{(the current category)}",
@@ -76,6 +88,9 @@ class ProfileAnalyzer {
       message: "Versions hater",
       icon: "hater",
       color: "red.600",
+      description: 'This programmer have a bad experience with version control! ' +
+      'Version control is important to keep the changes safe and resolve possible ' +
+      'future errors in the code. Even the small changes can carry a bug, lost feature, or deleted files.',
       equation: {
         ...equation,
         calc: "Cv < SL/(8000.N) \\quad \\text{(the current category... realy?)}",

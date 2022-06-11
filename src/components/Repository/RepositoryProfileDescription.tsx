@@ -79,8 +79,8 @@ function RepositoryProfileDescription({
         { equation && <>
           <Text
             mt={4}
-            fontSize={18}
-            fontWeight="semibold"
+            fontSize={20}
+            fontWeight="bold"
             whiteSpace="pre-wrap"
           >
             {equation.title}

@@ -27,27 +27,27 @@ function RepositoryProfile({
     };
   });
 
-  let { data, total } = formattedCommits.reduce((prev, cur) => {
+  let { data, total } = formattedCommits.reduce((prev, cur, index) => {
     const userAlreadyExistsInArray = prev.data.some(c => c.user.id === cur.userGithubId);
     
     let methodsDiff = getDiffInCommitValue({
       commits: formattedCommits,
       dataKey: "methods",
-      order: cur.order,
+      order: index,
       value: cur.methods
     });
 
     let classesDiff = getDiffInCommitValue({
       commits: formattedCommits,
       dataKey: "classes",
-      order: cur.order,
+      order: index,
       value: cur.classes
     });
 
     let complexityDiff = getDiffInCommitValue({
       commits: formattedCommits,
       dataKey: "complexity",
-      order: cur.order,
+      order: index,
       value: cur.complexity
     });
 
