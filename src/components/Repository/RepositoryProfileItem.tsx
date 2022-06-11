@@ -10,6 +10,13 @@ export interface RepositoryProfileItemProps {
   sulfix?: string;
   isSelected?: boolean;
   onSelect?: () => void;
+  equation?: {
+    title: string;
+    instruction: string;
+    calc: string;
+    explanation?: string;
+    explanationCalc?: string;
+  };
 };
 
 function RepositoryProfileItem({

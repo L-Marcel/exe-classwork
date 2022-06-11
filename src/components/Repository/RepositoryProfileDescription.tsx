@@ -1,4 +1,5 @@
 import { Box, Text } from "@chakra-ui/react";
+import { Equation } from "../Equation";
 import { NamedIcon } from "../NamedIcon";
 import { RepositoryProfileItemProps } from "./RepositoryProfileItem";
 
@@ -8,6 +9,7 @@ function RepositoryProfileDescription({
   message,
   description,
   isSelected,
+  equation,
   size,
   sulfix
 }: Omit<RepositoryProfileItemProps, "onSelect">) {
@@ -39,6 +41,64 @@ function RepositoryProfileDescription({
           {message}
         </Text>
       </Box>
+      <Text
+        fontSize={16}
+        mt={4}
+        maxW={["100%", "90%", "80%", "85%"]}
+        whiteSpace="pre-wrap"
+      >
+        {description}
+      </Text>
+      { equation && <>
+        <Text
+          mt={4}
+          fontSize={18}
+          fontWeight="semibold"
+          whiteSpace="pre-wrap"
+        >
+          {equation.title}
+        </Text>
+        <Text
+          fontSize={16}
+          mt={2}
+          maxW={["100%", "90%", "80%", "85%"]}
+          whiteSpace="pre-wrap"
+        >
+          {equation.instruction}
+        </Text>
+        <Equation
+          mt={4}
+          calc={equation.calc}
+          __css={{
+            "::-webkit-scrollbar-thumb": {
+              background: color
+            },
+            "::-webkit-scrollbar-thumb:hover": {
+              background: color
+            },
+          }}
+        />
+        { equation.explanation && <Text
+          fontSize={16}
+          mt={2}
+          maxW={["100%", "90%", "80%", "85%"]}
+          whiteSpace="pre-wrap"
+        >
+          {equation.explanation}
+        </Text> }
+        { equation.explanationCalc && <Equation
+          mt={4}
+          calc={equation.explanationCalc}
+          __css={{
+            "::-webkit-scrollbar-thumb": {
+              background: color
+            },
+            "::-webkit-scrollbar-thumb:hover": {
+              background: color
+            },
+          }}
+        /> }
+      </> }
     </Box>
   );
 };

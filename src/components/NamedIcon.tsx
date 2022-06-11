@@ -1,19 +1,19 @@
 import { Icon as ChakraIcon, IconProps as ChakraIconProps } from "@chakra-ui/react";
 import { AiFillCaretDown, AiFillCaretUp, AiFillHtml5, AiFillStar, AiOutlineCalendar, AiOutlineCheck, AiOutlineClose, AiOutlineInfoCircle, AiOutlineMenu, AiOutlineNumber, AiOutlinePaperClip, AiOutlinePlus, AiOutlinePoweroff, AiOutlineReload, AiOutlineRight, AiOutlineStar } from "react-icons/ai";
-import { BiCog, BiCrown, BiCubeAlt, BiLike, BiSearchAlt } from "react-icons/bi";
-import { BsCloudSun, BsDownload, BsEmojiExpressionless, BsEmojiSunglasses, BsFillJournalBookmarkFill, BsFillMoonStarsFill, BsFillQuestionCircleFill, BsHourglassSplit, BsMoonStars, BsNewspaper, BsQuestionCircle, BsSunrise } from "react-icons/bs";
+import { BiCog, BiCrown, BiCubeAlt, BiLike, BiMessageSquareDetail, BiSearchAlt } from "react-icons/bi";
+import { BsDownload, BsEmojiExpressionless, BsEmojiSunglasses, BsFillJournalBookmarkFill, BsFillMoonStarsFill, BsFillQuestionCircleFill, BsHourglassSplit, BsMoonStars, BsNewspaper, BsQuestionCircle, BsSunrise } from "react-icons/bs";
 import { CgTikcode } from "react-icons/cg";
 import { DiCss3, DiSass } from "react-icons/di";
-import { FaAngleDoubleLeft, FaAngleDoubleRight, FaAngleLeft, FaAngleRight, FaBalanceScale, FaBell, FaChalkboardTeacher, FaDocker, FaGitAlt, FaGithubAlt, FaHandsHelping, FaHome, FaJava, FaPencilAlt, FaProjectDiagram, FaPython, FaReact, FaRegPaperPlane, FaRegSave, FaSun, FaUser } from "react-icons/fa";
+import { FaAngleDoubleLeft, FaAngleDoubleRight, FaAngleLeft, FaAngleRight, FaBalanceScale, FaBell, FaChalkboardTeacher, FaDocker, FaGitAlt, FaGithubAlt, FaHome, FaJava, FaPencilAlt, FaProjectDiagram, FaPython, FaReact, FaRegPaperPlane, FaRegSave, FaSun, FaUser } from "react-icons/fa";
 import { FiCopy, FiFigma, FiFramer, FiPaperclip } from "react-icons/fi";
-import { GiSwordWound } from "react-icons/gi";
 import { GrGraphQl, GrNode } from "react-icons/gr";
 import { IoIosRocket, IoLogoJavascript, IoMdAddCircleOutline, IoMdOpen, IoMdRemoveCircleOutline, IoMdSchool } from "react-icons/io";
 import { MdOutlineEmojiObjects, MdOutlineTune, MdOutlineUpdate } from "react-icons/md";
 import { RiFilePaper2Line, RiFlashlightFill, RiFlutterFill, RiGitRepositoryLine, RiListCheck2, RiZzzFill } from "react-icons/ri";
 import { SiApachekafka, SiApollographql, SiChakraui, SiDart, SiExpress, SiGnubash, SiJest, SiNestjs, SiNextdotjs, SiPrisma, SiTailwindcss, SiTypescript, SiVisualstudiocode } from "react-icons/si";
-import { TiGroup, TiWarningOutline } from "react-icons/ti";
-import { VscSymbolClass, VscSymbolMethod } from "react-icons/vsc";
+import { TbBox, TbHeartHandshake, TbTools } from "react-icons/tb";
+import { TiGroup, TiWarningOutline, TiWeatherPartlySunny } from "react-icons/ti";
+import { VscSymbolClass } from "react-icons/vsc";
 interface IconProps extends ChakraIconProps {
   name?: string;
 };
@@ -94,29 +94,30 @@ export const icons = {
   "cog": BiCog,
   "refresh": AiOutlineReload,
   "project": FaProjectDiagram,
-  "helping": FaHandsHelping,
+  "helping": TbHeartHandshake,
   "sunrise": BsSunrise,
   "like": BiLike,
   "sunglasses": BsEmojiSunglasses,
-  "sword": GiSwordWound,
+  "tools": TbTools,
   "newspaper": BsNewspaper,
   "clip": AiOutlinePaperClip,
   "paperplane": FaRegPaperPlane,
   "warning": TiWarningOutline,
   "add-circle": IoMdAddCircleOutline,
   "remove-circle": IoMdRemoveCircleOutline,
-  "afternoon": BsCloudSun,
+  "afternoon": TiWeatherPartlySunny,
   "crown": BiCrown,
   "frequency": MdOutlineUpdate,
   "hourglass": BsHourglassSplit,
   "slepping": RiZzzFill,
   "hater": BsEmojiExpressionless,
   "floppy-disk": FaRegSave,
-  "methods-icon": VscSymbolMethod,
+  "methods-icon": TbBox,
   "tune": MdOutlineTune,
   "question": BsFillQuestionCircleFill,
   "oriented": MdOutlineEmojiObjects,
-  "class": VscSymbolClass
+  "class": VscSymbolClass,
+  "messages": BiMessageSquareDetail
 };
 
 function NamedIcon({ name = "default", ...rest }: IconProps) {

@@ -19,7 +19,7 @@ function RepositoryProfile({
     return null;
   };
 
-  const formattedCommits = commits.map(commit => {
+  const formattedCommits: Omit<CommitChart, "files">[] = commits.map(commit => {
     return {
       ...commit,
       methods: commit.methods.length,
@@ -139,7 +139,7 @@ function RepositoryProfile({
 
   const userCommits = data.find(u => u.user.id === selectedUser);
 
-  const profile = new ProfileAnalyzer(data, commits, userCommits?.user?.id || "");
+  const profile = new ProfileAnalyzer(data, formattedCommits, userCommits?.user?.id || "");
 
   const commitsCount = profile.getNumberOfCommits();
   const time = profile.getTimeOfCommits();
