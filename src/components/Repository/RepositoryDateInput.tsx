@@ -2,6 +2,7 @@ import { Box, Text } from "@chakra-ui/react";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { DatePicker } from "../Inputs/DatePicker";
+import { NamedIcon } from "../NamedIcon";
 
 interface RepositoryDateInputProps {
   commits: Commit[];
@@ -46,6 +47,11 @@ function RepositoryDateInput({
     }));
   }, [commits, selectedAfterDate, selectedBeforeDate]);
 
+  function handleResetDate() {
+    setSelectedAfterDate(format(afterDate, "yyyy-MM-dd"));
+    setSelectedBeforeDate(format(beforeDate, "yyyy-MM-dd"));
+  };
+
   return (
     <Box
       display="flex"
@@ -65,9 +71,29 @@ function RepositoryDateInput({
           value={selectedAfterDate}
           onChange={e => setSelectedAfterDate(e.target.value)}
         />
-        <Text>
-          to
-        </Text>
+        <Box
+          position="relative"
+          onClick={handleResetDate}
+          cursor="pointer"
+          transition="color .1s"
+          _hover={{
+            color: "primary.500"
+          }}
+        >
+          <NamedIcon
+            name="refresh"
+            position="absolute"
+            top="-5px"
+            left="-10px"
+            w={9}
+            h={9}
+          />
+          <Text
+            color="solid.900"
+          >
+            to
+          </Text>
+        </Box>
       </Box>
       <DatePicker
         value={selectedBeforeDate}

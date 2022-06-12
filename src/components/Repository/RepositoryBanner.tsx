@@ -1,4 +1,4 @@
-import { Tag, Text } from "@chakra-ui/react";
+import { Box, Tag, Text } from "@chakra-ui/react";
 import { useUser } from "../../contexts/hooks/useUser";
 import { Link } from "../Link";
 import { Section } from "../Section";
@@ -14,6 +14,7 @@ interface RepositoryBannerProps {
   sshUrl?: string;
   teams?: string[];
   commits?: Commit[];
+  filteredCommits?: Commit[];
   onChangeInterval: (commits: Commit[]) => void;
 };
 
@@ -26,9 +27,26 @@ function RepositoryBanner({
   sshUrl,
   teams = [],
   commits = [],
+  filteredCommits = [],
   onChangeInterval
 }: RepositoryBannerProps) {
   const { user } = useUser();
+
+  const committeds: string[] = commits.reduce((prev, cur) => {
+    if(!prev.includes(cur.userGithubLogin)) {
+      prev.push(cur.userGithubLogin);
+    };
+    
+    return prev;
+  }, []);
+
+  const filteredCommitteds: string[] = filteredCommits.reduce((prev, cur) => {
+    if(!prev.includes(cur.userGithubLogin)) {
+      prev.push(cur.userGithubLogin);
+    };
+    
+    return prev;
+  }, []);
 
   return (
     <Section
@@ -61,14 +79,33 @@ function RepositoryBanner({
         commits={commits || []}
         onChangeInterval={onChangeInterval}
       />
-      { commits && <Tag
-          fontWeight="bold"
-          bgColor="primary.700"
-          mt={5}
-        >
-          Commits: {commits.length}
-        </Tag>
-      }
+      <Box
+        display="flex"
+        gap={4}
+      >
+        { commits && <Tag
+            fontWeight="bold"
+            bgColor="primary.800"
+            color="blackAlpha.900"
+            mt={5}
+          >
+            Commits: {(filteredCommits.length >= 0 && filteredCommits.length >= commits.length)? 
+              commits.length:`${filteredCommits.length}/${commits.length}`
+            }
+          </Tag>
+        }
+        { committeds.length > 0 && <Tag
+            fontWeight="bold"
+            bgColor="primary.800"
+            color="blackAlpha.900"
+            mt={5}
+          >
+            Committeds: {(filteredCommitteds.length >= 0 && filteredCommitteds.length >= committeds.length)? 
+              committeds.length:`${filteredCommitteds.length}/${committeds.length}`
+            }
+          </Tag>
+        }
+      </Box>
     </Section>
   );
 };

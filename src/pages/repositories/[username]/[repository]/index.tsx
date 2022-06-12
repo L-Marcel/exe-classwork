@@ -44,6 +44,7 @@ function RepositoryPage({
         homepage={homepage}
         commits={commits}
         onChangeInterval={commits => setCommitsInterval(commits)}
+        filteredCommits={commitsInterval}
       />
       <Section
         py="0!important"

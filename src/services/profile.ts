@@ -202,32 +202,6 @@ class ProfileAnalyzer {
     };
   };
 
-  /*getChangesHistory(): Omit<RepositoryProfileItemProps, "onSelect"> {
-    const { additions, deletions } = this.commits.reduce((prev, cur) => {
-      if(cur.userGithubId === this.user) {
-        prev.additions += cur.totalAdditions;
-        prev.deletions += cur.totalDeletions
-      };
-
-      return prev;
-    }, {
-      additions: 0,
-      deletions: 0
-    });
-
-    if(additions >= deletions) return { 
-      message: "Likes to add", 
-      icon: "add-circle",
-      color: "primary.800"
-    };
-
-    if(additions < deletions) return { 
-      message: "Likes to remove", 
-      icon: "remove-circle",
-      color: "green.600"
-    };
-  };*/
-
   getChangesMessageLengthHistory(): Omit<RepositoryProfileItemProps, "onSelect"> {
     const userCommits = this.commits.filter(c => c.userGithubId === this.user);
     let averageOfMessagesLength = userCommits.reduce((prev, cur) => {
