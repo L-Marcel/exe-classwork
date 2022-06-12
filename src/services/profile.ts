@@ -230,10 +230,12 @@ class ProfileAnalyzer {
 
   getChangesMessageLengthHistory(): Omit<RepositoryProfileItemProps, "onSelect"> {
     const userCommits = this.commits.filter(c => c.userGithubId === this.user);
-    const averageOfMessagesLength = userCommits.reduce((prev, cur) => {
+    let averageOfMessagesLength = userCommits.reduce((prev, cur) => {
       prev += ((cur.message || "").length);
       return prev;
     }, 0)/userCommits.length;
+
+    averageOfMessagesLength = Math.round(averageOfMessagesLength);
 
     const equation = {
       title: "How does Classwork calculate the commit's message length?",
@@ -244,7 +246,7 @@ class ProfileAnalyzer {
       message: "Articles, not messages",
       icon: "newspaper",
       color: "red.600",
-      description: `This programmer likes to write messages with ${averageOfMessagesLength.toFixed(0)} ` +
+      description: `This programmer likes to write messages with ${averageOfMessagesLength} ` +
       'or more than characters. Messages of more than 72 lengths do not even appear completely!',
       equation: {
         ...equation,
@@ -256,7 +258,7 @@ class ProfileAnalyzer {
       message: "Extra long messages",
       icon: "newspaper",
       color: "orange.600",
-      description: `This programmer likes to write messages with ${averageOfMessagesLength.toFixed(0)} ` +
+      description: `This programmer likes to write messages with ${averageOfMessagesLength} ` +
       'or more than characters. It\'s not bad to be descriptive, but being simple is just as good!',
       equation: {
         ...equation,
@@ -268,7 +270,7 @@ class ProfileAnalyzer {
       message: "Long messages",
       icon: "messages",
       color: "green.600",
-      description: `This programmer likes to write messages with ${averageOfMessagesLength.toFixed(0)} ` +
+      description: `This programmer likes to write messages with ${averageOfMessagesLength} ` +
       'or more than characters. It\'s not bad to be descriptive, but being simple is just as good!',
       equation: {
         ...equation,
@@ -280,7 +282,7 @@ class ProfileAnalyzer {
       message: "Small messages", 
       icon: "messages",
       color: "primary.800",
-      description: `This programmer likes to write messages with ${averageOfMessagesLength.toFixed(0)} ` +
+      description: `This programmer likes to write messages with ${averageOfMessagesLength} ` +
       'or more than characters. It\'s good!',
       equation: {
         ...equation,
@@ -292,7 +294,7 @@ class ProfileAnalyzer {
       message: "Short messages", 
       icon: "paperplane",
       color: "primary.800",
-      description: `This programmer likes to write messages with ${averageOfMessagesLength.toFixed(0)} ` +
+      description: `This programmer likes to write messages with ${averageOfMessagesLength} ` +
       'or more than characters. It\'s good! But the programmer must ensure that a message has as little ' +
       'description as possible in the message...',
       size: 5,
@@ -306,7 +308,7 @@ class ProfileAnalyzer {
       message: "Bad messages", 
       icon: "warning",
       color: "red.600",
-      description: `This programmer likes to write messages with ${averageOfMessagesLength.toFixed(0)} ` +
+      description: `This programmer likes to write messages with ${averageOfMessagesLength} ` +
       'or more than characters. This is bad! It is also quite common when choosing to put the software ' + 
       'version as a commit message. The question is: does this bring as little information as possible?',
       equation: {
