@@ -23,10 +23,10 @@ class ProfileAnalyzer {
     const numberOfCommitters = this.data.length;
 
     const equation = {
-      title: "How Classwork identify the programmer version control level?",
-      instruction: 'The result is based on participation percent of ' + 
-      'total number of commiter\'s commits (C) in relation with the total ' + 
-      'no-empty lines (SL) in the code and the number of committers (N).',
+      title: "How does Classwork identify the programmer's version control level?",
+      instruction: 'The result is based on the participation percentage of ' + 
+      'total number of commiter\'s commits (C) in relation to the  ' + 
+      'total no-empty lines (SL) in the code and the number of committers (N).',
       explanation: 'If the repository is big and have a great amount of programmers, ' + 
       'is natural that each should have a smaller number of commits that a small ' +
       'repository with one or three programmers.'
@@ -132,9 +132,8 @@ class ProfileAnalyzer {
     const favoriteHour = timeFrequency.length > 0? timeFrequency[0].hour:NaN;
 
     const equation = {
-      title: "How Classwork identify the programmer's frequent working hours?",
-      instruction: 'Get the most frequent hour of the programmer\'s commits. ' +
-      'The Classwork use the mode of this values (H).',
+      title: "How does Classwork identify the programmer's frequent working hours?",
+      instruction: 'The Classwork uses the mode of the hour all commits are published (H).',
     };
 
     if(favoriteHour >= 22 || favoriteHour < 1) return {
@@ -142,9 +141,12 @@ class ProfileAnalyzer {
       icon: "alt-moon",
       color: "orange.600",
       size: 5,
+      description: `This programmer works late at night (${favoriteHour}). Many programmers likes to work at ` + 
+      'this time, but it is not recommended because it becomes exhausting. Also, it\'s commom ' +
+      'that when have a big challenge in the code, the programmer goes beyond midnight',
       equation: {
         ...equation,
-        calc: "22 \\eqslantless H < 1 \\quad \\text{(the current category)}"
+        calc: "22 \\eqslantless H < 1 \\quad \\text{(the current category)}",
       }
     };
 
@@ -153,6 +155,9 @@ class ProfileAnalyzer {
       icon: "alt-moon",
       color: "red.600",
       size: 5,
+      description: `This programmer works very late at night (${favoriteHour})! He must take precautions ` +
+      'to change working hours as soon as possible. Work during this period is dangerous and ' + 
+      'harmful. It is a visible symptom of insomnia!',
       equation: {
         ...equation,
         calc: "1 < H \\eqslantless 5 \\quad \\text{(the current category)}"
@@ -163,6 +168,8 @@ class ProfileAnalyzer {
       message: "Morning programmer",
       icon: "afternoon",
       color: "primary.800",
+      description: `This programmer works in the morning (${favoriteHour}). It\'s incredible! ` +
+      'There\'s not much to say other than that...',
       equation: {
         ...equation,
         calc: "5 < H \\eqslantless 12 \\quad \\text{(the current category)}"
@@ -173,6 +180,8 @@ class ProfileAnalyzer {
       message: "Afternoon programmer",
       icon: "afternoon",
       color: "primary.800",
+      description: `This programmer works in the afternoon (${favoriteHour}). It\'s incredible! ` +
+      'There\'s not much to say other than that...',
       equation: {
         ...equation,
         calc: "12 < H \\eqslantless 18 \\quad \\text{(the current category)}"
@@ -184,6 +193,8 @@ class ProfileAnalyzer {
       icon: "alt-moon",
       color: "primary.800",
       size: 5,
+      description: `This programmer works at night (${favoriteHour}). It\'s incredible! ` +
+      'There\'s not much to say other than that...',
       equation: {
         ...equation,
         calc: "18 < H \\eqslantless 22 \\quad \\text{(the current category)}"
@@ -225,17 +236,19 @@ class ProfileAnalyzer {
     }, 0)/userCommits.length;
 
     const equation = {
-      title: "How Classwork calculate the commit's messages length?",
-      instruction: 'Get the average of all the programmer\'s commit message lengths (M).'
+      title: "How does Classwork calculate the commit's message length?",
+      instruction: 'Getting the average of all the programmer\'s commit message lengths (M)'
     };
 
-    if(averageOfMessagesLength > 70) return {
+    if(averageOfMessagesLength > 72) return {
       message: "Articles, not messages",
       icon: "newspaper",
       color: "red.600",
+      description: `This programmer likes to write messages with ${averageOfMessagesLength.toFixed(0)} ` +
+      'or more than characters. Messages of more than 72 lengths do not even appear completely!',
       equation: {
         ...equation,
-        calc: "70 < M \\quad \\text{(the current category)}"
+        calc: "72 < M \\quad \\text{(the current category)}"
       }
     };
 
@@ -243,9 +256,11 @@ class ProfileAnalyzer {
       message: "Extra long messages",
       icon: "newspaper",
       color: "orange.600",
+      description: `This programmer likes to write messages with ${averageOfMessagesLength.toFixed(0)} ` +
+      'or more than characters. It\'s not bad to be descriptive, but being simple is just as good!',
       equation: {
         ...equation,
-        calc: "50 < M \\quad \\text{(the current category)}"
+        calc: "50 < M \\eqslantless 72 \\quad \\text{(the current category)}"
       }
     };
 
@@ -253,9 +268,11 @@ class ProfileAnalyzer {
       message: "Long messages",
       icon: "messages",
       color: "green.600",
+      description: `This programmer likes to write messages with ${averageOfMessagesLength.toFixed(0)} ` +
+      'or more than characters. It\'s not bad to be descriptive, but being simple is just as good!',
       equation: {
         ...equation,
-        calc: "40 \\eqslantless M \\quad \\text{(the current category)}"
+        calc: "40 \\eqslantless M \\eqslantless 50 \\quad \\text{(the current category)}"
       }
     };
 
@@ -263,20 +280,25 @@ class ProfileAnalyzer {
       message: "Small messages", 
       icon: "messages",
       color: "primary.800",
+      description: `This programmer likes to write messages with ${averageOfMessagesLength.toFixed(0)} ` +
+      'or more than characters. It\'s good!',
       equation: {
         ...equation,
-        calc: "20 \\eqslantless M \\quad \\text{(the current category)}"
+        calc: "20 \\eqslantless M < 40 \\quad \\text{(the current category)}"
       }
     };
 
-    if(averageOfMessagesLength >= 10) return {
+    if(averageOfMessagesLength >= 12) return {
       message: "Short messages", 
       icon: "paperplane",
       color: "primary.800",
+      description: `This programmer likes to write messages with ${averageOfMessagesLength.toFixed(0)} ` +
+      'or more than characters. It\'s good! But the programmer must ensure that a message has as little ' +
+      'description as possible in the message...',
       size: 5,
       equation: {
         ...equation,
-        calc: "10 \\eqslantless M \\quad \\text{(the current category)}"
+        calc: "12 \\eqslantless M < 20 \\quad \\text{(the current category)}"
       }
     };
 
@@ -284,6 +306,9 @@ class ProfileAnalyzer {
       message: "Bad messages", 
       icon: "warning",
       color: "red.600",
+      description: `This programmer likes to write messages with ${averageOfMessagesLength.toFixed(0)} ` +
+      'or more than characters. This is bad! It is also quite common when choosing to put the software ' + 
+      'version as a commit message. The question is: does this bring as little information as possible?',
       equation: {
         ...equation,
         calc: "M < 10 \\quad \\text{(the current category)}"
@@ -304,10 +329,9 @@ class ProfileAnalyzer {
     const percent = contribution/percentOfExpected;
 
     const equation = {
-      title: "How Classwork calculate the programmer contribution?",
-      instruction: 'Get the  programmer  percent of: ' + 
-      'changes(CH); methods (MT); classes(CS) and complexity(CM). ' +
-      'In sequence, apply the following formula:',
+      title: "How does Classwork calculate the programmer's contribution?",
+      instruction: 'Getting the programmer\'s percentage of changes (CH), methods (MT), classes (CS), ' + 
+      'and cyclomatic complexity (CM) and applying these values in the following formula:',
       calc: "C_u = \\dfrac{(2.CH_u) + (0.5.MT_u) + (0.5.CS_u) + CM_u}{4}\\\\ \\space \\\\E=100/N",
       explanation: 'Based on the formula above, the expected programmer contribution (E) ' +
       'is calculated using the number of committers (N). In this case, is expected that each programmer ' +
@@ -319,7 +343,7 @@ class ProfileAnalyzer {
       message: "Need more help",
       icon: "helping",
       color: "orange.600",
-      description: 'Unfortunately, the current programmer doesn\'t contribute much to the project. ' +
+      description: 'Unfortunately, the current programmer doesn\'t contributed much to the project. ' +
       'He/she should get more help from the rest of the team! ' + 
       'Especially if he/she are someone who is starting to programming...',
       equation: {
@@ -332,6 +356,9 @@ class ProfileAnalyzer {
       message: "Need a little help",
       icon: "helping",
       color: "orange.600",
+      description: 'Unfortunately, the current programmer doesn\'t contributed much to the project. ' +
+      'He/she should get a little help from the rest of the team. Especially if he/she are someone ' + 
+      'who is starting to programming.',
       equation: {
         ...equation,
         explanationCalc: `0,5 \\eqslantless C_u/${(percentOfExpected).toFixed(2).replace(".", ",")} < 0,6 \\quad \\text{(the current category)}`
@@ -342,6 +369,8 @@ class ProfileAnalyzer {
       message: "Can contribute more",
       icon: "sunrise",
       color: "green.600",
+      description: 'The current programmer contributed to the project. Maybe he/she can contribute ' +
+      'more if dedicate more time. And, if necessary, he/she can get a little help from the rest of the team too.',
       equation: {
         ...equation,
         explanationCalc: `0,6 \\eqslantless C_u/${(percentOfExpected).toFixed(2).replace(".", ",")} < 0,8 \\quad \\text{(the current category)}`
@@ -352,6 +381,9 @@ class ProfileAnalyzer {
       message: "Good contribution",
       icon: "tools",
       color: "green.600",
+      description: 'The current programmer contributed much to the project! Maybe he/she can ' +
+      'contribute more if dedicate more time. And, if necessary, he/she can get a little help from the ' +
+      'rest of the team too or help them in her free time.',
       equation: {
         ...equation,
         explanationCalc: `0,8 \\eqslantless C_u/${(percentOfExpected).toFixed(2).replace(".", ",")} < 1,2 \\quad \\text{(the current category)}`
@@ -363,6 +395,8 @@ class ProfileAnalyzer {
       icon: "tools",
       color: "primary.800",
       size: 5,
+      description: 'The current programmer contributed much to the project! May Be he/she can help ' +
+      'the rest of the team too in her free time.',
       equation: {
         ...equation,
         explanationCalc: `1,2 \\eqslantless C_u/${(percentOfExpected).toFixed(2).replace(".", ",")} < 1,3 \\quad \\text{(the current category)}`
@@ -373,6 +407,9 @@ class ProfileAnalyzer {
       message: "Solitary programmer",
       icon: "tools",
       color: "red.600",
+      description: 'The current programmer contributed much to the project... Too much, in fact. ' +
+      'He/she should know when to stop and help the rest of the team to all get to contribute to ' +
+      'the result. Maybe he/she can do it in her free time.',
       equation: {
         ...equation,
         explanationCalc: `1,2 < C_u/${(percentOfExpected).toFixed(2).replace(".", ",")} \\quad \\text{(the current category)}`
@@ -385,9 +422,9 @@ class ProfileAnalyzer {
     const currentUser = this.data.find(d => d.user.id === this.user);
 
     const equation = {
-      title: "How Classwork understand the frequency of methods usage?",
-      instruction: 'The result is based on the participation of the total number of ' +
-      'the project methods (M) concerning the total no-empty lines (SL) in the code.'
+      title: "How does Classwork understand the frequency of methods usage?",
+      instruction: 'The result is based on the participation of the total number of methods in the project  ' +
+      '(M) concerning the total no-empty lines (SL) in the code.'
     };
 
     if(currentUser?.organization.methods <= 0) return {
@@ -395,6 +432,8 @@ class ProfileAnalyzer {
       icon: "question",
       color: "red.600",
       size: 5,
+      description: 'Methods (functions) are one of many forms to keep the organization in the code. ' +
+      'This programmer doesn\'t seem to know this, since he didn\'t use any method.',
       equation: {
         ...equation,
         calc: "M \\eqslantless 0 \\quad \\text{(the current category)}"
@@ -405,6 +444,9 @@ class ProfileAnalyzer {
       message: "Need more methods",
       icon: "tune",
       color: "orange.600",
+      description: 'Methods (functions) are one of many forms to keep the organization, practicality and logic of ' +
+      'the code. This programmer does seem to know this, but 1 or less method for each 10000 no-empty ' +
+      'lines is very low. Maybe he/she should review the usage of methods in her code.',
       equation: {
         ...equation,
         calc: "0 < M \\eqslantless (SL/10000) \\quad \\text{(the current category)}"
@@ -415,6 +457,9 @@ class ProfileAnalyzer {
       message: "Likes methods",
       icon: "tune",
       color: "green.600",
+      description: 'Methods (functions) are one of many forms to keep the organization, practicality and logic of ' +
+      'the code. This programmer does seem to know this, but 1 or less method for each 1000 no-empty ' +
+      'lines is low. Maybe he/she should review the usage of methods in her code.',
       equation: {
         ...equation,
         calc: "(SL/10000) < M \\eqslantless (SL/1000) \\quad \\text{(the current category)}"
@@ -425,6 +470,8 @@ class ProfileAnalyzer {
       message: "Methodological programmer",
       icon: "methods-icon",
       color: "green.600",
+      description: 'Methods (functions) are one of many forms to keep the organization, practicality and logic of ' +
+      'the code. This programmer does seem to know this!',
       equation: {
         ...equation,
         calc: "(SL/1000) < M \\eqslantless (SL/100)M \\eqslantless (SL/100) \\quad \\text{(the current category)}"
@@ -435,6 +482,8 @@ class ProfileAnalyzer {
       message: "Methodological programmer",
       icon: "methods-icon",
       color: "primary.800",
+      description: 'Methods (functions) are one of many forms to keep the organization, practicality and logic of ' +
+      'the code. This programmer does seem to know much this!',
       equation: {
         ...equation,
         calc: "(SL/100) < M \\quad \\text{(the current category)}"
@@ -447,9 +496,9 @@ class ProfileAnalyzer {
     const currentUser = this.data.find(d => d.user.id === this.user);
 
     const equation = {
-      title: "How Classwork understand the frequency of methods usage?",
-      instruction: 'The result is based on the participation of the total number of ' +
-      'the project classes (C) concerning the total no-empty lines (SL) in the code.'
+      title: "How does Classwork understand the frequency of classes usage?",
+      instruction: 'The result is based on the participation of the total number of classes in the project  ' +
+      '(M) concerning the total no-empty lines (SL) in the code.'
     };
     
     if(currentUser?.organization.classes <= 0) return {
@@ -457,6 +506,8 @@ class ProfileAnalyzer {
       icon: "question",
       color: "red.600",
       size: 5,
+      description: 'Classes are one of many forms to keep the organization in the code. ' +
+      'This programmer doesn\'t seem to know this, since he didn\'t use any class.',
       equation: {
         ...equation,
         calc: "C \\eqslantless 0 \\quad \\text{(the current category)}"
@@ -467,6 +518,9 @@ class ProfileAnalyzer {
       message: "Need more classes",
       icon: "class",
       color: "orange.600",
+      description: 'Classes are one of many forms to keep the organization, practicality and logic of ' +
+      'the code. This programmer does seem to know this, but 1 or less method for each 25000 no-empty ' +
+      'lines is very low! Maybe he/she should review the usage of classes in her code.',
       equation: {
         ...equation,
         calc: "0 < C \\eqslantless (SL/25000) \\quad \\text{(the current category)}"
@@ -477,6 +531,9 @@ class ProfileAnalyzer {
       message: "Likes classes",
       icon: "class",
       color: "green.600",
+      description: 'Classes are one of many forms to keep the organization, practicality and logic of ' +
+      'the code. This programmer does seem to know this, but 1 or less method for each 2500 no-empty ' +
+      'lines is low. Maybe he/she should review the usage of classes in her code.',
       equation: {
         ...equation,
         calc: "(SL/25000) < C \\eqslantless (SL/2500) \\quad \\text{(the current category)}"
@@ -487,6 +544,8 @@ class ProfileAnalyzer {
       message: "Oriented by objects",
       icon: "class",
       color: "green.600",
+      description: 'Classes are one of many forms to keep the organization, practicality and logic of ' +
+      'the code. This programmer does seem to know this!',
       equation: {
         ...equation,
         calc: "(SL/2500) < C \\eqslantless (SL/250) \\quad \\text{(the current category)}"
@@ -497,6 +556,8 @@ class ProfileAnalyzer {
       message: "Oriented by objects",
       icon: "class",
       color: "primary.800",
+      description: 'Classes are one of many forms to keep the organization, practicality and logic of ' +
+      'the code. This programmer does seem to know much this!',
       equation: {
         ...equation,
         calc: "(SL/250) < C \\quad \\text{(the current category)}"
