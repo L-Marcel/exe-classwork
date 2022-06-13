@@ -1,49 +1,23 @@
-import { Box, HStack, useDisclosure } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 import { AddInstanceButton } from "../../../components/Buttons/AddInstanceButton";
 import { RepositoryList } from "../../../components/List/Repository/RepositoryList";
-import { AddRepositoryModal } from "../../../components/Modal/AddRepositoryModal";
 import { Pagination } from "../../../components/Pagination";
 import { Search } from "../../../components/Search";
 import { Section } from "../../../components/Section";
 import { Title } from "../../../components/Title";
 import { useIsLoading } from "../../../contexts/hooks/useIsLoading";
 import { SearchProvider } from "../../../contexts/SearchProvider";
-import { Api } from "../../../services/api";
 import { WithUserProps } from "../../../utils/routes/WithUserProps";
 
 interface RepositoriesPageProps extends WithUserProps {};
 
 function RepositoriesPage({}: RepositoriesPageProps) {
   const { 
-    stopLoading,
     isLoading
   } = useIsLoading();
 
-  const { onClose, isOpen, onOpen } = useDisclosure();
-  
-  function onSubmit(repository: Repository) {
-    onClose();
-    
-    Api.post(`/user/repository`, {
-      ...repository,
-      owner: {
-        id: repository.owner.id
-      }
-    }).then(() => {
-      stopLoading();
-    }).catch((err) => {
-      console.log(err);
-      stopLoading();
-    });
-  };
-
   return (
     <>
-      <AddRepositoryModal
-        onClose={onClose} 
-        isOpen={isOpen}
-        onSubmit={({ repository }) => onSubmit(repository)}
-      />
       <Section
         isNeabyOfNavigation
       >
@@ -68,7 +42,7 @@ function RepositoriesPage({}: RepositoriesPageProps) {
                 placeholder="Search by title..."
               />
               <AddInstanceButton
-                onClick={onOpen}
+                href="/app/repositories/link"
                 isDisabled={isLoading}
               />
             </HStack>

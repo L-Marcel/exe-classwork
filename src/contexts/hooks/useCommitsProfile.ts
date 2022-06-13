@@ -113,13 +113,17 @@ function useCommitsProfile({
     const totalMethods = total.organization.methods;
     const totalComplexity = total.complexity;
 
-    const contribution = 
+    let contribution = 
       (
-        (2 * (progress/totalProgress)) + 
-        (0.5 * (classes/totalClasses)) +
-        (0.5 * (methods/totalMethods)) + 
-        (1 * (complexity/totalComplexity))
+        (2 * (totalProgress > 0? (progress/totalProgress):0)) + 
+        (0.5 * (totalClasses > 0? (classes/totalClasses):0)) +
+        (0.5 * (totalMethods > 0? (methods/totalMethods):0)) + 
+        (1 * (totalComplexity > 0? (complexity/totalComplexity):0))
       ) /4;
+
+    if(contribution < 0) {
+      contribution = 0;
+    };
 
     cur.contribution = contribution;
     prev.push(cur);

@@ -83,6 +83,7 @@ function RepositoryDateInput({
           <NamedIcon
             name="refresh"
             position="absolute"
+            display={["none", "initial"]}
             top="-5px"
             left="-10px"
             w={9}
