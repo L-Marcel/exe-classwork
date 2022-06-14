@@ -6,7 +6,6 @@ function useProgress() {
     return {
       progress: c.progress,
       setProgress: c.setProgress,
-      addNamedProgress: c.addNamedProgress,
       getProgressByName: c.getProgressByName
     };
   });

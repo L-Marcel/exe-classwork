@@ -2,6 +2,7 @@ import express from "express";
 import { io } from "..";
 import { Directory } from "../controllers/Directory";
 import { api } from "../services/api";
+import { Users } from "../services/users";
 
 export type RepositoryStatus = "NOT_REQUESTED" | "REQUESTED" | "LOADED";
 export type RefreshCommitsData = {
@@ -10,6 +11,7 @@ export type RefreshCommitsData = {
   fullname: string;
   appToken: string;
 }; 
+
 
 const connectionRoutes = express.Router();
 
@@ -20,8 +22,16 @@ connectionRoutes.post("/connect", (req, res) => {
     
     if(!io._nsps.has(namespace)) {
       const server = io.of(namespace);
+
       server.on("connection", (socket) => {    
+        Users.addConnectedUser(namespace, {
+          target: 0,
+          value: 0,
+          all: [] 
+        });
+        
         socket.join("app");
+
         socket.on("@update/rate_limit", (data) => {
           server.emit("rate_limit", data);
         });
@@ -47,11 +57,14 @@ connectionRoutes.post("/connect", (req, res) => {
               Directory.getRepositoryCommits(userId, fullname, appToken, (rateLimit) => {
                 server.emit("rate_limit", rateLimit);
               }, (progress) => {
-                server.emit("progress", {
+                const newProgressValue = {
                   ...progress,
                   name: fullname,
                   status: "REQUESTED"
-                });
+                }; 
+
+                const inProgressValue = Users.updateUserProgress(namespace, newProgressValue);
+                server.emit("progress", inProgressValue);
               }).then(async(commits) => {
                 for(let c = 0; c <= Math.ceil(commits.length/10); c++) {
                   const pieceOfCommits = commits.slice((c*10), (c*10) + 10);
@@ -64,21 +77,27 @@ connectionRoutes.post("/connect", (req, res) => {
                     count: commits.length
                   }).then((res) => {
                     console.log("IsFinished: " + (c >= Math.ceil(commits.length/10)));
-                    server.emit("progress", {
+                    const newProgressValue = {
                       target: -pieceOfCommits.length,
                       value: -pieceOfCommits.length,
                       name: fullname,
                       status: "REQUESTED"
-                    });
+                    };
+
+                    const inProgressValue = Users.updateUserProgress(namespace, newProgressValue);
+                    server.emit("progress", inProgressValue);
                   }).catch((err) => console.log("c", err.message));
                 };
 
-                server.emit("progress", {
+                const endProgressValue = {
                   target: 0,
                   value: 0,
                   name: fullname,
                   status: "LOADED"
-                });
+                };
+
+                const inProgressValue = Users.updateUserProgress(namespace, endProgressValue);
+                server.emit("progress", inProgressValue);
                 
                 console.log("Repository loaded: " + repositoryFullname);
               }).catch((err) => console.log("b", err.message));

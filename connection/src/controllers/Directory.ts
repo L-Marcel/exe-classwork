@@ -5,8 +5,10 @@ import { getRawString } from "../utils/getRawString";
 import { GithubApp, RateLimit } from "./GithubApp";
 
 export type Progress = {
+  name: string;
   target?: number;
   value?: number;
+  status?: string;
 };
 
 export type GithubRepositoryCommitRef = {
@@ -144,6 +146,7 @@ class Directory {
     );
 
     onChangeProgress({
+      name: repositoryFullname,
       target: commitsRef.length,
       value: 0
     });
@@ -270,6 +273,7 @@ class Directory {
       } as Commit);
 
       onChangeProgress({
+        name: repositoryFullname,
         value: 1
       });
     };

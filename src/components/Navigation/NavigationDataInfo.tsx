@@ -23,7 +23,7 @@ function NavigationDataInfo({
 
   const [displayed, setDisplayed] = useState("rate_limit");
 
-  const { progress, addNamedProgress } = useProgress();
+  const { progress, setProgress } = useProgress();
 
   const [rateLimit, setRateLimit] = useState({
     limit: 0,
@@ -38,8 +38,8 @@ function NavigationDataInfo({
         });
       });
 
-      socket.on("progress", (data) => {
-        addNamedProgress(data);
+      socket.on("progress", (data: AllNamedProgress | undefined) => {
+        data && setProgress(data);
       });
 
       Api.post("user/connect/rate_limit")

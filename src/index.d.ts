@@ -151,7 +151,6 @@ declare interface AppContext {
   setRepository: (repository: Repository) => void;
   progress: AllNamedProgress;
   setProgress: (progress: AllNamedProgress) => void;
-  addNamedProgress: (progress: NamedProgress) => void;
   getProgressByName: (name: string) => NamedProgress;
   signOut: () => void;
   inputErrors: InputErrors;

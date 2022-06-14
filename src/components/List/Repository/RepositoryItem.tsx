@@ -12,17 +12,26 @@ interface RepositoryItemProps {
   id: string;
   description?: string;
   subject?: string;
+  status?: RepositoryStatus;
   alerts?: any[];
 };
 
-function RepositoryItem({ name, fullname, description, subject, id, alerts = [] }: RepositoryItemProps) {
+function RepositoryItem({ 
+  name, 
+  fullname, 
+  description, 
+  subject, 
+  id, 
+  status,
+  alerts = [] 
+}: RepositoryItemProps) {
   const router = useRouter();
   const alertsCount = alerts.length >= 9? 9:alerts.length;
 
   const [progress, setProgress] = useState<NamedProgress>({
     target: 0,
     value: 0,
-    status: "LOADED",
+    status: status || "NOT_REQUESTED",
     name: fullname
   });
 
@@ -30,8 +39,10 @@ function RepositoryItem({ name, fullname, description, subject, id, alerts = [] 
 
   const _progress = getProgressByName(fullname);
 
-  const isLoading = progress?.status === "REQUESTED"; //&& (progress?.target !== 0 && progress?.value !== 0);
-  const theme = !isLoading? "primary.700":"orange.700";
+  const isLoading = progress?.status === "REQUESTED";
+  const isLoaded = !isLoading && progress?.status === "LOADED";
+  const canOpen = (!isLoading && isLoaded);
+  const theme = canOpen? "primary.700":"orange.700";
   
   useEffect(() => {
     if(_progress && _progress !== progress) {
@@ -47,7 +58,7 @@ function RepositoryItem({ name, fullname, description, subject, id, alerts = [] 
       minW={["85%", "80%", "80%", "40%", "20%", "20.1%"]}
       borderRadius={15}
       borderLeft="2px solid"
-      borderColor={theme }
+      borderColor={theme}
       p={[4, 6]}
       flexDir="column"
       position="relative"
@@ -55,8 +66,9 @@ function RepositoryItem({ name, fullname, description, subject, id, alerts = [] 
       alignItems="flex-start"
       justifyContent="flex-start"
       textAlign="start"
-      onClick={() => !isLoading && router.push(`/repositories/${fullname?.toLocaleLowerCase()}`)}
-      cursor={isLoading? "progress":"pointer"}
+      opacity={(!isLoading && !isLoaded) && .3}
+      onClick={() => canOpen && router.push(`/repositories/${fullname?.toLocaleLowerCase()}`)}
+      cursor={isLoading? "progress":isLoaded? "pointer":"not-allowed"}
       {...scaleOnInteract}
     >
       <Box

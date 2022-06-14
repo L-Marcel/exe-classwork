@@ -147,6 +147,7 @@ export class Repositories {
         name: true,
         updatedAt: true,
         updatedBy: true,
+        status: true,
         teams: {
           select: {
             title: true,

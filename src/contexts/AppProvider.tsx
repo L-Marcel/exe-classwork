@@ -74,29 +74,6 @@ function AppProvider({ children }: AppProviderProps) {
     setProgress(progress);
   }, [setProgress]);
 
-  const _addNamedProgress = useCallback((progress: NamedProgress) => {
-    setProgress(p => {
-      const nameAlreadyDefined = p.all.find(p => p.name === progress?.name);
-
-      return {
-        target: Math.max(p.target + (progress.target || 0), 0),
-        value: Math.max(p.value + (progress.value || 0), 0),
-        all: nameAlreadyDefined? p.all.map(n => {
-          if(n.name === progress?.name) {
-            n = {
-              ...n,
-              status: (progress?.status || n?.status || "LOADED"),
-              target: Math.max((n?.target || 0) + (progress.target || 0), 0),
-              value: Math.max((n?.value || 0) + (progress.value || 0), 0),
-            };
-          };
-
-          return n;
-        }):[ ...p.all, progress ]
-      };
-    });
-  }, [setProgress]);
-
   const _getProgressByName = useCallback((name: string) => {
     return progress.all.find(p => p.name === name);
   }, [progress])
@@ -143,7 +120,6 @@ function AppProvider({ children }: AppProviderProps) {
         setRepository: _setRepository,
         progress,
         setProgress: _setProgress,
-        addNamedProgress: _addNamedProgress,
         getProgressByName: _getProgressByName,
         signOut: _signOut,
         inputErrors,
