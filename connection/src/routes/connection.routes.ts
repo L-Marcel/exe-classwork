@@ -102,7 +102,7 @@ connectionRoutes.post("/alerts/new", (_, res) => {
   } catch (error) {
     return res.status(400).send("");
   };
-})
+});
 
 export { connectionRoutes };
 

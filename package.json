@@ -23,6 +23,7 @@
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "katex": "^0.16.0",
+    "lodash": "^4.17.21",
     "micro": "^9.3.4",
     "next": "^12.1.5",
     "nextjs-progressbar": "^0.0.14",

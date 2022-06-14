@@ -1,6 +1,7 @@
 import { Box, Text } from "@chakra-ui/react";
 import { format } from "date-fns";
-import { useEffect, useState } from "react";
+import { debounce } from "lodash";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { DatePicker } from "../Inputs/DatePicker";
 import { NamedIcon } from "../NamedIcon";
 
@@ -13,44 +14,70 @@ function RepositoryDateInput({
   onChangeInterval,
   commits
 }: RepositoryDateInputProps) {
+  const [canResetInput, setCanResetInput] = useState(true);
+
   const afterDate = new Date(commits.sort((a, b) => a.order - b.order)[0].commitedAt || undefined);
   const beforeDate = new Date(commits.sort((a, b) => a.order - b.order)[commits.length - 1].commitedAt || undefined);
 
   const [selectedAfterDate, setSelectedAfterDate] = useState<string>(format(afterDate, "yyyy-MM-dd"));
   const [selectedBeforeDate, setSelectedBeforeDate] = useState<string>(format(beforeDate, "yyyy-MM-dd"));
 
-  useEffect(() => {
-    onChangeInterval(commits.filter(c => {
-      const date = new Date(c.commitedAt);
+  const _callbackWithDelay = useRef(debounce((callback: Function) => {
+    callback();
+  }, 300));
 
-      const afterDate = new Date(selectedAfterDate);
-      const utcAfterDate = new Date( 
-        afterDate.getUTCFullYear(), 
-        afterDate.getUTCMonth(), 
-        afterDate.getUTCDate(), 
-        afterDate.getUTCHours(), 
-        afterDate.getUTCMinutes(), 
-        afterDate.getUTCSeconds() 
-      );
-
-      const beforeDate = new Date(selectedBeforeDate);
-      const utcBeforeDate = new Date( 
-        beforeDate.getUTCFullYear(), 
-        beforeDate.getUTCMonth(), 
-        beforeDate.getUTCDate(), 
-        23, 
-        59, 
-        59 
-      );
-
-      return date.getTime() >= utcAfterDate.getTime() && date.getTime() <= utcBeforeDate.getTime();
-    }));
-  }, [commits, selectedAfterDate, selectedBeforeDate]);
-
-  function handleResetDate() {
+  const handleResetAfterDate = useCallback(() => {
     setSelectedAfterDate(format(afterDate, "yyyy-MM-dd"));
+  }, [setSelectedAfterDate]);
+
+  const handleResetBeforeDate = useCallback(() => {
     setSelectedBeforeDate(format(beforeDate, "yyyy-MM-dd"));
-  };
+  }, [setSelectedBeforeDate]);
+
+  const handleResetDate = useCallback(() => {
+    handleResetAfterDate();
+    handleResetBeforeDate();
+  }, [handleResetAfterDate, handleResetBeforeDate]);
+
+  useEffect(() => {
+    if(selectedAfterDate && selectedBeforeDate) {
+      _callbackWithDelay.current(() => {
+        onChangeInterval(commits.filter(c => {
+          const date = new Date(c.commitedAt);
+    
+          const afterDate = new Date(selectedAfterDate);
+          const utcAfterDate = new Date( 
+            afterDate.getUTCFullYear(), 
+            afterDate.getUTCMonth(), 
+            afterDate.getUTCDate(), 
+            afterDate.getUTCHours(), 
+            afterDate.getUTCMinutes(), 
+            afterDate.getUTCSeconds() 
+          );
+    
+          const beforeDate = new Date(selectedBeforeDate);
+          const utcBeforeDate = new Date( 
+            beforeDate.getUTCFullYear(), 
+            beforeDate.getUTCMonth(), 
+            beforeDate.getUTCDate(), 
+            23, 
+            59, 
+            59 
+          );
+    
+          return date.getTime() >= utcAfterDate.getTime() && date.getTime() <= utcBeforeDate.getTime();
+        }));
+      });
+    } else if(!selectedAfterDate) {
+      _callbackWithDelay.current(() => {
+        canResetInput && handleResetAfterDate();
+      });
+    } else if(!selectedBeforeDate) {
+      _callbackWithDelay.current(() => {
+        canResetInput && handleResetBeforeDate();
+      });
+    };
+  }, [_callbackWithDelay, canResetInput, commits, selectedAfterDate, selectedBeforeDate]);
 
   return (
     <Box
@@ -69,11 +96,14 @@ function RepositoryDateInput({
       >
         <DatePicker
           value={selectedAfterDate}
+          onFocus={() => setCanResetInput(false)}
+          onBlur={() => setCanResetInput(true)}
           onChange={e => setSelectedAfterDate(e.target.value)}
         />
         <Box
           position="relative"
           onClick={handleResetDate}
+          display={["none", "none", "initial"]}
           cursor="pointer"
           transition="color .1s"
           _hover={{
@@ -83,7 +113,6 @@ function RepositoryDateInput({
           <NamedIcon
             name="refresh"
             position="absolute"
-            display={["none", "initial"]}
             top="-5px"
             left="-10px"
             w={9}
@@ -98,6 +127,8 @@ function RepositoryDateInput({
       </Box>
       <DatePicker
         value={selectedBeforeDate}
+        onFocus={() => setCanResetInput(false)}
+        onBlur={() => setCanResetInput(true)}
         onChange={e => setSelectedBeforeDate(e.target.value)}
       />
     </Box>
