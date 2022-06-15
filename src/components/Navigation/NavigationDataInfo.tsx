@@ -81,19 +81,8 @@ function NavigationDataInfo({
         pointerEvents="all"
       >
         {displayed === "rate_limit" && <Text
-          as={m.p}
-          initial="hidden"
-          animate={displayed === "rate_limit"? "visible":"hidden"}
           pl={3}
           pr={2}
-          variants={{
-            visible: {
-              scaleX: 1
-            },
-            hidden: {
-              scaleX: 0
-            }
-          }}
         >
           {rateLimit.remaining}/{rateLimit.limit}
         </Text> }
@@ -141,19 +130,8 @@ function NavigationDataInfo({
         pointerEvents="all"
       >
         { displayed === "progress" && <Text
-          as={m.p}
-          initial="hidden"
-          animate={displayed === "progress"? "visible":"hidden"}
           pl={3}
           pr={2}
-          variants={{
-            visible: {
-              scaleX: 1
-            },
-            hidden: {
-              scaleX: 0
-            }
-          }}
         >
           {progress.value}/{progress.target}
         </Text> }

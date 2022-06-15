@@ -29,7 +29,9 @@ function RepositoryChart({
     <Tabs>
       <TabList
         overflowX="auto"
+        overflowY="hidden"
         maxW="100vw"
+        pb="0.4px"
       >
         <Tab>Metrics</Tab>
         <Tab>Changes</Tab>

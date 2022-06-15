@@ -48,8 +48,8 @@ function RepositoryPage({
       />
       <Section
         py="0!important"
-        pl={user? ["0!important", "0!important", "var(--chakra-space-14)!important"]:"0!important"}
-        pr={user? ["0!important", "0!important", "var(--chakra-space-14)!important"]:"0!important"}
+        pl={["0!important", "0!important", "var(--chakra-space-14)!important"]}
+        pr={["0!important", "0!important", "var(--chakra-space-14)!important"]}
       >
         <RepositoryChart
           commits={commitsInterval || []}

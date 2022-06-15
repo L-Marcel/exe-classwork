@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
 import { ClassroomBanner } from "../../../../components/Classroom/ClassroomBanner";
 import { ClassroomSearch } from "../../../../components/Classroom/ClassroomSearch";
 import { ClassroomMembersList } from "../../../../components/List/Classroom/ClassroomMembersList";
@@ -25,8 +25,8 @@ function ClassroomPage({
     (u.role === "ADMIN" || u.role === "OWNER")
   );
 
-  const teamsAreRestricted = classroom.teamsAreRestricted && !userIsAuthorized;
-  console.log(teamsAreRestricted);
+  const teamsAreRestricted = 
+    classroom.teamsAreRestricted && !userIsAuthorized;
 
   return (
     <>
@@ -35,37 +35,80 @@ function ClassroomPage({
         userIsAuthorized={userIsAuthorized}
         {...classroom}
       />
-      <Box
-        w="100%"
-        display="flex"
-        flexDir={["column", "column", "column", "row"]}
-        bgColor="solid.25"
+      <Section
+        py="0!important"
+        pl={user? ["0!important", "0!important", "var(--chakra-space-14)!important"]:"0!important"}
+        pr={user? ["0!important", "0!important", "var(--chakra-space-14)!important"]:"0!important"}
       >
-        <ClassroomSearch
-          title="Members"
-          subtitle="Find all members here"
-          maxW={["auto", "auto", "auto", "50%"]}
-          placeholder="Search by name, email or role..."
+      <Tabs>
+        <TabList
+          overflowX="auto"
+          overflowY="hidden"
+          maxW="100vw"
+          pb="0.4px"
         >
-          <ClassroomMembersList
-            classroomId={id}
-            initialData={users}
-          />
-        </ClassroomSearch>
-        <ClassroomSearch
-          title={teamsAreRestricted? "Your teams":"Teams"}
-          subtitle={teamsAreRestricted? "Find your teams here":"Find all teams here"}
-          maxW={["auto", "auto", "auto", "50%"]}
-          placeholder="Search by name, user or repo..."
-          bgColor="solid.10"
-          addInstanceUrl={userIsAuthorized && `/app/classrooms/${classroom.id}/team`}
+          <Tab>Analytics</Tab>
+          <Tab>Alerts</Tab>
+          <Tab>Members</Tab>
+          <Tab>Teams</Tab>
+        </TabList>
+        <TabPanels
+          w="100%"
+          minW={user? "93vw":"100vw"}
+          maxW="100vw"
+          overflowX={["auto", "auto", "auto", "hidden"]}
+          overflowY="hidden"
+          pt={3}
         >
-          <ClassroomTeamsList
-            classroomId={id}
-            initialData={teams}
-          />
-        </ClassroomSearch>
-      </Box>
+          <TabPanel 
+            h="400px"
+            w={["1000px", "1000px", "900px", "100%"]}
+            minW="100%"
+          >
+
+          </TabPanel>
+          <TabPanel 
+            h="400px"
+            w={["1000px", "1000px", "900px", "100%"]}
+            minW="100%"
+          >
+
+          </TabPanel>
+          <TabPanel 
+            h="400px"
+            w={["1000px", "1000px", "900px", "100%"]}
+            minW="100%"
+          >
+            <ClassroomSearch
+              maxW={["auto", "auto", "auto", "50%"]}
+              placeholder="[In work] Search by name, email or role..."
+            >
+              <ClassroomMembersList
+                classroomId={id}
+                initialData={users}
+              />
+            </ClassroomSearch>
+          </TabPanel>
+          <TabPanel 
+            h="400px"
+            w={["1000px", "1000px", "900px", "100%"]}
+            minW="100%"
+          >
+            <ClassroomSearch
+              maxW={["auto", "auto", "auto", "50%"]}
+              placeholder="Search by name, user or repo..."
+              bgColor="solid.10"
+              addInstanceUrl={userIsAuthorized && `/app/classrooms/${classroom.id}/team`}
+            >
+              <ClassroomTeamsList
+                classroomId={id}
+                initialData={teams}
+              />
+            </ClassroomSearch>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+      </Section>
       <Section>
         <Text textAlign="center">This page will still undergo many changes.</Text>
       </Section>
