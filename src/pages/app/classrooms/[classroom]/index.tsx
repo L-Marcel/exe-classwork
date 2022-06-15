@@ -36,6 +36,7 @@ function ClassroomPage({
         {...classroom}
       />
       <Section
+        flex={1}
         py="0!important"
         pl={user? ["0!important", "0!important", "var(--chakra-space-14)!important"]:"0!important"}
         pr={user? ["0!important", "0!important", "var(--chakra-space-14)!important"]:"0!important"}
@@ -45,7 +46,7 @@ function ClassroomPage({
           overflowX="auto"
           overflowY="hidden"
           maxW="100vw"
-          pb="0.4px"
+          pb="1px"
         >
           <Tab>Analytics</Tab>
           <Tab>Alerts</Tab>
@@ -61,27 +62,21 @@ function ClassroomPage({
           pt={3}
         >
           <TabPanel 
-            h="400px"
-            w={["1000px", "1000px", "900px", "100%"]}
-            minW="100%"
+            w="100%"
           >
 
           </TabPanel>
           <TabPanel 
-            h="400px"
-            w={["1000px", "1000px", "900px", "100%"]}
-            minW="100%"
+            w="100%"
           >
 
           </TabPanel>
-          <TabPanel 
-            h="400px"
-            w={["1000px", "1000px", "900px", "100%"]}
-            minW="100%"
+          <TabPanel
+            w="100%"
           >
             <ClassroomSearch
               maxW={["auto", "auto", "auto", "50%"]}
-              placeholder="[In work] Search by name, email or role..."
+              placeholder="Search by name, email or role..."
             >
               <ClassroomMembersList
                 classroomId={id}
@@ -90,14 +85,11 @@ function ClassroomPage({
             </ClassroomSearch>
           </TabPanel>
           <TabPanel 
-            h="400px"
-            w={["1000px", "1000px", "900px", "100%"]}
-            minW="100%"
+            w="100%"
           >
             <ClassroomSearch
               maxW={["auto", "auto", "auto", "50%"]}
               placeholder="Search by name, user or repo..."
-              bgColor="solid.10"
               addInstanceUrl={userIsAuthorized && `/app/classrooms/${classroom.id}/team`}
             >
               <ClassroomTeamsList

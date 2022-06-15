@@ -88,10 +88,6 @@ function Navigation({ ...rest }: NavigationProps) {
       name: "Classrooms"
     },
     {
-      path: `/app/teams`,
-      name: "Teams"
-    },
-    {
       path: `/app/repositories`,
       accept: [
         "/repositories"

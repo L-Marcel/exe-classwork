@@ -19,9 +19,9 @@ function ClassroomItem({ title, description, subject, id, alerts = [] }: Classro
   return (
     <Box
       as={m.button}
-      bgColor="solid.100"
-      w="fill"
       minW={["85%", "80%", "80%", "40%", "20%", "20.1%"]}
+      w="fill"
+      bgColor="solid.100"
       borderRadius={15}
       borderLeft="2px solid"
       borderColor="primary.700"

@@ -1,5 +1,4 @@
 import { HStack, Stack, Text } from "@chakra-ui/react";
-import { m } from "framer-motion";
 import { Profile } from "../../Profile";
 import { Title } from "../../Title";
 
@@ -12,19 +11,18 @@ function ClassroomMemberItem({ member }: ClassroomMemberItem) {
   
   return (
     <HStack
-      as={m.button}
       spacing={3}
-      minW="100%"
       display="flex"
       alignItems="center"
       justifyContent="flex-start"
       textAlign="start"
-      p={4}
-      bgColor="solid.10"
-      borderRadius={16}
-      _hover={{
-        bgColor: "solid.100"
-      }}
+      minW={["85%", "80%", "80%", "40%", "20%", "20.1%"]}
+      w="fill"
+      bgColor="solid.100"
+      borderRadius={15}
+      borderLeft="2px solid"
+      borderColor="primary.700"
+      p={[2, 4]}
     >
       <Profile
         user={user}

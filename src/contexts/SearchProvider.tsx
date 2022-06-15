@@ -1,4 +1,5 @@
-import { ReactNode, useCallback, useState } from "react";
+import { throttle } from "lodash";
+import { ReactNode, useCallback, useRef, useState } from "react";
 import { createContext } from "use-context-selector";
 
 interface SearchProviderProps {
@@ -11,14 +12,14 @@ function SearchProvider({ children }: SearchProviderProps) {
   const [count, setCount] = useState(0);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
-  let timer;
+
+  const throttleCallback = useRef(throttle((fn: Function) => {
+    fn();
+  }, 100));
 
   const _setSearch = useCallback((search: string) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      setSearch(search);
-    }, 300);
-  }, [setSearch]);
+    throttleCallback.current(() => setSearch(search));
+  }, [setSearch, throttleCallback]);
 
   const _setPage = useCallback((page: number) => {
     setPage(page);

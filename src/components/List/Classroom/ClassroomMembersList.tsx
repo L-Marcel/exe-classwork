@@ -1,5 +1,5 @@
-import { Stack } from "@chakra-ui/react";
 import { useSearchResult } from "../../../contexts/hooks/useSearchResult";
+import { DynamicGridList } from "../DynamicGridList";
 import { NotFoundMessage } from "../NotFoundMessage";
 import { SearchingMessage } from "../SearchingMessage";
 import { ClassroomMemberItem } from "./ClassroomMemberItem";
@@ -15,28 +15,26 @@ function ClassroomMembersList({ initialData, classroomId }: ClassroomMembersList
     initialData
   });
 
+
   return (
-    <>
-      {members.length === 0 && (isFetching? 
+    <DynamicGridList
+      w="100%"
+      mt={2}
+      notFoundElement={isFetching? 
         <SearchingMessage/>:
         <NotFoundMessage
           instance="member"
         />
-      )}
-      <Stack
-        display="flex"
-        w="100%"
-      >
-        {members.map((m) => {
-          return (
-            <ClassroomMemberItem
-              key={m.user.id}
-              member={m}
-            />
-          );
-        })}
-      </Stack>
-    </>
+      }
+      items={members?.map(m => {
+        return (
+          <ClassroomMemberItem
+            key={m.user.id}
+            member={m}
+          />
+        );
+      })}
+    />
   );
 };
 

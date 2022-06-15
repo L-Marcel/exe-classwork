@@ -54,6 +54,12 @@ declare interface Repository extends _Repository {
   alerts?: Alerts[];
 };
 
+declare interface RepositoryWithCommitsCount extends Repository {
+  _count: {
+    commits: number;
+  }
+};
+
 declare interface TeamRelation extends _TeamRelation {
   role: TeamRoles;
   user: User;
@@ -62,7 +68,7 @@ declare interface TeamRelation extends _TeamRelation {
 
 declare interface Team extends _Team {
   users: TeamRelation[];
-  repository?: Repository;
+  repository?: RepositoryWithCommitsCount;
 };
 
 declare interface ClassroomRelation extends _ClassroomRelation {

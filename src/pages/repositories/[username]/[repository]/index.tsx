@@ -47,6 +47,7 @@ function RepositoryPage({
         filteredCommits={commitsInterval}
       />
       <Section
+        flex={1}
         py="0!important"
         pl={["0!important", "0!important", "var(--chakra-space-14)!important"]}
         pr={["0!important", "0!important", "var(--chakra-space-14)!important"]}

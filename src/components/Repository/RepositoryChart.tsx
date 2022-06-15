@@ -31,7 +31,7 @@ function RepositoryChart({
         overflowX="auto"
         overflowY="hidden"
         maxW="100vw"
-        pb="0.4px"
+        pb="1px"
       >
         <Tab>Metrics</Tab>
         <Tab>Changes</Tab>

@@ -26,7 +26,7 @@ function ClassroomSearch({
       <Box
         display="flex"
         flexDir={["column", "column", "column", "row"]}
-        alignItems={["center", "flex-start"]}
+        alignItems="flex-start"
         flexWrap="wrap"
         justifyContent="space-between"
         w="100%"

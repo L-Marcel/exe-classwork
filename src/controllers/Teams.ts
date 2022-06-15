@@ -58,6 +58,18 @@ export class Teams {
       take,
       skip: 12 * page,
       include: {
+        repository: {
+          select: {
+            name: true,
+            fullname: true,
+            status: true,
+            _count: {
+              select: {
+                commits: true
+              }
+            }
+          }
+        },
         users: {
           include: {
             user: true

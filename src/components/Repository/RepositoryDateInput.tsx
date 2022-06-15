@@ -83,7 +83,7 @@ function RepositoryDateInput({
     <Box
       display="flex"
       justifyContent="flex-start"
-      alignItems="center"
+      alignItems={["flex-start", "center"]}
       flexDirection={["column", "row"]}
       gap={[3, 3, 5]}
       mt={4}
@@ -104,6 +104,7 @@ function RepositoryDateInput({
           position="relative"
           onClick={handleResetDate}
           display={["none", "none", "initial"]}
+          w={["0", "0", "initial"]}
           cursor="pointer"
           transition="color .1s"
           _hover={{
