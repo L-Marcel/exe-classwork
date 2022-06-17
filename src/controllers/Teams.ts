@@ -41,6 +41,39 @@ export class Teams {
     return { team: createdTeam, relations };
   };
 
+  static async getAllByClassroomId(classroomId: string) {
+    const teams = await Prisma.team.findMany({
+      include: {
+        repository: {
+          select: {
+            name: true,
+            fullname: true,
+            status: true,
+            _count: {
+              select: {
+                commits: true
+              }
+            }
+          }
+        },
+        users: {
+          include: {
+            user: true
+          }
+        }
+      },
+      where: { 
+        classroomId
+      }
+    });
+
+    if(!teams) {
+      throw new NotFoundError("Teams");
+    };
+
+    return teams;
+  };
+
   static async getByClassroom(classroomId: string, userId: string, {
     query = "",
     page = 0,

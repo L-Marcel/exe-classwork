@@ -50,6 +50,11 @@ declare interface CommitTime {
 
 declare interface Repository extends _Repository {
   owner: User;
+  teams?: {
+    users: TeamRelation[];
+    title: string;
+    id: string;
+  } [];
   commits?: Commit[];
   alerts?: Alerts[];
 };
