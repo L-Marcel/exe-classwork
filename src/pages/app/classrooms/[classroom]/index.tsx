@@ -1,5 +1,6 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
 import { GetStaticPaths, GetStaticProps } from "next";
+import { ClassroomMetricsChart } from "../../../../components/Classroom/Charts/ClassroomMetricsChart";
 import { ClassroomBanner } from "../../../../components/Classroom/ClassroomBanner";
 import { ClassroomSearch } from "../../../../components/Classroom/ClassroomSearch";
 import { ClassroomMembersList } from "../../../../components/List/Classroom/ClassroomMembersList";
@@ -24,8 +25,6 @@ function ClassroomPage({
     users,
     teams,
   } = classroom;
-
-  console.log(repositories);
 
   const userIsAuthorized = users.some(
     u => u.user.id === user.id && 
@@ -69,14 +68,17 @@ function ClassroomPage({
           pt={3}
         >
           <TabPanel 
-            w="100%"
+            h="500px"
+            w={["1000px", "1000px", "900px", "100%"]}
           >
-
+            <ClassroomMetricsChart
+              repositories={repositories}
+            />
           </TabPanel>
           <TabPanel 
             w="100%"
           >
-
+            
           </TabPanel>
           <TabPanel
             w="100%"
@@ -204,9 +206,7 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
     const classroom = params.classroom;
 
     const teams = await getTeams(String(classroom));
-    console.log(teams.length);
     const repositories = await getRepositories(teams);
-    console.log(repositories.length);
 
     return {
       props: {
