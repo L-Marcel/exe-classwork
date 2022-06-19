@@ -1,6 +1,6 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { ClassroomMetricsChart } from "../../../../components/Classroom/Charts/ClassroomMetricsChart";
+import { ClassroomCharts } from "../../../../components/Classroom/Charts/ClassroomCharts";
 import { ClassroomBanner } from "../../../../components/Classroom/ClassroomBanner";
 import { ClassroomSearch } from "../../../../components/Classroom/ClassroomSearch";
 import { ClassroomMembersList } from "../../../../components/List/Classroom/ClassroomMembersList";
@@ -63,15 +63,12 @@ function ClassroomPage({
           w="100%"
           minW={user? "93vw":"100vw"}
           maxW="100vw"
-          overflowX={["auto", "auto", "auto", "hidden"]}
-          overflowY="hidden"
           pt={3}
         >
-          <TabPanel 
-            h="500px"
-            w={["1000px", "1000px", "900px", "100%"]}
+          <TabPanel
+            p={0}
           >
-            <ClassroomMetricsChart
+            <ClassroomCharts
               repositories={repositories}
             />
           </TabPanel>

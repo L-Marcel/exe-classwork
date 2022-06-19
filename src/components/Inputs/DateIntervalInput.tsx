@@ -2,22 +2,26 @@ import { Box, Text } from "@chakra-ui/react";
 import { format } from "date-fns";
 import { debounce } from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { DatePicker } from "../Inputs/DatePicker";
 import { NamedIcon } from "../NamedIcon";
+import { DatePicker } from "./DatePicker";
 
-interface RepositoryDateInputProps {
-  commits: Commit[];
-  onChangeInterval: (commits: Commit[]) => void;
+interface DateIntervalInputProps {
+  initialAfterDate?: string | Date;
+  initialBeforeDate?: string | Date;
+  onChangeInterval: (
+    getFilteredResult: (date: string | Date) => boolean
+  ) => void;
 };
 
-function RepositoryDateInput({
+function DateIntervalInput({
   onChangeInterval,
-  commits
-}: RepositoryDateInputProps) {
+  initialAfterDate,
+  initialBeforeDate
+}: DateIntervalInputProps) {
   const [canResetInput, setCanResetInput] = useState(true);
 
-  const afterDate = new Date(commits.sort((a, b) => a.order - b.order)[0].commitedAt || undefined);
-  const beforeDate = new Date(commits.sort((a, b) => a.order - b.order)[commits.length - 1].commitedAt || undefined);
+  const afterDate = new Date(initialAfterDate || undefined);
+  const beforeDate = new Date(initialBeforeDate || undefined);
 
   const [selectedAfterDate, setSelectedAfterDate] = useState<string>(format(afterDate, "yyyy-MM-dd"));
   const [selectedBeforeDate, setSelectedBeforeDate] = useState<string>(format(beforeDate, "yyyy-MM-dd"));
@@ -42,8 +46,8 @@ function RepositoryDateInput({
   useEffect(() => {
     if(selectedAfterDate && selectedBeforeDate) {
       _callbackWithDelay.current(() => {
-        onChangeInterval(commits.filter(c => {
-          const date = new Date(c.commitedAt);
+        onChangeInterval(d => {
+          const date = new Date(d);
     
           const afterDate = new Date(selectedAfterDate);
           const utcAfterDate = new Date( 
@@ -66,7 +70,7 @@ function RepositoryDateInput({
           );
     
           return date.getTime() >= utcAfterDate.getTime() && date.getTime() <= utcBeforeDate.getTime();
-        }));
+        });
       });
     } else if(!selectedAfterDate) {
       _callbackWithDelay.current(() => {
@@ -77,7 +81,7 @@ function RepositoryDateInput({
         canResetInput && handleResetBeforeDate();
       });
     };
-  }, [_callbackWithDelay, canResetInput, commits, selectedAfterDate, selectedBeforeDate]);
+  }, [_callbackWithDelay, canResetInput, selectedAfterDate, selectedBeforeDate]);
 
   return (
     <Box
@@ -136,5 +140,5 @@ function RepositoryDateInput({
   );
 };
 
-export { RepositoryDateInput };
+export { DateIntervalInput };
 

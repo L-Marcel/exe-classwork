@@ -32,7 +32,7 @@ function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
     <ResponsiveContainer width="100%">
       <BarChart
         width={500}
-        height={300}
+        height={400}
         data={data}
         margin={{
           top: 5,

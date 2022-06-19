@@ -1,9 +1,9 @@
 import { Box, Tag, Text } from "@chakra-ui/react";
 import { useUser } from "../../contexts/hooks/useUser";
+import { DateIntervalInput } from "../Inputs/DateIntervalInput";
 import { Link } from "../Link";
 import { Section } from "../Section";
 import { Title } from "../Title";
-import { RepositoryDateInput } from "./RepositoryDateInput";
 
 interface RepositoryBannerProps {
   name: string;
@@ -15,7 +15,9 @@ interface RepositoryBannerProps {
   teams?: string[];
   commits?: Commit[];
   filteredCommits?: Commit[];
-  onChangeInterval: (commits: Commit[]) => void;
+  onChangeInterval: (
+    getFilteredResult: (date: string) => boolean
+  ) => void;
 };
 
 function RepositoryBanner({
@@ -75,8 +77,13 @@ function RepositoryBanner({
           {description}
         </Text>
       }
-      <RepositoryDateInput
-        commits={commits || []}
+      <DateIntervalInput
+        initialAfterDate={
+          commits.length > 0? (commits.sort((a, b) => a.order - b.order)[0].commitedAt || undefined):undefined
+        }
+        initialBeforeDate={
+          commits.length > 0? (commits.sort((a, b) => a.order - b.order)[commits.length - 1].commitedAt || undefined):undefined
+        }
         onChangeInterval={onChangeInterval}
       />
       <Box

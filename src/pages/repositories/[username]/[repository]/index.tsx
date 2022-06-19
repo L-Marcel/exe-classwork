@@ -3,7 +3,7 @@ import { RepositoryBanner } from "../../../../components/Repository/RepositoryBa
 import { Section } from "../../../../components/Section";
 
 import { GetStaticPaths, GetStaticProps } from "next";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { RepositoryChart } from "../../../../components/Repository/RepositoryChart";
 import { useRepository } from "../../../../contexts/hooks/useRepository";
 import { useUser } from "../../../../contexts/hooks/useUser";
@@ -33,6 +33,15 @@ function RepositoryPage({
     setRepository(repository);
   }, [repository]);
 
+  const handleOnChangeInterval = useCallback(
+    (getFilteredResult: (date: string) => boolean) => {
+      if(commits.length > 0) {
+        setCommitsInterval(commits.filter(
+          commit => getFilteredResult(commit.commitedAt)
+        ));
+      };
+    }, [commits]);
+
   return (
     <>
       <RepositoryBanner
@@ -43,7 +52,7 @@ function RepositoryPage({
         description={description}
         homepage={homepage}
         commits={commits}
-        onChangeInterval={commits => setCommitsInterval(commits)}
+        onChangeInterval={handleOnChangeInterval}
         filteredCommits={commitsInterval}
       />
       <Section
