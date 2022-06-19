@@ -324,3 +324,8 @@ declare type AllNamedProgress = {
   target: number;
   all: NamedProgress[];
 };
+
+declare type RepositoriesCommitsInterval = {
+  start: Date | string;
+  end: Date | string;
+};

@@ -1,6 +1,5 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
-import { useUser } from "../../../contexts/hooks/useUser";
 import { DateIntervalInput } from "../../Inputs/DateIntervalInput";
 import { ClassroomMetricsChart } from "./ClassroomMetricsChart";
 
@@ -11,11 +10,30 @@ interface ClassroomChartsProps {
 function ClassroomCharts({
   repositories
 }: ClassroomChartsProps) {
-  const { user } = useUser();
-  repositories = repositories.sort((a, b) => 
-    new Date(a.commits[0].commitedAt).getTime() - new Date(b.commits[0].commitedAt).getTime());
+  const commits = repositories.reduce((prev, cur) => {
+    const _commits = cur.commits.sort((a, b) => new Date(a.commitedAt).getTime() - new Date(b.commitedAt).getTime());
 
-  console.log(repositories);
+    if(_commits.length <= 0) {
+      return prev;
+    };
+
+    const lastCommitDate = new Date(_commits[_commits.length - 1].commitedAt);
+    const firstCommitDate = new Date(_commits[0].commitedAt);
+
+    if(firstCommitDate.getTime() <= new Date(prev.start).getTime()) {
+      prev.start = firstCommitDate;
+    };
+
+    if(lastCommitDate.getTime() >= new Date(prev.end).getTime() || prev.end === undefined) {
+      prev.end = lastCommitDate;
+    };
+  
+    return prev;
+  }, {
+    start: new Date(),
+    end: undefined,
+  } as RepositoriesCommitsInterval);
+
   const [repositoriesWithCommitsInterval, setRepositoriesWithCommitsInterval] = useState(repositories);
 
   const handleOnChangeInterval = useCallback(
@@ -37,17 +55,8 @@ function ClassroomCharts({
         pl={4}
       >
         <DateIntervalInput
-          initialAfterDate={repositories.length > 0? 
-            repositories[0].commits.length > 0? 
-              repositories[0].commits[0].commitedAt
-            :undefined:undefined
-          }
-          initialBeforeDate={repositories.length > 0? 
-            repositories[0].commits.length > 0? 
-              repositories[repositories.length - 1]
-                .commits[repositories[0].commits.length - 1].commitedAt
-            :undefined:undefined
-          }
+          initialAfterDate={commits.start}
+          initialBeforeDate={commits.end}
           onChangeInterval={handleOnChangeInterval}
         />
       </Box>

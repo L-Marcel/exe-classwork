@@ -1,4 +1,5 @@
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { ClassroomTooltips } from "./ClassroomTooltips";
 
 interface ClassroomMetricsChartProps {
   repositories: Repository[];
@@ -17,10 +18,20 @@ function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
       return prev;
     }, [] as CommitChart[]);
 
+    const lastCommit = commits[commits.length - 1];
+
     const repository = {
       ...cur,
       commits,
-      final: commits[commits.length - 1]
+      churn: lastCommit?.churn || 0,
+      classes: lastCommit?.classes || 0,
+      methods: lastCommit?.methods || 0,
+      files: lastCommit?.files || 0,
+      complexity: lastCommit?.complexity || 0,
+      sloc: lastCommit?.sloc || 0,
+      commitedAt: lastCommit?.commitedAt || 0,
+      userGithubId: lastCommit?.userGithubId || 0,
+      userGithubLogin: lastCommit?.userGithubLogin || ""
     };
 
     prev.push(repository);
@@ -34,6 +45,7 @@ function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
         width={500}
         height={400}
         data={data}
+        barGap={0}
         margin={{
           top: 5,
           right: 30,
@@ -42,14 +54,24 @@ function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="fullname" />
+        <XAxis 
+          dataKey="fullname"
+          style={{
+            cursor: "pointer"
+          }}
+        />
         <YAxis/>
-        <Tooltip/>
-        <Legend/>
-        <Bar dataKey="final.classes" fill="#8884d8" />
-        <Bar dataKey="final.methods" fill="#8884d8" />
-        <Bar dataKey="final.churn" fill="#8884d8" />
-        <Bar dataKey="final.complexity" fill="#8884d8" />
+        <Tooltip 
+          cursor={{
+            fill: "black",
+            fillOpacity: .1,
+          }} 
+          content={(rest) => ClassroomTooltips({ ...rest, repositories: data })}
+        />
+        <Bar type="monotone" dataKey="complexity" fill="#82a6ca" stroke="#82a6ca"/>
+        <Bar type="monotone" dataKey="churn" fill="#8884d8" stroke="#8884d8"/>
+        <Bar type="monotone" dataKey="methods" fill="#ffc658" stroke="#ffc658"/>
+        <Bar type="monotone" dataKey="classes" fill="#82ca9d" stroke="#82ca9d"/>
       </BarChart>
     </ResponsiveContainer>
   );
