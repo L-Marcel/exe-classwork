@@ -60,7 +60,29 @@ function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
             cursor: "pointer"
           }}
         />
+        
         <YAxis/>
+        <Bar maxBarSize={100} type="monotone" dataKey="complexity" fill="#ca8282" stroke="#ca8282"/>
+        <Bar maxBarSize={100} type="monotone" dataKey="churn" fill="#8884d8" stroke="#8884d8"/>
+        <Bar maxBarSize={100} type="monotone" dataKey="methods" fill="#ffc658" stroke="#ffc658"/>
+        <Bar maxBarSize={100} type="monotone" dataKey="classes" fill="#82ca9d" stroke="#82ca9d"/>
+        <Bar maxBarSize={100} type="monotone" dataKey="files" fill="#ca82bd" stroke="#ca82bd"/>
+
+        <YAxis 
+          yAxisId="sloc" 
+          dataKey="sloc"
+          orientation="right"
+          stroke="#82a6ca"
+        />
+        <Bar
+          maxBarSize={100} 
+          yAxisId="sloc" 
+          type="monotone" 
+          dataKey="sloc" 
+          fill="#82a6ca" 
+          stroke="#82a6ca"
+        />
+
         <Tooltip 
           cursor={{
             fill: "black",
@@ -68,10 +90,6 @@ function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
           }} 
           content={(rest) => ClassroomTooltips({ ...rest, repositories: data })}
         />
-        <Bar type="monotone" dataKey="complexity" fill="#82a6ca" stroke="#82a6ca"/>
-        <Bar type="monotone" dataKey="churn" fill="#8884d8" stroke="#8884d8"/>
-        <Bar type="monotone" dataKey="methods" fill="#ffc658" stroke="#ffc658"/>
-        <Bar type="monotone" dataKey="classes" fill="#82ca9d" stroke="#82ca9d"/>
       </BarChart>
     </ResponsiveContainer>
   );

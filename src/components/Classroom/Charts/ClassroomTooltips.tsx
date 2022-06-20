@@ -1,4 +1,4 @@
-import { Avatar, Box, Stack, Text } from "@chakra-ui/react";
+import { Box, Stack, Text } from "@chakra-ui/react";
 import { format } from "date-fns";
 import { boxShadow } from "../../../theme/effects/shadow";
 import { Span } from "../../Span";
@@ -32,9 +32,9 @@ function ClassroomTooltips({
       case "filesModified":
         return "<- files modified";
       case "files":
-        return "-> files";
+        return "<- files";
       case "sloc":
-        return "-> sloc";
+        return "\n-> sloc";
       default:
         return "<- " + name;
     };
@@ -63,16 +63,11 @@ function ClassroomTooltips({
             justifyContent="flex-start"
             { ...boxShadow() }
           >
-            { (data?.userGithubId) && <Avatar
-              mr={3}
-              src={`https://avatars.githubusercontent.com/u/${data.userGithubId}?v=4`}
-              border="5px solid var(--chakra-colors-solid-100)"
-            /> }
             <Box>
               <Text
                 fontWeight="black"
               >
-                {data?.userGithubLogin}
+                Last commit
               </Text>
               { formatedDate && <Text
                 fontSize={14}
@@ -98,6 +93,7 @@ function ClassroomTooltips({
               <Text 
                 key={p.name} 
                 fontWeight="hairline"
+                whiteSpace="pre-wrap"
                 mr={20}
               >
                 <Span
@@ -105,7 +101,7 @@ function ClassroomTooltips({
                   color={p.stroke}
                 >
                   {getTooltipPayloadName(p.name)}:
-                </Span> {p.value}
+                </Span> {p.value} {p.unit}
               </Text>
             );
           }) }

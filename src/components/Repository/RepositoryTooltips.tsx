@@ -33,9 +33,9 @@ function RepositoryTooltips({
       case "filesModified":
         return "<- files modified";
       case "files":
-        return "-> files";
+        return "\n-> files";
       case "sloc":
-        return "-> sloc";
+        return "\n-> sloc";
       default:
         return "<- " + name;
     };
@@ -114,6 +114,7 @@ function RepositoryTooltips({
               <Text 
                 key={p.name} 
                 fontWeight="hairline"
+                whiteSpace="pre-wrap"
                 mr={20}
               >
                 <Span
