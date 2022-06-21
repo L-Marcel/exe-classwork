@@ -52,8 +52,9 @@ connectionRoutes.post("/connect", (req, res) => {
               status,
               appToken 
             } = res.data;
-        
-            if(status === "NOT_REQUESTED") {
+            
+            //temporary
+            if(true/*status === "NOT_REQUESTED"*/) {
               Directory.getRepositoryCommits(userId, fullname, appToken, (rateLimit) => {
                 server.emit("rate_limit", rateLimit);
               }, (progress) => {
