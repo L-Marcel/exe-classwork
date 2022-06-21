@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 import { buffer } from "micro";
 import { NextApiRequest } from "next";
 import { ClassroomRelations } from "../controllers/ClassroomRelations";
+import { Commits } from "../controllers/Commits";
+import { Repositories } from "../controllers/Repositories";
 import { Users } from "../controllers/Users";
 import { EventNotFoundError } from "../errors/api/EventNotFoundError";
 import { GithubUnauthorizedError } from "../errors/api/GithubUnauthorizedError";
@@ -12,6 +14,7 @@ import { UnauthorizedError } from "../errors/api/UnauthorizedError";
 import { haveNecessaryPermissions } from "../utils/api/webhooks/haveNecessariesPermissions";
 import { Api } from "./api";
 import { Cookies } from "./cookies";
+import { ServerSocket } from "./serverSocket";
 
 export class Github {
   static privateKey = process.env.GITHUB_PRIVATE_KEY.replace(/\|/gm, '\n');
@@ -168,6 +171,35 @@ export class Github {
         break;
       case "repository":
         let repository: WebhookEventData["repository"];
+        break;
+      case "push":
+        let push: WebhookEventData["push"];
+        const user = await Users.getByGithubId(String(push.repository.owner.id));
+        const appToken = await Github.generateAppAccessToken(user.installationId);
+
+        //Just simplify
+        await Commits.deleteMany({
+          repository: {
+            fullname: push.repository?.fullname
+          }
+        });
+
+        await Repositories.changeStatusByFullname(push.repository?.fullname, "NOT_REQUESTED");
+
+        await ServerSocket.getSocket(user.id, appToken)
+        .then(socket => {
+          console.log("Socket created in webhook: ", socket.id);
+          push.repository?.fullname && socket.emit("@repostory/commits/refresh", {
+            repositoryFullname: push.repository?.fullname,
+            token: appToken,
+            userId: user.id
+          });
+        }).catch(err => console.log(err));
+
+        //need cases
+        //1. on create a new commit
+        //2. on force a push
+        //3. on fail a load
 
         break;
       default:

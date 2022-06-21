@@ -92,7 +92,7 @@ declare interface Req extends _Req {
   token: string;
 };
 
-declare type WebhookEventType = "installation" | "repository";
+declare type WebhookEventType = "installation" | "repository" | "push";
 
 declare type WebhookEventData = {
   installation: WebhookEventDataInstallation;
@@ -127,6 +127,8 @@ declare type WebhookEventDataRepository = {
 
 declare type WebhookEventDataPush = {
   _type: "push";
+  repository: Repository;
+  commits: Commit[];
 };
 
 declare type ServerCookieParams = {

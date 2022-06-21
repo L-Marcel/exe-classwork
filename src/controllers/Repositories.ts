@@ -244,6 +244,17 @@ export class Repositories {
     });
   };
 
+  static async changeStatusByFullname(fullname: string, status: RepositoryStatus) {
+    return await Prisma.repository.update({
+      where: {
+        fullname
+      },
+      data: {
+        status
+      }
+    });
+  };
+
   static async changeStatus(id: string, status: RepositoryStatus) {
     return await Prisma.repository.update({
       where: {
