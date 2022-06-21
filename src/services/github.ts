@@ -186,7 +186,7 @@ export class Github {
 
         await Repositories.changeStatusByFullname(push.repository?.full_name, "NOT_REQUESTED");
 
-        await ServerSocket.getSocket(user.id, appToken)
+        return await ServerSocket.getSocket(user.id, appToken)
         .then(socket => {
           console.log("Socket created in webhook: ", socket.id);
           push.repository?.fullname && socket.emit("@repostory/commits/refresh", {
@@ -201,8 +201,6 @@ export class Github {
         //1. on create a new commit
         //2. on force a push
         //3. on fail a load
-        
-        break;
       default:
         break;
     };
