@@ -98,7 +98,7 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
 
   try {
     const fullname = `${params.username}/${params.repository}`;
-    const repository = await Api.get(`/repository/${fullname}`).then(async(res) => {
+    const repository = await Api.get(`/repository/${fullname}?justLoaded=true`).then(async(res) => {
       const commits: any[] = await getRepositoryCommits(fullname, res.data.id, 0, 10);
       
       return {
