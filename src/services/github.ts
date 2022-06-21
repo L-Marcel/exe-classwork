@@ -5,7 +5,6 @@ import { buffer } from "micro";
 import { NextApiRequest } from "next";
 import { ClassroomRelations } from "../controllers/ClassroomRelations";
 import { Commits } from "../controllers/Commits";
-import { Repositories } from "../controllers/Repositories";
 import { Users } from "../controllers/Users";
 import { EventNotFoundError } from "../errors/api/EventNotFoundError";
 import { GithubUnauthorizedError } from "../errors/api/GithubUnauthorizedError";
@@ -183,8 +182,6 @@ export class Github {
             fullname: push.repository?.full_name
           }
         });
-
-        await Repositories.changeStatusByFullname(push.repository?.full_name, "NOT_REQUESTED");
 
         return await ServerSocket.getSocket(user.id, appToken)
         .then(socket => {
