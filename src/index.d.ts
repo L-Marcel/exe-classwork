@@ -125,9 +125,13 @@ declare type WebhookEventDataRepository = {
   _type: "repository";
 };
 
+declare interface RepositoryPushEventData extends Repository {
+  full_name: string;
+};
+
 declare type WebhookEventDataPush = {
   _type: "push";
-  repository: Repository;
+  repository: RepositoryPushEventData;
   commits: Commit[];
 };
 

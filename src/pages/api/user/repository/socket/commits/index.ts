@@ -1,5 +1,6 @@
 import { Prisma as P } from "@prisma/client";
 import { Alerts } from "../../../../../../controllers/Alerts";
+import { Classrooms } from "../../../../../../controllers/Classrooms";
 import { Commits } from "../../../../../../controllers/Commits";
 import { Repositories } from "../../../../../../controllers/Repositories";
 import { apiHandle } from "../../../../../../utils/api/apiHandle";
@@ -29,9 +30,20 @@ async function createCommits(req: Req, res: Res) {
     });
     
     console.log("Repository is loaded: ", fullname, " - in: ", new Date().toString());
+
+    const classrooms = await Classrooms.getByRepository(id);
+
     res.unstable_revalidate(`/repositories/${fullname?.toLocaleLowerCase()}`)
     .then(() => console.log("Repository revalidated: " + fullname))
     .catch(err => console.log(err));
+
+    for(let c in classrooms) {
+      const classroom = classrooms[c];
+
+      res.unstable_revalidate(`/app/classrooms/${classroom.id}`)
+      .then(() => console.log("Classroom revalidated: " + classroom.id))
+      .catch(err => console.log(err));
+    };
   };
 
   return res.status(200).send("");

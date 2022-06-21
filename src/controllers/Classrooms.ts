@@ -7,6 +7,18 @@ import { Alerts } from "./Alerts";
 import { ClassroomRelations } from "./ClassroomRelations";
 
 export class Classrooms {
+  static async getByRepository(repositoryId: string) {
+    return await Prisma.classroom.findMany({
+      where: {
+        teams: {
+          some: {
+            repositoryId
+          }
+        }
+      }
+    });
+    
+  };
   static async get(id: string, select?: P.ClassroomSelect, canReturnFalse: boolean = false) {
     const classroom = await Prisma.classroom.findUnique({
       where: {

@@ -170,27 +170,27 @@ export class Github {
 
         break;
       case "repository":
-        let repository: WebhookEventData["repository"];
+        //let repository: WebhookEventData["repository"];
         break;
       case "push":
-        let push: WebhookEventData["push"];
+        let push: WebhookEventData["push"] = data;
         const user = await Users.getByGithubId(String(push.repository.owner.id));
         const appToken = await Github.generateAppAccessToken(user.installationId);
 
         //Just simplify
         await Commits.deleteMany({
           repository: {
-            fullname: push.repository?.fullname
+            fullname: push.repository?.full_name
           }
         });
 
-        await Repositories.changeStatusByFullname(push.repository?.fullname, "NOT_REQUESTED");
+        await Repositories.changeStatusByFullname(push.repository?.full_name, "NOT_REQUESTED");
 
         await ServerSocket.getSocket(user.id, appToken)
         .then(socket => {
           console.log("Socket created in webhook: ", socket.id);
           push.repository?.fullname && socket.emit("@repostory/commits/refresh", {
-            repositoryFullname: push.repository?.fullname,
+            repositoryFullname: push.repository?.full_name,
             token: appToken,
             userId: user.id
           });
@@ -200,7 +200,7 @@ export class Github {
         //1. on create a new commit
         //2. on force a push
         //3. on fail a load
-
+        
         break;
       default:
         break;
