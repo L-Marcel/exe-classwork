@@ -1,6 +1,7 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { ClassroomCharts } from "../../../../components/Classroom/Charts/ClassroomCharts";
+import dynamic from "next/dynamic";
+import { ClassroomChartsProps } from "../../../../components/Classroom/Charts/ClassroomCharts";
 import { ClassroomBanner } from "../../../../components/Classroom/ClassroomBanner";
 import { ClassroomSearch } from "../../../../components/Classroom/ClassroomSearch";
 import { ClassroomMembersList } from "../../../../components/List/Classroom/ClassroomMembersList";
@@ -15,6 +16,11 @@ interface ClassroomPageProps extends WithClassroomProps {
   repositories: Repository[];
 };
 
+const ClassroomCharts = dynamic<ClassroomChartsProps>(import("../../../../components/Classroom/Charts/ClassroomCharts")
+.then(mod => mod.ClassroomCharts), {
+  ssr: false
+});
+
 function ClassroomPage({
   classroom,
   user,
@@ -25,7 +31,7 @@ function ClassroomPage({
     users,
     teams,
   } = classroom;
-
+  
   const userIsAuthorized = users.some(
     u => u.user.id === user.id && 
     (u.role === "ADMIN" || u.role === "OWNER")

@@ -1,15 +1,17 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { DateIntervalInput } from "../../Inputs/DateIntervalInput";
 import { ClassroomMetricsChart } from "./ClassroomMetricsChart";
 
-interface ClassroomChartsProps {
+export interface ClassroomChartsProps {
   repositories: Repository[];
 };
 
 function ClassroomCharts({
   repositories
 }: ClassroomChartsProps) {
+  const [chartWidth, setChartWidth] = useState((window?.innerWidth || 900) - 100);
+
   const commits = repositories.reduce((prev, cur) => {
     const _commits = cur.commits.sort((a, b) => new Date(a.commitedAt).getTime() - new Date(b.commitedAt).getTime());
 
@@ -35,6 +37,14 @@ function ClassroomCharts({
   } as RepositoriesCommitsInterval);
 
   const [repositoriesWithCommitsInterval, setRepositoriesWithCommitsInterval] = useState(repositories);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window?.addEventListener("resize", (ev) => {
+        setChartWidth((window?.innerWidth || 900) - 100);
+      });
+    };
+  }, [window, setChartWidth]);
 
   const handleOnChangeInterval = useCallback(
     (getFilteredResult: (date: string | Date) => boolean) => {
@@ -72,7 +82,7 @@ function ClassroomCharts({
         >
           <TabPanel
             h="500px"
-            w={["1000px", "1000px", "900px", "100%"]}
+            w={["1000px", "1000px", "900px", `${chartWidth}px`]}
           >
             <ClassroomMetricsChart
               repositories={repositoriesWithCommitsInterval}
@@ -80,7 +90,7 @@ function ClassroomCharts({
           </TabPanel>
           <TabPanel
             h="500px"
-            w={["1000px", "1000px", "900px", "100%"]}
+            w={["1000px", "1000px", "900px", `${chartWidth}px`]}
           >
 
           </TabPanel>

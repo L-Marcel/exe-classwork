@@ -1,11 +1,11 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { useUser } from "../../contexts/hooks/useUser";
 import { RepositoryChangesChart } from "./RepositoryChangesChart";
 import { RepositoryFilesChart } from "./RepositoryFilesChart";
 import { RepositoryMetricsChart } from "./RepositoryMetricsChart";
 import { RepositoryProfile } from "./RepositoryProfile";
-
-interface RepositoryChartProps {
+export interface RepositoryChartProps {
   commits: Commit[];
 };
 
@@ -13,7 +13,8 @@ function RepositoryChart({
   commits
 }: RepositoryChartProps) {
   const { user } = useUser();
-  
+  const [chartWidth, setChartWidth] = useState((window?.innerWidth || 900) - 100);
+
   const data = commits.reduce((prev, cur, i) => {
     prev.push({
       ...cur,
@@ -25,12 +26,19 @@ function RepositoryChart({
     return prev;
   }, [] as CommitChart[]);
 
+  useEffect(() => {
+    window?.addEventListener("resize", (ev) => {
+      setChartWidth((window?.innerWidth || 900) - 100);
+    });
+  }, [window, setChartWidth]);
+
   return (
     <Tabs>
       <TabList
         overflowX="auto"
         overflowY="hidden"
         maxW="100vw"
+        minW="92vw"
         pb="1px"
       >
         <Tab>Metrics</Tab>
@@ -39,16 +47,16 @@ function RepositoryChart({
         <Tab>Committers</Tab>
       </TabList>
       <TabPanels
-        w="100%"
         minW={user? "93vw":"100vw"}
         maxW="100vw"
+        w="100%"
         overflowX={["auto", "auto", "auto", "hidden"]}
         overflowY="hidden"
         pt={3}
       >
         <TabPanel
           h="500px"
-          w={["1000px", "1000px", "900px", "100%"]}
+          w={["1000px", "1000px", "900px", `${chartWidth}px`]}
         >
           <RepositoryMetricsChart
             data={data}
@@ -56,7 +64,7 @@ function RepositoryChart({
         </TabPanel>
         <TabPanel
           h="500px"
-          w={["1000px", "1000px", "900px", "100%"]}
+          w={["1000px", "1000px", "900px", `${chartWidth}px`]}
         >
           <RepositoryChangesChart
             data={data}
@@ -64,7 +72,7 @@ function RepositoryChart({
         </TabPanel>
         <TabPanel
           h="500px"
-          w={["1000px", "1000px", "900px", "100%"]}
+          w={["1000px", "1000px", "900px", `${chartWidth}px`]}
         >
           <RepositoryFilesChart
             data={data}

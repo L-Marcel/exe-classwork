@@ -7,7 +7,7 @@ import { RepositoryProfileDescription } from "./RepositoryProfileDescription";
 import { RepositoryProfileItem } from "./RepositoryProfileItem";
 import { RepositoryProfileStatistic } from "./RepositoryProfileStatistic";
 
-interface RepositoryProfileProps {
+export interface RepositoryProfileProps {
   commits: Commit[];
 };
 

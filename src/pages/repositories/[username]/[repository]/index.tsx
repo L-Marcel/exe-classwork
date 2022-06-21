@@ -1,15 +1,20 @@
 import { Text } from "@chakra-ui/react";
-import { RepositoryBanner } from "../../../../components/Repository/RepositoryBanner";
-import { Section } from "../../../../components/Section";
-
 import { GetStaticPaths, GetStaticProps } from "next";
+import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState } from "react";
-import { RepositoryChart } from "../../../../components/Repository/RepositoryChart";
+import { RepositoryBanner } from "../../../../components/Repository/RepositoryBanner";
+import { RepositoryChartProps } from "../../../../components/Repository/RepositoryChart";
+import { Section } from "../../../../components/Section";
 import { useRepository } from "../../../../contexts/hooks/useRepository";
 import { useUser } from "../../../../contexts/hooks/useUser";
 import { CannotGetCommits } from "../../../../errors/api/CannotGetCommits";
 import { Api } from "../../../../services/api";
 import { WithUserProps } from "../../../../utils/routes/WithUserProps";
+
+const RepositoryChart = dynamic<RepositoryChartProps>(import("../../../../components/Repository/RepositoryChart")
+.then(mod => mod.RepositoryChart), {
+  ssr: false
+});
 
 function RepositoryPage({
   repository

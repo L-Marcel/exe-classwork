@@ -1,15 +1,13 @@
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { RepositoryTooltips } from "./RepositoryTooltips";
 
-interface RepositoryMetricsChartProps {
+export interface RepositoryMetricsChartProps {
   data: CommitChart[];
 };
 
 function RepositoryMetricsChart({ data }: RepositoryMetricsChartProps) {
   return (
-    <ResponsiveContainer
-      width="100%"
-    >
+    <ResponsiveContainer>
       <LineChart
         width={500}
         height={400}

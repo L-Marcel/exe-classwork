@@ -1,7 +1,7 @@
 import { Area, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { RepositoryTooltips } from "./RepositoryTooltips";
 
-interface RepositoryFilesChartProps {
+export interface RepositoryFilesChartProps {
   data: CommitChart[];
 };
 

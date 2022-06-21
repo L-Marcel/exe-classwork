@@ -50,7 +50,7 @@ connectionRoutes.post("/connect", (req, res) => {
               id,
               fullname,
               status,
-              appToken 
+              appToken
             } = res.data;
             
             //temporary
