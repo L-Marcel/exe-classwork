@@ -15,5 +15,5 @@ async function connectWithSocket(req: Req, res: Res) {
 };
 
 export default apiHandle({
-  "POST": withUser(connectWithSocket)
+  "POST": withUser(connectWithSocket, true)
 });

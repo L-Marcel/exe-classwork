@@ -50,5 +50,5 @@ async function createCommits(req: Req, res: Res) {
 };
 
 export default apiHandle({
-  "POST": withUser(createCommits)
+  "POST": withUser(createCommits, true)
 });

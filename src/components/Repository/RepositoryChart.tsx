@@ -13,7 +13,7 @@ function RepositoryChart({
   commits
 }: RepositoryChartProps) {
   const { user } = useUser();
-  const [chartWidth, setChartWidth] = useState((window?.innerWidth || 900) - 100);
+  const [chartWidth, setChartWidth] = useState((window?.innerWidth || 900) - 125);
 
   const data = commits.reduce((prev, cur, i) => {
     prev.push({
@@ -28,7 +28,7 @@ function RepositoryChart({
 
   useEffect(() => {
     window?.addEventListener("resize", (ev) => {
-      setChartWidth((window?.innerWidth || 900) - 100);
+      setChartWidth((window?.innerWidth || 900) - 125);
     });
   }, [window, setChartWidth]);
 
@@ -38,7 +38,6 @@ function RepositoryChart({
         overflowX="auto"
         overflowY="hidden"
         maxW="100vw"
-        minW="92vw"
         pb="1px"
       >
         <Tab>Metrics</Tab>
@@ -47,8 +46,8 @@ function RepositoryChart({
         <Tab>Committers</Tab>
       </TabList>
       <TabPanels
-        minW={user? "93vw":"100vw"}
-        maxW="100vw"
+        maxW={user? "93vw":"100vw"}
+        minW={chartWidth}
         w="100%"
         overflowX={["auto", "auto", "auto", "hidden"]}
         overflowY="hidden"

@@ -10,7 +10,7 @@ export interface ClassroomChartsProps {
 function ClassroomCharts({
   repositories
 }: ClassroomChartsProps) {
-  const [chartWidth, setChartWidth] = useState((window?.innerWidth || 900) - 100);
+  const [chartWidth, setChartWidth] = useState((window?.innerWidth || 900) - 125);
 
   const commits = repositories.reduce((prev, cur) => {
     const _commits = cur.commits.sort((a, b) => new Date(a.commitedAt).getTime() - new Date(b.commitedAt).getTime());
@@ -41,7 +41,7 @@ function ClassroomCharts({
   useEffect(() => {
     if (typeof window !== "undefined") {
       window?.addEventListener("resize", (ev) => {
-        setChartWidth((window?.innerWidth || 900) - 100);
+        setChartWidth((window?.innerWidth || 900) - 125);
       });
     };
   }, [window, setChartWidth]);

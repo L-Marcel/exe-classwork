@@ -19,5 +19,5 @@ async function refreshCommits(req: Req, res: Res) {
 };
 
 export default apiHandle({
-  "POST": withUser(refreshCommits)
+  "POST": withUser(refreshCommits, true)
 });
