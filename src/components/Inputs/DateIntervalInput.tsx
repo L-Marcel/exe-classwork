@@ -20,8 +20,8 @@ function DateIntervalInput({
 }: DateIntervalInputProps) {
   const [canResetInput, setCanResetInput] = useState(true);
 
-  const afterDate = new Date(initialAfterDate || undefined);
-  const beforeDate = new Date(initialBeforeDate || undefined);
+  const afterDate = new Date(initialAfterDate || null);
+  const beforeDate = new Date(initialBeforeDate || null);
 
   const [selectedAfterDate, setSelectedAfterDate] = useState<string>(format(afterDate, "yyyy-MM-dd"));
   const [selectedBeforeDate, setSelectedBeforeDate] = useState<string>(format(beforeDate, "yyyy-MM-dd"));

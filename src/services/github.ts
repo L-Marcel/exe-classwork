@@ -12,6 +12,7 @@ import { PermissionsNotMatchError } from "../errors/api/PermissionsNotMatchError
 import { UnauthorizedError } from "../errors/api/UnauthorizedError";
 import { haveNecessaryPermissions } from "../utils/api/webhooks/haveNecessariesPermissions";
 import { Api } from "./api";
+import { AppAuth } from "./appAuth";
 import { Cookies } from "./cookies";
 import { ServerSocket } from "./serverSocket";
 
@@ -106,6 +107,26 @@ export class Github {
     return user as GithubUser;
   };
 
+  static async checkIfInstalationIsValid(token: string): Promise<GithubUser> {
+    const { user } = await this.api.post(`/app/installations/{installation_id}`, {
+      access_token: token
+    }, {
+      auth: {
+        username: this.clientId,
+        password: this.clientSecret
+      },
+      headers: {
+        accept: "application/vnd.github.v3+json"
+      }
+    })
+    .then(res => res.data)
+    .catch((err) => {
+      throw new UnauthorizedError();
+    });
+    
+    return user as GithubUser;
+  };
+
   static async getGithubWebookIsAuth(req: NextApiRequest) {
     try {
       const raw = await buffer(req);
@@ -174,7 +195,7 @@ export class Github {
       case "push":
         let push: WebhookEventData["push"] = data;
         const user = await Users.getByGithubId(String(push.repository.owner.id));
-        const appToken = await Github.generateAppAccessToken(user.installationId);
+        const appToken = AppAuth.createToken(user);
 
         //Just simplify
         await Commits.deleteMany({
@@ -186,7 +207,7 @@ export class Github {
         return await ServerSocket.getSocket(user.id, appToken)
         .then(socket => {
           console.log("Socket created in webhook: ", socket.id);
-          push.repository?.fullname && socket.emit("@repostory/commits/refresh", {
+          push.repository?.full_name && socket.emit("@repostory/commits/refresh", {
             repositoryFullname: push.repository?.full_name,
             token: appToken,
             userId: user.id

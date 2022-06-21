@@ -17,8 +17,8 @@ export class Classrooms {
         }
       }
     });
-    
   };
+  
   static async get(id: string, select?: P.ClassroomSelect, canReturnFalse: boolean = false) {
     const classroom = await Prisma.classroom.findUnique({
       where: {

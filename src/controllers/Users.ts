@@ -2,6 +2,7 @@ import { Prisma as P } from "@prisma/client";
 import { AuthUserNotFoundError } from "../errors/api/AuthUserNotFoundError";
 import { NotFoundError } from "../errors/api/NotFoundError";
 import { NotLinkedWithError } from "../errors/api/NotLinkedWithError";
+import { AppAuth } from "../services/appAuth";
 import { Cookies } from "../services/cookies";
 import { Github } from "../services/github";
 import { Prisma } from "../services/prisma";
@@ -79,6 +80,20 @@ export class Users {
     };
 
     return user;
+  };
+
+  static getUserByAppToken(token?: string) {
+    try {
+      const result = AppAuth.verifyToken(token);
+
+      if(typeof result === "string") {
+        throw new AuthUserNotFoundError();
+      };
+
+      return result as User;
+    } catch (error) {
+      throw new AuthUserNotFoundError();
+    };
   };
 
   static async updateInstallation(where: P.UserWhereUniqueInput, installationId: string) {
