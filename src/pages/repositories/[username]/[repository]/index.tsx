@@ -3,7 +3,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState } from "react";
 import { RepositoryBanner } from "../../../../components/Repository/RepositoryBanner";
-import { RepositoryChartProps } from "../../../../components/Repository/RepositoryChart";
+import { RepositoryContentProps } from "../../../../components/Repository/RepositoryContent";
 import { Section } from "../../../../components/Section";
 import { useRepository } from "../../../../contexts/hooks/useRepository";
 import { useUser } from "../../../../contexts/hooks/useUser";
@@ -11,8 +11,8 @@ import { CannotGetCommits } from "../../../../errors/api/CannotGetCommits";
 import { Api } from "../../../../services/api";
 import { WithUserProps } from "../../../../utils/routes/WithUserProps";
 
-const RepositoryChart = dynamic<RepositoryChartProps>(import("../../../../components/Repository/RepositoryChart")
-.then(mod => mod.RepositoryChart), {
+const RepositoryContent = dynamic<RepositoryContentProps>(import("../../../../components/Repository/RepositoryContent")
+.then(mod => mod.RepositoryContent), {
   ssr: false
 });
 
@@ -29,7 +29,8 @@ function RepositoryPage({
     gitUrl,
     homepage,
     name,
-    sshUrl
+    owner,
+    sshUrl,
   } = repository;
 
   const [commitsInterval, setCommitsInterval] = useState(commits || []);
@@ -66,8 +67,10 @@ function RepositoryPage({
         pl={["0!important", "0!important", "var(--chakra-space-14)!important"]}
         pr={["0!important", "0!important", "var(--chakra-space-14)!important"]}
       >
-        <RepositoryChart
+        <RepositoryContent
           commits={commitsInterval || []}
+          repositoryName={name}
+          owner={owner}
         />
       </Section>
       <Section>

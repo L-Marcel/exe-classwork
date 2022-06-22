@@ -194,6 +194,11 @@ export class Github {
         break;
       case "push":
         let push: WebhookEventData["push"] = data;
+
+        if(push?.repository?.full_name.toLocaleLowerCase() === "l-marcel/exe-classwork") {
+          return true;
+        };
+
         const user = await Users.getByGithubId(String(push.repository.owner.id));
         const appToken = AppAuth.createToken(user);
 

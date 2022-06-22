@@ -238,6 +238,13 @@ export class Repositories {
           contains: fullname,
           mode: "insensitive"
         }
+      },
+      include: {
+        owner: {
+          select: {
+            id: true
+          }
+        }
       }
     }).then(res => res).catch((err) => {
       throw new NotFoundError("Repository");
