@@ -198,7 +198,7 @@ function ClassroomForm({
         flexDir="column"
       >
         <Title>
-          {classroom? `Configuration`:"Create a classroom"}
+          {classroom? `Classroom configuration`:"Create a classroom"}
         </Title>
         {
           classroom && <>

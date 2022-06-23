@@ -1,22 +1,16 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useUser } from "../../contexts/hooks/useUser";
-import { NamedIcon } from "../NamedIcon";
 import { RepositoryChangesChart } from "./RepositoryChangesChart";
-import { RepositoryConfiguration } from "./RepositoryConfiguration";
 import { RepositoryFilesChart } from "./RepositoryFilesChart";
 import { RepositoryMetricsChart } from "./RepositoryMetricsChart";
 import { RepositoryProfile } from "./RepositoryProfile";
 export interface RepositoryContentProps {
   commits: Commit[];
-  owner: Partial<User>;
-  repositoryName: string;
 };
 
 function RepositoryContent({
-  commits,
-  owner,
-  repositoryName
+  commits
 }: RepositoryContentProps) {
   const { user } = useUser();
   const [chartWidth, setChartWidth] = useState((window?.innerWidth || 900) - 125);
@@ -38,25 +32,14 @@ function RepositoryContent({
     });
   }, [window, setChartWidth]);
 
-  const userIsAuthorized = (owner && user && owner.id === user.id);
-
   return (
-    <Tabs defaultIndex={userIsAuthorized? 1:0}>
+    <Tabs>
       <TabList
         overflowX="auto"
         overflowY="hidden"
         maxW="100vw"
         pb="1px"
       >
-        { userIsAuthorized && <Tab
-          px={2}
-        >
-          <NamedIcon 
-            name="cog"
-            w={6}
-            h={6}
-          />
-        </Tab> }
         <Tab>Metrics</Tab>
         <Tab>Changes</Tab>
         <Tab>Files</Tab>
@@ -70,11 +53,6 @@ function RepositoryContent({
         overflowY="hidden"
         pt={3}
       >
-        { userIsAuthorized && <TabPanel>
-          <RepositoryConfiguration
-            repositoryName={repositoryName}
-          />
-        </TabPanel> }
         <TabPanel
           h="500px"
           w={["1000px", "1000px", "900px", `${chartWidth}px`]}

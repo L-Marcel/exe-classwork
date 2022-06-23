@@ -31,6 +31,7 @@ function RepositoryPage({
     name,
     owner,
     sshUrl,
+    id
   } = repository;
 
   const [commitsInterval, setCommitsInterval] = useState(commits || []);
@@ -51,6 +52,7 @@ function RepositoryPage({
   return (
     <>
       <RepositoryBanner
+        id={id}
         name={name}
         fullname={fullname}
         gitUrl={gitUrl}
@@ -69,8 +71,6 @@ function RepositoryPage({
       >
         <RepositoryContent
           commits={commitsInterval || []}
-          repositoryName={name}
-          owner={owner}
         />
       </Section>
       <Section>

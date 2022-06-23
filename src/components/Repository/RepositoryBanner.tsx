@@ -1,13 +1,16 @@
 import { Box, Tag, Text } from "@chakra-ui/react";
 import { useUser } from "../../contexts/hooks/useUser";
+import { IconButton } from "../Buttons/IconButton";
 import { DateIntervalInput } from "../Inputs/DateIntervalInput";
 import { Link } from "../Link";
+import { NamedIcon } from "../NamedIcon";
 import { Section } from "../Section";
 import { Title } from "../Title";
 
 interface RepositoryBannerProps {
   name: string;
   fullname: string;
+  id: string;
   description?: string;
   homepage?: string;
   gitUrl?: string;
@@ -25,6 +28,7 @@ function RepositoryBanner({
   fullname,
   description,
   homepage,
+  id,
   gitUrl,
   sshUrl,
   teams = [],
@@ -90,6 +94,16 @@ function RepositoryBanner({
         display="flex"
         gap={4}
       >
+        <Link href={`/app/repositories/${id}/config`}>
+          <IconButton
+            aria-label="redirect-to-config"
+            icon={<NamedIcon name="cog"/>}
+            theme="primary"
+            h={8}
+            w={8}
+            minW="auto"
+          />
+        </Link>
         { commits && <Tag
             fontWeight="bold"
             bgColor="primary.800"

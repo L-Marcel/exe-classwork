@@ -76,7 +76,6 @@ function LinkRepository() {
       <Stack
         as="form"
         onSubmit={handleSubmit(handleOnSubmit)}
-        bgColor="solid.25"
         borderRadius={8}
         p={4}
         spacing={5}

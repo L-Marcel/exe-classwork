@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useProgress } from "../../../contexts/hooks/useProgress";
 import { scaleOnInteract } from "../../../theme/animations/motion";
+import { Link } from "../../Link";
 import { NamedIcon } from "../../NamedIcon";
 
 interface RepositoryItemProps {
@@ -86,7 +87,8 @@ function RepositoryItem({
         >
           {name?.slice(0, 30)}{name?.length > 30 && "..."}
         </Heading>
-        <Box
+        <Link
+          href={`/app/repositories/${id}/config`}
           position="absolute"
           display="flex"
           justifyContent="center"
@@ -100,32 +102,14 @@ function RepositoryItem({
           right={[-8, 0]}
           top={-1}
         >
-          <NamedIcon 
-            name="alerts"
+          <NamedIcon
+            name="cog"
             h="15px"
             w="15px"
             maxW="15px"
             maxH="15px"
           />
-          {
-            alertsCount > 0 && <Text
-              position="absolute"
-              top="-5px"
-              right="-10px"
-              bgColor="primary.700"
-              minW="18px"
-              minH="18px"
-              maxW="18px"
-              maxH="18px"
-              borderRadius={15}
-              fontSize="12px"
-              color="black"
-              textAlign="center"
-            >
-              {alerts.length > 9 && "+"}{alertsCount}
-            </Text>
-          }
-        </Box>
+        </Link>
       </Box>
       <Text
         mt={-1}
