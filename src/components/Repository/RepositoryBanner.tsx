@@ -17,6 +17,7 @@ interface RepositoryBannerProps {
   sshUrl?: string;
   teams?: string[];
   commits?: Commit[];
+  isAuthorizedUser: boolean;
   filteredCommits?: Commit[];
   onChangeInterval: (
     getFilteredResult: (date: string) => boolean
@@ -34,6 +35,7 @@ function RepositoryBanner({
   teams = [],
   commits = [],
   filteredCommits = [],
+  isAuthorizedUser = false,
   onChangeInterval
 }: RepositoryBannerProps) {
   const { user } = useUser();
@@ -94,7 +96,10 @@ function RepositoryBanner({
         display="flex"
         gap={4}
       >
-        <Link href={`/app/repositories/${id}/config`}>
+        { isAuthorizedUser && <Link 
+          mt={5}
+          href={`/app/repositories/${id}/config`}
+        >
           <IconButton
             aria-label="redirect-to-config"
             icon={<NamedIcon name="cog"/>}
@@ -103,7 +108,7 @@ function RepositoryBanner({
             w={8}
             minW="auto"
           />
-        </Link>
+        </Link> }
         { commits && <Tag
             fontWeight="bold"
             bgColor="primary.800"

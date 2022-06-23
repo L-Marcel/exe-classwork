@@ -49,6 +49,8 @@ function RepositoryPage({
       };
     }, [commits]);
 
+  const isAuthorizedUser = owner.id === user.id;
+
   return (
     <>
       <RepositoryBanner
@@ -62,6 +64,7 @@ function RepositoryPage({
         commits={commits}
         onChangeInterval={handleOnChangeInterval}
         filteredCommits={commitsInterval}
+        isAuthorizedUser={isAuthorizedUser}
       />
       <Section
         flex={1}

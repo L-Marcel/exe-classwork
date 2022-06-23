@@ -16,7 +16,6 @@ import { Switch } from "../Inputs/Switch";
 import { Textarea } from "../Inputs/Textarea";
 import { Link } from "../Link";
 import { Dialog } from "../Modal/Dialog";
-import { Span } from "../Span";
 import { Title } from "../Title";
 
 interface ClassroomFormProps {
@@ -205,14 +204,10 @@ function ClassroomForm({
             <Text
               mt={2}
             >
-              <Span
-                color="primary.400"
-              >Authorized user:</Span> {user.name ?? user.username}
+              Authorized user: {user.name ?? user.username}
             </Text>
             <Text>
-              <Span
-                color="primary.400"
-              >Last title:</Span> {oldClassroom.title}
+              Last title: {oldClassroom.title}
             </Text>
           </>
         }

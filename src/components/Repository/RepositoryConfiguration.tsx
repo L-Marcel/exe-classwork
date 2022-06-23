@@ -5,7 +5,6 @@ import { useUser } from "../../contexts/hooks/useUser";
 import { Api } from "../../services/api";
 import { Button } from "../Buttons/Button";
 import { Link } from "../Link";
-import { Span } from "../Span";
 import { Title } from "../Title";
 
 interface RepositoryConfiguratioProps {
@@ -52,14 +51,10 @@ function RepositoryConfiguration({
         <Text
           mt={2}
         >
-          <Span
-            color="primary.400"
-          >Authorized user:</Span> {user.name ?? user.username}
+          Authorized user: {user.name ?? user.username}
         </Text>
         <Text>
-          <Span
-            color="primary.400"
-          >Repository:</Span> {repositoryName}
+          Repository: {repositoryName}
         </Text>
       </Box>
       <HStack
