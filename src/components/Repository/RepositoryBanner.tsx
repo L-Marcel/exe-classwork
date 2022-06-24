@@ -14,7 +14,6 @@ interface RepositoryBannerProps {
   description?: string;
   homepage?: string;
   gitUrl?: string;
-  sshUrl?: string;
   teams?: string[];
   commits?: Commit[];
   isAuthorizedUser: boolean;
@@ -31,7 +30,6 @@ function RepositoryBanner({
   homepage,
   id,
   gitUrl,
-  sshUrl,
   teams = [],
   commits = [],
   filteredCommits = [],
@@ -96,7 +94,7 @@ function RepositoryBanner({
         display="flex"
         gap={4}
       >
-        { isAuthorizedUser && <Link 
+        { (isAuthorizedUser && id) && <Link 
           mt={5}
           href={`/app/repositories/${id}/config`}
         >

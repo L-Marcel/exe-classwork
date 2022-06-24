@@ -30,7 +30,6 @@ function RepositoryPage({
     homepage,
     name,
     owner,
-    sshUrl,
     id
   } = repository;
 
@@ -49,7 +48,7 @@ function RepositoryPage({
       };
     }, [commits]);
 
-  const isAuthorizedUser = owner.id === user.id;
+  const isAuthorizedUser = (owner && user) && owner?.id === user?.id;
 
   return (
     <>
@@ -58,7 +57,6 @@ function RepositoryPage({
         name={name}
         fullname={fullname}
         gitUrl={gitUrl}
-        sshUrl={sshUrl}
         description={description}
         homepage={homepage}
         commits={commits}
