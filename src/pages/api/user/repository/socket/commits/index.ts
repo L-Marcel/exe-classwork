@@ -5,6 +5,7 @@ import { Commits } from "../../../../../../controllers/Commits";
 import { Repositories } from "../../../../../../controllers/Repositories";
 import { apiHandle } from "../../../../../../utils/api/apiHandle";
 import { withUser } from "../../../../../../utils/api/middlewares/withUser";
+import { revalidatePath } from "../../../../../../utils/revalidatePath";
 
 
 async function createCommits(req: Req, res: Res) {
@@ -33,14 +34,14 @@ async function createCommits(req: Req, res: Res) {
 
     const classrooms = await Classrooms.getByRepository(id);
 
-    res.unstable_revalidate(`/repositories/${fullname?.toLocaleLowerCase()}`)
+    revalidatePath(res, `/repositories/${fullname?.toLocaleLowerCase()}`)
     .then(() => console.log("Repository revalidated: " + fullname))
     .catch(err => console.log(err));
 
     for(let c in classrooms) {
       const classroom = classrooms[c];
 
-      res.unstable_revalidate(`/app/classrooms/${classroom.id}`)
+      revalidatePath(res, `/app/classrooms/${classroom.id}`)
       .then(() => console.log("Classroom revalidated: " + classroom.id))
       .catch(err => console.log(err));
     };

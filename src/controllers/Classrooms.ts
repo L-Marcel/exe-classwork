@@ -19,7 +19,7 @@ export class Classrooms {
     });
   };
   
-  static async get(id: string, select?: P.ClassroomSelect, canReturnFalse: boolean = false) {
+  static async get(id: string, select?: P.ClassroomSelect, canReturnFalse: boolean = false): Promise<any> {
     const classroom = await Prisma.classroom.findUnique({
       where: {
         id

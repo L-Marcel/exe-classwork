@@ -172,6 +172,17 @@ function ClassroomForm({
     });
   };
 
+  async function handleForceTeamsUpdate() {
+    startLoading();
+    
+    await Api.post(`/user/classroom/${classroom?.id}/refresh`).
+    then(() => {
+      router.push("/app/classrooms");
+    }).catch(() => {
+      stopLoading();
+    });
+  };
+
   return (
     <Stack
       as="form"
@@ -229,6 +240,36 @@ function ClassroomForm({
         maxH={200}
         resize="vertical"
       />
+      { classroom && <>
+        <Box
+          display="flex"
+          flexDir="column"
+        >
+          <Title>
+            Teams analytics
+          </Title>
+          <Text 
+            mt={2}
+            whiteSpace="pre-wrap"
+            maxW={["90%", "70%"]}
+          >
+            Warning: forced updates will only load the data of all team's repositories! 
+            {'\n\n'}To force the refresh of the repository data the repository owner should force it in 
+            repository configuration. 
+          </Text>
+        </Box>
+        <HStack
+          spacing={4}
+        >
+          <Button
+            theme="primary"
+            disabled={isLoading}
+            onClick={handleForceTeamsUpdate}
+          >
+            Force update
+          </Button>
+        </HStack>
+      </> }
       <Title>
         Additional configuration
       </Title>
