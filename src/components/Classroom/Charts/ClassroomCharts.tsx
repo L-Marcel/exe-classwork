@@ -36,7 +36,40 @@ function ClassroomCharts({
     end: undefined,
   } as RepositoriesCommitsInterval);
 
-  const [repositoriesWithCommitsInterval, setRepositoriesWithCommitsInterval] = useState(repositories);
+  const data = repositories.reduce((prev, cur) => {
+    const commits = cur.commits.reduce((prev, cur, i) => {
+      prev.push({
+        ...cur,
+        classes: cur.classes.length,
+        methods: cur.methods.length,
+        files: ((prev.length > 0 && prev[i - 1].files) || 0) + (cur.filesAdded - cur.filesRemoved)
+      });
+      
+      return prev;
+    }, [] as CommitChart[]);
+
+    const lastCommit = commits[commits.length - 1];
+
+    const repository = {
+      ...cur,
+      commits,
+      churn: lastCommit?.churn || 0,
+      classes: lastCommit?.classes || 0,
+      methods: lastCommit?.methods || 0,
+      files: lastCommit?.files || 0,
+      complexity: lastCommit?.complexity || 0,
+      sloc: lastCommit?.sloc || 0,
+      commitedAt: lastCommit?.commitedAt || 0,
+      userGithubId: lastCommit?.userGithubId || 0,
+      userGithubLogin: lastCommit?.userGithubLogin || ""
+    };
+
+    prev.push(repository);
+
+    return prev;
+  }, []);
+
+  const [repositoriesWithCommitsInterval, setRepositoriesWithCommitsInterval] = useState(data);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -49,7 +82,7 @@ function ClassroomCharts({
   const handleOnChangeInterval = useCallback(
     (getFilteredResult: (date: string | Date) => boolean) => {
       if(repositories.length > 0) {
-        setRepositoriesWithCommitsInterval(repositories.map(r => {
+        setRepositoriesWithCommitsInterval(data.map(r => {
           return {
             ...r,
             commits: r.commits.filter(commit => getFilteredResult(commit?.commitedAt))

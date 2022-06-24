@@ -88,7 +88,12 @@ function ClassroomTooltips({
           >
             {label.length > 58 ? label.substring(0, 55) + "..." : label}
           </Text>
-          { metrics.map(p => {
+          { metrics
+            .filter(p => {
+              const stroke: string = p.stroke;
+              return stroke?.length <= 7 || !stroke.endsWith("10");
+            })
+            .map(p => {
             return (
               <Text 
                 key={p.name} 

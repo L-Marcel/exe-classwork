@@ -106,6 +106,12 @@ export const theme = extendTheme({
           "& path:last-of-type": {
             color: "var(--chakra-colors-solid-400)!important",
           }
+        },
+        ".recharts-legend-item": {
+          cursor: "pointer"
+        },
+        ".recharts-bar-rectangle > path": {
+          transition: "fill .4s, stroke .3s, opacity .2s"
         }
       }
     }

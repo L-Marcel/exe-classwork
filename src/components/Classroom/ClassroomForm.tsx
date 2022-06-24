@@ -253,7 +253,7 @@ function ClassroomForm({
             whiteSpace="pre-wrap"
             maxW={["90%", "70%"]}
           >
-            Warning: forced updates will only load the data of all team's repositories! 
+            Warning: forced updates will only load again the data of all repositories! 
             {'\n\n'}To force the refresh of the repository data the repository owner should force it in 
             repository configuration. 
           </Text>

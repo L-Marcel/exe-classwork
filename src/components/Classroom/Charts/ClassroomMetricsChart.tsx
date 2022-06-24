@@ -1,4 +1,7 @@
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { useState } from "react";
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Payload } from "recharts/types/component/DefaultLegendContent";
+import { DataKey } from "recharts/types/util/types";
 import { ClassroomTooltips } from "./ClassroomTooltips";
 
 interface ClassroomMetricsChartProps {
@@ -6,45 +9,74 @@ interface ClassroomMetricsChartProps {
 };
 
 function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
-  const data = repositories.reduce((prev, cur) => {
-    const commits = cur.commits.reduce((prev, cur, i) => {
-      prev.push({
-        ...cur,
-        classes: cur.classes.length,
-        methods: cur.methods.length,
-        files: ((prev.length > 0 && prev[i - 1].files) || 0) + (cur.filesAdded - cur.filesRemoved)
-      });
-      
-      return prev;
-    }, [] as CommitChart[]);
+  const [opacity, setOpacity] = useState({
+    complexity: 1,
+    churn: 1,
+    methods: 1,
+    classes: 1,
+    files: 1,
+    sloc: 1
+  });
 
-    const lastCommit = commits[commits.length - 1];
+  const [enabledDataKey, setEnabledDataKey] = useState({
+    complexity: true,
+    churn: true,
+    methods: true,
+    classes: true,
+    files: true,
+    sloc: true
+  });
 
-    const repository = {
-      ...cur,
-      commits,
-      churn: lastCommit?.churn || 0,
-      classes: lastCommit?.classes || 0,
-      methods: lastCommit?.methods || 0,
-      files: lastCommit?.files || 0,
-      complexity: lastCommit?.complexity || 0,
-      sloc: lastCommit?.sloc || 0,
-      commitedAt: lastCommit?.commitedAt || 0,
-      userGithubId: lastCommit?.userGithubId || 0,
-      userGithubLogin: lastCommit?.userGithubLogin || ""
+  function handleOnFocusLegend(ev: Payload & {
+    dataKey?: DataKey<any>;
+  }) {
+    const dataKey = ev.dataKey;
+
+    const focusedDataKey = {
+      [dataKey?.toString()]: 1
     };
 
-    prev.push(repository);
+    setOpacity({
+      churn: .2,
+      classes: .2,
+      complexity: .2,
+      files: .2,
+      methods: .2,
+      sloc: .2,
+      ...focusedDataKey
+    });
+  };
 
-    return prev;
-  }, []);
+  function handleOnDefocusLegend() {
+    setOpacity({
+      churn: 1,
+      classes: 1,
+      complexity: 1,
+      files: 1,
+      methods: 1,
+      sloc: 1
+    });
+  };
+
+  function handleOnClickLegend(ev: Payload & {
+    dataKey?: DataKey<any>;
+  }) {
+    const dataKey = ev.dataKey;
+
+    setEnabledDataKey(enabledDataKeys => {
+      return {
+        ...enabledDataKeys,
+        [dataKey?.toString()]: !enabledDataKeys[dataKey?.toString()]
+      };
+    });
+  };
 
   return (
     <ResponsiveContainer width="100%">
       <BarChart
         width={500}
         height={400}
-        data={data}
+        data={repositories}
         barGap={0}
         margin={{
           top: 5,
@@ -62,11 +94,46 @@ function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
         />
         
         <YAxis/>
-        <Bar maxBarSize={100} type="monotone" dataKey="complexity" fill="#ca8282" stroke="#ca8282"/>
-        <Bar maxBarSize={100} type="monotone" dataKey="churn" fill="#8884d8" stroke="#8884d8"/>
-        <Bar maxBarSize={100} type="monotone" dataKey="methods" fill="#ffc658" stroke="#ffc658"/>
-        <Bar maxBarSize={100} type="monotone" dataKey="classes" fill="#82ca9d" stroke="#82ca9d"/>
-        <Bar maxBarSize={100} type="monotone" dataKey="files" fill="#ca82bd" stroke="#ca82bd"/>
+        <Bar 
+          maxBarSize={100} 
+          type="monotone" 
+          opacity={opacity.complexity} 
+          dataKey="complexity" 
+          fill={enabledDataKey.complexity? "#ca8282":"#ca828210"} 
+          stroke={enabledDataKey.complexity? "#ca8282":"#ca828210"}
+        />
+        <Bar 
+          maxBarSize={100} 
+          type="monotone" 
+          opacity={opacity.churn} 
+          dataKey="churn"
+          fill={enabledDataKey.churn? "#8884d8":"#8884d810"} 
+          stroke={enabledDataKey.churn? "#8884d8":"#8884d810"}
+        />
+        <Bar 
+          maxBarSize={100} 
+          type="monotone" 
+          opacity={opacity.methods} 
+          dataKey="methods"
+          fill={enabledDataKey.methods? "#ffc658":"#ffc65810"}   
+          stroke={enabledDataKey.methods? "#ffc658":"#ffc65810"}  
+        />
+        <Bar 
+          maxBarSize={100} 
+          type="monotone" 
+          opacity={opacity.classes} 
+          dataKey="classes"
+          fill={enabledDataKey.classes? "#82ca9d":"#82ca9d10"}  
+          stroke={enabledDataKey.classes? "#82ca9d":"#82ca9d10"} 
+        />
+        <Bar 
+          maxBarSize={100} 
+          type="monotone" 
+          opacity={opacity.files} 
+          dataKey="files"
+          fill={enabledDataKey.files? "#ca82bd":"#ca82bd10"} 
+          stroke={enabledDataKey.files? "#ca82bd":"#ca82bd10"}
+        /> 
 
         <YAxis 
           yAxisId="sloc" 
@@ -78,9 +145,10 @@ function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
           maxBarSize={100} 
           yAxisId="sloc" 
           type="monotone" 
-          dataKey="sloc" 
-          fill="#82a6ca" 
-          stroke="#82a6ca"
+          opacity={opacity.sloc} 
+          dataKey="sloc"
+          fill={enabledDataKey.sloc? "#82a6ca":"#82a6ca10"}
+          stroke={enabledDataKey.sloc? "#82a6ca":"#82a6ca10"}
         />
 
         <Tooltip 
@@ -88,7 +156,13 @@ function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
             fill: "black",
             fillOpacity: .1,
           }} 
-          content={(rest) => ClassroomTooltips({ ...rest, repositories: data })}
+          content={(rest) => ClassroomTooltips({ ...rest, repositories })}
+        />
+
+        <Legend
+          onMouseEnter={handleOnFocusLegend}
+          onMouseLeave={handleOnDefocusLegend}
+          onClick={handleOnClickLegend}
         />
       </BarChart>
     </ResponsiveContainer>
