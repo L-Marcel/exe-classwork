@@ -67,7 +67,7 @@ function ClassroomPage({
         </TabList>
         <TabPanels
           w="100%"
-          minW={user? "93vw":"100vw"}
+          minW={["100vw", "100vw", "100vw", user? "93vw":"100vw"]}
           maxW="100vw"
           pt={3}
         >

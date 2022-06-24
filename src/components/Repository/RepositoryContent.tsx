@@ -46,7 +46,7 @@ function RepositoryContent({
         <Tab>Committers</Tab>
       </TabList>
       <TabPanels
-        maxW={user? "93vw":"100vw"}
+        maxW={["100vw", "100vw", "100vw", user? "93vw":"100vw"]}
         minW={chartWidth}
         w="100%"
         overflowX={["auto", "auto", "auto", "hidden"]}
