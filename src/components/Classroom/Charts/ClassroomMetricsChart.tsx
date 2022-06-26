@@ -156,7 +156,7 @@ function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
             fill: "black",
             fillOpacity: .1,
           }} 
-          content={(rest) => ClassroomTooltips({ ...rest, repositories })}
+          content={(rest) => ClassroomTooltips({ ...rest as any })}
         />
 
         <Legend

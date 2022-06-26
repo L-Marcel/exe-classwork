@@ -1,6 +1,8 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useUser } from "../../contexts/hooks/useUser";
+import { getSelectedArrayInterval } from "../../utils/getSelectedArrayInterval";
+import { RangerInput } from "../Inputs/RangerInput";
 import { RepositoryChangesChart } from "./RepositoryChangesChart";
 import { RepositoryFilesChart } from "./RepositoryFilesChart";
 import { RepositoryMetricsChart } from "./RepositoryMetricsChart";
@@ -13,7 +15,9 @@ function RepositoryContent({
   commits
 }: RepositoryContentProps) {
   const { user } = useUser();
-  const [chartWidth, setChartWidth] = useState((window?.innerWidth || 900) - 125);
+
+  const [chartWidth, setChartWidth] = useState(900 - 125);
+  const [viewInterval, setViewInterval] = useState<[number, number]>([0, (commits.length - 1) * 100]);
 
   const data = commits.reduce((prev, cur, i) => {
     prev.push({
@@ -27,10 +31,15 @@ function RepositoryContent({
   }, [] as CommitChart[]);
 
   useEffect(() => {
+    setChartWidth((window?.innerWidth || 900) - 125);
     window?.addEventListener("resize", (ev) => {
       setChartWidth((window?.innerWidth || 900) - 125);
     });
-  }, [window, setChartWidth]);
+  }, [setChartWidth]);
+  
+  function handleOnChangeRanger(interval: [number, number]) {
+    setViewInterval(interval);
+  };
 
   return (
     <Tabs>
@@ -51,37 +60,81 @@ function RepositoryContent({
         w="100%"
         overflowX={["auto", "auto", "auto", "hidden"]}
         overflowY="hidden"
-        pt={3}
       >
         <TabPanel
-          h="500px"
+          h="580px"
           w={["1000px", "1000px", "900px", `${chartWidth}px`]}
-        >
-          <RepositoryMetricsChart
-            data={data}
-          />
-        </TabPanel>
-        <TabPanel
-          h="500px"
-          w={["1000px", "1000px", "900px", `${chartWidth}px`]}
-        >
-          <RepositoryChangesChart
-            data={data}
-          />
-        </TabPanel>
-        <TabPanel
-          h="500px"
-          w={["1000px", "1000px", "900px", `${chartWidth}px`]}
-        >
-          <RepositoryFilesChart
-            data={data}
-          />
-        </TabPanel>
-        <TabPanel
-          minW={user? "93vw":"100vw"}
-          maxW="100vw"
-          justifyContent="center"
           alignItems="center"
+          display="flex"
+          flexDir="column"
+          justifyContent="center"
+        >
+          <RangerInput
+            w={`${chartWidth - 50}px`}
+            alignSelf="center"
+            onChange={handleOnChangeRanger}
+            h={5}
+            value={viewInterval}
+            max={(commits.length - 1) * 100}
+            mb={5}
+            mt={2}
+          />
+          <RepositoryMetricsChart
+            data={getSelectedArrayInterval(data, viewInterval)}
+          />
+        </TabPanel>
+        <TabPanel
+          h="580px"
+          w={["1000px", "1000px", "900px", `${chartWidth}px`]}
+          alignItems="center"
+          display="flex"
+          flexDir="column"
+          justifyContent="center"
+        >
+          <RangerInput
+            w={`${chartWidth - 50}px`}
+            alignSelf="center"
+            onChange={handleOnChangeRanger}
+            mr="14px"
+            h={5}
+            value={viewInterval}
+            max={(commits.length - 1) * 100}
+            mb={5}
+            mt={2}
+          />
+          <RepositoryChangesChart
+            data={getSelectedArrayInterval(data, viewInterval)}
+          />
+        </TabPanel>
+        <TabPanel
+          h="580px"
+          w={["1000px", "1000px", "900px", `${chartWidth}px`]}
+          alignItems="center"
+          display="flex"
+          flexDir="column"
+          justifyContent="center"
+        >
+          <RangerInput
+            w={`${chartWidth - 50}px`}
+            alignSelf="center"
+            onChange={handleOnChangeRanger}
+            h={5}
+            mr="14px"
+            value={viewInterval}
+            max={(commits.length - 1) * 100}
+            mb={5}
+            mt={2}
+          />
+          <RepositoryFilesChart
+            data={getSelectedArrayInterval(data, viewInterval)}
+          />
+        </TabPanel>
+        <TabPanel
+          minW={user? `min(93vw, ${chartWidth}px)`:"100vw"}
+          maxW={["100vw", "100vw", "100vw", `min(100vw, ${chartWidth}px)`]}
+          justifyContent="center"
+          display="flex"
+          flexDir="column"
         >
           <RepositoryProfile
             commits={commits || []}

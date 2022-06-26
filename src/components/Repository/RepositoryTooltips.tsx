@@ -1,8 +1,8 @@
-import { Avatar, Box, Stack, Text } from "@chakra-ui/react";
+import { Avatar, Box, Divider, Stack, Text } from "@chakra-ui/react";
 import { format, formatDistance } from "date-fns";
 import { boxShadow } from "../../theme/effects/shadow";
-import { getDiffInCommitValue } from "../../utils/getDiffInCommitValue";
-import { Span } from "../Span";
+import { getTooltipPayloadName } from "../../utils/getTooltipPayloadName";
+import { TooltipItem } from "../TooltipItem";
 
 interface RepositoryTooltipsProps {
   commits: CommitChart[];
@@ -18,29 +18,6 @@ function RepositoryTooltips({
   label,
   commits
 }: RepositoryTooltipsProps) {
-  function getTooltipPayloadName(name: string) {
-    switch(name) {
-      case "totalAdditions":
-        return "<- total additions";
-      case "totalDeletions":
-        return "<- total deletions";
-      case "totalChanges":
-        return "<- total changes";
-      case "filesAdded":
-        return "<- files added";
-      case "filesRemoved":
-        return "<- files removed";
-      case "filesModified":
-        return "<- files modified";
-      case "files":
-        return "\n-> files";
-      case "sloc":
-        return "\n-> sloc";
-      default:
-        return "<- " + name;
-    };
-  };
-
   if(active && payload && payload.length > 0) {
     const data = payload[0]?.payload;
 
@@ -48,8 +25,14 @@ function RepositoryTooltips({
       format(new Date(data?.commitedAt), "MMM d, yyyy '->' hh:mm aa"):null;
     const formatedDistanceOfCommitDate = formatDistance(new Date(data?.commitedAt), new Date());
 
-    const metrics = payload.reverse();
+    const metrics: any[] = payload.reverse().filter(p => {
+      const stroke: string = p.stroke;
+      return stroke?.length <= 7 || !stroke.endsWith("10");
+    });;
 
+    const leftMetrics = metrics.filter(m => getTooltipPayloadName(m.name).startsWith("<-"));
+    const rightMetrics = metrics.filter(m => getTooltipPayloadName(m.name).startsWith("->"));
+    
     return (
       <Stack
         gap={2}
@@ -102,33 +85,26 @@ function RepositoryTooltips({
           >
             {formatedDistanceOfCommitDate} ago
           </Text>
-          { metrics.map(p => {
-            let diff = getDiffInCommitValue({
-              commits,
-              dataKey: p.dataKey,
-              order: p.payload.order,
-              value: p.value
-            });
-
+          { leftMetrics.map(p => {
             return (
-              <Text 
-                key={p.name} 
-                fontWeight="hairline"
-                whiteSpace="pre-wrap"
-                mr={20}
-              >
-                <Span
-                  fontWeight="bold"
-                  color={p.stroke}
-                >
-                  {getTooltipPayloadName(p.name)}:
-                </Span> {p.value} { diff !== 0 && <Span
-                  fontWeight="semibold"
-                  color={diff > 0 ? "green.50" : "red.50"}
-                > 
-                  ({diff > 0? "+":diff < 0? "-":""}{diff}) 
-                </Span> }
-              </Text>
+              <TooltipItem
+                key={p.name}
+                arr={commits}
+                {...p}
+              />
+            );
+          }) }
+          { (leftMetrics.length > 0 && rightMetrics.length > 0) && <Divider
+            mt="8px"
+            mb="6px"
+          /> }
+          { rightMetrics.map(p => {
+            return (
+              <TooltipItem
+                key={p.name}
+                arr={commits}
+                {...p}
+              />
             );
           }) }
         </Box>

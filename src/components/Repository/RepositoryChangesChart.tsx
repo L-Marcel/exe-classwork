@@ -1,4 +1,7 @@
-import { Area, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { useState } from "react";
+import { Area, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Payload } from "recharts/types/component/DefaultLegendContent";
+import { DataKey } from "recharts/types/util/types";
 import { RepositoryTooltips } from "./RepositoryTooltips";
 
 export interface RepositoryChangesChartProps {
@@ -6,6 +9,60 @@ export interface RepositoryChangesChartProps {
 };
 
 function RepositoryChangesChart({ data }: RepositoryChangesChartProps) {
+  const [opacity, setOpacity] = useState({
+    sloc: 1,
+    totalAdditions: 1,
+    totalDeletions: 1,
+    totalChanges: 1,
+  });
+
+  const [enabledDataKey, setEnabledDataKey] = useState({
+    sloc: true,
+    totalAdditions: true,
+    totalDeletions: true,
+    totalChanges: true,
+  });
+
+  function handleOnFocusLegend(ev: Payload & {
+    dataKey?: DataKey<any>;
+  }) {
+    const dataKey = ev.dataKey;
+
+    const focusedDataKey = {
+      [dataKey?.toString()]: 1
+    };
+
+    setOpacity({
+      sloc: .2,
+      totalAdditions: .2,
+      totalDeletions: .2,
+      totalChanges: .2,
+      ...focusedDataKey
+    });
+  };
+
+  function handleOnDefocusLegend() {
+    setOpacity({
+      sloc: 1,
+      totalAdditions: 1,
+      totalDeletions: 1,
+      totalChanges: 1,
+    });
+  };
+
+  function handleOnClickLegend(ev: Payload & {
+    dataKey?: DataKey<any>;
+  }) {
+    const dataKey = ev.dataKey;
+
+    setEnabledDataKey(enabledDataKeys => {
+      return {
+        ...enabledDataKeys,
+        [dataKey?.toString()]: !enabledDataKeys[dataKey?.toString()]
+      };
+    });
+  };
+
   return (
     <ResponsiveContainer
       width="100%"
@@ -28,11 +85,58 @@ function RepositoryChangesChart({ data }: RepositoryChangesChartProps) {
 
         <defs>
           <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#82a6ca" stopOpacity={0.8}/>
-            <stop offset="95%" stopColor="#82a6ca" stopOpacity={0}/>
+            <stop 
+              offset="5%" 
+              stopColor={enabledDataKey.sloc? "#82a6ca":"#82a6ca10"} 
+              stopOpacity={opacity.sloc * 0.8}
+            />
+            <stop 
+              offset="95%" 
+              stopColor={enabledDataKey.sloc? "#82a6ca":"#82a6ca10"} 
+              stopOpacity={opacity.sloc * 0}
+            />
           </linearGradient>
         </defs>
-        <Area strokeWidth={2} dot={false} type="monotone" dataKey="sloc" stroke="#82a6ca" fill="url(#colorUv)" yAxisId="sloc"/>
+
+        <YAxis/>
+        <Line 
+          strokeWidth={2} 
+          dot={false} 
+          type="monotone" 
+          opacity={opacity.totalAdditions}  
+          dataKey="totalAdditions"
+          name="total additions"
+          stroke={enabledDataKey.totalAdditions? "#82ca9d":"#82ca9d10"}
+        />
+        <Line 
+          strokeWidth={2} 
+          dot={false} 
+          type="monotone" 
+          opacity={opacity.totalDeletions}  
+          dataKey="totalDeletions"
+          name="total deletions"
+          stroke={enabledDataKey.totalDeletions? "#ca8282":"#ca828210"}
+        />
+        <Line 
+          strokeWidth={2} 
+          dot={false} 
+          type="monotone"
+          opacity={opacity.totalChanges}  
+          dataKey="totalChanges"
+          name="total changes"
+          stroke={enabledDataKey.totalChanges? "#ffc658":"#ffc65810"}
+        />
+
+        <Area 
+          strokeWidth={2} 
+          dot={false} 
+          type="monotone" 
+          dataKey="sloc" 
+          opacity={opacity.sloc} 
+          fill="url(#colorUv)" 
+          yAxisId="sloc"
+          stroke={enabledDataKey.sloc? "#82a6ca":"#82a6ca10"}
+        />
         <YAxis
           dataKey="sloc" 
           orientation="right" 
@@ -40,10 +144,11 @@ function RepositoryChangesChart({ data }: RepositoryChangesChartProps) {
           stroke="#82a6ca"
         />
 
-        <YAxis/>
-        <Line strokeWidth={2} dot={false} type="monotone" dataKey="totalAdditions" stroke="#82ca9d"/>
-        <Line strokeWidth={2} dot={false} type="monotone" dataKey="totalDeletions" stroke="#ca8282"/>
-        <Line strokeWidth={2} dot={false} type="monotone" dataKey="totalChanges" stroke="#ffc658"/>
+        <Legend
+          onMouseEnter={handleOnFocusLegend}
+          onMouseLeave={handleOnDefocusLegend}
+          onClick={handleOnClickLegend}
+        />
       </ComposedChart>
     </ResponsiveContainer>
   );

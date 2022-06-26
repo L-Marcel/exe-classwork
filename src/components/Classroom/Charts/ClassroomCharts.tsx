@@ -1,6 +1,8 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
+import { getSelectedArrayInterval } from "../../../utils/getSelectedArrayInterval";
 import { DateIntervalInput } from "../../Inputs/DateIntervalInput";
+import { RangerInput } from "../../Inputs/RangerInput";
 import { ClassroomMetricsChart } from "./ClassroomMetricsChart";
 
 export interface ClassroomChartsProps {
@@ -10,7 +12,7 @@ export interface ClassroomChartsProps {
 function ClassroomCharts({
   repositories
 }: ClassroomChartsProps) {
-  const [chartWidth, setChartWidth] = useState((window?.innerWidth || 900) - 125);
+  const [chartWidth, setChartWidth] = useState(900 - 125);
 
   const commits = repositories.reduce((prev, cur) => {
     const _commits = cur.commits.sort((a, b) => new Date(a.commitedAt).getTime() - new Date(b.commitedAt).getTime());
@@ -70,14 +72,14 @@ function ClassroomCharts({
   }, []);
 
   const [repositoriesWithCommitsInterval, setRepositoriesWithCommitsInterval] = useState(data);
+  const [viewInterval, setViewInterval] = useState<[number, number]>([0, (repositoriesWithCommitsInterval.length - 1) * 100]);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      window?.addEventListener("resize", (ev) => {
-        setChartWidth((window?.innerWidth || 900) - 125);
-      });
-    };
-  }, [window, setChartWidth]);
+    setChartWidth((window?.innerWidth || 900) - 125);
+    window?.addEventListener("resize", (ev) => {
+      setChartWidth((window?.innerWidth || 900) - 125);
+    });
+  }, [setChartWidth]);
 
   const handleOnChangeInterval = useCallback(
     (getFilteredResult: (date: string | Date) => boolean) => {
@@ -90,6 +92,10 @@ function ClassroomCharts({
         }))
       };
     }, [repositories]);
+  
+  function handleOnChangeRanger(interval: [number, number]) {
+    setViewInterval(interval);
+  };
 
   return (
     <>
@@ -114,11 +120,25 @@ function ClassroomCharts({
           overflowY="hidden"
         >
           <TabPanel
-            h="500px"
+            h="580px"
             w={["1000px", "1000px", "900px", `${chartWidth}px`]}
+            alignItems="center"
+            display="flex"
+            flexDir="column"
           >
+            <RangerInput
+              w={`${chartWidth - 50}px`}
+              alignSelf="center"
+              onChange={handleOnChangeRanger}
+              h={5}
+              step={0.1}
+              value={viewInterval}
+              max={(repositoriesWithCommitsInterval.length - 1) * 100}
+              mb={5}
+              mt={2}
+            />
             <ClassroomMetricsChart
-              repositories={repositoriesWithCommitsInterval}
+              repositories={getSelectedArrayInterval(repositoriesWithCommitsInterval, viewInterval)}
             />
           </TabPanel>
           <TabPanel

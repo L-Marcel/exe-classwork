@@ -1,4 +1,7 @@
-import { Area, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { useState } from "react";
+import { Area, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Payload } from "recharts/types/component/DefaultLegendContent";
+import { DataKey } from "recharts/types/util/types";
 import { RepositoryTooltips } from "./RepositoryTooltips";
 
 export interface RepositoryFilesChartProps {
@@ -6,6 +9,60 @@ export interface RepositoryFilesChartProps {
 };
 
 function RepositoryFilesChart({ data }: RepositoryFilesChartProps) {
+  const [opacity, setOpacity] = useState({
+    files: 1,
+    filesAdded: 1,
+    filesRemoved: 1,
+    filesModified: 1,
+  });
+
+  const [enabledDataKey, setEnabledDataKey] = useState({
+    files: true,
+    filesAdded: true,
+    filesRemoved: true,
+    filesModified: true,
+  });
+
+  function handleOnFocusLegend(ev: Payload & {
+    dataKey?: DataKey<any>;
+  }) {
+    const dataKey = ev.dataKey;
+
+    const focusedDataKey = {
+      [dataKey?.toString()]: 1
+    };
+
+    setOpacity({
+      files: .2,
+      filesAdded: .2,
+      filesRemoved: .2,
+      filesModified: .2,
+      ...focusedDataKey
+    });
+  };
+
+  function handleOnDefocusLegend() {
+    setOpacity({
+      files: 1,
+      filesAdded: 1,
+      filesRemoved: 1,
+      filesModified: 1,
+    });
+  };
+
+  function handleOnClickLegend(ev: Payload & {
+    dataKey?: DataKey<any>;
+  }) {
+    const dataKey = ev.dataKey;
+
+    setEnabledDataKey(enabledDataKeys => {
+      return {
+        ...enabledDataKeys,
+        [dataKey?.toString()]: !enabledDataKeys[dataKey?.toString()]
+      };
+    });
+  };
+
   return (
     <ResponsiveContainer
       width="100%"
@@ -28,11 +85,58 @@ function RepositoryFilesChart({ data }: RepositoryFilesChartProps) {
 
         <defs>
           <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#82a6ca" stopOpacity={0.8}/>
-            <stop offset="95%" stopColor="#82a6ca" stopOpacity={0}/>
+            <stop 
+              offset="5%" 
+              stopColor={enabledDataKey.files? "#82a6ca":"#82a6ca10"} 
+              stopOpacity={opacity.files * 0.8}
+            />
+            <stop 
+              offset="95%" 
+              stopColor={enabledDataKey.files? "#82a6ca":"#82a6ca10"} 
+              stopOpacity={opacity.files * 0}
+            />
           </linearGradient>
         </defs>
-        <Area strokeWidth={2} dot={false} type="monotone" dataKey="files" stroke="#82a6ca" fill="url(#colorUv)" yAxisId="files"/>
+
+        <YAxis/>
+        <Line 
+          strokeWidth={2} 
+          dot={false} 
+          type="monotone"
+          opacity={opacity.filesAdded}  
+          dataKey="filesAdded"
+          name="files added"
+          stroke={enabledDataKey.filesAdded? "#82ca9d":"#82ca9d10"}
+        />
+        <Line 
+          strokeWidth={2} 
+          dot={false} 
+          type="monotone" 
+          opacity={opacity.filesRemoved}  
+          dataKey="filesRemoved" 
+          name="files removed"
+          stroke={enabledDataKey.filesRemoved? "#ca8282":"#ca828210"}
+        />
+        <Line 
+          strokeWidth={2} 
+          dot={false} 
+          type="monotone"
+          opacity={opacity.filesModified}  
+          dataKey="filesModified"
+          name="files modified"
+          stroke={enabledDataKey.filesModified? "#ffc658":"#ffc65810"}
+        />
+
+        <Area 
+          strokeWidth={2} 
+          dot={false} 
+          type="monotone" 
+          dataKey="files" 
+          opacity={opacity.files} 
+          fill="url(#colorUv)" 
+          yAxisId="files"
+          stroke={enabledDataKey.files? "#82a6ca":"#82a6ca10"}
+        />
         <YAxis
           dataKey="files" 
           orientation="right" 
@@ -40,10 +144,11 @@ function RepositoryFilesChart({ data }: RepositoryFilesChartProps) {
           stroke="#82a6ca"
         />
 
-        <YAxis/>
-        <Line strokeWidth={2} dot={false} type="monotone" dataKey="filesAdded" stroke="#82ca9d"/>
-        <Line strokeWidth={2} dot={false} type="monotone" dataKey="filesRemoved" stroke="#ca8282"/>
-        <Line strokeWidth={2} dot={false} type="monotone" dataKey="filesModified" stroke="#ffc658"/>
+        <Legend
+          onMouseEnter={handleOnFocusLegend}
+          onMouseLeave={handleOnDefocusLegend}
+          onClick={handleOnClickLegend}
+        />
       </ComposedChart>
     </ResponsiveContainer>
   );

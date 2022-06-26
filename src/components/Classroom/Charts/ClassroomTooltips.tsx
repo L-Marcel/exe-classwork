@@ -1,7 +1,8 @@
-import { Box, Stack, Text } from "@chakra-ui/react";
+import { Box, Divider, Stack, Text } from "@chakra-ui/react";
 import { format } from "date-fns";
 import { boxShadow } from "../../../theme/effects/shadow";
-import { Span } from "../../Span";
+import { getTooltipPayloadName } from "../../../utils/getTooltipPayloadName";
+import { TooltipItem } from "../../TooltipItem";
 
 
 interface ClassroomTooltipsProps {
@@ -14,39 +15,21 @@ interface ClassroomTooltipsProps {
 function ClassroomTooltips({ 
   active, 
   payload, 
-  label,
-  repositories
+  label
 }: ClassroomTooltipsProps) {
-  function getTooltipPayloadName(name: string) {
-    switch(name) {
-      case "totalAdditions":
-        return "<- total additions";
-      case "totalDeletions":
-        return "<- total deletions";
-      case "totalChanges":
-        return "<- total changes";
-      case "filesAdded":
-        return "<- files added";
-      case "filesRemoved":
-        return "<- files removed";
-      case "filesModified":
-        return "<- files modified";
-      case "files":
-        return "<- files";
-      case "sloc":
-        return "\n-> sloc";
-      default:
-        return "<- " + name;
-    };
-  };
-
   if(active && payload && payload.length > 0) {
     const data = payload[0]?.payload;
 
     const formatedDate = data?.commitedAt? 
       format(new Date(data?.commitedAt), "MMM d, yyyy '->' hh:mm aa"):null;
 
-    const metrics = payload.reverse();
+    const metrics = payload.reverse().filter(p => {
+      const stroke: string = p.stroke;
+      return stroke?.length <= 7 || !stroke.endsWith("10");
+    });
+
+    const leftMetrics = metrics.filter(m => getTooltipPayloadName(m.name, true).startsWith("<-"));
+    const rightMetrics = metrics.filter(m => getTooltipPayloadName(m.name, true).startsWith("->"));
 
     return (
       <Stack
@@ -88,26 +71,26 @@ function ClassroomTooltips({
           >
             {label.length > 58 ? label.substring(0, 55) + "..." : label}
           </Text>
-          { metrics
-            .filter(p => {
-              const stroke: string = p.stroke;
-              return stroke?.length <= 7 || !stroke.endsWith("10");
-            })
-            .map(p => {
+          { leftMetrics.map(p => {
             return (
-              <Text 
-                key={p.name} 
-                fontWeight="hairline"
-                whiteSpace="pre-wrap"
-                mr={20}
-              >
-                <Span
-                  fontWeight="bold"
-                  color={p.stroke}
-                >
-                  {getTooltipPayloadName(p.name)}:
-                </Span> {p.value} {p.unit}
-              </Text>
+              <TooltipItem
+                key={p.name}
+                isClassroom
+                {...p}
+              />
+            );
+          }) }
+          { (leftMetrics.length > 0 && rightMetrics.length > 0) && <Divider
+            mt="8px"
+            mb="6px"
+          /> }
+          { rightMetrics.map(p => {
+            return (
+              <TooltipItem
+                key={p.name}
+                isClassroom
+                {...p}
+              />
             );
           }) }
         </Box>

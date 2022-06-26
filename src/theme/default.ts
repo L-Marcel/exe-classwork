@@ -108,10 +108,12 @@ export const theme = extendTheme({
           }
         },
         ".recharts-legend-item": {
-          cursor: "pointer"
+          cursor: "pointer",
+          marginRight: "0!important",
+          paddingRight: "10px" 
         },
-        ".recharts-bar-rectangle > path": {
-          transition: "fill .4s, stroke .3s, opacity .2s"
+        ".recharts-legend-wrapper": {
+          paddingBottom: "10px"
         }
       }
     }

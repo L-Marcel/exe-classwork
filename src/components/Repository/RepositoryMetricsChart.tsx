@@ -1,4 +1,7 @@
-import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { useState } from "react";
+import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Payload } from "recharts/types/component/DefaultLegendContent";
+import { DataKey } from "recharts/types/util/types";
 import { RepositoryTooltips } from "./RepositoryTooltips";
 
 export interface RepositoryMetricsChartProps {
@@ -6,6 +9,60 @@ export interface RepositoryMetricsChartProps {
 };
 
 function RepositoryMetricsChart({ data }: RepositoryMetricsChartProps) {
+  const [opacity, setOpacity] = useState({
+    complexity: 1,
+    churn: 1,
+    methods: 1,
+    classes: 1,
+  });
+
+  const [enabledDataKey, setEnabledDataKey] = useState({
+    complexity: true,
+    churn: true,
+    methods: true,
+    classes: true,
+  });
+
+  function handleOnFocusLegend(ev: Payload & {
+    dataKey?: DataKey<any>;
+  }) {
+    const dataKey = ev.dataKey;
+
+    const focusedDataKey = {
+      [dataKey?.toString()]: 1
+    };
+
+    setOpacity({
+      complexity: .2,
+      churn: .2,
+      methods: .2,
+      classes: .2,
+      ...focusedDataKey
+    });
+  };
+
+  function handleOnDefocusLegend() {
+    setOpacity({
+      complexity: 1,
+      churn: 1,
+      methods: 1,
+      classes: 1,
+    });
+  };
+
+  function handleOnClickLegend(ev: Payload & {
+    dataKey?: DataKey<any>;
+  }) {
+    const dataKey = ev.dataKey;
+
+    setEnabledDataKey(enabledDataKeys => {
+      return {
+        ...enabledDataKeys,
+        [dataKey?.toString()]: !enabledDataKeys[dataKey?.toString()]
+      };
+    });
+  };
+
   return (
     <ResponsiveContainer>
       <LineChart
@@ -25,10 +82,44 @@ function RepositoryMetricsChart({ data }: RepositoryMetricsChartProps) {
         <YAxis/>
         <Tooltip content={(rest) => RepositoryTooltips({ ...rest, commits: data })}/>
         
-        <Line strokeWidth={2} dot={false} type="monotone" dataKey="complexity" stroke="#82a6ca"/>
-        <Line strokeWidth={2} dot={false} type="monotone" dataKey="churn" stroke="#8884d8"/>
-        <Line strokeWidth={2} dot={false} type="monotone" dataKey="methods" stroke="#ffc658"/>
-        <Line strokeWidth={2} dot={false} type="monotone" dataKey="classes" stroke="#82ca9d"/>
+        <Line 
+          strokeWidth={2} 
+          dot={false} 
+          type="monotone" 
+          opacity={opacity.complexity}  
+          dataKey="complexity" 
+          stroke={enabledDataKey.complexity? "#82a6ca":"#82a6ca10"}
+        />
+        <Line 
+          strokeWidth={2} 
+          dot={false} 
+          type="monotone" 
+          opacity={opacity.churn}  
+          dataKey="churn" 
+          stroke={enabledDataKey.churn? "#8884d8":"#8884d810"}
+        />
+        <Line 
+          strokeWidth={2} 
+          dot={false} 
+          type="monotone" 
+          opacity={opacity.methods}  
+          dataKey="methods" 
+          stroke={enabledDataKey.methods? "#ffc658":"#ffc65810"}
+        />
+        <Line 
+          strokeWidth={2} 
+          dot={false} 
+          type="monotone" 
+          opacity={opacity.classes}  
+          dataKey="classes" 
+          stroke={enabledDataKey.classes? "#82ca9d":"#82ca9d10"}
+        />
+
+        <Legend
+          onMouseEnter={handleOnFocusLegend}
+          onMouseLeave={handleOnDefocusLegend}
+          onClick={handleOnClickLegend}
+        />
       </LineChart>
     </ResponsiveContainer>
   );
