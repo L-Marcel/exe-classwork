@@ -9,10 +9,12 @@ import { RepositoryProfileStatistic } from "./RepositoryProfileStatistic";
 
 export interface RepositoryProfileProps {
   commits: Commit[];
+  isFormatted?: boolean;
 };
 
 function RepositoryProfile({
-  commits
+  commits,
+  isFormatted = false
 }: RepositoryProfileProps) {
   if(commits.length <= 0) {
     return null;
@@ -29,7 +31,8 @@ function RepositoryProfile({
     data
   } = useCommitsProfile({
     commits,
-    selectedUser
+    selectedUser,
+    isFormatted
   });
 
   return ( 

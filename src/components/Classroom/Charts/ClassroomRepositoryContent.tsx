@@ -16,7 +16,7 @@ function ClassroomRepositoryContent({
 
   return (
     <RepositoryContent
-      isFormated
+      isFormatted
       commits={repositories[payloadIndex].commits}
     />
   );

@@ -9,19 +9,19 @@ import { RepositoryMetricsChart } from "./RepositoryMetricsChart";
 import { RepositoryProfile } from "./RepositoryProfile";
 export interface RepositoryContentProps {
   commits: Commit[];
-  isFormated?: boolean;
+  isFormatted?: boolean;
 };
 
 function RepositoryContent({
   commits,
-  isFormated = false
+  isFormatted = false
 }: RepositoryContentProps) {
   const { user } = useUser();
 
   const [chartWidth, setChartWidth] = useState(900 - 125);
   const [viewInterval, setViewInterval] = useState<[number, number]>([0, (commits.length - 1) * 100]);
 
-  const data = isFormated? commits:commits.reduce((prev, cur, i) => {
+  const data = isFormatted? commits:commits.reduce((prev, cur, i) => {
     prev.push({
       ...cur,
       classes: cur.classes.length,
@@ -139,6 +139,7 @@ function RepositoryContent({
           flexDir="column"
         >
           <RepositoryProfile
+            isFormatted={isFormatted}
             commits={commits || []}
           />
         </TabPanel>

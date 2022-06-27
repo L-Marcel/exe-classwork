@@ -5,13 +5,15 @@ import { getDiffInCommitValue } from "../../utils/getDiffInCommitValue";
 interface CommitsProfileProps {
   selectedUser: string;
   commits: Commit[];
+  isFormatted?: boolean;
 };
 
 function useCommitsProfile({
   commits,
-  selectedUser
+  selectedUser,
+  isFormatted = false,
 }: CommitsProfileProps) {
-  const formattedCommits: Omit<CommitChart, "files">[] = commits.map(commit => {
+  const formattedCommits: (Omit<CommitChart, "files"> | any)[] = isFormatted? commits:commits.map(commit => {
     return {
       ...commit,
       methods: commit.methods.length,
