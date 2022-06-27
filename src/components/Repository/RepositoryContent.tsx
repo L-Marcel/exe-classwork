@@ -9,17 +9,19 @@ import { RepositoryMetricsChart } from "./RepositoryMetricsChart";
 import { RepositoryProfile } from "./RepositoryProfile";
 export interface RepositoryContentProps {
   commits: Commit[];
+  isFormated?: boolean;
 };
 
 function RepositoryContent({
-  commits
+  commits,
+  isFormated = false
 }: RepositoryContentProps) {
   const { user } = useUser();
 
   const [chartWidth, setChartWidth] = useState(900 - 125);
   const [viewInterval, setViewInterval] = useState<[number, number]>([0, (commits.length - 1) * 100]);
 
-  const data = commits.reduce((prev, cur, i) => {
+  const data = isFormated? commits:commits.reduce((prev, cur, i) => {
     prev.push({
       ...cur,
       classes: cur.classes.length,

@@ -114,6 +114,9 @@ export const theme = extendTheme({
         },
         ".recharts-legend-wrapper": {
           paddingBottom: "10px"
+        },
+        ".recharts-cartesian-grid": {
+          cursor: "pointer"
         }
       }
     }

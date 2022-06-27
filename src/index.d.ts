@@ -187,6 +187,11 @@ declare interface SearchContext {
   setCount: (count: number) => void;
 };
 
+declare interface ClassroomContext {
+  payloadIndex: number;
+  setPayloadIndex: (payloadIndex: number) => void;
+}
+
 //Fake enums to sqlite dabase
 declare type AlertTypes = "CLASSROOM" | "CLASSROOM_RELATION" | "TEAM" | "TEAM_RELATION" | "REPOSITORY" | "COMMIT";
 declare type ClassroomRoles = "OWNER" | "ADMIN" | "OBSERVER" | "STUDENT";

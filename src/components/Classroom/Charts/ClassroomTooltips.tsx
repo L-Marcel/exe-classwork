@@ -1,5 +1,6 @@
 import { Box, Divider, Stack, Text } from "@chakra-ui/react";
 import { format } from "date-fns";
+import { useClassroomPayloadIndex } from "../../../contexts/hooks/useClassroomPayloadIndex";
 import { boxShadow } from "../../../theme/effects/shadow";
 import { getTooltipPayloadName } from "../../../utils/getTooltipPayloadName";
 import { TooltipItem } from "../../TooltipItem";
@@ -15,9 +16,16 @@ interface ClassroomTooltipsProps {
 function ClassroomTooltips({ 
   active, 
   payload, 
-  label
+  label,
+  repositories
 }: ClassroomTooltipsProps) {
+  const { setPayloadIndex } = useClassroomPayloadIndex();
+
   if(active && payload && payload.length > 0) {
+    if(payload?.length > 0) {
+      setPayloadIndex(repositories.findIndex(r => r.fullname === label));
+    };
+
     const data = payload[0]?.payload;
 
     const formatedDate = data?.commitedAt? 

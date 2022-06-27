@@ -1,9 +1,11 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
+import { ClassroomProvider } from "../../../contexts/ClassroomProvider";
 import { getSelectedArrayInterval } from "../../../utils/getSelectedArrayInterval";
 import { DateIntervalInput } from "../../Inputs/DateIntervalInput";
 import { RangerInput } from "../../Inputs/RangerInput";
 import { ClassroomMetricsChart } from "./ClassroomMetricsChart";
+import { ClassroomRepositoryContent } from "./ClassroomRepositoryContent";
 
 export interface ClassroomChartsProps {
   repositories: Repository[];
@@ -97,8 +99,10 @@ function ClassroomCharts({
     setViewInterval(interval);
   };
 
+  const repositoriesInInterval = getSelectedArrayInterval(repositoriesWithCommitsInterval, viewInterval)
+
   return (
-    <>
+    <ClassroomProvider>
       <Box
         display="flex"
         pl={4}
@@ -114,32 +118,47 @@ function ClassroomCharts({
           <Tab>Metrics</Tab>
           <Tab>Contribution</Tab>
         </TabList>
-        <TabPanels
-          w="100%"
-          overflowX={["auto", "auto", "auto", "hidden"]}
-          overflowY="hidden"
-        >
+        <TabPanels>
           <TabPanel
-            h="580px"
-            w={["1000px", "1000px", "900px", `${chartWidth}px`]}
-            alignItems="center"
             display="flex"
             flexDir="column"
           >
-            <RangerInput
-              w={`${chartWidth - 50}px`}
-              alignSelf="center"
-              onChange={handleOnChangeRanger}
-              h={5}
-              step={0.1}
-              value={viewInterval}
-              max={(repositoriesWithCommitsInterval.length - 1) * 100}
-              mb={5}
-              mt={2}
-            />
-            <ClassroomMetricsChart
-              repositories={getSelectedArrayInterval(repositoriesWithCommitsInterval, viewInterval)}
-            />
+            <Box
+              w="100%"
+              h="580px"
+              overflowX={["auto", "auto", "auto", "hidden"]}
+              overflowY="hidden"
+            >
+              <Box
+                h="580px"
+                w={["1000px", "1000px", "900px", `${chartWidth}px`]}
+                alignItems="center"
+                display="flex"
+                flexDir="column"
+              >
+                <RangerInput
+                  w={`${chartWidth - 50}px`}
+                  alignSelf="center"
+                  onChange={handleOnChangeRanger}
+                  h={5}
+                  step={0.1}
+                  value={viewInterval}
+                  max={(repositoriesWithCommitsInterval.length - 1) * 100}
+                  mb={5}
+                  mt={2}
+                />
+                <ClassroomMetricsChart
+                  repositories={repositoriesInInterval}
+                />
+              </Box>
+            </Box>
+            <Box
+              w="100%"
+            >
+              <ClassroomRepositoryContent
+                repositories={repositoriesInInterval}
+              />
+            </Box>
           </TabPanel>
           <TabPanel
             h="500px"
@@ -149,7 +168,7 @@ function ClassroomCharts({
           </TabPanel>
         </TabPanels>
       </Tabs>
-    </>
+    </ClassroomProvider>
   );
 };
 

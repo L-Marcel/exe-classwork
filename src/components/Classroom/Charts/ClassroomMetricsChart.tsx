@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Payload } from "recharts/types/component/DefaultLegendContent";
 import { DataKey } from "recharts/types/util/types";
+import { ClassroomTooltipCursor } from "./ClassroomTooltipCursor";
 import { ClassroomTooltips } from "./ClassroomTooltips";
 
 interface ClassroomMetricsChartProps {
@@ -85,12 +86,9 @@ function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
           bottom: 5,
         }}
       >
-        <CartesianGrid strokeDasharray="3 3" />
+        <CartesianGrid strokeDasharray="3 3"/>
         <XAxis 
           dataKey="fullname"
-          style={{
-            cursor: "pointer"
-          }}
         />
         
         <YAxis/>
@@ -151,12 +149,10 @@ function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
           stroke={enabledDataKey.sloc? "#82a6ca":"#82a6ca10"}
         />
 
-        <Tooltip 
-          cursor={{
-            fill: "black",
-            fillOpacity: .1,
-          }} 
-          content={(rest) => ClassroomTooltips({ ...rest as any })}
+        <Tooltip
+          trigger="click"
+          cursor={<ClassroomTooltipCursor/>}
+          content={(rest) => ClassroomTooltips({ ...rest as any, repositories })}
         />
 
         <Legend
