@@ -33,7 +33,7 @@ async function createCommits(req: Req, res: Res) {
     console.log("Repository is loaded: ", fullname, " - in: ", new Date().toString());
 
     const classrooms = await Classrooms.getByRepository(id);
-
+    
     revalidatePath(res, `/repositories/${fullname?.toLocaleLowerCase()}`)
     .then(() => console.log("Repository revalidated: " + fullname))
     .catch(err => console.log(err));
