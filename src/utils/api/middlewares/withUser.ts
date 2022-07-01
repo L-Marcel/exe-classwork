@@ -5,6 +5,7 @@ import { Cookies } from "../../../services/cookies";
 function withUser(callback: (req: Req, res?: Res) => Promise<any>, canUseAppToken: boolean = false) {
   return async(req: Req, res?: Res) => {
     const token = req.query?.token || Cookies.get("token", { req, res });
+
     const user = await Users.getUserByToken({ req, res }, token?.toString())
     .then(u => u).catch(async(err) => {
       if(canUseAppToken) {

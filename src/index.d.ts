@@ -191,6 +191,26 @@ declare interface SearchContext {
   setCount: (count: number) => void;
 };
 
+declare type TableSearch = {
+  [column: string]: string; 
+};
+
+declare type TableFilter = {
+  [column: string]: boolean; 
+};
+declare interface TableContext {
+  search: TableSearch;
+  setSearch: (search: string, column: string) => void;
+  filter: TableFilter;
+  setFilter: (isVisible: bolean, column: string) => void;
+  page: number;
+  setPage: (page: number) => void;
+  count: number;
+  setCount: (count: number) => void;
+  columns: string[];
+  rows: any[];
+};
+
 declare interface ClassroomContext {
   payloadIndex: number;
   setPayloadIndex: (payloadIndex: number) => void;

@@ -13,6 +13,7 @@ export interface InputProps extends InputGroupProps {
   name?: string;
   register?: UseFormRegisterReturn;
   disableAnimation?: boolean;
+  inputClassName?: string;
   list?: string;
 };
 
@@ -24,6 +25,9 @@ function Input({
   iconName,
   register,
   bgColor,
+  borderRadius,
+  inputClassName,
+  borderLeft,
   list,
   as,
   disableAnimation = false,
@@ -55,12 +59,13 @@ function Input({
         onBlur={() => {
           setIsFocused(false);
         }}
+        minW={isFocused? "100px":undefined}
         {...rest}
       >
         <InputLeftElement
           as={m.div}
           pointerEvents="none"
-          borderRadius={8}
+          borderRadius={borderRadius || 8}
           h={!isWideOrNormalVersion? 8:10}
           w={!isWideOrNormalVersion? 8:10}
           children={<NamedIcon name={iconName}/>}
@@ -73,8 +78,9 @@ function Input({
           bgColor={bgColor ?? "solid.100"}
           border="none"
           minW="80px"
-          borderLeft={`2px solid var(--chakra-colors-${error? "red-400":"primary-700"})!important`}
-          borderRadius={8}
+          className={inputClassName}
+          borderLeft={borderLeft || `2px solid var(--chakra-colors-${error? "red-400":"primary-700"})!important`}
+          borderRadius={borderRadius || 8}
           _placeholder={{
             color: "alt.400"
           }}

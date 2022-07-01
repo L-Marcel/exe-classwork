@@ -101,6 +101,10 @@ export const theme = extendTheme({
         ".js-focus-visible :focus:not(.focus-visible)": { 
           outline: "none"
         },
+        ".border-on-focus:focus-visible": {
+          outline: "none",
+          border: "2px solid var(--chakra-colors-primary-600)"
+        },
         ".chakra-avatar__svg": {
           color: "var(--chakra-colors-solid-450)!important",
           "& path:last-of-type": {
