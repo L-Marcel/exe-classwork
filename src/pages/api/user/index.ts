@@ -8,7 +8,3 @@ async function getAuthenticatedUser(req: Req, res: Res) {
 export default apiHandle({
   "GET": withUser(getAuthenticatedUser)
 });
-
-export const config = {
-  runtime: 'experimental-edge',
-};

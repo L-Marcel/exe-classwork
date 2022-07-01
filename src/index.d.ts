@@ -151,6 +151,10 @@ declare type ApiHandleMethodsFunctions = {
   [method: string]: (req: Req, res: Res) => Promise<any> 
 };
 
+declare type ApiEdgeHandleMethodsFunctions = {
+  [method: string]: (req: Req) => Promise<any> 
+};
+
 declare type ErrorWithContext<T = any> = { 
   statusCode: number;
   message: string;
