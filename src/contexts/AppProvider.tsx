@@ -1,4 +1,4 @@
-import { User } from "@prisma/client/edge";
+import { User } from "@prisma/client";
 import { useRouter } from "next/router";
 import { ReactNode, useCallback, useEffect, useState } from "react";
 import { Socket } from "socket.io-client";

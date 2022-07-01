@@ -1,4 +1,4 @@
-import { Prisma as P } from "@prisma/client/edge";
+import { Prisma as P } from "@prisma/client";
 import { Prisma } from "../services/prisma";
 
 class Commits {

@@ -1,7 +1,7 @@
 
 import { HStack, Stack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Repository } from "@prisma/client/edge";
+import { Repository } from "@prisma/client";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";

@@ -1,4 +1,4 @@
-import { Prisma as P } from "@prisma/client/edge";
+import { Prisma as P } from "@prisma/client";
 import { NotFoundError } from "../errors/api/NotFoundError";
 import { Prisma } from "../services/prisma";
 import { getApiQuery } from "../utils/getApiQuery";
