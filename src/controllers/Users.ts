@@ -1,4 +1,4 @@
-import { Prisma as P } from "@prisma/client";
+import { Prisma as P } from "@prisma/client/edge";
 import { AuthUserNotFoundError } from "../errors/api/AuthUserNotFoundError";
 import { NotFoundError } from "../errors/api/NotFoundError";
 import { NotLinkedWithError } from "../errors/api/NotLinkedWithError";

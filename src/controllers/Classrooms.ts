@@ -1,4 +1,4 @@
-import { Prisma as P } from "@prisma/client";
+import { Prisma as P } from "@prisma/client/edge";
 import { v4 as uuid } from "uuid";
 import { NotFoundError } from "../errors/api/NotFoundError";
 import { Prisma } from "../services/prisma";

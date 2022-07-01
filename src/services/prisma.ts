@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client/edge";
 import { serialize } from "../utils/serialize";
 import { SocketApi } from "./api/socketApi";
 

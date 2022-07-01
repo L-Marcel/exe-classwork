@@ -1,4 +1,4 @@
-import { Prisma as P } from "@prisma/client";
+import { Prisma as P } from "@prisma/client/edge";
 import { Alerts } from "../../../../../../controllers/Alerts";
 import { Classrooms } from "../../../../../../controllers/Classrooms";
 import { Commits } from "../../../../../../controllers/Commits";

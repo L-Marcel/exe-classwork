@@ -1,4 +1,4 @@
-import { Prisma as P } from "@prisma/client";
+import { Prisma as P } from "@prisma/client/edge";
 
 function getApiQuery(query: string = ""): P.StringFilter {
   return {

@@ -1,4 +1,4 @@
-import { Prisma as P, User } from "@prisma/client";
+import { Prisma as P, User } from "@prisma/client/edge";
 import { AlreadyLinkedError } from "../errors/api/AlreadyLinkedError";
 import { Prisma } from "../services/prisma";
 import { Alerts } from "./Alerts";
