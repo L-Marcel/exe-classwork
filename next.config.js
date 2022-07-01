@@ -17,7 +17,6 @@ module.exports = {
   },
   webpack: (config, { nextRuntime }) => {
     if (nextRuntime !== "nodejs") return config;
-    
     config.experiments = {
       ...config.experiments,
       topLevelAwait: true
