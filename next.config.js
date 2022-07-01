@@ -15,7 +15,8 @@ module.exports = {
   webpack: (config) => {
     config.experiments = {
       ...config.experiments,
-      topLevelAwait: true 
+      topLevelAwait: true,
+      runtime: 'experimental-edge'
     };
     return config;
   },
