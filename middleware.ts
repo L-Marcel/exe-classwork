@@ -1,12 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getMiddlewareRedirect } from "../../utils/middlewares/getMiddlewareRedirect";
+import { getMiddlewareRedirect } from "./src/utils/middlewares/getMiddlewareRedirect";
 
 export default async function middleware(req: NextRequest) {
   const token = req.cookies["token"];
-
-  if(!req?.page) {
-    return getMiddlewareRedirect(req, "/404");
-  };
   
   const user = await fetch(`${process.env.NEXT_PUBLIC_URL}/user?token=${token}`, {
     method: "GET"
@@ -20,4 +16,8 @@ export default async function middleware(req: NextRequest) {
   };
 
   return NextResponse.next();
+};
+
+export const config = {
+  matcher: ['/app/*'],
 };

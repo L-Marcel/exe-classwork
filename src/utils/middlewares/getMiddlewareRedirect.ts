@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
 function getMiddlewareRedirect(req: NextRequest, path: string) {
-  const url = req.nextUrl.clone();
-  url.pathname = path;
-  return NextResponse.redirect(url);
+  const redirectTo = new URL(path, req.url);
+  return NextResponse.redirect(redirectTo);
 };
 
 export { getMiddlewareRedirect };
