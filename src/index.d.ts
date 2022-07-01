@@ -198,6 +198,11 @@ declare type TableSearch = {
 declare type TableFilter = {
   [column: string]: boolean; 
 };
+
+declare type TableColumn = {
+  value: string;
+  order: "asc" | "desc" | "none"
+};
 declare interface TableContext {
   search: TableSearch;
   setSearch: (search: string, column: string) => void;
@@ -207,8 +212,9 @@ declare interface TableContext {
   setPage: (page: number) => void;
   count: number;
   setCount: (count: number) => void;
-  columns: string[];
+  columns: TableColumn[];
   rows: any[];
+  onChangeColumnOrder: (column: string) => void;
 };
 
 declare interface ClassroomContext {

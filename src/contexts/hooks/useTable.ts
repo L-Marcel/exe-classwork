@@ -13,7 +13,8 @@ function useTable() {
       setSearch: t.setSearch,
       setFilter: t.setFilter,
       setCount: t.setCount,
-      setPage: t.setPage
+      setPage: t.setPage,
+      onChangeColumnOrder: t.onChangeColumnOrder
     };
   });
 };

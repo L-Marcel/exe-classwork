@@ -7,39 +7,42 @@ function Table() {
   const {
     columns,
     rows,
-    setSearch
+    setSearch,
+    onChangeColumnOrder
   } = useTable();
-
-  function handleOnChangeColumnSearch(search: string, column: string) {
-    setSearch(search, column);
-  };
 
   return (
     <TableContainer borderRadius={10}>
       <ChakraTable>
         <Thead>
-          <Tr bgColor="solid.100">
+          <Tr 
+            bgColor="solid.100"
+          >
             {
               columns.map(c => {
                 return (
                   <Th
-                    key={c}
+                    key={c.value}
                     color="solid.900"
                     borderColor="solid.100" 
                     _notLast={{
                       borderRight: "1px solid",
                       borderRightColor: "solid.200"
                     }}
+                    onClick={() => onChangeColumnOrder(c.value)}
+                    cursor="pointer"
+                    _hover={{
+                      opacity: .6
+                    }}
                   >
                     <Box
                       display="flex"
-                      justifyContent="space-between"
                       alignItems="center"
                     >
-                      {c}<NamedIcon
+                      {c.value}{ c.order !== "none" && <NamedIcon
                         ml={1}
-                        name="down"
-                      />
+                        name={c.order === "asc"? "up":"down"}
+                      /> }
                     </Box>
                   </Th>
                 );
@@ -67,11 +70,11 @@ function Table() {
                       borderRadius="0px"
                       borderLeft="none"
                       inputClassName="border-on-focus"
-                      onChange={(e) => handleOnChangeColumnSearch(e.currentTarget.value, c)}
+                      onChange={(e) => setSearch(e.currentTarget.value, c.value)}
                       bgColor="solid.75"
-                      maxW="auto"
-                      w={null}
-                      minW="100px"
+                      maxW={null}
+                      w="min-content"
+                      minW="fit-content"
                     />
                   </Td>
                 );
@@ -96,7 +99,7 @@ function Table() {
                             borderRightColor: "solid.200"
                           }}
                         >
-                          {r[c]}
+                          {r[c.value]}
                         </Td>
                       );
                     })

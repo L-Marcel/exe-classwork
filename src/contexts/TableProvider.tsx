@@ -1,6 +1,7 @@
 import { throttle } from "lodash";
-import { ReactNode, useCallback, useRef, useState } from "react";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { createContext } from "use-context-selector";
+import { getChangedOrder } from "../utils/getChangedOrder";
 
 interface TableProviderProps {
   children: ReactNode;
@@ -11,6 +12,13 @@ interface TableProviderProps {
 export const tableContext = createContext({} as TableContext);
 
 function TableProvider({ children, columns, rows }: TableProviderProps) {
+  const [_rows, setRows] = useState(rows);
+
+  const [_columns, setColumns] = useState<TableColumn[]>(columns.map(c => ({
+    value: c,
+    order: c === "id"? "desc":"none"
+  })));
+
   const [count, setCount] = useState(rows.length);
 
   const [search, setSearch] = useState(columns.reduce((prev, cur) => {
@@ -55,6 +63,31 @@ function TableProvider({ children, columns, rows }: TableProviderProps) {
     setCount(page);
   }, [setCount]);
 
+  const _onChangeColumnOrder = useCallback((column: string) => {
+    setColumns(c => {
+      return c.map(col => {
+        if(col.value === column) {
+          col.order = getChangedOrder(col.order);
+        };
+
+        return col;
+      });
+    });
+  }, [setColumns]);
+
+  function orderByColumn(rows: any[], columns: TableColumn[]) {
+    const currentColumn = columns.find(c => c.value === "id");
+
+    rows = currentColumn.order !== "none"? rows.sort((a, b) => 
+    currentColumn.order === "asc"? (a["id"] - b["id"]):(b["id"] - a["id"])):rows;
+    
+    return rows;
+  };
+
+  useEffect(() => {
+    setRows(r => orderByColumn(r, _columns));
+  }, [_columns, setRows]);
+
   return (
     <tableContext.Provider
       value={{
@@ -66,8 +99,9 @@ function TableProvider({ children, columns, rows }: TableProviderProps) {
         setPage: _setPage,
         count,
         setCount: _setCount,
-        columns,
-        rows
+        columns: _columns,
+        rows: _rows,
+        onChangeColumnOrder: _onChangeColumnOrder
       }}
     >
       {children}
