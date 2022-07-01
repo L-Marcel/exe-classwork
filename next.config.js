@@ -2,7 +2,7 @@ module.exports = {
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
-    runtime: 'experimental-edge'
+    runtime: 'experimental-edge',
   },
   async headers() {
     return [
@@ -15,8 +15,7 @@ module.exports = {
       }
     ]
   },
-  webpack: (config, { nextRuntime }) => {
-    if (nextRuntime !== "nodejs") return config;
+  webpack: (config) => {
     config.experiments = {
       ...config.experiments,
       topLevelAwait: true

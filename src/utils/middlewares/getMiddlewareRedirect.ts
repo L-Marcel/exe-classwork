@@ -6,3 +6,4 @@ function getMiddlewareRedirect(req: NextRequest, path: string) {
 };
 
 export { getMiddlewareRedirect };
+

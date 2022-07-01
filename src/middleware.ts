@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getMiddlewareRedirect } from "./src/utils/middlewares/getMiddlewareRedirect";
+import { getMiddlewareRedirect } from "./utils/middlewares/getMiddlewareRedirect";
 
 export default async function middleware(req: NextRequest) {
-  const token = req.cookies["token"];
+  const token = req.cookies.get("token");
   
   const user = await fetch(`${process.env.NEXT_PUBLIC_URL}/user?token=${token}`, {
     method: "GET"
-  }).then(res => res.json())
-  .catch(() => false);
+  }).then(res => res.json()).catch(() => false);
 
   if(user?.githubId && !user?.installationId) {
     return getMiddlewareRedirect(req, "/api/login");
@@ -19,5 +18,8 @@ export default async function middleware(req: NextRequest) {
 };
 
 export const config = {
-  matcher: ['/app/*'],
+  matcher: [
+    "/app/:path*",
+    "/app",
+  ],
 };
