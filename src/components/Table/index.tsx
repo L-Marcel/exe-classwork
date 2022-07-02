@@ -73,7 +73,7 @@ function Table() {
                 return (
                   <Td
                     p={0}
-                    key={`search-${c}`}
+                    key={`search-${c.value}`}
                     borderColor="solid.100" 
                     borderBottom="5px solid"
                     bgColor="solid.75"
@@ -126,7 +126,7 @@ function Table() {
                           maxW="500px"
                           minW="60px"
                           whiteSpace="pre-wrap"
-                          key={`${r.id}-${c}`}
+                          key={`${r.id}-${c.value}`}
                           borderColor="solid.100" 
                           _notLast={{
                             borderRight: "1px solid",
