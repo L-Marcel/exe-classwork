@@ -13,7 +13,7 @@ import { RiFilePaper2Line, RiFlashlightFill, RiFlutterFill, RiGitRepositoryLine,
 import { SiApachekafka, SiApollographql, SiChakraui, SiDart, SiExpress, SiGnubash, SiJest, SiNestjs, SiNextdotjs, SiPrisma, SiTailwindcss, SiTypescript, SiVisualstudiocode } from "react-icons/si";
 import { TbBox, TbHeartHandshake, TbTools } from "react-icons/tb";
 import { TiGroup, TiWarningOutline, TiWeatherPartlySunny } from "react-icons/ti";
-import { VscSymbolClass } from "react-icons/vsc";
+import { VscKey, VscSymbolClass } from "react-icons/vsc";
 interface IconProps extends ChakraIconProps {
   name?: string;
 };
@@ -117,7 +117,8 @@ export const icons = {
   "question": BsFillQuestionCircleFill,
   "oriented": MdOutlineEmojiObjects,
   "class": VscSymbolClass,
-  "messages": BiMessageSquareDetail
+  "messages": BiMessageSquareDetail,
+  "key": VscKey
 };
 
 function NamedIcon({ name = "default", ...rest }: IconProps) {

@@ -199,10 +199,18 @@ declare type TableFilter = {
   [column: string]: boolean; 
 };
 
+
 declare type TableColumn = {
   value: string;
-  order: "asc" | "desc" | "none"
+  order: "asc" | "desc" | "none";
+  icon?: string;
 };
+
+declare type TableColumnData = {
+  value: string;
+  icon?: string;
+};
+
 declare interface TableContext {
   search: TableSearch;
   setSearch: (search: string, column: string) => void;

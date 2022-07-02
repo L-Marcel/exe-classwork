@@ -5,7 +5,7 @@ import { getChangedOrder } from "../utils/getChangedOrder";
 
 interface TableProviderProps {
   children: ReactNode;
-  columns: string[];
+  columns: TableColumnData[];
   rows: any[];
 };
 
@@ -16,20 +16,21 @@ function TableProvider({ children, columns, rows }: TableProviderProps) {
   const [filteredRows, setFilteredRows] = useState(_rows);
 
   const [_columns, setColumns] = useState<TableColumn[]>(columns.map(c => ({
-    value: c,
-    order: c === "id"? "desc":"none"
+    value: c.value,
+    order: c.value === "id"? "desc":"none",
+    icon: c.icon
   })));
   const [filteredColumns, setFilteredColumns] = useState(_columns);
 
   const [count, setCount] = useState(rows.length);
 
   const [search, setSearch] = useState(columns.reduce((prev, cur) => {
-    prev[cur] = "";
+    prev[cur.value] = "";
     return prev;
   }, {}));
 
   const [filter, setFilter] = useState(columns.reduce((prev, cur) => {
-    prev[cur] = true;
+    prev[cur.value] = true;
     return prev;
   }, {}));
 

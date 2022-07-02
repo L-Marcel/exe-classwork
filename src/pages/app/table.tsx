@@ -16,10 +16,20 @@ function TablePage() {
       <Title mb={5}>Example of a table</Title>
       <TableProvider
         columns={[
-          "id",
-          "name",
-          "value",
-          "button"
+          {
+            value: "id",
+            icon: "key"
+          },
+          {
+            value: "name",
+            icon: "user"
+          },
+          {
+            value: "value"
+          },
+          {
+            value: "button"
+          }
         ]}
         rows={[{
           id: 17,

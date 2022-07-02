@@ -86,7 +86,7 @@ function Table() {
                   >
                     {
                       canFilter? <Input
-                        iconName="search"
+                        iconName={c.icon || "search"}
                         borderRadius="0px"
                         borderLeft="none"
                         inputClassName="border-on-focus"
