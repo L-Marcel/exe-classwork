@@ -185,6 +185,7 @@ function TablePage() {
             display="flex"
             justifyContent="space-between"
             w="100%"
+            gap={2}
           >
             <TableFilter/>
             <TablePagination/>
