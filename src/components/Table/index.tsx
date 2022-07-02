@@ -41,7 +41,7 @@ function Table() {
                     >
                       {c.value}{ c.order !== "none" && <NamedIcon
                         ml={1}
-                        name={c.order === "asc"? "up":"down"}
+                        name={c.order === "desc"? "down":"up"}
                       /> }
                     </Box>
                   </Th>

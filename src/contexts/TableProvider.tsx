@@ -68,6 +68,8 @@ function TableProvider({ children, columns, rows }: TableProviderProps) {
       return c.map(col => {
         if(col.value === column) {
           col.order = getChangedOrder(col.order);
+        } else {
+          col.order = "none";
         };
 
         return col;
@@ -76,17 +78,25 @@ function TableProvider({ children, columns, rows }: TableProviderProps) {
   }, [setColumns]);
 
   function orderByColumn(rows: any[], columns: TableColumn[]) {
-    const currentColumn = columns.find(c => c.value === "id");
+    let _rows = [...rows];
 
-    rows = currentColumn.order !== "none"? rows.sort((a, b) => 
-    currentColumn.order === "asc"? (a["id"] - b["id"]):(b["id"] - a["id"])):rows;
-    
-    return rows;
+    for(let c in columns) {
+      const currentColumn = columns[c];
+
+      if(currentColumn.order !== "none") {
+        _rows = _rows.sort((a, b) => 
+          currentColumn.order === "desc"? 
+            (a[currentColumn.value] - b[currentColumn.value]):(b[currentColumn.value] - a[currentColumn.value])
+        );
+      };
+    };
+
+    return _rows;
   };
 
   useEffect(() => {
-    setRows(r => orderByColumn(r, _columns));
-  }, [_columns, setRows]);
+    setRows(orderByColumn(rows, _columns));
+  }, [_columns, rows, setRows]);
 
   return (
     <tableContext.Provider
