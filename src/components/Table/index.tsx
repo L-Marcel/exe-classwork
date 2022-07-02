@@ -26,8 +26,8 @@ function Table() {
             {
               columns.length > 0 && columns.map(c => {
                 const canOrder = initialRows.length > 0 &&
-                  typeof rows[0][c.value] !== "function"
-                  && typeof rows[0][c.value] !== "object";
+                  typeof initialRows[0][c.value] !== "function"
+                  && typeof initialRows[0][c.value] !== "object";
 
                 return (
                   <Th
@@ -67,8 +67,8 @@ function Table() {
             {
               columns.length > 0 && columns.map(c => {
                 const canFilter = initialRows.length > 0 &&
-                  typeof rows[0][c.value] !== "function"
-                  && typeof rows[0][c.value] !== "object";
+                  typeof initialRows[0][c.value] !== "function"
+                  && typeof initialRows[0][c.value] !== "object";
 
                 return (
                   <Td

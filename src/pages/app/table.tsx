@@ -180,6 +180,7 @@ function TablePage() {
           display="flex"
           flexDir="column"
           maxW="100%"
+          minW={["100%", "100%", "100%", 400]}
         >
           <Box
             display="flex"
