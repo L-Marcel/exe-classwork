@@ -1,11 +1,11 @@
 function getChangedOrder(order: "asc" | "desc" | "none") {
   switch(order) {
     case "asc":
-      return "desc";
-    case "desc": 
       return "none";
-    case "none":
+    case "desc": 
       return "asc";
+    case "none":
+      return "desc";
     default:
       return "none";
   };

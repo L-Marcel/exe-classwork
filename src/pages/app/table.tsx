@@ -9,7 +9,7 @@ function TablePage() {
     <Section
       isNeabyOfNavigation
     >
-      <Title mb={5}>Example of an table</Title>
+      <Title mb={5}>Example of a table</Title>
       <TableProvider
         columns={[
           "id",

@@ -84,10 +84,19 @@ function TableProvider({ children, columns, rows }: TableProviderProps) {
       const currentColumn = columns[c];
 
       if(currentColumn.order !== "none") {
-        _rows = _rows.sort((a, b) => 
-          currentColumn.order === "desc"? 
-            (a[currentColumn.value] - b[currentColumn.value]):(b[currentColumn.value] - a[currentColumn.value])
-        );
+        _rows = _rows.sort((a, b) => {
+          switch (typeof a[currentColumn.value]) {
+            case "string":
+              return currentColumn.order === "desc"? 
+                ('' + a[currentColumn.value]).localeCompare(b[currentColumn.value]):
+                ('' + b[currentColumn.value]).localeCompare(a[currentColumn.value]);
+            case "number":
+            default:
+              return currentColumn.order === "desc"? 
+                (a[currentColumn.value] - b[currentColumn.value]):
+                (b[currentColumn.value] - a[currentColumn.value]);
+          };
+        });
       };
     };
 
