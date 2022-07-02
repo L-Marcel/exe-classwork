@@ -1,5 +1,5 @@
 import { throttle } from "lodash";
-import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { ReactNode, startTransition, useCallback, useEffect, useRef, useState } from "react";
 import { createContext } from "use-context-selector";
 import { getChangedOrder } from "../utils/getChangedOrder";
 
@@ -13,11 +13,13 @@ export const tableContext = createContext({} as TableContext);
 
 function TableProvider({ children, columns, rows }: TableProviderProps) {
   const [_rows, setRows] = useState(rows);
+  const [filteredRows, setFilteredRows] = useState(_rows);
 
   const [_columns, setColumns] = useState<TableColumn[]>(columns.map(c => ({
     value: c,
     order: c === "id"? "desc":"none"
   })));
+  const [filteredColumns, setFilteredColumns] = useState(_columns);
 
   const [count, setCount] = useState(rows.length);
 
@@ -107,6 +109,32 @@ function TableProvider({ children, columns, rows }: TableProviderProps) {
     setRows(orderByColumn(rows, _columns));
   }, [_columns, rows, setRows]);
 
+  useEffect(() => {
+    startTransition(() => {
+      const filteredRows = _rows.filter(r => {
+        const allSearchs: [string, string][] = Object.entries(search);
+
+        for(let s in allSearchs) {
+          const search = allSearchs[s];
+          const value: string = String(r[search[0]]);
+
+          if(!value.includes(search[1])) {
+            return false;
+          };
+        };
+
+        return true;
+      });
+
+      setFilteredRows(filteredRows);
+      setCount(filteredRows.length);
+    });
+  }, [_rows, search, setRows, setCount]);
+
+  useEffect(() => {
+    setFilteredColumns(_columns.filter(c => filter[c.value]));
+  }, [_columns, filter, setFilteredColumns]);
+
   return (
     <tableContext.Provider
       value={{
@@ -118,8 +146,10 @@ function TableProvider({ children, columns, rows }: TableProviderProps) {
         setPage: _setPage,
         count,
         setCount: _setCount,
-        columns: _columns,
-        rows: _rows,
+        initialColumns: _columns,
+        columns: filteredColumns,
+        initialRows: rows,
+        rows: filteredRows,
         onChangeColumnOrder: _onChangeColumnOrder
       }}
     >

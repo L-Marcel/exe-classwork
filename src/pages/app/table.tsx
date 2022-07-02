@@ -1,5 +1,9 @@
+import { Box } from "@chakra-ui/react";
+import { Button } from "../../components/Buttons/Button";
 import { Section } from "../../components/Section";
 import { Table } from "../../components/Table";
+import { TableFilter } from "../../components/Table/Filter";
+import { TablePagination } from "../../components/Table/Pagination";
 import { Title } from "../../components/Title";
 import { TableProvider } from "../../contexts/TableProvider";
 import { WithUserProps } from "../../utils/routes/WithUserProps";
@@ -14,17 +18,97 @@ function TablePage() {
         columns={[
           "id",
           "name",
-          "value"
+          "value",
+          "button"
         ]}
         rows={[{
-          id: 0,
+          id: 17,
+          name: "example abcdef 1234567891011121314 1234567891011121314 1234567891011121314 1234567891011121314 1234567891011121314 1234567891011121314 1234567891011121314",
+          value: 59.5,
+          button: <Button w="100%">abc</Button>
+        },
+        {
+          id: 15,
+          name: "example",
+          value: 59.2,
+          button: <Button w="100%">abc</Button>
+        },
+        {
+          id: 20,
+          name: "last example",
+          value: 59.5
+        },
+        {
+          id: 30,
           name: "example",
           value: 59.5
         },
         {
-          id: 1,
+          id: 40,
           name: "example",
           value: 59.2
+        },
+        {
+          id: 50,
+          name: "last example",
+          value: 59.5
+        },
+        {
+          id: 60,
+          name: "example",
+          value: 59.5
+        },
+        {
+          id: 70,
+          name: "example",
+          value: 59.2
+        },
+        {
+          id: 80,
+          name: "last example",
+          value: 59.5
+        },
+        {
+          id: 90,
+          name: "example",
+          value: 59.5
+        },
+        {
+          id: 100,
+          name: "example",
+          value: 59.2
+        },
+        {
+          id: 101,
+          name: "last example",
+          value: 59.5
+        },
+        {
+          id: 102,
+          name: "example",
+          value: 59.5
+        },
+        {
+          id: 103,
+          name: "example",
+          value: 59.2
+        },
+        {
+          id: 104,
+          name: "last example",
+          value: 59.5
+        },
+        {
+          id: 0,
+          name: "example abcdef 1234567891011121314 1234567891011121314 1234567891011121314 1234567891011121314 1234567891011121314 1234567891011121314 1234567891011121314",
+          value: 59.5,
+          button: <Button w="100%">abc</Button>
+        },
+        {
+          id: 1,
+          name: "example",
+          value: 59.2,
+          button: <Button w="100%">abc</Button>
         },
         {
           id: 2,
@@ -92,7 +176,21 @@ function TablePage() {
           value: 59.5
         }]}
       >
-        <Table/>
+        <Box
+          display="flex"
+          flexDir="column"
+          maxW="100%"
+        >
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            w="100%"
+          >
+            <TableFilter/>
+            <TablePagination/>
+          </Box>
+          <Table/>
+        </Box>
       </TableProvider>
     </Section>
   );

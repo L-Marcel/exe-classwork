@@ -105,6 +105,15 @@ export const theme = extendTheme({
           outline: "none",
           border: "2px solid var(--chakra-colors-primary-600)"
         },
+        ".transparent-border-on-focus:focus-visible": {
+          outline: "2px solid var(--chakra-colors-primary-600)",
+          border: "2px solid transparent",
+          borderWidth: "2px 3px 2px 3px"
+        },
+        "tr.transparent-border-on-focus:focus-visible:last-of-type": {
+          outline: "2px solid var(--chakra-colors-primary-600)",
+          border: "3px solid transparent"
+        },
         ".chakra-avatar__svg": {
           color: "var(--chakra-colors-solid-450)!important",
           "& path:last-of-type": {

@@ -213,7 +213,9 @@ declare interface TableContext {
   count: number;
   setCount: (count: number) => void;
   columns: TableColumn[];
+  initialColumns: TableColumn[];
   rows: any[];
+  initialRows: any[];
   onChangeColumnOrder: (column: string) => void;
 };
 

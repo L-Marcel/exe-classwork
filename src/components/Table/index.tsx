@@ -1,4 +1,4 @@
-import { Box, Table as ChakraTable, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import { Box, Table as ChakraTable, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import { useTable } from "../../contexts/hooks/useTable";
 import { Input } from "../Inputs";
 import { NamedIcon } from "../NamedIcon";
@@ -7,12 +7,17 @@ function Table() {
   const {
     columns,
     rows,
+    initialRows,
     setSearch,
+    page,
     onChangeColumnOrder
   } = useTable();
 
   return (
-    <TableContainer borderRadius={10}>
+    <TableContainer 
+      minW={["100%", "100%", "100%", 400]}
+      borderRadius={10}
+    >
       <ChakraTable>
         <Thead>
           <Tr 
@@ -20,17 +25,23 @@ function Table() {
           >
             {
               columns.map(c => {
+                const canOrder = initialRows.length > 0 &&
+                  typeof rows[0][c.value] !== "function"
+                  && typeof rows[0][c.value] !== "object";
+
                 return (
                   <Th
+                    maxW="500px"
+                    minW="60px"
                     key={c.value}
                     color="solid.900"
-                    borderColor="solid.100" 
+                    borderColor="solid.100"
                     _notLast={{
                       borderRight: "1px solid",
                       borderRightColor: "solid.200"
                     }}
-                    onClick={() => onChangeColumnOrder(c.value)}
-                    cursor="pointer"
+                    onClick={() => canOrder && onChangeColumnOrder(c.value)}
+                    cursor={canOrder && "pointer"}
                     _hover={{
                       opacity: .6
                     }}
@@ -38,6 +49,7 @@ function Table() {
                     <Box
                       display="flex"
                       alignItems="center"
+                      justifyContent={!canOrder && "center"}
                     >
                       {c.value}{ c.order !== "none" && <NamedIcon
                         ml={1}
@@ -54,44 +66,66 @@ function Table() {
           <Tr>
             {
               columns.map(c => {
+                const canFilter = initialRows.length > 0 &&
+                  typeof rows[0][c.value] !== "function"
+                  && typeof rows[0][c.value] !== "object";
+
                 return (
                   <Td
                     p={0}
                     key={`search-${c}`}
                     borderColor="solid.100" 
                     borderBottom="5px solid"
+                    bgColor="solid.75"
+                    maxW="500px"
+                    minW="60px"
                     _notLast={{
                       borderRight: "1px solid",
                       borderRightColor: "solid.200"
                     }}
                   >
-                    <Input
-                      iconName="search"
-                      borderRadius="0px"
-                      borderLeft="none"
-                      inputClassName="border-on-focus"
-                      onChange={(e) => setSearch(e.currentTarget.value, c.value)}
-                      bgColor="solid.75"
-                      maxW={null}
-                      w="min-content"
-                      minW="fit-content"
-                    />
+                    {
+                      canFilter? <Input
+                        iconName="search"
+                        borderRadius="0px"
+                        borderLeft="none"
+                        inputClassName="border-on-focus"
+                        onChange={(e) => setSearch(e.currentTarget.value, c.value)}
+                        bgColor="solid.75"
+                        maxW="100%"
+                        w="min"
+                        minW="100%"
+                      />:<Text
+                        textAlign="center"
+                      >
+                        -
+                      </Text>
+                    }
                   </Td>
                 );
               })
             }
           </Tr>
           {
-            rows.map((r, i) => {
+            rows.filter((r,i) => (i + 1) <= ((page + 1) * 12) && (i + 1) > (page * 12)).map((r, i) => {
               return (
                 <Tr 
+                  tabIndex={0}
                   key={r.id} 
-                  bgColor={(i % 2 === 0)? "solid.75":"solid.50"}
+                  className="transparent-border-on-focus"
+                  bgColor={(i % 2 === 0)? "solid.75":"solid.100"}
+                  _last={{
+                    "& td": { borderBottom: "none" },
+                    borderBottomRadius: 10
+                  }}
                 >
                   {
                     columns.map(c => {
                       return (
                         <Td 
+                          maxW="500px"
+                          minW="60px"
+                          whiteSpace="pre-wrap"
                           key={`${r.id}-${c}`}
                           borderColor="solid.100" 
                           _notLast={{
@@ -99,7 +133,11 @@ function Table() {
                             borderRightColor: "solid.200"
                           }}
                         >
-                          {r[c.value]}
+                          {r[c.value] ?? <Text
+                            textAlign="center"
+                          >
+                            -
+                          </Text>}
                         </Td>
                       );
                     })
