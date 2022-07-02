@@ -111,7 +111,7 @@ function Table() {
               return (
                 <Tr 
                   tabIndex={0}
-                  key={r.id} 
+                  key={r?.id} 
                   className="transparent-border-on-focus"
                   bgColor={(i % 2 === 0)? "solid.75":"solid.100"}
                   _last={{
@@ -126,7 +126,7 @@ function Table() {
                           maxW="500px"
                           minW="60px"
                           whiteSpace="pre-wrap"
-                          key={`${r.id}-${c.value}`}
+                          key={`${r?.id}-${c.value}`}
                           borderColor="solid.100" 
                           _notLast={{
                             borderRight: "1px solid",
