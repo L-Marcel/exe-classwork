@@ -24,7 +24,7 @@ function Table() {
             bgColor="solid.100"
           >
             {
-              columns.map(c => {
+              columns.length > 0 && columns.map(c => {
                 const canOrder = initialRows.length > 0 &&
                   typeof rows[0][c.value] !== "function"
                   && typeof rows[0][c.value] !== "object";
@@ -65,7 +65,7 @@ function Table() {
         <Tbody>
           <Tr>
             {
-              columns.map(c => {
+              columns.length > 0 && columns.map(c => {
                 const canFilter = initialRows.length > 0 &&
                   typeof rows[0][c.value] !== "function"
                   && typeof rows[0][c.value] !== "object";
@@ -107,7 +107,7 @@ function Table() {
             }
           </Tr>
           {
-            rows.filter((r,i) => (i + 1) <= ((page + 1) * 12) && (i + 1) > (page * 12)).map((r, i) => {
+            rows.length > 0 && rows.filter((r,i) => (i + 1) <= ((page + 1) * 12) && (i + 1) > (page * 12)).map((r, i) => {
               return (
                 <Tr 
                   tabIndex={0}
@@ -120,7 +120,7 @@ function Table() {
                   }}
                 >
                   {
-                    columns.map(c => {
+                    columns.length > 0 && columns.map(c => {
                       return (
                         <Td 
                           maxW="500px"
