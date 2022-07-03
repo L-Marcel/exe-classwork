@@ -10,6 +10,7 @@ export interface RepositoryProfileItemProps {
   sulfix?: string;
   isSelected?: boolean;
   onSelect?: () => void;
+  value?: any;
   equation?: {
     title: string;
     instruction: string;

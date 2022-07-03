@@ -1,5 +1,5 @@
 import { Icon as ChakraIcon, IconProps as ChakraIconProps } from "@chakra-ui/react";
-import { AiFillCaretDown, AiFillCaretUp, AiFillHtml5, AiFillStar, AiOutlineCalendar, AiOutlineCheck, AiOutlineClose, AiOutlineInfoCircle, AiOutlineMenu, AiOutlineNumber, AiOutlinePaperClip, AiOutlinePlus, AiOutlinePoweroff, AiOutlineReload, AiOutlineRight, AiOutlineStar } from "react-icons/ai";
+import { AiFillCaretDown, AiFillCaretUp, AiFillHtml5, AiFillStar, AiOutlineCalendar, AiOutlineCheck, AiOutlineClockCircle, AiOutlineClose, AiOutlineInfoCircle, AiOutlineMenu, AiOutlineNumber, AiOutlinePaperClip, AiOutlinePercentage, AiOutlinePlus, AiOutlinePoweroff, AiOutlineReload, AiOutlineRight, AiOutlineStar } from "react-icons/ai";
 import { BiCog, BiCrown, BiCubeAlt, BiLike, BiMessageSquareDetail, BiSearchAlt } from "react-icons/bi";
 import { BsDownload, BsEmojiExpressionless, BsEmojiSunglasses, BsFillJournalBookmarkFill, BsFillMoonStarsFill, BsFillQuestionCircleFill, BsHourglassSplit, BsMoonStars, BsNewspaper, BsQuestionCircle, BsSunrise } from "react-icons/bs";
 import { CgTikcode } from "react-icons/cg";
@@ -118,7 +118,9 @@ export const icons = {
   "oriented": MdOutlineEmojiObjects,
   "class": VscSymbolClass,
   "messages": BiMessageSquareDetail,
-  "key": VscKey
+  "key": VscKey,
+  "percent": AiOutlinePercentage,
+  "clock": AiOutlineClockCircle
 };
 
 function NamedIcon({ name = "default", ...rest }: IconProps) {

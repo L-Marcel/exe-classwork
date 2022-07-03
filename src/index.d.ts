@@ -199,16 +199,20 @@ declare type TableFilter = {
   [column: string]: boolean; 
 };
 
-
-declare type TableColumn = {
-  value: string;
-  order: "asc" | "desc" | "none";
-  icon?: string;
-};
-
 declare type TableColumnData = {
   value: string;
+  name?: string;
   icon?: string;
+  isPrimary?: boolean;
+  percentOfData?: string;
+  showOnlyPercent?: boolean;
+  thProps?: import("@chakra-ui/react").TableColumnHeaderProps;
+  tdProps?: import("@chakra-ui/react").TableCellProps;
+};
+
+declare type TableColumnOrder = "asc" | "desc" | "percent-asc" | "percent-desc" | "none";
+declare interface TableColumn extends TableColumnData {
+  order: TableColumnOrder;
 };
 
 declare interface TableContext {

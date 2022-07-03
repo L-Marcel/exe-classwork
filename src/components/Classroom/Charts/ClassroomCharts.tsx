@@ -5,6 +5,7 @@ import { getSelectedArrayInterval } from "../../../utils/getSelectedArrayInterva
 import { DateIntervalInput } from "../../Inputs/DateIntervalInput";
 import { RangerInput } from "../../Inputs/RangerInput";
 import { ClassroomMetricsChart } from "./ClassroomMetricsChart";
+import { ClasssroomRepositoriesTableContent } from "./ClassroomRepositoriesTableContent";
 import { ClassroomRepositoryContent } from "./ClassroomRepositoryContent";
 
 export interface ClassroomChartsProps {
@@ -115,8 +116,8 @@ function ClassroomCharts({
       </Box>
       <Tabs pt={4}>
         <TabList>
-          <Tab>Metrics</Tab>
-          <Tab>Contribution</Tab>
+          <Tab>Repositories</Tab>
+          <Tab>Teams</Tab>
         </TabList>
         <TabPanels>
           <TabPanel
@@ -163,8 +164,11 @@ function ClassroomCharts({
           <TabPanel
             h="500px"
             w={["1000px", "1000px", "900px", `${chartWidth}px`]}
+            maxW="100%"
           >
-
+            <ClasssroomRepositoriesTableContent
+              repositories={repositoriesInInterval}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

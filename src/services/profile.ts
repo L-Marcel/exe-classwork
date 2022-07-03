@@ -138,6 +138,7 @@ class ProfileAnalyzer {
 
     if(favoriteHour >= 22 || favoriteHour < 1) return {
       message: "Late night programmer",
+      value: favoriteHour,
       icon: "alt-moon",
       color: "orange.600",
       size: 5,
@@ -152,6 +153,7 @@ class ProfileAnalyzer {
 
     if(favoriteHour <= 5) return {
       message: "Ambitious programmer",
+      value: favoriteHour,
       icon: "alt-moon",
       color: "red.600",
       size: 5,
@@ -166,6 +168,7 @@ class ProfileAnalyzer {
 
     if(favoriteHour <= 12) return {
       message: "Morning programmer",
+      value: favoriteHour,
       icon: "afternoon",
       color: "primary.800",
       description: `This programmer works in the morning (${favoriteHour}). It\'s incredible! ` +
@@ -178,6 +181,7 @@ class ProfileAnalyzer {
 
     if(favoriteHour <= 18) return {
       message: "Afternoon programmer",
+      value: favoriteHour,
       icon: "afternoon",
       color: "primary.800",
       description: `This programmer works in the afternoon (${favoriteHour}). It\'s incredible! ` +
@@ -190,6 +194,7 @@ class ProfileAnalyzer {
 
     return {
       message: "Night programmer",
+      value: favoriteHour,
       icon: "alt-moon",
       color: "primary.800",
       size: 5,

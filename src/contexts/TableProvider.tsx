@@ -1,7 +1,8 @@
 import { throttle } from "lodash";
-import { ReactNode, startTransition, useCallback, useEffect, useRef, useState } from "react";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { createContext } from "use-context-selector";
 import { getChangedOrder } from "../utils/getChangedOrder";
+import { getPercent, getPercentValue } from "../utils/getPercent";
 
 interface TableProviderProps {
   children: ReactNode;
@@ -15,11 +16,12 @@ function TableProvider({ children, columns, rows }: TableProviderProps) {
   const [_rows, setRows] = useState(rows);
   const [filteredRows, setFilteredRows] = useState(_rows);
 
-  const [_columns, setColumns] = useState<TableColumn[]>(columns.map(c => ({
-    value: c.value,
-    order: c.value === "id"? "desc":"none",
-    icon: c.icon
-  })));
+  const formattedColumns = columns.map(c => ({
+    ...c,
+    order: (c.isPrimary? "desc":"none") as TableColumnOrder,
+  }));
+
+  const [_columns, setColumns] = useState<TableColumn[]>(formattedColumns);
   const [filteredColumns, setFilteredColumns] = useState(_columns);
 
   const [count, setCount] = useState(rows.length);
@@ -38,7 +40,7 @@ function TableProvider({ children, columns, rows }: TableProviderProps) {
 
   const throttleCallback = useRef(throttle((fn: Function) => {
     fn();
-  }, 100));
+  }, 200));
 
   const _setSearch = useCallback((search: string, column: string) => {
     throttleCallback.current(() => setSearch(s => {
@@ -70,7 +72,7 @@ function TableProvider({ children, columns, rows }: TableProviderProps) {
     setColumns(c => {
       return c.map(col => {
         if(col.value === column) {
-          col.order = getChangedOrder(col.order);
+          col.order = getChangedOrder(col.order, col.percentOfData? true:false);
         } else {
           col.order = "none";
         };
@@ -88,16 +90,35 @@ function TableProvider({ children, columns, rows }: TableProviderProps) {
 
       if(currentColumn.order !== "none") {
         _rows = _rows.sort((a, b) => {
-          switch (typeof a[currentColumn.value]) {
+          const firstValue = a[currentColumn.value];
+          const lastValue = b[currentColumn.value];
+          const order = currentColumn.order;
+          const firstTotal = currentColumn.percentOfData? a[currentColumn.percentOfData]:false;
+          const lastTotal = currentColumn.percentOfData? b[currentColumn.percentOfData]:false;
+
+          switch (typeof firstValue) {
             case "string":
-              return currentColumn.order === "desc"? 
-                ('' + a[currentColumn.value]).localeCompare(b[currentColumn.value]):
-                ('' + b[currentColumn.value]).localeCompare(a[currentColumn.value]);
+              return order === "desc"? 
+                ('' + firstValue).localeCompare(lastValue):
+                ('' + lastValue).localeCompare(firstValue);
             case "number":
             default:
-              return currentColumn.order === "desc"? 
-                (a[currentColumn.value] - b[currentColumn.value]):
-                (b[currentColumn.value] - a[currentColumn.value]);
+              if(
+                (order === "percent-asc" || order === "percent-desc") &&
+                typeof firstTotal === "number" &&
+                typeof lastTotal === "number"
+              ) {
+                const firstPercent = getPercentValue(firstValue, firstTotal);
+                const lastPercent = getPercentValue(lastValue, lastTotal);
+
+                return order === "percent-desc"? 
+                  (firstPercent - lastPercent):
+                  (lastPercent - firstPercent);
+              };
+
+              return order === "desc"? 
+                (firstValue - lastValue):
+                (lastValue - firstValue);
           };
         });
       };
@@ -111,15 +132,33 @@ function TableProvider({ children, columns, rows }: TableProviderProps) {
   }, [_columns, rows, setRows]);
 
   useEffect(() => {
-    startTransition(() => {
+    throttleCallback.current(() => {
       const filteredRows = _rows.filter(r => {
         const allSearchs: [string, string][] = Object.entries(search);
 
         for(let s in allSearchs) {
           const search = allSearchs[s];
-          const value: string = String(r[search[0]]);
+          const column = columns.find(c => c.value == search[0]);
+          
+          const value = r[search[0]];
+          const percentOfData = column.percentOfData? r[column.percentOfData]:false;
+          const allIsNumber = 
+              typeof value === "number" && 
+              typeof percentOfData === "number";
 
-          if(!value.includes(search[1])) {
+          const percent = (percentOfData && allIsNumber)? 
+            `${!column.showOnlyPercent? ` (`:""}${getPercent(value, percentOfData)}%${!column.showOnlyPercent? `)`:""}`
+            :false;
+
+          if(
+            ((!allIsNumber || !percentOfData) || (percent && 
+              !(
+                String(value).toLowerCase() + 
+                String(percent).toLowerCase()
+              ).includes(search[1].toLowerCase())
+            )) && 
+            !String(value).toLowerCase().includes(search[1].toLowerCase())
+          ) {
             return false;
           };
         };
@@ -130,7 +169,7 @@ function TableProvider({ children, columns, rows }: TableProviderProps) {
       setFilteredRows(filteredRows);
       setCount(filteredRows.length);
     });
-  }, [_rows, search, setRows, setCount]);
+  }, [_rows, search, columns, setRows, setCount]);
 
   useEffect(() => {
     setFilteredColumns(_columns.filter(c => filter[c.value]));

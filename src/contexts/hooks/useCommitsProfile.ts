@@ -6,12 +6,14 @@ interface CommitsProfileProps {
   selectedUser: string;
   commits: Commit[];
   isFormatted?: boolean;
+  allowNeverDate?: boolean;
 };
 
 function useCommitsProfile({
   commits,
   selectedUser,
   isFormatted = false,
+  allowNeverDate = false
 }: CommitsProfileProps) {
   const formattedCommits: (Omit<CommitChart, "files"> | any)[] = isFormatted? commits:commits.map(commit => {
     return {
@@ -143,7 +145,9 @@ function useCommitsProfile({
   const organizationByMethods = profile.getOrganizationByMethods();
   const organizationByClasses = profile.getOrganizationByClasses();
 
-  const dateOfLastCommit = formatDistance(userCommits? new Date(userCommits?.lastDate):new Date(), new Date());
+  const dateOfLastCommit = allowNeverDate? 
+    userCommits? formatDistance(new Date(userCommits?.lastDate), new Date()):"never":
+    formatDistance(userCommits? new Date(userCommits?.lastDate):new Date(), new Date());
 
   const profileResult = [commitsCount, commitContribution, time, messages, organizationByMethods, organizationByClasses];
 

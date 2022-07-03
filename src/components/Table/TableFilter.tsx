@@ -75,7 +75,7 @@ function TableFilter() {
                   key={`menu-filter-${c.value}`}
                   value={c.value}
                 >
-                  {c.value}
+                  {c.name || c.value}
                 </MenuItemOption>
               );
             })

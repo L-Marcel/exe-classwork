@@ -150,7 +150,6 @@ function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
         />
 
         <Tooltip
-          trigger="click"
           cursor={<ClassroomTooltipCursor/>}
           content={(rest) => ClassroomTooltips({ ...rest as any, repositories })}
         />

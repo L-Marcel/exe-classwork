@@ -196,7 +196,12 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
     }, [] as Partial<Repository>[]);
 
     return await Promise.all(repositories.map(async(repository) => {
-      return await getRepository(repository.fullname);
+      const repositoryData = await getRepository(repository.fullname);
+
+      return {
+        teams: repository.teams,
+        ...repositoryData
+      }; 
     }));
   };
 
