@@ -117,13 +117,18 @@ function TableContent() {
             }
           </Tr>
           {
-            rows.length > 0 && rows.filter((r,i) => (i + 1) <= ((page + 1) * 12) && (i + 1) > (page * 12)).map((r, i) => {
+            rows.length > 0 && rows
+              .sort((a, b) => b["_isResult"] - a["_isResult"])
+              .filter((r,i) => (i + 1) <= ((page + 1) * 12) && (i + 1) > (page * 12))
+              .map((r, i) => {
               return (
                 <Tr 
                   tabIndex={0}
                   key={r?.id} 
                   className="transparent-border-on-focus"
                   bgColor={(i % 2 === 0)? "solid.75":"solid.100"}
+                  opacity={r?._isResult === false? .2:1}
+                  filter={r?._isResult === false? "blur(1px)":undefined}
                   _last={{
                     "& td": { borderBottom: "none" },
                     borderBottomRadius: 10

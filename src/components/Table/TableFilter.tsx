@@ -53,6 +53,9 @@ function TableFilter() {
         border="none"
         borderRadius={8}
         { ...boxShadow(false) as any }
+        maxH="50vh"
+        overflowY="auto"
+        overflowX="hidden"
       >
         <MenuOptionGroup 
           type="checkbox"

@@ -131,45 +131,50 @@ function TableProvider({ children, columns, rows }: TableProviderProps) {
     setRows(orderByColumn(rows, _columns));
   }, [_columns, rows, setRows]);
 
+  function isFindInSearch(r: any, search: any, columns: TableColumnData[]) {
+    const allSearchs: [string, string][] = Object.entries(search);
+
+    for(let s in allSearchs) {
+      const search = allSearchs[s];
+      const column = columns.find(c => c.value == search[0]);
+      
+      const value = r[search[0]];
+      const percentOfData = column.percentOfData? r[column.percentOfData]:false;
+      const allIsNumber = 
+          typeof value === "number" && 
+          typeof percentOfData === "number";
+
+      const percent = (percentOfData && allIsNumber)? 
+        `${!column.showOnlyPercent? ` (`:""}${getPercent(value, percentOfData)}%${!column.showOnlyPercent? `)`:""}`
+        :false;
+
+      if(
+        ((!allIsNumber || !percentOfData) || (percent && 
+          !(
+            String(value).toLowerCase() + 
+            String(percent).toLowerCase()
+          ).includes(search[1].toLowerCase())
+        )) && 
+        !String(value).toLowerCase().includes(search[1].toLowerCase())
+      ) {
+        return false;
+      };
+    };
+
+    return true;
+  };
+
   useEffect(() => {
     throttleCallback.current(() => {
-      const filteredRows = _rows.filter(r => {
-        const allSearchs: [string, string][] = Object.entries(search);
-
-        for(let s in allSearchs) {
-          const search = allSearchs[s];
-          const column = columns.find(c => c.value == search[0]);
-          
-          const value = r[search[0]];
-          const percentOfData = column.percentOfData? r[column.percentOfData]:false;
-          const allIsNumber = 
-              typeof value === "number" && 
-              typeof percentOfData === "number";
-
-          const percent = (percentOfData && allIsNumber)? 
-            `${!column.showOnlyPercent? ` (`:""}${getPercent(value, percentOfData)}%${!column.showOnlyPercent? `)`:""}`
-            :false;
-
-          if(
-            ((!allIsNumber || !percentOfData) || (percent && 
-              !(
-                String(value).toLowerCase() + 
-                String(percent).toLowerCase()
-              ).includes(search[1].toLowerCase())
-            )) && 
-            !String(value).toLowerCase().includes(search[1].toLowerCase())
-          ) {
-            return false;
-          };
-        };
-
-        return true;
+      const filteredRows = _rows.map(r => {
+        r["_isResult"] = isFindInSearch(r, search, columns);
+        return r;
       });
 
       setFilteredRows(filteredRows);
       setCount(filteredRows.length);
     });
-  }, [_rows, search, columns, setRows, setCount]);
+  }, [_rows, search, columns, setFilteredRows, setRows, setCount]);
 
   useEffect(() => {
     setFilteredColumns(_columns.filter(c => filter[c.value]));
