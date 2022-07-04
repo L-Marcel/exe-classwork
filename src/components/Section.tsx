@@ -25,6 +25,9 @@ function Section({
       py={10}
       pl={user? [10, 14, 28]:10}
       pr={user? [10, 14, 28]:10}
+      _last={{
+        paddingBottom: [20, 20, 20, 10]
+      }}
       __css={{
         "&:nth-of-type(2n)": {
           bgColor: bgColor ?? "solid.25"
