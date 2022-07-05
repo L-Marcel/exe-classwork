@@ -79,7 +79,8 @@ function RepositoryContent({
             value={viewInterval}
             max={(commits.length - 1) * 100}
             mb={5}
-            mt={2}
+            mt="1px"
+            mr="2px"
           />
           <RepositoryMetricsChart
             data={getSelectedArrayInterval(data, viewInterval)}

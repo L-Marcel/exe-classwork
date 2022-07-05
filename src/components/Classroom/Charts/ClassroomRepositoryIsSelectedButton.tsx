@@ -14,7 +14,7 @@ function ClassroomRepositoryIsSelectedButton({ index }) {
       w="15px"
       h="15px"
       bgColor="transparent!important"
-      onClick={() => setPayloadIndex(index)}
+      onClick={() => payloadIndex === index? setPayloadIndex(-1):setPayloadIndex(index)}
       icon={<NamedIcon
         name={payloadIndex === index? "eye-opened":"eye-closed"}
       />}

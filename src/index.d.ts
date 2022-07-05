@@ -204,6 +204,7 @@ declare type TableColumnData = {
   name?: string;
   icon?: string;
   isPrimary?: boolean;
+  reference?: string;
   percentOfData?: string;
   showOnlyPercent?: boolean;
   thProps?: import("@chakra-ui/react").TableColumnHeaderProps;

@@ -1,7 +1,7 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { ClassroomProvider } from "../../../contexts/ClassroomProvider";
-import { getSelectedArrayInterval } from "../../../utils/getSelectedArrayInterval";
+import { useClassroomPayloadIndex } from "../../../contexts/hooks/useClassroomPayloadIndex";
 import { DateIntervalInput } from "../../Inputs/DateIntervalInput";
 import { ClassroomMetricsChart } from "./ClassroomMetricsChart";
 import { ClasssroomRepositoriesTableContent } from "./ClassroomRepositoriesTableContent";
@@ -14,6 +14,7 @@ export interface ClassroomChartsProps {
 function ClassroomCharts({
   repositories
 }: ClassroomChartsProps) {
+  const { payloadIndex } = useClassroomPayloadIndex();
   const [chartWidth, setChartWidth] = useState(900 - 125);
 
   const commits = repositories.reduce((prev, cur) => {
@@ -74,7 +75,6 @@ function ClassroomCharts({
   }, []);
 
   const [repositoriesWithCommitsInterval, setRepositoriesWithCommitsInterval] = useState(data);
-  const [viewInterval, setViewInterval] = useState<[number, number]>([0, (repositoriesWithCommitsInterval.length - 1) * 100]);
 
   useEffect(() => {
     setChartWidth((window?.innerWidth || 900) - 125);
@@ -95,12 +95,6 @@ function ClassroomCharts({
       };
     }, [repositories]);
   
-  function handleOnChangeRanger(interval: [number, number]) {
-    setViewInterval(interval);
-  };
-
-  const repositoriesInInterval = getSelectedArrayInterval(repositoriesWithCommitsInterval, viewInterval)
-
   return (
     <ClassroomProvider>
       <Box
@@ -124,13 +118,13 @@ function ClassroomCharts({
             flexDir="column"
           >
             <ClassroomMetricsChart
-              repositories={repositoriesInInterval}
+              repositories={repositoriesWithCommitsInterval}
             />
             <Box
               w="100%"
             >
               <ClassroomRepositoryContent
-                repositories={repositoriesInInterval}
+                repositories={repositoriesWithCommitsInterval}
               />
             </Box>
           </TabPanel>
@@ -140,7 +134,7 @@ function ClassroomCharts({
             maxW="100%"
           >
             <ClasssroomRepositoriesTableContent
-              repositories={repositoriesInInterval}
+              repositories={repositoriesWithCommitsInterval}
             />
           </TabPanel>
         </TabPanels>

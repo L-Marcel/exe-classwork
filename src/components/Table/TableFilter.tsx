@@ -63,7 +63,7 @@ function TableFilter() {
           onChange={handleOnChangeFilters}
         >
           {
-            initialColumns.map(c => {
+            initialColumns.filter(c => !c.reference).map(c => {
               return (
                 <MenuItemOption
                   _hover={{

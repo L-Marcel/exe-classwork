@@ -16,9 +16,7 @@ function TableProvider({ children, columns, rows }: TableProviderProps) {
   const [_rows, setRows] = useState(rows);
   const [filteredRows, setFilteredRows] = useState(_rows);
 
-  const [initialColumns, setIntialColumns] = useState(columns);
-
-  const formattedColumns = initialColumns.map(c => ({
+  const formattedColumns = columns.map(c => ({
     ...c,
     order: (c.isPrimary? "desc":"none") as TableColumnOrder,
   }));
@@ -34,7 +32,9 @@ function TableProvider({ children, columns, rows }: TableProviderProps) {
   }, {}));
 
   const [filter, setFilter] = useState(columns.reduce((prev, cur) => {
-    prev[cur.value] = true;
+    if(!cur.reference) {
+      prev[cur.value] = true;
+    };
     return prev;
   }, {}));
 
@@ -179,7 +179,7 @@ function TableProvider({ children, columns, rows }: TableProviderProps) {
   }, [_rows, search, columns, setFilteredRows, setRows, setCount]);
 
   useEffect(() => {
-    setFilteredColumns(_columns.filter(c => filter[c.value]));
+    setFilteredColumns(_columns.filter(c => filter[c.reference || c.value]));
   }, [_columns, filter, setFilteredColumns]);
 
   return (
