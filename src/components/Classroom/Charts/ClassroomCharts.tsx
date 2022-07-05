@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from "react";
 import { ClassroomProvider } from "../../../contexts/ClassroomProvider";
 import { getSelectedArrayInterval } from "../../../utils/getSelectedArrayInterval";
 import { DateIntervalInput } from "../../Inputs/DateIntervalInput";
-import { RangerInput } from "../../Inputs/RangerInput";
 import { ClassroomMetricsChart } from "./ClassroomMetricsChart";
 import { ClasssroomRepositoriesTableContent } from "./ClassroomRepositoriesTableContent";
 import { ClassroomRepositoryContent } from "./ClassroomRepositoryContent";
@@ -124,35 +123,9 @@ function ClassroomCharts({
             display="flex"
             flexDir="column"
           >
-            <Box
-              w="100%"
-              h="580px"
-              overflowX={["auto", "auto", "auto", "hidden"]}
-              overflowY="hidden"
-            >
-              <Box
-                h="580px"
-                w={["1000px", "1000px", "900px", `${chartWidth}px`]}
-                alignItems="center"
-                display="flex"
-                flexDir="column"
-              >
-                <RangerInput
-                  w={`${chartWidth - 50}px`}
-                  alignSelf="center"
-                  onChange={handleOnChangeRanger}
-                  h={5}
-                  step={0.1}
-                  value={viewInterval}
-                  max={(repositoriesWithCommitsInterval.length - 1) * 100}
-                  mb={5}
-                  mt={2}
-                />
-                <ClassroomMetricsChart
-                  repositories={repositoriesInInterval}
-                />
-              </Box>
-            </Box>
+            <ClassroomMetricsChart
+              repositories={repositoriesInInterval}
+            />
             <Box
               w="100%"
             >

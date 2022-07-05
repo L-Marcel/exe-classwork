@@ -9,7 +9,7 @@ import { FiCopy, FiFigma, FiFramer, FiPaperclip } from "react-icons/fi";
 import { GrGraphQl, GrNode } from "react-icons/gr";
 import { IoIosRocket, IoLogoJavascript, IoMdAddCircleOutline, IoMdOpen, IoMdRemoveCircleOutline, IoMdSchool } from "react-icons/io";
 import { MdOutlineEmojiObjects, MdOutlineTune, MdOutlineUpdate } from "react-icons/md";
-import { RiFilePaper2Line, RiFlashlightFill, RiFlutterFill, RiGitRepositoryLine, RiListCheck2, RiZzzFill } from "react-icons/ri";
+import { RiEyeCloseLine, RiEyeLine, RiFilePaper2Line, RiFlashlightFill, RiFlutterFill, RiGitRepositoryLine, RiListCheck2, RiZzzFill } from "react-icons/ri";
 import { SiApachekafka, SiApollographql, SiChakraui, SiDart, SiExpress, SiGnubash, SiJest, SiNestjs, SiNextdotjs, SiPrisma, SiTailwindcss, SiTypescript, SiVisualstudiocode } from "react-icons/si";
 import { TbBox, TbHeartHandshake, TbTools } from "react-icons/tb";
 import { TiGroup, TiWarningOutline, TiWeatherPartlySunny } from "react-icons/ti";
@@ -120,7 +120,9 @@ export const icons = {
   "messages": BiMessageSquareDetail,
   "key": VscKey,
   "percent": AiOutlinePercentage,
-  "clock": AiOutlineClockCircle
+  "clock": AiOutlineClockCircle,
+  "eye-closed": RiEyeCloseLine,
+  "eye-opened": RiEyeLine
 };
 
 function NamedIcon({ name = "default", ...rest }: IconProps) {

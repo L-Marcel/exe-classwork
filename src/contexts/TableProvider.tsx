@@ -16,7 +16,9 @@ function TableProvider({ children, columns, rows }: TableProviderProps) {
   const [_rows, setRows] = useState(rows);
   const [filteredRows, setFilteredRows] = useState(_rows);
 
-  const formattedColumns = columns.map(c => ({
+  const [initialColumns, setIntialColumns] = useState(columns);
+
+  const formattedColumns = initialColumns.map(c => ({
     ...c,
     order: (c.isPrimary? "desc":"none") as TableColumnOrder,
   }));

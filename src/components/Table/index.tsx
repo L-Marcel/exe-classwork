@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, BoxProps } from "@chakra-ui/react";
 import { TableProvider } from "../../contexts/TableProvider";
 import { TableContent } from "./TableContent";
 import { TableFilter } from "./TableFilter";
@@ -7,11 +7,15 @@ import { TablePagination } from "./TablePagination";
 interface TableProps {
   rows: any[];
   columns: TableColumnData[];
+  container?: BoxProps;
+  caption?: string;
 };
 
 function Table({
   rows,
-  columns
+  columns,
+  container,
+  caption
 }: TableProps) {
   return (
     <TableProvider
@@ -23,6 +27,7 @@ function Table({
         flexDir="column"
         maxW="100%"
         minW={["100%", "100%", "100%", 400]}
+        {...container}
       >
         <Box
           display="flex"
@@ -33,10 +38,13 @@ function Table({
           <TableFilter/>
           <TablePagination/>
         </Box>
-        <TableContent/>
+        <TableContent
+          caption={caption}
+        />
       </Box>
     </TableProvider>
   );
 };
 
 export { Table };
+

@@ -1,4 +1,4 @@
-import { Box, Table as ChakraTable, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import { Box, Table as ChakraTable, TableCaption, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import { useTable } from "../../contexts/hooks/useTable";
 import { getPercent } from "../../utils/getPercent";
 import { Input } from "../Inputs";
@@ -11,7 +11,13 @@ const headerOrderIcon = {
   "percent-asc": "up"
 };
 
-function TableContent() {
+interface TableContentProps {
+  caption?: string;
+};
+
+function TableContent({
+  caption
+}: TableContentProps) {
   const {
     columns,
     rows,
@@ -27,6 +33,7 @@ function TableContent() {
       borderRadius={10}
     >
       <ChakraTable>
+        {caption && <TableCaption textAlign="left" pl={0} pb={0}>{caption}</TableCaption> }
         <Thead>
           <Tr 
             bgColor="solid.100"

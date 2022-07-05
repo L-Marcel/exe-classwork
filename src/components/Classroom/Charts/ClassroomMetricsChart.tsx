@@ -1,15 +1,58 @@
-import { useState } from "react";
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { Payload } from "recharts/types/component/DefaultLegendContent";
-import { DataKey } from "recharts/types/util/types";
-import { ClassroomTooltipCursor } from "./ClassroomTooltipCursor";
-import { ClassroomTooltips } from "./ClassroomTooltips";
+import { useClassroomPayloadIndex } from "../../../contexts/hooks/useClassroomPayloadIndex";
+import { Table } from "../../Table";
+import { ClassroomRepositoryIsSelectedButton } from "./ClassroomRepositoryIsSelectedButton";
 
 interface ClassroomMetricsChartProps {
   repositories: Repository[];
 };
 
 function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
+  const { payloadIndex } = useClassroomPayloadIndex();
+
+  const data = repositories.reduce((prev, cur, i) => {
+    prev.push({
+      ...cur,
+      _isSelectedButton: <ClassroomRepositoryIsSelectedButton
+        index={i}
+      />
+    });
+    return prev;
+  }, []);
+
+  return (
+    <Table
+      caption={`Selected: ${data.find((d, i) => i === payloadIndex)?.fullname}`}
+      container={{
+        minW: "100%",
+        mb: 5
+      }}
+      columns={[{
+        value: "_isSelectedButton",
+        icon: "eye-closed",
+        name: " ",
+        thProps: {
+          w: 10,
+          maxW: 10
+        }
+      }, {
+        value: "fullname",
+        isPrimary: true
+      }, {
+        value: "complexity",
+      }, {
+        value: "churn"
+      }, {
+        value: "methods"
+      }, {
+        value: "classes"
+      }, {
+        value: "sloc"
+      }]}
+      rows={data}
+    />
+  );
+
+  /*
   const [opacity, setOpacity] = useState({
     complexity: 1,
     churn: 1,
@@ -72,6 +115,7 @@ function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
     });
   };
 
+  
   return (
     <ResponsiveContainer width="100%">
       <BarChart
@@ -161,7 +205,7 @@ function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
         />
       </BarChart>
     </ResponsiveContainer>
-  );
+  );*/
 };
 
 export { ClassroomMetricsChart };
