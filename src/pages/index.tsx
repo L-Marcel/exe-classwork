@@ -40,6 +40,7 @@ function LoginPage() {
         </HStack>
       </Stack>
       <Box
+        position="relative"
         bgImage="/login_bg.jpg"
         bgPos={["0 100%", "0 20%"]}
         bgSize="cover"
@@ -47,19 +48,23 @@ function LoginPage() {
         bgColor="solid.100"
         h="full"
         w="100%"
-      />
-      <Link
-        href="https://l-marcel.vercel.app" 
-        position="absolute"
-        bottom={0}
-        m={8}
-        borderRadius={8}
-        bgColor="solid.50"
-        py={1}
-        px={3}
       >
-        @l-marcel
-      </Link>
+        <Link
+          href="https://l-marcel.vercel.app" 
+          position="absolute"
+          bottom={["auto", "auto", "auto", 0]}
+          top={[0, 0, 0, "auto"]}
+          m={8}
+          ml={[-1, -1, -1, 8]}
+          mt={[-4, -4, -4, 8]}
+          borderRadius={8}
+          bgColor={["solid.100", "solid.50"]}
+          py={1}
+          px={3}
+        >
+          @l-marcel
+        </Link>
+      </Box>
     </>
   );
 };

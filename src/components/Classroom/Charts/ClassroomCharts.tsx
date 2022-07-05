@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ClassroomProvider } from "../../../contexts/ClassroomProvider";
 import { useClassroomPayloadIndex } from "../../../contexts/hooks/useClassroomPayloadIndex";
 import { DateIntervalInput } from "../../Inputs/DateIntervalInput";
-import { ClassroomMetricsChart } from "./ClassroomMetricsChart";
+import { ClassroomMetricsTable } from "./ClassroomMetricsTable";
 import { ClasssroomRepositoriesTableContent } from "./ClassroomRepositoriesTableContent";
 import { ClassroomRepositoryContent } from "./ClassroomRepositoryContent";
 
@@ -117,7 +117,7 @@ function ClassroomCharts({
             display="flex"
             flexDir="column"
           >
-            <ClassroomMetricsChart
+            <ClassroomMetricsTable
               repositories={repositoriesWithCommitsInterval}
             />
             <Box

@@ -2,11 +2,11 @@ import { Table } from "../../Table";
 import { ClassroomRepositoryIsSelectedButton } from "./ClassroomRepositoryIsSelectedButton";
 import { ClassroomRepositorySelectedText } from "./ClassroomRepositorySelectedText";
 
-interface ClassroomMetricsChartProps {
+interface ClassroomMetricsTableProps {
   repositories: Repository[];
 };
 
-function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
+function ClassroomMetricsTable({ repositories }: ClassroomMetricsTableProps) {
   const data = repositories.reduce((prev, cur, i) => {
     prev.push({
       ...cur,
@@ -38,14 +38,19 @@ function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
           isPrimary: true
         }, {
           value: "complexity",
+          icon: "oriented"
         }, {
-          value: "churn"
+          value: "churn",
+          icon: "tools"
         }, {
-          value: "methods"
+          value: "methods",
+          icon: "methods-icon"
         }, {
-          value: "classes"
+          value: "classes",
+          icon: "class"
         }, {
-          value: "sloc"
+          value: "sloc",
+          icon: "menu"
         }]}
         rows={data}
       />
@@ -56,5 +61,5 @@ function ClassroomMetricsChart({ repositories }: ClassroomMetricsChartProps) {
   );
 };
 
-export { ClassroomMetricsChart };
+export { ClassroomMetricsTable };
 

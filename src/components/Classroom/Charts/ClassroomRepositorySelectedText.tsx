@@ -9,10 +9,8 @@ function ClassroomRepositorySelectedText({ data }: ClassroomRepositorySelectedTe
   const { payloadIndex } = useClassroomPayloadIndex();
   const name = data.find((d, i) => i === payloadIndex)?.fullname;
 
-
-
   return (
-    <Text mb={1}>
+    <Text mb={4}>
       {name? `Selected: ${name}`:"Select a repository in table"}
     </Text>
   );

@@ -161,7 +161,9 @@ function TeamCreateForm() {
             isFixed: true,
             isDisabled: true
           },
-          ...members?.map(m => {
+          ...members?.filter(m => !(watch("users") ?? [])
+          .some(sm => sm.user.username === m.user.username || sm.user.name === sm.user.name))
+          .map(m => {
             return {
               value: {
                 ...m,
