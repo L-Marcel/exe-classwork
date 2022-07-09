@@ -33,6 +33,7 @@ function Select({
   labelFormat,
   isMulti,
   name,
+  value,
   ...rest 
 }: SelectProps) {
   const { inputErrors } = useInputErrors();
@@ -95,6 +96,7 @@ function Select({
             isMulti={isMulti}
             options={options}
             {...register}
+            defaultValue={value}
             formatOptionLabel={labelFormat}
             loadingMessage={() => {
               return (<Text>Searching...</Text>);

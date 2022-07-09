@@ -456,4 +456,65 @@ export class ClassroomRelations {
 
     return true;
   };
+
+  static async removeById(
+    classroomId: string,
+    userId: string,
+    authorizedUserId: string
+  ) {
+    const authorizedRelation = await ClassroomRelations.get(classroomId, authorizedUserId);
+
+    if(authorizedRelation.role !== "OWNER" && authorizedRelation.role !== "ADMIN") {
+      throw new UnauthorizedError();
+    };
+
+    const relation = await ClassroomRelations.get(classroomId, userId);
+
+    if(relation.role === "OWNER" || (relation.role === "ADMIN" && authorizedRelation.role !== "OWNER")) {
+      throw new UnauthorizedError();
+    };
+
+    return await Prisma.classroomRelation.delete({
+      where: {
+        classroomId_userId: {
+          classroomId,
+          userId
+        }
+      }
+    });
+  };
+
+  static async changeRole(
+    classroomId: string,
+    userId: string,
+    authorizedUserId: string,
+    role: ClassroomRoles
+  ) {
+    const authorizedRelation = await ClassroomRelations.get(classroomId, authorizedUserId);
+
+    if(authorizedRelation.role !== "OWNER" && authorizedRelation.role !== "ADMIN") {
+      throw new UnauthorizedError();
+    };
+
+    const relation = await ClassroomRelations.get(classroomId, userId);
+
+    if(
+      relation.role === "OWNER" || 
+      (relation.role === "ADMIN" && authorizedRelation.role !== "OWNER")
+    ) {
+      throw new UnauthorizedError();
+    };
+
+    return await Prisma.classroomRelation.update({
+      data: {
+        role
+      },
+      where: {
+        classroomId_userId: {
+          classroomId,
+          userId
+        }
+      }
+    });
+  };
 };

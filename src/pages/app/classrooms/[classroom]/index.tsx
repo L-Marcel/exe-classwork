@@ -28,13 +28,24 @@ function ClassroomPage({
     teams,
   } = classroom;
   
-  const userIsAuthorized = users.some(
+  const userIsOwner = users.some(
     u => u.user.id === user.id && 
-    (u.role === "ADMIN" || u.role === "OWNER")
+    u.role === "OWNER"
+  );
+
+  const userIsAuthorized = userIsOwner || users.some(
+    u => u.user.id === user.id && 
+    u.role === "ADMIN"
   );
 
   const teamsAreRestricted = 
     classroom.teamsAreRestricted && !userIsAuthorized;
+
+  const rolesAreRestricted = 
+    classroom.rolesAreRestricted && !userIsAuthorized;
+  
+  const repositoriesAreRestricted = 
+    classroom.repositoriesAreRestricted && !userIsAuthorized;
 
   return (
     <>
@@ -56,7 +67,7 @@ function ClassroomPage({
           maxW="100vw"
           pb="1px"
         >
-          <Tab>Analytics</Tab>
+          { (!teamsAreRestricted && !repositoriesAreRestricted) && <Tab>Analytics</Tab> }
           <Tab>Alerts</Tab>
           <Tab>Members</Tab>
           { !teamsAreRestricted && <Tab>Teams</Tab> }
@@ -87,8 +98,11 @@ function ClassroomPage({
               placeholder="Search by name, email or role..."
             >
               <ClassroomMembersList
+                rolesAreRestricted={rolesAreRestricted}
                 classroomId={id}
                 initialData={users}
+                userIsAuthorized={userIsAuthorized}
+                userIsOwner={userIsOwner}
               />
             </ClassroomSearch>
           </TabPanel>
@@ -103,6 +117,7 @@ function ClassroomPage({
               <ClassroomTeamsList
                 classroomId={id}
                 initialData={teams}
+                repositoriesAreRestricted={repositoriesAreRestricted}
               />
             </ClassroomSearch>
           </TabPanel> }

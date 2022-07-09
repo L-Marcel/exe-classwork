@@ -1,13 +1,19 @@
 import { Avatar, AvatarGroup, Box, Stack, Text } from "@chakra-ui/react";
 import { m } from "framer-motion";
+import { useRouter } from "next/router";
 import { scaleIn } from "../../../theme/animations/motion";
+import { IconButton } from "../../Buttons/IconButton";
+import { NamedIcon } from "../../NamedIcon";
 import { Title } from "../../Title";
 
 interface ClassroomTeamItem {
   team: Team;
+  repositoriesAreRestricted?: boolean;
 };
 
-function ClassroomTeamItem({ team }: ClassroomTeamItem) {
+function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: ClassroomTeamItem) {
+  const router = useRouter();
+
   if(!team) {
     return null;
   };
@@ -16,6 +22,7 @@ function ClassroomTeamItem({ team }: ClassroomTeamItem) {
   
   return (
     <Stack
+      as={m.button}
       spacing={0}
       display="flex"
       alignItems="flex-start"
@@ -28,6 +35,7 @@ function ClassroomTeamItem({ team }: ClassroomTeamItem) {
       borderLeft="2px solid"
       borderColor="primary.700"
       overflow="hidden"
+      onClick={() => console.log("button")}
     >
       <Box
         display="flex"
@@ -45,19 +53,42 @@ function ClassroomTeamItem({ team }: ClassroomTeamItem) {
           fontSize="0.9rem"
           fontWeight={400}
         >
-          {repository? repository?.fullname:"No repository linked"}
+          {!repositoriesAreRestricted? (repository? repository?.fullname:"No repository linked"):"Respoitory is restricted"}
         </Text>
-        { repository && <Text
+        { (repository && !repositoriesAreRestricted) && <Box
           mt={2}
-          fontWeight="normal"
+          display="flex"
+          pointerEvents="none"
           bgColor="primary.700"
-          w="min"
-          whiteSpace="nowrap"
-          px={2}
-          borderRadius={16}
+          px={0}
+          w="fit-content"
+          borderRadius={8}
         >
-          {repository?._count.commits} commits
-        </Text> }
+          <Text
+            fontWeight="normal"
+            w="min"
+            whiteSpace="nowrap"
+            display="flex"
+            alignItems="center"
+            px={2}
+          >
+            {repository?._count.commits} commits
+          </Text>
+          <IconButton
+            mr={0}
+            onClick={(e) => {
+              e.stopPropagation();
+              window.open(`/repositories/${repository?.fullname}`, "__blank__");
+            }}
+            aria-label="repository-page-button"
+            bgColor="primary.800"
+            icon={<NamedIcon
+              name="open"
+            />}
+            pointerEvents="all"
+            size="sm"
+          />
+        </Box> }
       </Box>
       <Box
         display="flex"

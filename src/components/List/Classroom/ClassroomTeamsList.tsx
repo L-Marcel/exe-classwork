@@ -7,9 +7,10 @@ import { ClassroomTeamItem } from "./ClassroomTeamItem";
 interface ClassroomTeamsListProps {
   initialData: Team[];
   classroomId: string;
+  repositoriesAreRestricted?: boolean;
 };
 
-function ClassroomTeamsList({ initialData, classroomId }: ClassroomTeamsListProps) {
+function ClassroomTeamsList({ initialData, classroomId, repositoriesAreRestricted = false }: ClassroomTeamsListProps) {
   const { data: teams, isFetching } = useSearchResult<Team>({
     queryTo: `/user/classroom/${classroomId}/teams`,
     initialData
@@ -30,6 +31,7 @@ function ClassroomTeamsList({ initialData, classroomId }: ClassroomTeamsListProp
           <ClassroomTeamItem
             key={t.id}
             team={t}
+            repositoriesAreRestricted={repositoriesAreRestricted}
           />
         );
       })}
