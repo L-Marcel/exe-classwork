@@ -28,7 +28,6 @@ function RepositoryItem({
   alerts = [] 
 }: RepositoryItemProps) {
   const router = useRouter();
-  const alertsCount = alerts.length >= 9? 9:alerts.length;
 
   const [progress, setProgress] = useState<NamedProgress>({
     target: 0,
@@ -146,6 +145,7 @@ function RepositoryItem({
               name="cog"
               h="15px"
               w="15px"
+              mt=".5px"
               maxW="15px"
               maxH="15px"
             />}

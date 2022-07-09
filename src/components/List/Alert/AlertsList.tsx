@@ -4,12 +4,18 @@ import { NotFoundMessage } from "../NotFoundMessage";
 import { SearchingMessage } from "../SearchingMessage";
 import { AlertItem } from "./AlertItem";
 
-function AlertsList() {
+interface AlertsListProps {
+  queryTo?: string;
+};
+
+function AlertsList({
+  queryTo
+}: AlertsListProps) {
   const { 
     data: alerts,
     isFetching
   } = useSearchResult<Alert>({
-    queryTo: `/user/alerts`,
+    queryTo: queryTo || `/user/alerts`,
     initialData: []
   });
 

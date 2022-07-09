@@ -111,6 +111,8 @@ function RepositoryBanner({
             fontWeight="bold"
             bgColor="primary.800"
             color="blackAlpha.900"
+            minH="24px"
+            h="min"
             mt={5}
           >
             Commits: {(filteredCommits.length >= 0 && filteredCommits.length >= commits.length)? 
@@ -122,6 +124,8 @@ function RepositoryBanner({
             fontWeight="bold"
             bgColor="primary.800"
             color="blackAlpha.900"
+            minH="24px"
+            h="min"
             mt={5}
           >
             Committeds: {(filteredCommitteds.length >= 0 && filteredCommitteds.length >= committeds.length)? 

@@ -1,6 +1,10 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { m } from "framer-motion";
 import { useRouter } from "next/router";
+import { useCallback, useEffect, useState } from "react";
+import { useGlobal } from "../../../contexts/hooks/useGlobal";
+import { useUser } from "../../../contexts/hooks/useUser";
+import { Api } from "../../../services/api";
 import { scaleOnInteract } from "../../../theme/animations/motion";
 import { NamedIcon } from "../../NamedIcon";
 
@@ -14,7 +18,31 @@ interface ClassroomItemProps {
 
 function ClassroomItem({ title, description, subject, id, alerts = [] }: ClassroomItemProps) {
   const router = useRouter();
-  const alertsCount = alerts.length >= 9? 9:alerts.length;
+
+  const { user } = useUser();
+  const { global: globalSocket } = useGlobal();
+
+  const [haveAlert, setHaveAlert] = useState(false);
+
+  const checkIfHaveAlerts = useCallback(() => {
+    Api.get(`user/classroom/${id}/alerts/check`).then(res => {
+      if(res.data.count > 0) {
+        setHaveAlert(true);
+      } else {
+        setHaveAlert(false);
+      };
+    }).catch(() => {});
+  }, [setHaveAlert]);
+  
+  useEffect(() => {
+    if(globalSocket !== null && user !== null) {
+      checkIfHaveAlerts();
+      
+      globalSocket.on("@alerts/new", () => {
+        checkIfHaveAlerts();
+      })
+    };
+  }, [globalSocket, setHaveAlert, checkIfHaveAlerts]);
 
   return (
     <Box
@@ -61,7 +89,7 @@ function ClassroomItem({ title, description, subject, id, alerts = [] }: Classro
           maxH="28px"
           bgColor="solid.200"
           borderRadius={15}
-          right={[-8, 0]}
+          right={[-8, "6px"]}
           top={-1}
         >
           <NamedIcon 
@@ -70,25 +98,8 @@ function ClassroomItem({ title, description, subject, id, alerts = [] }: Classro
             w="15px"
             maxW="15px"
             maxH="15px"
+            color={haveAlert? "orange.400":null}
           />
-          {
-            alertsCount > 0 && <Text
-              position="absolute"
-              top="-5px"
-              right="-10px"
-              bgColor="primary.700"
-              minW="18px"
-              minH="18px"
-              maxW="18px"
-              maxH="18px"
-              borderRadius={15}
-              fontSize="12px"
-              color="black"
-              textAlign="center"
-            >
-              {alerts.length > 9 && "+"}{alertsCount}
-            </Text>
-          }
         </Box>
       </Box>
       <Text

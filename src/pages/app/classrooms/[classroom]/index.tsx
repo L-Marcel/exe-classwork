@@ -1,6 +1,7 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ClassroomCharts } from "../../../../components/Classroom/Charts/ClassroomCharts";
+import { ClassroomAlerts } from "../../../../components/Classroom/ClassroomAlerts";
 
 import { ClassroomBanner } from "../../../../components/Classroom/ClassroomBanner";
 import { ClassroomSearch } from "../../../../components/Classroom/ClassroomSearch";
@@ -76,7 +77,7 @@ function ClassroomPage({
           <TabPanel 
             w="100%"
           >
-            
+            <ClassroomAlerts id={id}/>
           </TabPanel>
           <TabPanel
             w="100%"
