@@ -57,6 +57,13 @@ function RepositoryConfiguration({
           Repository: {repositoryName}
         </Text>
       </Box>
+      <Text 
+        mt={2}
+        whiteSpace="pre-wrap"
+        maxW={["90%", "70%"]}
+      >
+        Warning: forced updates will force the analyze of all repository data!
+      </Text>
       <HStack
         spacing={4}
       >
