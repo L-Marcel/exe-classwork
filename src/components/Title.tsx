@@ -5,7 +5,8 @@ function Title({ children, color = "primary", ...rest }: HeadingProps) {
     <Heading
       textAlign="left"
       display="inline-block"
-      bgGradient={`linear(to-r, ${color}.600, ${color}.800, ${color}.900 95%)`}
+      bgGradient={`linear(to-r, ${color}.600, ${color}.800 95%)`}
+      whiteSpace="pre-wrap"
       bgClip="text"
       {...rest}
     >
