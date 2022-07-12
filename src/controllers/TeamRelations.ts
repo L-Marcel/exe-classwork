@@ -1,6 +1,8 @@
 import { Prisma as P, User } from "@prisma/client";
 import { AlreadyLinkedError } from "../errors/api/AlreadyLinkedError";
+import { NotFoundError } from "../errors/api/NotFoundError";
 import { Prisma } from "../services/prisma";
+import { getApiQuery, getApiTeamRole } from "../utils/getApiQuery";
 import { Alerts } from "./Alerts";
 
 export class TeamRelations {
@@ -45,5 +47,97 @@ export class TeamRelations {
     };
 
     return relation;
+  };
+
+  static async getByTeam(teamId: string, classroomId: string, {
+    query = "",
+    page = 0,
+    take = 12
+  }) {
+    const relation = await Prisma.teamRelation.findMany({
+      take,
+      skip: 12 * page,
+      select: {
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+        updatedBy: true,
+        user: true
+      },
+      where: {
+        AND: [
+          {
+            OR: [
+              {
+                role: getApiTeamRole(query)
+              },
+              {
+                user: {
+                  name: getApiQuery(query)
+                }
+              },
+              {
+                user: {
+                  username: getApiQuery(query)
+                }
+              },
+              {
+                user: {
+                  email: getApiQuery(query)
+                }
+              }
+            ]
+          },
+          { teamId, team: {
+            classroomId
+          } }
+        ]
+      },
+    });
+
+    if(!relation) {
+      throw new NotFoundError("Members");
+    };
+
+    return relation;
+  };
+
+  static async countByTeam(teamId: string, classroomId: string, {
+    query = ""
+  }) {
+    return await Prisma.teamRelation.aggregate({
+      _count: {
+        _all: true
+      },
+      where: {
+        AND: [
+          {
+            OR: [
+              {
+                role: getApiTeamRole(query)
+              },
+              {
+                user: {
+                  name: getApiQuery(query)
+                }
+              },
+              {
+                user: {
+                  username: getApiQuery(query)
+                }
+              },
+              {
+                user: {
+                  email: getApiQuery(query)
+                }
+              }
+            ]
+          },
+          { teamId, team: {
+            classroomId
+          } }
+        ]
+      },
+    });
   };
 };

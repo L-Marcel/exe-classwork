@@ -1,6 +1,5 @@
 import { Text } from "@chakra-ui/react";
 import { Button } from "./Buttons/Button";
-import { Link } from "./Link";
 import { Title } from "./Title";
 
 interface ReferenceButtonProps {
@@ -15,33 +14,29 @@ function ReferenceButton({
   href
 }: ReferenceButtonProps) {
   return (
-    <Link
-      href={href || "#"}
-      target="_blank"
+    <Button
+      w="100%"
+      h="100%"
+      display="flex"
+      onClick={() => window.open(href, "_blank")}
+      justifyContent="flex-start"
+      alignItems="flex-start"
+      flexDir="column"
+      p={5}
+      gap={1}
     >
-      <Button
-        w="100%"
-        h="100%"
-        display="flex"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-        flexDir="column"
-        p={5}
-        gap={1}
+      <Title
+        fontSize={18}
       >
-        <Title
-          fontSize={18}
-        >
-          {title}
-        </Title>
-        <Text
-          whiteSpace="pre-wrap"
-          textAlign="start"
-        >
-          {description}
-        </Text>
-      </Button>
-    </Link>
+        {title}
+      </Title>
+      <Text
+        whiteSpace="pre-wrap"
+        textAlign="start"
+      >
+        {description}
+      </Text>
+    </Button>
   );
 };
 

@@ -7,6 +7,22 @@ function getApiQuery(query: string = ""): P.StringFilter {
   };
 };
 
+function getApiTeamRole(query: string = ""): P.EnumTeamRolesFilter {
+  const realQuery = query.toUpperCase().replace(/ /g, "_");
+  let result: TeamRoles | undefined = undefined;
+
+  if(("LEADER" as TeamRoles).includes(realQuery)) {
+    result = "LEADER";
+  } else if(("MEMBER" as TeamRoles).includes(realQuery)) {
+    result = "MEMBER";
+  };
+  
+  return {
+    equals: result
+  } as P.EnumTeamRolesFilter;
+};
+
+
 function getApiClassroomRole(query: string = ""): P.EnumClassroomRolesFilter {
   const realQuery = query.toUpperCase().replace(/ /g, "_");
   let result: ClassroomRoles | undefined = undefined;
@@ -49,5 +65,5 @@ function getApiAlertsType(query: string = ""): P.EnumAlertTypesFilter {
   } as P.EnumAlertTypesFilter;
 };
 
-export { getApiQuery, getApiClassroomRole, getApiAlertsType };
+export { getApiQuery, getApiClassroomRole, getApiAlertsType, getApiTeamRole };
 

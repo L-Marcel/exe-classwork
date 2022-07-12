@@ -5,7 +5,7 @@ import { PageFallback } from "../../components/PageFallback";
 import { useClassroom } from "../../contexts/hooks/useClassroom";
 import { Api } from "../../services/api";
 
-function WithClassroomProps<T = any>(Page: NextPage<T>, auth?: (classroom?: Classroom, user?: User) => boolean) {
+function WithClassroomProps<T = any>(Page: NextPage<T>, auth?: (classroom?: Classroom, user?: User, team?: Team) => boolean) {
   return function classroomProvider(props: any) {
     const router = useRouter();
     const [isAuthorized, setIsAuthorized] = useState(auth? false:true);
@@ -15,12 +15,18 @@ function WithClassroomProps<T = any>(Page: NextPage<T>, auth?: (classroom?: Clas
     && router?.query?.classroom 
     && classroom?.id === router?.query?.classroom;
 
+    const teamId = router?.query?.team;
+    const team = classroomIsLoaded && classroom?.teams.find(t => t?.id?.toLowerCase() === String(teamId).toLowerCase());
+
+    console.log(team, classroom?.teams, router?.query);
+
+
     useEffect(() => {
-      if(!classroomIsLoaded) {
+      if(!classroomIsLoaded && router?.query?.classroom ) {
         Api.get(`/user/classroom/${router?.query?.classroom}`).then(res => {
           setClassroom(res.data);
-        }).catch(() => {
-          router.push(`/app/${router?.query?.githubId}/classrooms`);
+        }).catch((err) => {
+          router.push(`/app/classrooms`);
         });
       };
     }, [
@@ -31,11 +37,12 @@ function WithClassroomProps<T = any>(Page: NextPage<T>, auth?: (classroom?: Clas
 
     useEffect(() => {
       if(auth && classroomIsLoaded) {
-        const isAuth = auth(classroom, props.user);
+        const isAuth = auth(classroom, props.user, team);
+        
         setIsAuthorized(isAuth);
 
         if(!isAuth && classroomIsLoaded) {
-          router.push(`/app/${router?.query?.githubId}/classrooms`);
+          router.push("/app/classrooms");
         };
       };
     }, [
@@ -46,7 +53,7 @@ function WithClassroomProps<T = any>(Page: NextPage<T>, auth?: (classroom?: Clas
       auth
     ]);
     
-    if(!classroomIsLoaded || !isAuthorized) {
+    if(!classroomIsLoaded || !isAuthorized || (teamId && !team)) {
       return (
         <PageFallback
           title="We are getting everything ready for you."
@@ -57,6 +64,7 @@ function WithClassroomProps<T = any>(Page: NextPage<T>, auth?: (classroom?: Clas
     return (
       <Page
         classroom={classroom}
+        team={team}
         {...props}
       />
     );

@@ -233,6 +233,8 @@ export class ClassroomRelations {
                   updatedBy: true
                 }
               },
+              id: true,
+              title: true,
               createdAt: true,
               updatedAt: true,
               updatedBy: true
@@ -272,6 +274,8 @@ export class ClassroomRelations {
                   updatedBy: true
                 }
               },
+              id: true,
+              title: true,
               createdAt: true,
               updatedAt: true,
               updatedBy: true
@@ -339,6 +343,8 @@ export class ClassroomRelations {
                   updatedBy: true
                 }
               },
+              id: true,
+              title: true,
               createdAt: true,
               updatedAt: true,
               updatedBy: true
