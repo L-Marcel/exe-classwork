@@ -8,6 +8,7 @@ import { Api } from "../../services/api";
 function WithClassroomProps<T = any>(Page: NextPage<T>, auth?: (classroom?: Classroom, user?: User, team?: Team) => boolean) {
   return function classroomProvider(props: any) {
     const router = useRouter();
+
     const [isAuthorized, setIsAuthorized] = useState(auth? false:true);
     const { classroom, setClassroom } = useClassroom();
 
@@ -18,15 +19,14 @@ function WithClassroomProps<T = any>(Page: NextPage<T>, auth?: (classroom?: Clas
     const teamId = router?.query?.team;
     const team = classroomIsLoaded && classroom?.teams.find(t => t?.id?.toLowerCase() === String(teamId).toLowerCase());
 
-    console.log(team, classroom?.teams, router?.query);
-
-
     useEffect(() => {
-      if(!classroomIsLoaded && router?.query?.classroom ) {
+      if(!classroomIsLoaded && router?.query?.classroom) {
         Api.get(`/user/classroom/${router?.query?.classroom}`).then(res => {
           setClassroom(res.data);
         }).catch((err) => {
-          router.push(`/app/classrooms`);
+          
+          console.log(err);
+          //router.push(`/app/classrooms`);
         });
       };
     }, [
@@ -36,13 +36,14 @@ function WithClassroomProps<T = any>(Page: NextPage<T>, auth?: (classroom?: Clas
     ]);
 
     useEffect(() => {
-      if(auth && classroomIsLoaded) {
+      if(auth && classroomIsLoaded && props.user) {
         const isAuth = auth(classroom, props.user, team);
         
         setIsAuthorized(isAuth);
 
-        if(!isAuth && classroomIsLoaded) {
-          router.push("/app/classrooms");
+        if(!isAuth && classroomIsLoaded && (teamId && !team)) {
+          console.log("aff");
+          //router.push("/app/classrooms");
         };
       };
     }, [

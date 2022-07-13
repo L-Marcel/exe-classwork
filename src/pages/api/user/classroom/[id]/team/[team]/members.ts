@@ -4,7 +4,7 @@ import { withUser } from "../../../../../../../utils/api/middlewares/withUser";
 
 
 
-async function getClassroomMembers(req: Req, res: Res) {
+async function getTeamMembers(req: Req, res: Res) {
   const { id, team, page, query } = req.query;
 
   const { _count } = await TeamRelations.countByTeam(team?.toString(), id?.toString(), { 
@@ -23,5 +23,5 @@ async function getClassroomMembers(req: Req, res: Res) {
 };
 
 export default apiHandle({
-  "GET": withUser(getClassroomMembers)
+  "GET": withUser(getTeamMembers)
 });

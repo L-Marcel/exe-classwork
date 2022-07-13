@@ -9,6 +9,10 @@ interface TeamMemberItem {
 function TeamMemberItem({ 
   member, 
 }: TeamMemberItem) {
+  if(!member?.user) {
+    return null;
+  };
+  
   return (
     <HStack
       spacing={3}
@@ -42,7 +46,7 @@ function TeamMemberItem({
           lineHeight="15px"
           fontSize=".8rem"
         >
-          {member.role || "MEMBER"}
+          {member?.role || "MEMBER"}
         </Text>
       </Stack>
     </HStack>

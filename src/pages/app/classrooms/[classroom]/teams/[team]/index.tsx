@@ -161,11 +161,9 @@ export const getServerSideProps: GetServerSideProps = async({
 
 export default WithUserProps(
   WithClassroomProps(TeamPage, (classroom, user, team) => {
-    if(team && !team.users.some(u => u.user.id === user.id)) {
-      return true;
-    };
+    const isMember = team? !team.users.some(u => u.user.id === user.id):false;
 
-    if(!classroom.users.some(u => 
+    if(!isMember && !classroom.users.some(u => 
       u.user.id === user.id && 
       u.role !== "STUDENT" && 
       u.role !== "OBSERVER")
