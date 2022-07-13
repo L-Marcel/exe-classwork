@@ -1,6 +1,7 @@
 import { Prisma as P, User } from "@prisma/client";
 import { AlreadyLinkedError } from "../errors/api/AlreadyLinkedError";
 import { NotFoundError } from "../errors/api/NotFoundError";
+import { UnauthorizedError } from "../errors/api/UnauthorizedError";
 import { Prisma } from "../services/prisma";
 import { getApiQuery, getApiTeamRole } from "../utils/getApiQuery";
 import { Alerts } from "./Alerts";
@@ -45,6 +46,44 @@ export class TeamRelations {
         classroomId
       });
     };
+
+    return relation;
+  };
+
+  static async update(
+    role: TeamRoles,
+    user: User,
+    teamId: string,
+    classroomId: string,
+    data: Omit<P.TeamRelationUncheckedCreateInput, "role">,
+    needAlert = false
+  ) {
+    const relation = await Prisma.teamRelation.update({
+      data: {
+        ...data,
+        role
+      },
+      where: {
+        teamId_userId: {
+          userId: user.id,
+          teamId
+        }
+      }
+    });
+
+
+    try {
+      await this.isAlreadyLinked(user, data.teamId);
+      
+      if(needAlert) {
+        await Alerts.create("TEAM_RELATION", {
+          description: `Team have a new ${role.toLowerCase()}: Welcome, ${user?.username}!`,
+          avatarUrl: user?.avatarUrl,
+          teamId: relation.teamId,
+          classroomId
+        });
+      };
+    } catch(err) {};
 
     return relation;
   };
@@ -140,4 +179,111 @@ export class TeamRelations {
       },
     });
   };
+
+  static async havePermissionsToUpdateTeam(
+    teamId: string,
+    userId: string
+  ) {
+    const relation = await Prisma.teamRelation.findFirst({
+      where: {
+        AND: [
+          {
+            OR: [
+              {
+                role: "LEADER"
+              },
+              {
+                team: {
+                  classroom: {
+                    users: {
+                      some: {
+                        role: "OWNER",
+                        userId
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                team: {
+                  classroom: {
+                    users: {
+                      some: {
+                        role: "ADMIN",
+                        userId
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            userId,
+            teamId
+          }
+        ]
+      }
+    });
+
+    if(!relation) {
+      throw new UnauthorizedError();
+    };
+
+    return true;
+  };
+
+  static async havePermissionsToDeleteTeam(
+    teamId: string,
+    userId: string
+  ) {
+    const relation = await Prisma.teamRelation.findFirst({
+      where: {
+        AND: [
+          {
+            OR: [
+              {
+                role: "LEADER"
+              },
+              {
+                team: {
+                  classroom: {
+                    users: {
+                      some: {
+                        role: "OWNER",
+                        userId
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                team: {
+                  classroom: {
+                    users: {
+                      some: {
+                        role: "ADMIN",
+                        userId
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            userId,
+            teamId
+          }
+        ]
+      }
+    });
+
+    if(!relation) {
+      throw new UnauthorizedError();
+    };
+
+    return true;
+  };
+
 };

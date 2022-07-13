@@ -1,7 +1,10 @@
-import { Avatar, AvatarGroup, Box, Stack, Text } from "@chakra-ui/react";
+import { Avatar, AvatarGroup, Box, Progress, Stack, Text } from "@chakra-ui/react";
 import { m } from "framer-motion";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useClassroom } from "../../../contexts/hooks/useClassroom";
+import { useIsLoading } from "../../../contexts/hooks/useIsLoading";
+import { useProgress } from "../../../contexts/hooks/useProgress";
 import { scaleIn } from "../../../theme/animations/motion";
 import { IconButton } from "../../Buttons/IconButton";
 import { Link } from "../../Link";
@@ -16,12 +19,37 @@ interface ClassroomTeamItem {
 function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: ClassroomTeamItem) {
   const router = useRouter();
   const { classroom } = useClassroom();
+  const { isLoading } = useIsLoading();
 
   if(!team) {
     return null;
   };
 
   const { users, title, repository } = team;
+
+  const canOpen = !isLoading;
+
+  const [progress, setProgress] = useState<NamedProgress>({
+    target: 0,
+    value: 0,
+    status: team.repository?.status || "NOT_REQUESTED",
+    name: team.repository?.fullname
+  });
+
+  const { getProgressByName } = useProgress();
+
+  const _progress = getProgressByName(team.repository?.fullname);
+
+  const repositoryIsLoading = progress?.status === "REQUESTED";
+  const repositoryIsLoaded = !repositoryIsLoading && progress?.status === "LOADED";
+  const canOpenRepository = (!repositoryIsLoading && repositoryIsLoaded);
+  const theme = canOpenRepository? "primary.800":"orange.700";
+  
+  useEffect(() => {
+    if(_progress && _progress !== progress) {
+      setProgress(_progress);
+    };
+  }, [_progress, setProgress]);
   
   return (
     <Stack
@@ -37,9 +65,9 @@ function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: Classroo
       bgColor="solid.100"
       borderRadius={15}
       borderLeft="2px solid"
-      borderColor="primary.700"
+      borderColor={theme.replace(/800/g, "700")}
       overflow="hidden"
-      onClick={() => router.push(`/app/classrooms/${classroom?.id}/teams/${team?.id}`)}
+      onClick={() => canOpen && router.push(`/app/classrooms/${classroom?.id}/teams/${team?.id}`)}
     >
       <Box
         display="flex"
@@ -101,12 +129,14 @@ function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: Classroo
             />
             <IconButton
               mr={0}
+              opacity={(!repositoryIsLoading && !repositoryIsLoaded) && .3}
+              cursor={repositoryIsLoading? "progress":repositoryIsLoaded? "pointer":"not-allowed"}
               onClick={(e) => {
                 e.stopPropagation();
-                window.open(`/repositories/${repository?.fullname}`, "_blank");
+                canOpenRepository && window.open(`/repositories/${repository?.fullname}`, "_blank");
               }}
               aria-label="repository-page-button"
-              bgColor="primary.800"
+              bgColor={theme}
               icon={<NamedIcon
                 name="open"
               />}
@@ -116,6 +146,15 @@ function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: Classroo
           </Box>
         </Box> }
       </Box>
+      { repositoryIsLoading && <Progress
+        as={m.div}
+        isIndeterminate={!progress?.value && !progress?.target}
+        w="100%"
+        mt={4}
+        className="orange"
+        value={(progress?.value/progress?.target) * 100}
+        h={2}
+      /> }
       <Box
         display="flex"
         justifyContent="space-between"
@@ -153,9 +192,10 @@ function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: Classroo
         top={-1}
         right={[-8, 0]}
         p={4}
+        onClick={e => e.stopPropagation()}
       >
         <Link
-          href={`/app/classrooms/${classroom?.id}/teams/${team?.id}/config`}
+          href={`/app/classrooms/${classroom?.id}/teams/${team?.id}/config?returnToList=true`}
         >
           <IconButton
             data-testid="icon-button"

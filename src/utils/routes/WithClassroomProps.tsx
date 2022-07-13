@@ -24,9 +24,7 @@ function WithClassroomProps<T = any>(Page: NextPage<T>, auth?: (classroom?: Clas
         Api.get(`/user/classroom/${router?.query?.classroom}`).then(res => {
           setClassroom(res.data);
         }).catch((err) => {
-          
-          console.log(err);
-          //router.push(`/app/classrooms`);
+          router.push(`/app/classrooms`);
         });
       };
     }, [
@@ -42,8 +40,7 @@ function WithClassroomProps<T = any>(Page: NextPage<T>, auth?: (classroom?: Clas
         setIsAuthorized(isAuth);
 
         if(!isAuth && classroomIsLoaded && (teamId && !team)) {
-          console.log("aff");
-          //router.push("/app/classrooms");
+          router.push("/app/classrooms");
         };
       };
     }, [
@@ -65,7 +62,6 @@ function WithClassroomProps<T = any>(Page: NextPage<T>, auth?: (classroom?: Clas
     return (
       <Page
         classroom={classroom}
-        team={team}
         {...props}
       />
     );

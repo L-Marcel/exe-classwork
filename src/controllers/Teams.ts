@@ -7,6 +7,76 @@ import { ClassroomRelations } from "./ClassroomRelations";
 import { TeamRelations } from "./TeamRelations";
 
 export class Teams {
+  static async get(id: string, select?: P.TeamSelect, canReturnFalse: boolean = false): Promise<any> {
+    const team = await Prisma.team.findUnique({
+      where: {
+        id
+      },
+      select
+    });
+
+    if(!team && !canReturnFalse) {
+      throw new NotFoundError();
+    } else if(!team) {
+      return false;
+    };
+
+    return team;
+  };
+
+  static async update(user: User, id: string, members: TeamRelation[], data: P.TeamUpdateInput) {
+    await TeamRelations.havePermissionsToUpdateTeam(id, user.id);
+
+    const updatedTeam = await Prisma.team.update({
+      data: {
+        ...data,
+        updatedAt: new Date(),
+        updatedBy: user.username
+      },
+      where: {
+        id
+      }
+    });
+
+    await Alerts.create("TEAM", {
+      description: `Team was been updated by ${user.username}.`,
+      avatarUrl: user.avatarUrl,
+      classroomId: updatedTeam.classroomId,
+      teamId: updatedTeam.id
+    });
+      
+    const relations = await Promise.all(members.map(async(m) => {
+      return await TeamRelations.update(m.role, m.user, updatedTeam.id, updatedTeam.classroomId, {
+        teamId: updatedTeam.id,
+        userId: m.user.id
+      }, false);
+    }));
+
+    return { team: updatedTeam, relations };
+  };
+
+  static async delete(user: User, id: string) {
+    await TeamRelations.havePermissionsToDeleteTeam(id, user.id);
+
+    const deletedTeam = await Prisma.team.delete({
+      where: {
+        id
+      },
+      select: {
+        classroomId: true,
+        title: true
+      }
+    });
+
+    await Alerts.create("TEAM", {
+      description: `Team ${deletedTeam.title} was been updated by ${user.username}.`,
+      avatarUrl: user.avatarUrl,
+      classroomId: deletedTeam.classroomId,
+    });
+
+    await Alerts.deleteAllByTeam(id);
+  };
+
   static async create(
     user: User,
     classroomId: string,

@@ -20,6 +20,14 @@ export class Alerts {
     });
   };
 
+  static async deleteAllByTeam(teamId: string) {
+    return await Prisma.alert.deleteMany({
+      where: {
+        teamId
+      }
+    });
+  };
+
   static async getByUser(userId: string, {
     page = 0,
     query = "",

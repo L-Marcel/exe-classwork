@@ -36,7 +36,7 @@ function RepositoryConfiguration({
       spacing={5}
     >
       <Link 
-        href={`/app/repositories`}
+        href={router?.query["returnToList"]? `/app/repositories`: `/repositories/${repositoryName}`}
         tabIndex={0}
       >
         {'<'}- return

@@ -26,6 +26,39 @@ export class Repositories {
       }
     });
 
+    const repositoryAlreadyLinked = repositoryAlreadyExists && await Prisma.repository.findFirst({
+      where: {
+        AND: [
+          {
+            OR: [
+              {
+                id: repository.id || ""
+              },
+              {
+                fullname: repository.fullname || ""
+              }
+            ]
+          },
+          {
+            teams: {
+              some: {
+                id: teamId
+              }
+            }
+          }
+        ]
+      },
+      select: {
+        id: true
+      }
+    });
+
+    if(repositoryAlreadyLinked) {
+      return {
+        alreadyLinked: true
+      };
+    };
+
     if(repositoryAlreadyExists) {
       return await Prisma.repository.update({
         data: {

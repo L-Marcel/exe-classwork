@@ -3,14 +3,20 @@ import { TeamCreateForm } from "../../../../components/Team/TeamCreateForm";
 import { WithClassroomProps } from "../../../../utils/routes/WithClassroomProps";
 import { WithUserProps } from "../../../../utils/routes/WithUserProps";
 
-interface TeamFormPageProps extends WithClassroomProps {};
+interface TeamFormPageProps extends WithClassroomProps {
+  team?: Team;
+};
 
-function TeamFormPage({}: TeamFormPageProps) { 
+export function TeamFormPage({
+  team
+}: TeamFormPageProps) { 
   return (
     <Section
       isNeabyOfNavigation
     >
-      <TeamCreateForm/>
+      <TeamCreateForm
+        team={team}
+      />
     </Section>
   );
 };

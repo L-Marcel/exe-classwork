@@ -14,6 +14,7 @@ interface SelectProps extends BoxProps {
   labelFormat?: (data) => ReactNode;
   error?: string;
   value?: any;
+  controlledValue?: any;
   onChange?: (value: any) => void;
   isLoading?: boolean;
   isMulti?: boolean;
@@ -31,6 +32,7 @@ function Select({
   register,
   selectStyles,
   labelFormat,
+  controlledValue,
   isMulti,
   name,
   value,
@@ -96,7 +98,8 @@ function Select({
             isMulti={isMulti}
             options={options}
             {...register}
-            defaultValue={value}
+            defaultValue={controlledValue ?? value}
+            value={controlledValue}
             formatOptionLabel={labelFormat}
             loadingMessage={() => {
               return (<Text>Searching...</Text>);

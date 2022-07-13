@@ -127,9 +127,10 @@ function RepositoryItem({
         top={-1}
         right={[-8, 0]}
         p={4}
+        onClick={e => e.stopPropagation()}
       >
         <Link
-          href={`/app/repositories/${id}/config`}
+          href={`/app/repositories/${id}/config?returnToList=true`}
         >
           <IconButton
             justifyContent="center"

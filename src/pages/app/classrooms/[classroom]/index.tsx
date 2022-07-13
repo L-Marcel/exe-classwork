@@ -214,6 +214,10 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
     return await Promise.all(repositories.map(async(repository) => {
       const repositoryData = await getRepository(repository.fullname);
 
+      if(!repositoryData) {
+        return null;
+      };
+
       return {
         teams: repository.teams,
         ...repositoryData
@@ -229,7 +233,7 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
 
     return {
       props: {
-        repositories
+        repositories: repositories.filter(r => r !== null)
       },
     };
   } catch (error) {};

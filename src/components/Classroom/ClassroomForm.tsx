@@ -34,6 +34,7 @@ function ClassroomForm({
   } | null>(null);
 
   const router = useRouter();
+  
   const { user } = useUser();
 
   const relation = classroom && classroom.users.find(u => u.user.id === user.id);
