@@ -32,7 +32,7 @@ function RepositoryItem({
   const [progress, setProgress] = useState<NamedProgress>({
     target: 0,
     value: 0,
-    status: status || "NOT_REQUESTED",
+    status: status ?? "NOT_REQUESTED",
     name: fullname
   });
 

@@ -28,7 +28,7 @@ async function updateTeam(req: Req, res: Res) {
           }
         }
       },
-      classroomId: updatedTeam?.toString() || "",
+      classroomId: updatedTeam.team.classroomId?.toString() || "",
       teamId: String(team)
     }).then(async(res: any) => {
       if(res["alreadyLinked"]) {
@@ -45,18 +45,9 @@ async function updateTeam(req: Req, res: Res) {
         });
       } catch (error) {};
 
-      await ServerSocket.getSocket(user.id, req.token)
-      .then(socket => {
-        console.log("Socket created: ", socket.id);
-        socket.emit("@repostory/commits/refresh", {
-          repositoryFullname: repository.fullname,
-          token: req.token,
-          userId: user.id
-        });
-      }).catch(err => console.log(err));
-  
       return res;
-    }).catch(async() => {
+    }).catch(async(err) => {
+      console.log(err);
       await Alerts.create("TEAM", {
         description: `Can't link ${repository.fullname}.`,
         avatarUrl: user.avatarUrl,
@@ -64,6 +55,16 @@ async function updateTeam(req: Req, res: Res) {
         teamId: String(team)
       });
     });
+
+    await ServerSocket.getSocket(user.id, req.token)
+    .then(socket => {
+      console.log("Socket created: ", socket.id);
+      socket.emit("@repostory/commits/refresh", {
+        repositoryFullname: repository.fullname,
+        token: req.token,
+        userId: user.id
+      });
+    }).catch(err => console.log(err));
   };
 
   return res.status(200).json(updatedTeam);

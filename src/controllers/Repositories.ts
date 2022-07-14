@@ -62,7 +62,7 @@ export class Repositories {
     if(repositoryAlreadyExists) {
       return await Prisma.repository.update({
         data: {
-          classroom: classroomId? {
+          classrooms: classroomId? {
             connect: {
               id: classroomId
             }
@@ -80,7 +80,7 @@ export class Repositories {
     } else {
       return await this.create({
         ...repository,
-        classroom: classroomId? {
+        classrooms: classroomId? {
           connect: {
             id: classroomId
           }
@@ -145,8 +145,10 @@ export class Repositories {
           {
             OR: [
               {
-                classroom: {
-                  title: getApiQuery(query)
+                classrooms: {
+                  some: {
+                    title: getApiQuery(query)
+                  }
                 }
               },
               {
@@ -187,7 +189,7 @@ export class Repositories {
             id: true
           }
         },
-        classroom: {
+        classrooms: {
           select: {
             title: true,
             id: true
@@ -209,8 +211,10 @@ export class Repositories {
           {
             OR: [
               {
-                classroom: {
-                  title: getApiQuery(query)
+                classrooms: {
+                  some: {
+                    title: getApiQuery(query)
+                  }
                 }
               },
               {

@@ -112,15 +112,13 @@ model Repository {
   gitUrl String
   sshUrl String?
 
-  classroom Classroom? @relation(fields: [classroomId], references: [id], onDelete: Cascade)
-  classroomId String?
-  
   owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   ownerId String
 
   commits Commit[]
   alerts Alert[]
   teams Team[]
+  classrooms Classroom[]
 
   visibility RepositoryVisibility @default(PUBLIC)
 

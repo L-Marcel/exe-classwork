@@ -13,7 +13,7 @@ interface ClassroomTeamsListProps {
 function ClassroomTeamsList({ initialData, classroomId, repositoriesAreRestricted = false }: ClassroomTeamsListProps) {
   const { data: teams, isFetching } = useSearchResult<Team>({
     queryTo: `/user/classroom/${classroomId}/teams`,
-    initialData
+    initialData,
   });
 
   return (

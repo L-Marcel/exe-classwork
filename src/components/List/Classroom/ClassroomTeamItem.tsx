@@ -32,7 +32,7 @@ function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: Classroo
   const [progress, setProgress] = useState<NamedProgress>({
     target: 0,
     value: 0,
-    status: team.repository?.status || "NOT_REQUESTED",
+    status: team.repository?.status ?? "NOT_REQUESTED",
     name: team.repository?.fullname
   });
 
@@ -44,7 +44,7 @@ function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: Classroo
   const repositoryIsLoaded = !repositoryIsLoading && progress?.status === "LOADED";
   const canOpenRepository = (!repositoryIsLoading && repositoryIsLoaded);
   const theme = canOpenRepository? "primary.800":"orange.700";
-  
+
   useEffect(() => {
     if(_progress && _progress !== progress) {
       setProgress(_progress);
