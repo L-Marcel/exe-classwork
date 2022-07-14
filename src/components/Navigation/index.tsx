@@ -58,6 +58,12 @@ function Navigation({ ...rest }: NavigationProps) {
       })
     };
   }, [globalSocket, setHaveAlert, checkIfHaveAlerts]);
+
+  useEffect(() => {
+    if(user !== null) {
+      checkIfHaveAlerts();
+    };
+  }, [isLoading]);
  
   if(!user || asPath === "/") {
     return (

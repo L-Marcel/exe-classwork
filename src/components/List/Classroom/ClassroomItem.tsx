@@ -3,6 +3,7 @@ import { m } from "framer-motion";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { useGlobal } from "../../../contexts/hooks/useGlobal";
+import { useIsLoading } from "../../../contexts/hooks/useIsLoading";
 import { useUser } from "../../../contexts/hooks/useUser";
 import { Api } from "../../../services/api";
 import { scaleOnInteract } from "../../../theme/animations/motion";
@@ -18,6 +19,8 @@ interface ClassroomItemProps {
 
 function ClassroomItem({ title, description, subject, id, alerts = [] }: ClassroomItemProps) {
   const router = useRouter();
+
+  const { isLoading } = useIsLoading();
 
   const { user } = useUser();
   const { global: globalSocket } = useGlobal();
@@ -43,6 +46,12 @@ function ClassroomItem({ title, description, subject, id, alerts = [] }: Classro
       })
     };
   }, [globalSocket, setHaveAlert, checkIfHaveAlerts]);
+
+  useEffect(() => {
+    if(user !== null) {
+      checkIfHaveAlerts();
+    };
+  }, [isLoading]);
 
   return (
     <Box
