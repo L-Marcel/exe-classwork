@@ -217,11 +217,27 @@ export class Teams {
             classroomId
           },
           teamsAreRestricted? {
-            users: {
-              some: {
-                userId
+            OR: [
+              {
+                users: {
+                  some: {
+                    userId
+                  }
+                }
+              },
+              {
+                classroom: {
+                  users: {
+                    some: {
+                      userId,
+                      role: {
+                        not: "STUDENT"
+                      }
+                    }
+                  }
+                }
               }
-            }
+            ]
           }:undefined
         ]
       },
@@ -287,11 +303,27 @@ export class Teams {
             classroomId
           },
           teamsAreRestricted? {
-            users: {
-              some: {
-                userId
+            OR: [
+              {
+                users: {
+                  some: {
+                    userId
+                  }
+                }
+              },
+              {
+                classroom: {
+                  users: {
+                    some: {
+                      userId,
+                      role: {
+                        not: "STUDENT"
+                      }
+                    }
+                  }
+                }
               }
-            }
+            ]
           }:undefined
         ]
       },

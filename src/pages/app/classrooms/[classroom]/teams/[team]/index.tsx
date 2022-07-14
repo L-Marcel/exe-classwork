@@ -7,6 +7,7 @@ import { TeamMembersList } from "../../../../../../components/List/Classroom/Tea
 import { NamedIcon } from "../../../../../../components/NamedIcon";
 import { Section } from "../../../../../../components/Section";
 import { Title } from "../../../../../../components/Title";
+import { useUser } from "../../../../../../contexts/hooks/useUser";
 import { Prisma } from "../../../../../../services/prisma";
 import { WithClassroomProps } from "../../../../../../utils/routes/WithClassroomProps";
 import { WithUserProps } from "../../../../../../utils/routes/WithUserProps";
@@ -17,6 +18,8 @@ interface TeamPageProps {
 };
 
 function TeamPage({ team, classroom }: TeamPageProps) {
+  const { user } = useUser();
+
   const {
     title,
     repository,
@@ -24,6 +27,12 @@ function TeamPage({ team, classroom }: TeamPageProps) {
     id,
     users
   } = team;
+
+  const userIsMember = team? users.some(u => u.user.id === user.id && u.role === "LEADER"):false;
+  const userIsAuthorized = userIsMember || classroom.users.some(u => 
+    u.user.id === user.id && 
+    u.role !== "STUDENT" && 
+    u.role !== "OBSERVER");
 
   return (
     <>
@@ -63,7 +72,7 @@ function TeamPage({ team, classroom }: TeamPageProps) {
           display="flex"
           gap={4}
         >
-          <Link 
+          { userIsAuthorized && <Link 
             mt={5}
             href={`/app/classrooms/${classroom.id}/teams/${id}/config`}
           >
@@ -75,7 +84,7 @@ function TeamPage({ team, classroom }: TeamPageProps) {
               w={8}
               minW="auto"
             />
-          </Link>
+          </Link> }
           <Tag
             fontWeight="bold"
             bgColor="primary.800"

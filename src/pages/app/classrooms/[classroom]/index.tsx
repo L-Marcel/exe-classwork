@@ -38,14 +38,19 @@ function ClassroomPage({
     u.role === "ADMIN"
   );
 
+  const userIsObserver = userIsAuthorized || users.some(
+    u => u.user.id === user.id && 
+    u.role === "OBSERVER"
+  );
+
   const teamsAreRestricted = 
-    classroom.teamsAreRestricted && !userIsAuthorized;
+    classroom.teamsAreRestricted && !userIsAuthorized && !userIsObserver;
 
   const rolesAreRestricted = 
-    classroom.rolesAreRestricted && !userIsAuthorized;
+    classroom.rolesAreRestricted && !userIsAuthorized && !userIsObserver;
   
   const repositoriesAreRestricted = 
-    classroom.repositoriesAreRestricted && !userIsAuthorized;
+    classroom.repositoriesAreRestricted && !userIsAuthorized && !userIsObserver;
 
   return (
     <>

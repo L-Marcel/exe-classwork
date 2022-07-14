@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useClassroom } from "../../../contexts/hooks/useClassroom";
 import { useIsLoading } from "../../../contexts/hooks/useIsLoading";
 import { useProgress } from "../../../contexts/hooks/useProgress";
+import { useUser } from "../../../contexts/hooks/useUser";
 import { scaleIn } from "../../../theme/animations/motion";
 import { IconButton } from "../../Buttons/IconButton";
 import { Link } from "../../Link";
@@ -18,6 +19,8 @@ interface ClassroomTeamItem {
 
 function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: ClassroomTeamItem) {
   const router = useRouter();
+
+  const { user } = useUser();
   const { classroom } = useClassroom();
   const { isLoading } = useIsLoading();
 
@@ -50,7 +53,13 @@ function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: Classroo
       setProgress(_progress);
     };
   }, [_progress, setProgress]);
-  
+
+  const userIsMember = team? users.some(u => u.user.id === user.id && u.role === "LEADER"):false;
+  const userIsAuthorized = userIsMember || classroom.users.some(u => 
+    u.user.id === user.id && 
+    u.role !== "STUDENT" && 
+    u.role !== "OBSERVER");
+
   return (
     <Stack
       as={m.button}
@@ -187,7 +196,7 @@ function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: Classroo
           })}
         </AvatarGroup>
       </Box>
-      <Box
+      { userIsAuthorized && <Box
         position="absolute"
         top={-1}
         right={[-8, 0]}
@@ -219,7 +228,7 @@ function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: Classroo
             fontSize={18}
           />
         </Link>
-      </Box>
+      </Box> }
     </Stack>
   );
 };
