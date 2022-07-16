@@ -58,22 +58,16 @@ export class TeamRelations {
     data: Omit<P.TeamRelationUncheckedCreateInput, "role">,
     needAlert = false
   ) {
-    const relation = await Prisma.teamRelation.update({
-      data: {
-        ...data,
-        role
-      },
-      where: {
-        teamId_userId: {
-          userId: user.id,
-          teamId
-        }
-      }
-    });
-
-
     try {
       await this.isAlreadyLinked(user, data.teamId);
+
+      const relation = await Prisma.teamRelation.create({
+        data: {
+          ...data,
+          role
+        }
+      });
+
       
       if(needAlert) {
         await Alerts.create("TEAM_RELATION", {
@@ -83,9 +77,24 @@ export class TeamRelations {
           classroomId
         });
       };
-    } catch(err) {};
 
-    return relation;
+      return relation;
+    } catch(err) {
+      const relation = await Prisma.teamRelation.update({
+        data: {
+          ...data,
+          role
+        },
+        where: {
+          teamId_userId: {
+            userId: user.id,
+            teamId
+          }
+        }
+      });
+
+      return relation;
+    };
   };
 
   static async getByTeam(teamId: string, classroomId: string, {
@@ -186,41 +195,37 @@ export class TeamRelations {
   ) {
     const relation = await Prisma.teamRelation.findFirst({
       where: {
-        AND: [
+        OR: [
           {
-            OR: [
-              {
-                role: "LEADER"
-              },
-              {
-                team: {
-                  classroom: {
-                    users: {
-                      some: {
-                        role: "OWNER",
-                        userId
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                team: {
-                  classroom: {
-                    users: {
-                      some: {
-                        role: "ADMIN",
-                        userId
-                      }
-                    }
+            role: "LEADER",
+            teamId,
+            userId
+          },
+          {
+            teamId,
+            team: {
+              classroom: {
+                users: {
+                  some: {
+                    role: "OWNER",
+                    userId
                   }
                 }
               }
-            ]
+            }
           },
           {
-            userId,
-            teamId
+            teamId,
+            team: {
+              classroom: {
+                users: {
+                  some: {
+                    role: "ADMIN",
+                    userId
+                  }
+                }
+              }
+            }
           }
         ]
       }

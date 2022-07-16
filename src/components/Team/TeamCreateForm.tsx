@@ -256,6 +256,56 @@ function TeamCreateForm({
     setValue("users", oldTeam.users);
     setValue("leader", oldTeam.users.find(u => u.role === "LEADER"));
   };
+
+  const usersToSelect = [...members?.filter(m => !(watch("users") ?? [])
+  .some(sm => (sm.user?.username === m?.user?.username && sm.user?.username && m?.user?.username) 
+  || (sm?.user?.name === m?.user?.name && sm?.user?.name && m?.user?.name)))
+  .map(m => {
+    return {
+      value: {
+        user: m.user,
+        role: "MEMBER"
+      },
+      label: m?.user?.name ?? m?.user?.username,
+      color: "var(--chakra-color-solid-200)"
+    };
+  })];
+
+  const usersToSelectTheLeader = [...(watch("users") ?? []).map(m => {
+      return {
+        value: {
+          ...m,
+          role: "LEADER"
+        },
+        label: m?.user?.name ?? m?.user?.username,
+        color: "var(--chakra-color-solid-200)"
+      };
+  })];
+
+  useEffect(() => {
+    const users = [...(watch("users") ?? [])];
+    const leader = watch("leader");
+    
+    setValue("users", users.map(u => {
+      if((u.user?.username === leader?.user?.username && u.user?.username && leader?.user?.username) 
+      || (u?.user?.name === leader?.user?.name && u?.user?.name && leader?.user?.name)) {
+        u.role = "LEADER";
+      } else {
+        u.role = "MEMBER";
+      };
+
+      return u;
+    }));
+  }, [watch("leader")]);
+
+  
+  const selectedLeader = [...(watch("users") ?? [])].map(r => {
+    return {
+      value: r,
+      label: r?.user?.name ?? r?.user?.username,
+      color: "var(--chakra-color-solid-200)"
+    };
+  }).find(v => v.value.role === "LEADER");
   
   return (
     <Stack
@@ -344,7 +394,7 @@ function TeamCreateForm({
         controlledValue={watch("users")? watch("users").map(r => {
           return {
             value: {
-              role: "MEMBER",
+              role: r.role ?? "MEMBER",
               user: r.user
             },
             label: r?.user?.name ?? r?.user?.username,
@@ -354,23 +404,12 @@ function TeamCreateForm({
         options={[
           {
             value: null,
-            label: "Members:",
+            label: usersToSelect.length <= 0? "No members remaining":"Members:",
             color: "var(--chakra-color-solid-200)",
             isFixed: true,
             isDisabled: true
           },
-          ...members?.filter(m => !(watch("users") ?? [])
-          .some(sm => sm.user?.username === m?.user?.username || sm?.user?.name === m?.user?.name))
-          .map(m => {
-            return {
-              value: {
-                user: m.user,
-                role: "MEMBER"
-              },
-              label: m?.user?.name ?? m?.user?.username,
-              color: "var(--chakra-color-solid-200)"
-            };
-          })
+          ...usersToSelect
         ]}
         selectStyles={selectStyle(8)}
       />
@@ -381,33 +420,24 @@ function TeamCreateForm({
       </Title>
       <Select
         register={register("leader")}
-        placeholder="Selecte the team leader..."
+        placeholder="Select the team leader..."
         isLoading={repositoriesIsLoading}
-        controlledValue={watch("users")? watch("users").map(r => {
-          return {
-            value: r,
-            label: r?.user?.name ?? r?.user?.username,
-            color: "var(--chakra-color-solid-200)"
-          };
-        }).find(v => v.value.role === "LEADER"):undefined}
+        controlledValue={selectedLeader? selectedLeader:{
+          value: null,
+          label: "Select the team leader...",
+          color: "var(--chakra-color-solid-200)",
+          isFixed: true,
+          isDisabled: true
+        }}
         options={[
           {
             value: null,
-            label: "Team members:",
+            label: usersToSelectTheLeader.length <= 0? "Team has no members":"Team members:",
             color: "var(--chakra-color-solid-200)",
             isFixed: true,
             isDisabled: true
           },
-          ...(watch("users") ?? []).map(m => {
-            return {
-              value: {
-                ...m,
-                role: "LEADER"
-              },
-              label: m?.user?.name ?? m?.user?.username,
-              color: "var(--chakra-color-solid-200)"
-            };
-          })
+          ...usersToSelectTheLeader
         ]}
         selectStyles={selectStyle(8)}
       />

@@ -53,3 +53,11 @@ async function createCommits(req: Req, res: Res) {
 export default apiHandle({
   "POST": withUser(createCommits, true)
 });
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "20mb"
+    }
+  }
+};

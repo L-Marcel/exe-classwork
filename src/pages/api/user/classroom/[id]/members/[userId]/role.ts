@@ -13,5 +13,5 @@ async function changeMemberRole(req: Req, res: Res) {
 };
 
 export default apiHandle({
-  "DELETE": withUser(changeMemberRole)
+  "POST": withUser(changeMemberRole)
 });

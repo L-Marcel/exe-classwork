@@ -83,13 +83,13 @@ function ClassroomPage({
           maxW="100vw"
           pt={3}
         >
-          <TabPanel
+          { (!teamsAreRestricted && !repositoriesAreRestricted) && <TabPanel
             p={0}
           >
             <ClassroomCharts
               repositories={repositories}
             />
-          </TabPanel>
+          </TabPanel> }
           <TabPanel 
             w="100%"
           >

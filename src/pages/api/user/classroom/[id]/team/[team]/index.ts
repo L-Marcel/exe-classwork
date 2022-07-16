@@ -15,8 +15,9 @@ async function updateTeam(req: Req, res: Res) {
   const { users, repository, ...data } = req.body;
 
   await Teams.get(team?.toString());
-  const updatedTeam = await Teams.update(user, team?.toString(), users, data);
 
+  const updatedTeam = await Teams.update(user, team?.toString(), users, data);
+  
   if(repository) {
     console.log("Linking repositories...");
     await Repositories.link({
