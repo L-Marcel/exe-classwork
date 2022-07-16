@@ -1,7 +1,6 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { ClassroomProvider } from "../../../contexts/ClassroomProvider";
-import { useClassroomPayloadIndex } from "../../../contexts/hooks/useClassroomPayloadIndex";
 import { DateIntervalInput } from "../../Inputs/DateIntervalInput";
 import { ClassroomMetricsTable } from "./ClassroomMetricsTable";
 import { ClasssroomRepositoriesTableContent } from "./ClassroomRepositoriesTableContent";
@@ -14,7 +13,6 @@ export interface ClassroomChartsProps {
 function ClassroomCharts({
   repositories
 }: ClassroomChartsProps) {
-  const { payloadIndex } = useClassroomPayloadIndex();
   const [chartWidth, setChartWidth] = useState(900 - 125);
 
   const commits = repositories.reduce((prev, cur) => {
@@ -45,8 +43,8 @@ function ClassroomCharts({
     const commits = cur.commits.reduce((prev, cur, i) => {
       prev.push({
         ...cur,
-        classes: cur.classes.length,
-        methods: cur.methods.length,
+        classes: cur.classes,
+        methods: cur.methods,
         files: ((prev.length > 0 && prev[i - 1].files) || 0) + (cur.filesAdded - cur.filesRemoved)
       });
       

@@ -18,8 +18,8 @@ function useCommitsProfile({
   const formattedCommits: (Omit<CommitChart, "files"> | any)[] = isFormatted? commits:commits.map(commit => {
     return {
       ...commit,
-      methods: commit.methods.length,
-      classes: commit.classes.length,
+      methods: commit.methods,
+      classes: commit.classes,
     };
   });
 

@@ -152,8 +152,8 @@ model Commit {
   complexity Int @default(0)
   sloc Int @default(0)
 
-  methods String[]
-  classes String[]
+  methods Int @default(0)
+  classes Int @default(0)
 
   userGithubId String?
   userGithubLogin String?

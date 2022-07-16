@@ -63,8 +63,8 @@ export type Commit = {
   totalAdditions: number;
   totalChanges: number;
   totalDeletions:number;
-  classes: string[];
-  methods: string[];
+  classes: number;
+  methods: number;
   complexity: number;
   churn: number;
   sloc: number;
@@ -264,8 +264,8 @@ class Directory {
         totalAdditions: data.stats.additions,
         totalChanges: data.stats.total,
         totalDeletions: data.stats.deletions,
-        classes: commitMetrics.classes,
-        methods: commitMetrics.methods,
+        classes: commitMetrics.classes.length,
+        methods: commitMetrics.methods.length,
         complexity: commitMetrics.complexity,
         churn: commitMetrics.churn,
         sloc: commitMetrics.sloc,

@@ -24,8 +24,8 @@ function RepositoryContent({
   const data = isFormatted? commits:commits.reduce((prev, cur, i) => {
     prev.push({
       ...cur,
-      classes: cur.classes.length,
-      methods: cur.methods.length,
+      classes: cur.classes,
+      methods: cur.methods,
       files: ((prev.length > 0 && prev[i - 1].files) || 0) + (cur.filesAdded - cur.filesRemoved)
     });
     
