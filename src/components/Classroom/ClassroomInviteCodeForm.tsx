@@ -8,6 +8,7 @@ import { IconButton } from "../Buttons/IconButton";
 import { Input } from "../Inputs";
 import { NamedIcon } from "../NamedIcon";
 import { Title } from "../Title";
+import { TooltipOnHover } from "../TooltipOnHover";
 
 interface ClassroomInviteCodeFormProps {};
 
@@ -60,14 +61,18 @@ function ClassroomInviteCodeForm({}: ClassroomInviteCodeFormProps) {
           }}
           value={code}
         />
-        <IconButton
-          aria-label="submit-invite-code-form"
-          icon={<NamedIcon name="submit"/>}
-          name="left"
-          theme={error? "red":"primary"}
-          onClick={handleSubmit}
-          isDisabled={!code}
-        />
+        <TooltipOnHover
+          label="Submit"
+        >
+          <IconButton
+            aria-label="submit-invite-code-form"
+            icon={<NamedIcon name="submit"/>}
+            name="left"
+            theme={error? "red":"primary"}
+            onClick={handleSubmit}
+            isDisabled={!code}
+          />
+        </TooltipOnHover>
       </HStack>
     </Stack>
   );

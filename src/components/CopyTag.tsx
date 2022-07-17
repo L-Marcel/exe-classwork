@@ -2,6 +2,7 @@ import { Box, Tag, Text, useBreakpointValue } from "@chakra-ui/react";
 import { useState } from "react";
 import { IconButton } from "./Buttons/IconButton";
 import { NamedIcon } from "./NamedIcon";
+import { TooltipOnHover } from "./TooltipOnHover";
 
 interface CopyTagProps {
   text?: string;
@@ -45,15 +46,19 @@ function CopyTag({ text, successMessage, time = 3000 }: CopyTagProps) {
   if(!isWideOrNormalVersion) {
     return (
       <>
-        <IconButton 
-          aria-label="copy-button"
-          icon={<NamedIcon name="copy"/>}
-          onClick={copy}
-          theme="primary"
-          h={8}
-          w={8}
-          minW="auto"
-        />
+        <TooltipOnHover
+          label="Copy"
+        >
+          <IconButton 
+            aria-label="copy-button"
+            icon={<NamedIcon name="copy"/>}
+            onClick={copy}
+            theme="primary"
+            h={8}
+            w={8}
+            minW="auto"
+          />
+        </TooltipOnHover>
         <Text>
           {message? '-> ' + message:!isSmallVersion && "-> Invite code"}
         </Text>
@@ -85,19 +90,23 @@ function CopyTag({ text, successMessage, time = 3000 }: CopyTagProps) {
         }}
       >
         {text}
-        <IconButton 
-          aria-label="copy-button"
-          icon={<NamedIcon name="copy"/>}
-          theme="primary"
-          position="absolute"
-          right={0}
-          m={0}
-          p={4}
-          mr={0}
-          h="min-content"
-          w="10px"
-          minW="auto"
-        />
+        <TooltipOnHover
+          label="Copy"
+        >
+          <IconButton 
+            aria-label="copy-button"
+            icon={<NamedIcon name="copy"/>}
+            theme="primary"
+            position="absolute"
+            right={0}
+            m={0}
+            p={4}
+            mr={0}
+            h="min-content"
+            w="10px"
+            minW="auto"
+          />
+        </TooltipOnHover>
       </Tag>
       {
         message && <Text

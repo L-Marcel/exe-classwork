@@ -1,4 +1,4 @@
-import { Avatar, Box, Text } from "@chakra-ui/react";
+import { Avatar, Box, Tag, Text, useColorModeValue } from "@chakra-ui/react";
 import { useUser } from "../../../contexts/hooks/useUser";
 import { getAlertTags } from "../../../utils/getAlertTags";
 import { getFormattedDateTime } from "../../../utils/getFormattedDate";
@@ -11,6 +11,7 @@ interface AlertItemProps {
 function AlertItem({
   alert
 }: AlertItemProps) {
+  const color = useColorModeValue(["solid.75", "solid.100"], ["solid.100", "solid.75"]);
   const { user } = useUser();
 
   const isNew = !alert.visualizedBy.some(u => u === user.id);
@@ -19,18 +20,31 @@ function AlertItem({
     <Box
       py={3}
       px={4}
-      bgColor="solid.100"
-      borderLeft={isNew? "2px solid var(--chakra-colors-orange-700)!important":"2px solid var(--chakra-colors-primary-700)!important"}
+      bgColor={isNew? color[0]:color[1]}
+      filter={!isNew? "grayscale(.5)":undefined}
+      borderLeft={isNew? "2px solid var(--chakra-colors-primary-700)!important":"2px solid var(--chakra-colors-orange-700)!important"}
       borderRadius={8}
     >
       <Text
         fontWeight="normal"
-        color="primary.700"
+        color={!isNew? "orange.700":"primary.700"}
+        display="flex"
+        alignItems="center"
       >
         {isNew && <Span
-          color="orange.700"
+          color="primary.700"
+          h="1.1rem"
+          mt="2px"
+          mr="7px"
         >
-          #new
+          <Tag
+            fontSize={12}
+            px="6px"
+            minH="1.1rem"
+            borderLeft="2px solid var(--chakra-colors-primary-700)!important"
+          >
+            NEW
+          </Tag>
         </Span>} {getAlertTags({
           type: alert.type,
           classroom: alert.classroom?.title,

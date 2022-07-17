@@ -2,7 +2,7 @@ import { Icon as ChakraIcon, IconProps as ChakraIconProps } from "@chakra-ui/rea
 import { AiFillCaretDown, AiFillCaretUp, AiFillHtml5, AiFillStar, AiOutlineCalendar, AiOutlineCheck, AiOutlineClockCircle, AiOutlineClose, AiOutlineInfoCircle, AiOutlineMenu, AiOutlineNumber, AiOutlinePaperClip, AiOutlinePercentage, AiOutlinePlus, AiOutlinePoweroff, AiOutlineReload, AiOutlineRight, AiOutlineStar } from "react-icons/ai";
 import { BiCog, BiCrown, BiCubeAlt, BiLike, BiMessageSquareDetail, BiSearchAlt } from "react-icons/bi";
 import { BsDownload, BsEmojiExpressionless, BsEmojiSunglasses, BsFillJournalBookmarkFill, BsFillMoonStarsFill, BsFillQuestionCircleFill, BsHourglassSplit, BsMoonStars, BsNewspaper, BsQuestionCircle, BsSunrise } from "react-icons/bs";
-import { CgTikcode } from "react-icons/cg";
+import { CgTikcode, CgWebsite } from "react-icons/cg";
 import { DiCss3, DiSass } from "react-icons/di";
 import { FaAngleDoubleLeft, FaAngleDoubleRight, FaAngleLeft, FaAngleRight, FaBalanceScale, FaBell, FaChalkboardTeacher, FaDocker, FaGitAlt, FaGithubAlt, FaHome, FaJava, FaPencilAlt, FaProjectDiagram, FaPython, FaReact, FaRegPaperPlane, FaRegSave, FaSun, FaUser } from "react-icons/fa";
 import { FiCopy, FiFigma, FiFramer, FiPaperclip } from "react-icons/fi";
@@ -122,7 +122,8 @@ export const icons = {
   "percent": AiOutlinePercentage,
   "clock": AiOutlineClockCircle,
   "eye-closed": RiEyeCloseLine,
-  "eye-opened": RiEyeLine
+  "eye-opened": RiEyeLine,
+  "website": CgWebsite
 };
 
 function NamedIcon({ name = "default", ...rest }: IconProps) {

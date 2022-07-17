@@ -3,6 +3,7 @@ import { useTable } from "../../contexts/hooks/useTable";
 import { boxShadow } from "../../theme/effects/shadow";
 import { getButtonStyle } from "../Buttons/styles/getButtonStyle";
 import { NamedIcon } from "../NamedIcon";
+import { TooltipOnHover } from "../TooltipOnHover";
 
 function TableFilter() {
   const {
@@ -26,8 +27,6 @@ function TableFilter() {
 
     const _filters: string[] = filters;
 
-    console.log(filters);
-
     Object.entries(filter).forEach(([key, value]) => {
       if(value !== _filters.some(f => f === key)) {
         setFilter(!value, key);
@@ -37,15 +36,19 @@ function TableFilter() {
 
   return (
     <Menu closeOnSelect={false}>
-      <MenuButton
-        { ...getButtonStyle({ theme: "solid" }) }
-        as={IconButton}
-        data-testid="icon-button"
-        size={isWideOrNormalVersion? "md":"sm"}
-        icon={<NamedIcon name="tune"/>}
-        aria-label="table-filter-button"
-        fontSize={18}
-      />
+      <TooltipOnHover
+        label="Filter columns"
+      >
+        <MenuButton
+          { ...getButtonStyle({ theme: "solid" }) }
+          as={IconButton}
+          data-testid="icon-button"
+          size={isWideOrNormalVersion? "md":"sm"}
+          icon={<NamedIcon name="tune"/>}
+          aria-label="table-filter-button"
+          fontSize={18}
+        />
+      </TooltipOnHover>
       <MenuList 
         zIndex={899} 
         minWidth="240px"

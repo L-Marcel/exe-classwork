@@ -7,6 +7,7 @@ import { scaleOnInteract } from "../../../theme/animations/motion";
 import { IconButton } from "../../Buttons/IconButton";
 import { Link } from "../../Link";
 import { NamedIcon } from "../../NamedIcon";
+import { TooltipOnHover } from "../../TooltipOnHover";
 
 interface RepositoryItemProps {
   name: string;
@@ -32,7 +33,7 @@ function RepositoryItem({
   const [progress, setProgress] = useState<NamedProgress>({
     target: 0,
     value: 0,
-    status: status ?? "NOT_REQUESTED",
+    status: status || "NOT_REQUESTED",
     name: fullname
   });
 
@@ -48,8 +49,15 @@ function RepositoryItem({
   useEffect(() => {
     if(_progress && _progress !== progress) {
       setProgress(_progress);
+    } else if(status && progress.status === "NOT_REQUESTED" && progress.status !== status) {
+      setProgress(p => {
+        return {
+          ...p,
+          status
+        };
+      });
     };
-  }, [_progress, setProgress]);
+  }, [_progress, progress, setProgress]);
 
   return (
     <Box
@@ -132,25 +140,29 @@ function RepositoryItem({
         <Link
           href={`/app/repositories/${id}/config?returnToList=true`}
         >
-          <IconButton
-            justifyContent="center"
-            borderRadius={15}
-            alignItems="center"
-            minW="28px"
-            minH="28px"
-            maxW="28px"
-            maxH="28px"
-            bgColor="solid.200"
-            aria-label="repository-configuration-button"
-            icon={<NamedIcon 
-              name="cog"
-              h="15px"
-              w="15px"
-              mt=".5px"
-              maxW="15px"
-              maxH="15px"
-            />}
-          />
+          <TooltipOnHover
+            label="Repository configuration"
+          >
+            <IconButton
+              justifyContent="center"
+              borderRadius={15}
+              alignItems="center"
+              minW="28px"
+              minH="28px"
+              maxW="28px"
+              maxH="28px"
+              bgColor="solid.200"
+              aria-label="repository-configuration-button"
+              icon={<NamedIcon 
+                name="cog"
+                h="15px"
+                w="15px"
+                mt=".5px"
+                maxW="15px"
+                maxH="15px"
+              />}
+            />
+          </TooltipOnHover>
         </Link>
       </Box>
     </Box>

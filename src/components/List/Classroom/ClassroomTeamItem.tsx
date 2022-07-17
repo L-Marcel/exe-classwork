@@ -11,6 +11,7 @@ import { IconButton } from "../../Buttons/IconButton";
 import { Link } from "../../Link";
 import { NamedIcon } from "../../NamedIcon";
 import { Title } from "../../Title";
+import { TooltipOnHover } from "../../TooltipOnHover";
 
 interface ClassroomTeamItem {
   team: Team;
@@ -35,7 +36,7 @@ function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: Classroo
   const [progress, setProgress] = useState<NamedProgress>({
     target: 0,
     value: 0,
-    status: team.repository?.status ?? "NOT_REQUESTED",
+    status: team.repository?.status || "NOT_REQUESTED",
     name: team.repository?.fullname
   });
 
@@ -51,8 +52,15 @@ function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: Classroo
   useEffect(() => {
     if(_progress && _progress !== progress) {
       setProgress(_progress);
+    } else if(team.repository?.status && progress.status === "NOT_REQUESTED" && progress.status !== team.repository?.status) {
+      setProgress(p => {
+        return {
+          ...p,
+          status: team.repository?.status
+        };
+      });
     };
-  }, [_progress, setProgress]);
+  }, [_progress, progress, team.repository, setProgress]);
 
   const userIsMember = team? users.some(u => u.user.id === user.id && u.role === "LEADER"):false;
   const userIsAuthorized = userIsMember || classroom.users.some(u => 
@@ -121,37 +129,67 @@ function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: Classroo
             gap={2}
             bgColor="solid.100"
           >
-            <IconButton
-              mr={0}
-              onClick={(e) => {
-                e.stopPropagation();
-                window.open(`https://github.com/${repository?.fullname}`, "_blank");
-              }}
-              aria-label="repository-page-button"
-              bgColor="primary.800"
-              icon={<NamedIcon
-                name="github"
-              />}
-              pointerEvents="all"
-              size="sm"
-              borderLeftRadius={0}
-            />
-            <IconButton
-              mr={0}
-              opacity={(!repositoryIsLoading && !repositoryIsLoaded) && .3}
-              cursor={repositoryIsLoading? "progress":repositoryIsLoaded? "pointer":"not-allowed"}
-              onClick={(e) => {
-                e.stopPropagation();
-                canOpenRepository && window.open(`/repositories/${repository?.fullname}`, "_blank");
-              }}
-              aria-label="repository-page-button"
-              bgColor={theme}
-              icon={<NamedIcon
-                name="open"
-              />}
-              pointerEvents="all"
-              size="sm"
-            />
+            <TooltipOnHover
+              label="Github repository"
+            >
+              <IconButton
+                mr={0}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open(`https://github.com/${repository?.fullname}`, "_blank");
+                }}
+                aria-label="repository-page-button"
+                bgColor="primary.800"
+                icon={<NamedIcon
+                  name="github"
+                />}
+                pointerEvents="all"
+                size="sm"
+                borderLeftRadius={0}
+              />
+            </TooltipOnHover>
+            { repository?.homepage && 
+              <TooltipOnHover 
+                label="Deployment environment"
+              >
+                <IconButton
+                  mr={0}
+                  opacity={(!repositoryIsLoading && !repositoryIsLoaded) && .3}
+                  cursor={repositoryIsLoading? "progress":repositoryIsLoaded? "pointer":"not-allowed"}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    canOpenRepository && window.open(repository?.homepage, "_blank");
+                  }}
+                  aria-label="repository-page-button"
+                  bgColor={theme}
+                  icon={<NamedIcon
+                    name="website"
+                  />}
+                  pointerEvents="all"
+                  size="sm"
+                />
+              </TooltipOnHover>
+            }
+            <TooltipOnHover
+              label="Repository page"
+            >
+              <IconButton
+                mr={0}
+                opacity={(!repositoryIsLoading && !repositoryIsLoaded) && .3}
+                cursor={repositoryIsLoading? "progress":repositoryIsLoaded? "pointer":"not-allowed"}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  canOpenRepository && window.open(`/repositories/${repository?.fullname}`, "_blank");
+                }}
+                aria-label="repository-page-button"
+                bgColor={theme}
+                icon={<NamedIcon
+                  name="open"
+                />}
+                pointerEvents="all"
+                size="sm"
+              />
+            </TooltipOnHover>
           </Box>
         </Box> }
       </Box>
@@ -178,7 +216,7 @@ function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: Classroo
           size="sm"
           {...scaleIn}
         >
-          {users.map(u => {
+          {users.sort((a, b) => Number(b?.role === "LEADER") - Number(a?.role === "LEADER")).map(u => {
             return (
               <Box
                 borderRadius={60}
@@ -206,27 +244,31 @@ function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: Classroo
         <Link
           href={`/app/classrooms/${classroom?.id}/teams/${team?.id}/config?returnToList=true`}
         >
-          <IconButton
-            data-testid="icon-button"
-            justifyContent="center"
-            borderRadius={15}
-            alignItems="center"
-            minW="28px"
-            minH="28px"
-            maxW="28px"
-            maxH="28px"
-            bgColor="solid.200"
-            icon={<NamedIcon 
-              name="cog"
-              h="15px"
-              w="15px"
-              mt=".5px"
-              maxW="15px"
-              maxH="15px"
-            />}
-            aria-label="table-filter-button"
-            fontSize={18}
-          />
+          <TooltipOnHover
+            label="Team configuration"
+          >
+            <IconButton
+              data-testid="icon-button"
+              justifyContent="center"
+              borderRadius={15}
+              alignItems="center"
+              minW="28px"
+              minH="28px"
+              maxW="28px"
+              maxH="28px"
+              bgColor="solid.200"
+              icon={<NamedIcon 
+                name="cog"
+                h="15px"
+                w="15px"
+                mt=".5px"
+                maxW="15px"
+                maxH="15px"
+              />}
+              aria-label="table-filter-button"
+              fontSize={18}
+            />
+          </TooltipOnHover>
         </Link>
       </Box> }
     </Stack>

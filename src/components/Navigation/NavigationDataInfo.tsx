@@ -9,6 +9,7 @@ import { Api } from "../../services/api";
 import { boxShadow } from "../../theme/effects/shadow";
 import { getDynamicProgressColor } from "../../utils/getDynamicProgressColor";
 import { NamedIcon } from "../NamedIcon";
+import { TooltipOnHover } from "../TooltipOnHover";
 
 interface NavigationDataInfoProps {
   haveOverlay: boolean;
@@ -65,103 +66,112 @@ function NavigationDataInfo({
       pointerEvents="none"
       { ...boxShadow() }
     >
-      <Box
-        as={m.button}
-        display="flex"
-        h="100%"
-        bgColor="solid.100"
-        alignItems="center"
-        justifyContent="space-between"
-        position="relative"
-        borderRadius="full"
-        py={5}
-        px={1}
-        onClick={() => setDisplayed("rate_limit")}
-        cursor="pointer"
-        pointerEvents="all"
+      <TooltipOnHover
+        label="Special requests remaining"
       >
-        {displayed === "rate_limit" && <Text
-          pl={3}
-          pr={2}
+        <Box
+          as={m.button}
+          display="flex"
+          h="100%"
+          bgColor="solid.100"
+          alignItems="center"
+          justifyContent="space-between"
+          position="relative"
+          borderRadius="full"
+          py={5}
+          px={1}
+          onClick={() => setDisplayed("rate_limit")}
+          cursor="pointer"
+          pointerEvents="all"
         >
-          {rateLimit.remaining}/{rateLimit.limit}
-        </Text> }
-        <CircularProgress 
-          size={8}
-          trackColor="solid.200"
-          color="primary.700"
-          className="circle"
-          isIndeterminate={displayed === "rate_limit"}
-        >
-          <CircularProgressLabel>
-            <CircularProgress 
-              value={(rateLimit.remaining/rateLimit.limit) * 100}
-              size={7}
-              trackColor="solid.200"
-              color={getDynamicProgressColor((rateLimit.remaining/rateLimit.limit) * 100)} 
-              className="circle"
-            >
-              <CircularProgressLabel>
-                <NamedIcon 
-                  name="network"
-                  mt="1px"
-                  w={4}
-                  h={4}
-                />
-              </CircularProgressLabel>
-            </CircularProgress>
-          </CircularProgressLabel>
-        </CircularProgress>
-      </Box>
-      <Box
-        as={m.button}
-        display="flex"
-        h="100%"
-        bgColor="solid.100"
-        alignItems="center"
-        justifyContent="space-between"
-        position="relative"
-        borderRadius="full"
-        ml={4}
-        py={5}
-        px={1}
-        onClick={() => setDisplayed("progress")}
-        cursor="pointer"
-        pointerEvents="all"
+          {displayed === "rate_limit" && <Text
+            pl={3}
+            pr={2}
+          >
+            {rateLimit.remaining}/{rateLimit.limit}
+          </Text> }
+          <CircularProgress 
+            size={8}
+            trackColor="solid.200"
+            color="primary.700"
+            className="circle"
+            isIndeterminate={displayed === "rate_limit"}
+          >
+            <CircularProgressLabel>
+              <CircularProgress 
+                value={(rateLimit.remaining/rateLimit.limit) * 100}
+                size={7}
+                trackColor="solid.200"
+                color={getDynamicProgressColor((rateLimit.remaining/rateLimit.limit) * 100)} 
+                className="circle"
+              >
+                <CircularProgressLabel>
+                  <NamedIcon 
+                    name="network"
+                    mt="1px"
+                    w={4}
+                    h={4}
+                  />
+                </CircularProgressLabel>
+              </CircularProgress>
+            </CircularProgressLabel>
+          </CircularProgress>
+        </Box>
+      </TooltipOnHover>
+      <TooltipOnHover
+        label="Repository load progress"
+        bgColor="orange.600"
       >
-        { displayed === "progress" && <Text
-          pl={3}
-          pr={2}
+        <Box
+          as={m.button}
+          display="flex"
+          h="100%"
+          bgColor="solid.100"
+          alignItems="center"
+          justifyContent="space-between"
+          position="relative"
+          borderRadius="full"
+          ml={4}
+          py={5}
+          px={1}
+          onClick={() => setDisplayed("progress")}
+          cursor="pointer"
+          pointerEvents="all"
         >
-          {progress.value}/{progress.target}
-        </Text> }
-        <CircularProgress 
-          size={8}
-          trackColor="solid.200"
-          color="orange.700"
-          className="circle"
-          isIndeterminate={displayed === "progress"}
-        >
-          <CircularProgressLabel>
-            <CircularProgress 
-              value={(progress.value/progress.target) * 100}
-              size={7}
-              trackColor="solid.200"
-              color="orange.500" 
-              className="circle"
-            >
-              <CircularProgressLabel>
-                <NamedIcon 
-                  name="project"
-                  mt="2px"
-                  w={3}
-                  h={3}
-                />
-              </CircularProgressLabel>
-            </CircularProgress>
-          </CircularProgressLabel>
-        </CircularProgress>
-      </Box>
+          { displayed === "progress" && <Text
+            pl={3}
+            pr={2}
+          >
+            {progress.value}/{progress.target}
+          </Text> }
+          <CircularProgress 
+            size={8}
+            trackColor="solid.200"
+            color="orange.700"
+            className="circle"
+            isIndeterminate={displayed === "progress"}
+          >
+            <CircularProgressLabel>
+              <CircularProgress 
+                value={(progress.value/progress.target) * 100}
+                size={7}
+                trackColor="solid.200"
+                color="orange.500" 
+                className="circle"
+              >
+                <CircularProgressLabel>
+                  <NamedIcon 
+                    name="project"
+                    mt="2px"
+                    w={3}
+                    h={3}
+                  />
+                </CircularProgressLabel>
+              </CircularProgress>
+            </CircularProgressLabel>
+          </CircularProgress>
+        </Box>
+      </TooltipOnHover>
     </Box>
   );
 };

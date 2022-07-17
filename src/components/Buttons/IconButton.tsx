@@ -1,4 +1,5 @@
 import { IconButton as ChakraIconButton, IconButtonProps as ChakraIconButtonProps, useBreakpointValue } from "@chakra-ui/react";
+import React from "react";
 import { getButtonStyle } from "./styles/getButtonStyle";
 
 export interface IconButtonProps extends ChakraIconButtonProps {
@@ -8,13 +9,13 @@ export interface IconButtonProps extends ChakraIconButtonProps {
   forceHoverEffect?: boolean;
 };
 
-function IconButton({ 
+const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(({ 
   theme, 
   color, 
   colorIndexes,
   forceHoverEffect,
   ...rest
-}: IconButtonProps) {
+}, ref = React.createRef()) => {
   const isWideOrNormalVersion = useBreakpointValue({
     base: false,
     sm: false,
@@ -29,10 +30,12 @@ function IconButton({
       data-testid="icon-button"
       {...getButtonStyle({ theme, color, colorIndexes, forceHoverEffect })}
       size={isWideOrNormalVersion? "md":"sm"}
-      fontSize={18}
+      fontSize={18}s
       {...rest}
+      ref={ref}
     />
   );
-};
+});
 
 export { IconButton };
+

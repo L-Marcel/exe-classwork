@@ -7,6 +7,7 @@ import { TeamMembersList } from "../../../../../../components/List/Classroom/Tea
 import { NamedIcon } from "../../../../../../components/NamedIcon";
 import { Section } from "../../../../../../components/Section";
 import { Title } from "../../../../../../components/Title";
+import { TooltipOnHover } from "../../../../../../components/TooltipOnHover";
 import { useUser } from "../../../../../../contexts/hooks/useUser";
 import { Prisma } from "../../../../../../services/prisma";
 import { WithClassroomProps } from "../../../../../../utils/routes/WithClassroomProps";
@@ -28,11 +29,11 @@ function TeamPage({ team, classroom }: TeamPageProps) {
     users
   } = team;
 
-  const userIsMember = team? users.some(u => u.user.id === user.id && u.role === "LEADER"):false;
-  const userIsAuthorized = userIsMember || classroom.users.some(u => 
-    u.user.id === user.id && 
-    u.role !== "STUDENT" && 
-    u.role !== "OBSERVER");
+  const userIsMember = team? users?.some(u => u?.user?.id === user?.id && u?.role === "LEADER"):false;
+  const userIsAuthorized = userIsMember || classroom?.users?.some(u => 
+    u?.user.id === user?.id && 
+    u?.role !== "STUDENT" && 
+    u?.role !== "OBSERVER");
 
   return (
     <>
@@ -60,7 +61,7 @@ function TeamPage({ team, classroom }: TeamPageProps) {
           fontSize="1.1rem"
           color="solid.500"
         >
-          Classroom: {classroom.title}
+          Classroom: {classroom?.title}
         </Text>
         { description && <Text 
             mt={2}
@@ -74,16 +75,20 @@ function TeamPage({ team, classroom }: TeamPageProps) {
         >
           { userIsAuthorized && <Link 
             mt={5}
-            href={`/app/classrooms/${classroom.id}/teams/${id}/config`}
+            href={`/app/classrooms/${classroom?.id}/teams/${id}/config`}
           >
-            <IconButton
-              aria-label="redirect-to-config"
-              icon={<NamedIcon name="cog"/>}
-              theme="primary"
-              h={8}
-              w={8}
-              minW="auto"
-            />
+            <TooltipOnHover
+              label="Team configuration"
+            >
+              <IconButton
+                aria-label="redirect-to-config"
+                icon={<NamedIcon name="cog"/>}
+                theme="primary"
+                h={8}
+                w={8}
+                minW="auto"
+              />
+            </TooltipOnHover>
           </Link> }
           <Tag
             fontWeight="bold"
@@ -93,7 +98,7 @@ function TeamPage({ team, classroom }: TeamPageProps) {
             h="min"
             mt={5}
           >
-            Members: {users.length}
+            Members: {users?.length}
           </Tag>
         </Box>
       </Section>
@@ -126,7 +131,7 @@ function TeamPage({ team, classroom }: TeamPageProps) {
                 placeholder="Search by name, email or role..."
               >
                 <TeamMembersList
-                  classroomId={classroom.id}
+                  classroomId={classroom?.id}
                   teamId={id}
                   initialData={users}
                 />

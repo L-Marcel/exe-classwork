@@ -166,6 +166,7 @@ export class Teams {
             name: true,
             fullname: true,
             status: true,
+            homepage: true,
             _count: {
               select: {
                 commits: true

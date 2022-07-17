@@ -31,7 +31,14 @@ function AlertsList({
         display="flex"
         w="100%"
       >
-        {alerts.map((a) => {
+        {[{
+          id: "123",
+          description: "Created for tests",
+          visualizedBy: [],
+          type: "REPOSITORY",
+          createdAt: new Date(),
+          
+        } as Alert, ...alerts].map((a) => {
           return (
             <AlertItem
               key={a.id}

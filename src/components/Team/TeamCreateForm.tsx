@@ -319,14 +319,12 @@ function TeamCreateForm({
         onClose={onClose} 
         isOpen={isOpen}
       />
-      {team && 
-        <Link 
-          href={router?.query["returnToList"]? `/app/classrooms/${classroom.id}`:`/app/classrooms/${classroom.id}/teams/${team.id}`}
-          tabIndex={0}
-        >
-          {'<'}- return
-        </Link>
-      }
+      <Link 
+        href={router?.query["returnToList"] || !team? `/app/classrooms/${classroom.id}`:`/app/classrooms/${classroom.id}/teams/${team.id}`}
+        tabIndex={0}
+      >
+        {'<'}- return
+      </Link>
       <Box
         display="flex"
         flexDir="column"

@@ -6,6 +6,7 @@ import { Link } from "../Link";
 import { NamedIcon } from "../NamedIcon";
 import { Section } from "../Section";
 import { Title } from "../Title";
+import { TooltipOnHover } from "../TooltipOnHover";
 
 interface RepositoryBannerProps {
   name: string;
@@ -92,20 +93,54 @@ function RepositoryBanner({
       />
       <Box
         display="flex"
-        gap={4}
+        gap={2}
       >
-        { (isAuthorizedUser && id) && <Link 
-          mt={5}
-          href={`/app/repositories/${id}/config`}
+        <TooltipOnHover
+          label="Github repository"
         >
           <IconButton
-            aria-label="redirect-to-config"
-            icon={<NamedIcon name="cog"/>}
+            aria-label="github-repository-page"
+            icon={<NamedIcon name="github"/>}
+            onClick={() =>  window.open(`https://github.com/${fullname}`, "_blank")}
             theme="primary"
             h={8}
             w={8}
             minW="auto"
+            mt={5}
           />
+        </TooltipOnHover>
+        {
+          homepage && <TooltipOnHover
+            label="Deployment environment"
+          >
+            <IconButton
+              aria-label="homepage"
+              icon={<NamedIcon name="website"/>}
+              onClick={() =>  window.open(homepage, "_blank")}
+              theme="primary"
+              h={8}
+              w={8}
+              minW="auto"
+              mt={5}
+            />
+          </TooltipOnHover>
+        }
+        { (isAuthorizedUser && id) && <Link 
+          mt={5}
+          href={`/app/repositories/${id}/config`}
+        >
+          <TooltipOnHover
+            label="Repository configuration"
+          >
+            <IconButton
+              aria-label="redirect-to-config"
+              icon={<NamedIcon name="cog"/>}
+              theme="primary"
+              h={8}
+              w={8}
+              minW="auto"
+            />
+          </TooltipOnHover>
         </Link> }
         { commits && <Tag
             fontWeight="bold"

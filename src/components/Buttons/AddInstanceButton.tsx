@@ -1,5 +1,6 @@
 import { Link } from "../Link";
 import { NamedIcon } from "../NamedIcon";
+import { TooltipOnHover } from "../TooltipOnHover";
 import { IconButton, IconButtonProps } from "./IconButton";
 
 interface AddInstanceButtonProps extends IconButtonProps {
@@ -9,25 +10,33 @@ interface AddInstanceButtonProps extends IconButtonProps {
 function AddInstanceButton({ href, ...rest }: Partial<AddInstanceButtonProps>) {
   if(!href) {
     return (
-      <IconButton
-        data-testid="add-instance-button"
-        aria-label="addInstanceButton"
-        theme="primary"
-        icon={<NamedIcon name="add"/>}
-        {...rest}
-      />
+      <TooltipOnHover
+        label="Add"
+      >
+        <IconButton
+          data-testid="add-instance-button"
+          aria-label="addInstanceButton"
+          theme="primary"
+          icon={<NamedIcon name="add"/>}
+          {...rest}
+        />
+      </TooltipOnHover>
     );
   };
 
   return (
     <Link href={href}>
-      <IconButton
-        data-testid="add-instance-button"
-        aria-label="addInstanceButton"
-        theme="primary"
-        icon={<NamedIcon name="add"/>}
-        {...rest}
-      />
+      <TooltipOnHover
+        label="Add"
+      >
+        <IconButton
+          data-testid="add-instance-button"
+          aria-label="addInstanceButton"
+          theme="primary"
+          icon={<NamedIcon name="add"/>}
+          {...rest}
+        />
+      </TooltipOnHover>
     </Link>
   );
 };

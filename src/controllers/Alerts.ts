@@ -295,7 +295,7 @@ export class Alerts {
       take: 12,
       skip: 12 * page,
       orderBy: {
-        createdAt: "desc"
+        createdAt: "desc",
       },
       where: {
         AND: [
