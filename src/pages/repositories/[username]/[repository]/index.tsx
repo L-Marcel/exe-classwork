@@ -1,4 +1,3 @@
-import { Text } from "@chakra-ui/react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useCallback, useEffect, useState } from "react";
 import { RepositoryBanner } from "../../../../components/Repository/RepositoryBanner";
@@ -67,9 +66,6 @@ function RepositoryPage({
         <RepositoryContent
           commits={commitsInterval || []}
         />
-      </Section>
-      <Section>
-        <Text textAlign="center">This page will still undergo many changes.</Text>
       </Section>
     </>
   );

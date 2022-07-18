@@ -1,4 +1,4 @@
-import { Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ClassroomCharts } from "../../../../components/Classroom/Charts/ClassroomCharts";
 import { ClassroomAlerts } from "../../../../components/Classroom/ClassroomAlerts";
@@ -13,6 +13,7 @@ import { CannotGetCommits } from "../../../../errors/api/CannotGetCommits";
 import { Api } from "../../../../services/api";
 import { WithClassroomProps } from "../../../../utils/routes/WithClassroomProps";
 import { WithUserProps } from "../../../../utils/routes/WithUserProps";
+
 interface ClassroomPageProps extends WithClassroomProps {
   repositories: Repository[];
 };
@@ -128,9 +129,6 @@ function ClassroomPage({
           </TabPanel> }
         </TabPanels>
       </Tabs>
-      </Section>
-      <Section>
-        <Text textAlign="center">This page will still undergo many changes.</Text>
       </Section>
     </>
   );
