@@ -93,7 +93,11 @@ function RepositoryBanner({
       />
       <Box
         display="flex"
+        maxW="100%"
+        flexWrap="wrap"
         gap={2}
+        rowGap={3}
+        mt={5}
       >
         <TooltipOnHover
           label="Github repository"
@@ -106,7 +110,6 @@ function RepositoryBanner({
             h={8}
             w={8}
             minW="auto"
-            mt={5}
           />
         </TooltipOnHover>
         {
@@ -121,12 +124,10 @@ function RepositoryBanner({
               h={8}
               w={8}
               minW="auto"
-              mt={5}
             />
           </TooltipOnHover>
         }
         { (isAuthorizedUser && id) && <Link 
-          mt={5}
           href={`/app/repositories/${id}/config`}
         >
           <TooltipOnHover
@@ -142,32 +143,39 @@ function RepositoryBanner({
             />
           </TooltipOnHover>
         </Link> }
-        { commits && <Tag
-            fontWeight="bold"
-            bgColor="primary.800"
-            color="blackAlpha.900"
-            minH="24px"
-            h="min"
-            mt={5}
-          >
-            Commits: {(filteredCommits.length >= 0 && filteredCommits.length >= commits.length)? 
-              commits.length:`${filteredCommits.length}/${commits.length}`
-            }
-          </Tag>
-        }
-        { committeds.length > 0 && <Tag
-            fontWeight="bold"
-            bgColor="primary.800"
-            color="blackAlpha.900"
-            minH="24px"
-            h="min"
-            mt={5}
-          >
-            Committeds: {(filteredCommitteds.length >= 0 && filteredCommitteds.length >= committeds.length)? 
-              committeds.length:`${filteredCommitteds.length}/${committeds.length}`
-            }
-          </Tag>
-        }
+        <Box
+          display="flex"
+          maxW="100%"
+          flexWrap="wrap"
+          gap={2}
+        >
+          { commits && <Tag
+              fontWeight="bold"
+              bgColor="primary.800"
+              color="blackAlpha.900"
+              whiteSpace="nowrap"
+              minH="24px"
+              h="min"
+            >
+              Commits: {(filteredCommits.length >= 0 && filteredCommits.length >= commits.length)? 
+                commits.length:`${filteredCommits.length}/${commits.length}`
+              }
+            </Tag>
+          }
+          { committeds.length > 0 && <Tag
+              fontWeight="bold"
+              bgColor="primary.800"
+              color="blackAlpha.900"
+              whiteSpace="nowrap"
+              minH="24px"
+              h="min"
+            >
+              Committeds: {(filteredCommitteds.length >= 0 && filteredCommitteds.length >= committeds.length)? 
+                committeds.length:`${filteredCommitteds.length}/${committeds.length}`
+              }
+            </Tag>
+          }
+          </Box>
       </Box>
     </Section>
   );
