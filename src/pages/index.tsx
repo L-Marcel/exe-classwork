@@ -35,7 +35,7 @@ function LoginPage() {
             </Button>
           </Link>
           <Button
-            onClick={() => window.open("https://lmgh1312.gitbook.io/classwork/", "_blank")}
+            onClick={() => window.open("https://l-marcel.gitbook.io/classwork/", "_blank")}
           >
             Documentation
           </Button>

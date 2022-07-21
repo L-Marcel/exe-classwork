@@ -20,7 +20,7 @@ function HomePage({
       </Text>
       <DynamicGridList
         w="100%"
-        mt={4}
+        mt={6}
         colsMaxW={["100%", "100%", "70%", "60%", "40%", "40%"]}
         cols={{
           base: ["a"],
@@ -31,24 +31,29 @@ function HomePage({
         }}
         items={[
           <ReferenceButton
-            title="Is a user? See the documentation"
-            description="You can extract data of Github repositories, create classrooms,  teams and monitor all of them without need force loads all time."
+            href="https://l-marcel.gitbook.io/classwork/for-users/first-steps-for-a-common-user"
+            title="+ Are you a new user? See the documentation for users"
+            description="You can extract data from Github repositories, create classrooms, and teams and monitor all of them without needing to force loads all time."
           />,
           <ReferenceButton
-            title="Is a developer? See the documentation for developers"
-            description="Instructions to clone, install and execute the Exe Classwork in you development environment. See all API routes too and contribute with this tool!"
+            href="https://l-marcel.gitbook.io/classwork/for-developers/creating-a-development-environment"
+            title="+ Are you a developer? See as you can contribute"
+            description={`Instructions to clone, install and execute the Exe Classwork in your development environment; see the errors,  mean, the possible unknown flaws created by destiny and resolve them; optimize the application with us, or... just read the documentation. \n\nCan you contribute with this tool too!`}
           />,
           <ReferenceButton
-            title="Creating and managing a classroom"
-            description="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Necessitatibus hic, officiis eius rerum qui harum maiores voluptatum similique ex aut, nam adipisci reprehenderit aperiam placeat! Alias eveniet in recusandae magni."
+            href="https://l-marcel.gitbook.io/classwork/classrooms/creating-and-managing-a-classroom"
+            title="+ Creating and managing a classroom"
+            description="To automate the evaluation of many repositories, a teacher can create a classroom to unify all your students' repositories in teams and see or filter all data to reduce the time needed to check all. The data is updated for each push event of each repository linked with the classroom."
           />,
           <ReferenceButton
-            title="Metrics extracted of a repository"
-            description="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Necessitatibus hic, officiis eius rerum qui harum maiores voluptatum similique ex aut, nam adipisci reprehenderit aperiam placeat! Alias eveniet in recusandae magni."
+            href="https://l-marcel.gitbook.io/classwork/analytic-and-metrics/metrics-extracted-of-a-repository"
+            title="+ Metrics extracted of a repository"
+            description="Some metrics can make a difference in the repository evaluation; they aren't all but can show important data for the teacher or the developer byself, improving the rest of the development process."
           />,
           <ReferenceButton
-            title="Send your feedback for us"
-            description="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Necessitatibus hic, officiis eius rerum qui harum maiores voluptatum similique ex aut, nam adipisci reprehenderit aperiam placeat! Alias eveniet in recusandae magni."
+            href="https://l-marcel.gitbook.io/classwork/additional/send-your-feedback-for-us"
+            title="+ Send your feedback for us"
+            description="You shouldn't be a developer to contribute to the Exe Classwork. Send your opinion, it's important and can make a difference."
           />
         ]}
       />
