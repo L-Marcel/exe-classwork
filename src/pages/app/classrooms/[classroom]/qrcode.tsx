@@ -25,13 +25,13 @@ function ClassroomQrCodePage({ classroom, user }: ClassroomPageProps) {
         {classroom.title}
       </Title>
       <Text>
-        (QRCode) Instructions for use:
+        Instructions for use the QRCode:
       </Text>
       <OrderedList
         mt={4}
       >
         <ListItem>
-          In your mobile device, put the camera in front of QRCode bellow:
+          On your mobile device, put the camera in front of the QRCode below:
         </ListItem>
       </OrderedList>
       <Box
@@ -57,8 +57,10 @@ function ClassroomQrCodePage({ classroom, user }: ClassroomPageProps) {
       </OrderedList>
       <Text
         mt={4}
+        whiteSpace="pre-wrap"
+        maxW={["90%", "70%"]}
       >
-        On some devices it may be necessary to copy the url and manually access the browser.
+        On some devices, it may be necessary to copy the URL and manually access the browser.
       </Text>
     </Section>
   );

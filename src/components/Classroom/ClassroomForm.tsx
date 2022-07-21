@@ -255,8 +255,7 @@ function ClassroomForm({
             maxW={["90%", "70%"]}
           >
             Warning: forced updates will only load again the data of all repositories! 
-            {'\n\n'}To force the refresh of the repository data the repository owner should force it in 
-            repository configuration. 
+            {'\n\n'}To force the refresh of the repository data the repository owner should force it in the repository configuration. 
           </Text>
         </Box>
         <HStack

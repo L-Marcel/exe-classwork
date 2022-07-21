@@ -24,7 +24,7 @@ function LoginPage() {
           maxW={["90%", "80%", "70%", "60%", "50%"]}
           textAlign="left"
         >
-          A simple Github repository monitoring system with tools to improve school environment. You can create a classroom, add developers or students, make a team, and monitoring they repositories. Problems with analyzing the productivity of the projects? Try it!
+          A simple monitoring system for Github's repositories with tools to improve the school environment. You can create a classroom, add developers or students, make a team, and monitor their repositories. Problems with analyzing the productivity of the projects? Try it!
         </Text>
         <HStack>
           <Link href={`/api/login${router.query?.qrcode? `?qrcode=${router.query?.qrcode}`:""}`}>

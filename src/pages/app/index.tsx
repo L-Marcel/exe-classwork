@@ -16,7 +16,7 @@ function HomePage({
       <Text
         maxW={["100%", "100%", "100%", "60%", "60%", "50%"]}
       >
-        Did you know Exe Classwork? Exe Classwork is a new version of the Classwork: a tool for analyze github repositories focused in help teachers with students software development monitoring.
+        Did you know Exe Classwork? It is a new version of the Classwork: a tool for analyzing Github repositories focused on helping teachers with students' software development monitoring.
       </Text>
       <DynamicGridList
         w="100%"
