@@ -107,17 +107,25 @@ function ClassroomCharts({
       </Box>
       <Tabs pt={4}>
         <TabList>
-          <Tab>Repositories</Tab>
           <Tab>Teams</Tab>
+          <Tab>Contributors</Tab>
         </TabList>
         <TabPanels>
           <TabPanel
             display="flex"
             flexDir="column"
+            p={0}
           >
-            <ClassroomMetricsTable
-              repositories={repositoriesWithCommitsInterval}
-            />
+            <Box
+              w={["1000px", "1000px", "900px", `${chartWidth}px`]}
+              maxW="100%"
+              p={4}
+              pb={0}
+            >
+              <ClassroomMetricsTable
+                repositories={repositoriesWithCommitsInterval}
+              />
+            </Box>
             <Box
               w="100%"
             >
@@ -127,12 +135,11 @@ function ClassroomCharts({
             </Box>
           </TabPanel>
           <TabPanel
-            h="500px"
             w={["1000px", "1000px", "900px", `${chartWidth}px`]}
             maxW="100%"
           >
             <ClasssroomRepositoriesTableContent
-              repositories={repositoriesWithCommitsInterval}
+              repositories={[ ...repositoriesWithCommitsInterval, ...repositoriesWithCommitsInterval, ...repositoriesWithCommitsInterval]}
             />
           </TabPanel>
         </TabPanels>

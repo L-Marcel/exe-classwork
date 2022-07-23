@@ -30,9 +30,11 @@ function RepositoryTooltips({
       return stroke?.length <= 7 || !stroke.endsWith("10");
     });;
 
+    const indexOfCurrentItem = commits?.findIndex(c => c.id == data?.id);
+
     const leftMetrics = metrics.filter(m => getTooltipPayloadName(m.name).startsWith("<-"));
     const rightMetrics = metrics.filter(m => getTooltipPayloadName(m.name).startsWith("->"));
-    
+   
     return (
       <Stack
         gap={2}
@@ -41,7 +43,7 @@ function RepositoryTooltips({
         { (payload[0]?.payload?.userGithubId && data?.userGithubLogin) && 
           <Box
             p={5}
-            bgColor="solid.25"
+            bgColor="solid.50"
             borderRadius={8}
             display="flex"
             alignItems="center"
@@ -69,7 +71,7 @@ function RepositoryTooltips({
         }
         <Box
           p={5}
-          bgColor="solid.25"
+          bgColor="solid.50"
           borderRadius={8}
           { ...boxShadow() }
         >
@@ -79,8 +81,8 @@ function RepositoryTooltips({
             {label.length > 58 ? label.substring(0, 55) + "..." : label}
           </Text>
           <Text
-            fontWeight="hairline"
-            fontSize={12}
+            fontWeight="normal"
+            fontSize={14}
             mb={2}
           >
             {formatedDistanceOfCommitDate} ago
@@ -90,6 +92,7 @@ function RepositoryTooltips({
               <TooltipItem
                 key={p.name}
                 arr={commits}
+                index={indexOfCurrentItem}
                 {...p}
               />
             );
@@ -103,6 +106,7 @@ function RepositoryTooltips({
               <TooltipItem
                 key={p.name}
                 arr={commits}
+                index={indexOfCurrentItem}
                 {...p}
               />
             );

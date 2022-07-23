@@ -29,21 +29,21 @@ function useCommitsProfile({
     let methodsDiff = getDiffInCommitValue({
       commits: formattedCommits,
       dataKey: "methods",
-      order: index,
+      indexOfLastItem: index - 1,
       value: cur.methods
     });
 
     let classesDiff = getDiffInCommitValue({
       commits: formattedCommits,
       dataKey: "classes",
-      order: index,
+      indexOfLastItem: index - 1,
       value: cur.classes
     });
 
     let complexityDiff = getDiffInCommitValue({
       commits: formattedCommits,
       dataKey: "complexity",
-      order: index,
+      indexOfLastItem: index - 1,
       value: cur.complexity
     });
 

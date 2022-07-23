@@ -44,7 +44,7 @@ model ClassroomRelation {
 
 model Classroom {
   id String @id @default(uuid())
-  inviteCode String @unique @default(uuid())
+  inviteCode String @unique
 
   title String
   subject String?

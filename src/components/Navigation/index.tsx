@@ -91,14 +91,16 @@ function Navigation({ ...rest }: NavigationProps) {
         `/app/classrooms/${classroom?.id}`,
         `/app/classrooms/${classroom?.id}/qrcode`
       ],
-      name: "Classrooms"
+      name: "Classrooms",
+      prefix: "My "
     },
     {
       path: `/app/repositories`,
       accept: [
         "/repositories"
       ],
-      name: "Repositories"
+      name: "Repositories",
+      prefix: "My "
     },
     {
       path: `/app/alerts`,
@@ -163,6 +165,7 @@ function Navigation({ ...rest }: NavigationProps) {
               position="relative"
               display="flex"
               alignItems="center"
+              mb={4}
             >
               <IconButton
                 aria-label="navigation-menu"
@@ -176,19 +179,30 @@ function Navigation({ ...rest }: NavigationProps) {
               />
             </Box>
           }
-          { (isWideOrNormalVersion || isOpen) && <ToggleColorButton
-            zIndex={10}
-            colorIndexes={isOpen? ["400", "400", "400"]:undefined}
-            isDisabled={isLoading}
-            forceHoverEffect
-            { ...boxShadow() }
-          /> }
+          { (isWideOrNormalVersion || isOpen) && <NavigationItem
+              key="toggle"
+              path="toggle"
+              name="toggle theme"
+              forceExpanded={!isWideOrNormalVersion && isOpen}
+              isWideOrNormalVersion={isWideOrNormalVersion}
+              expandedAnimation={isWideOrNormalVersion? "expanded":"smExpanded"}
+              isSelected={false}
+              isDisabled={isLoading}
+              button={<ToggleColorButton
+                zIndex={10}
+                colorIndexes={isOpen? ["400", "400", "400"]:undefined}
+                isDisabled={isLoading}
+                forceHoverEffect
+                { ...boxShadow() }
+              />}
+            /> }
           { (isWideOrNormalVersion || isOpen) && paths.map(n => {
             return (
               <NavigationItem
                 key={n.path}
                 path={n.path}
                 name={n.name}
+                prefix={n.prefix}
                 forceExpanded={!isWideOrNormalVersion && isOpen}
                 isWideOrNormalVersion={isWideOrNormalVersion}
                 expandedAnimation={isWideOrNormalVersion? "expanded":"smExpanded"}
@@ -201,14 +215,25 @@ function Navigation({ ...rest }: NavigationProps) {
             />
           );
           })}
-          { (isWideOrNormalVersion || isOpen) && <SignOutButton
-            zIndex={10}
-            theme="red"
-            isDisabled={isLoading}
-            colorIndexes={["400", "400", "400"]}
-            forceHoverEffect
-            { ...boxShadow() }
-          /> }
+          { (isWideOrNormalVersion || isOpen) && 
+            <NavigationItem
+              key="logout"
+              path="logout"
+              name="logout"
+              forceExpanded={!isWideOrNormalVersion && isOpen}
+              isWideOrNormalVersion={isWideOrNormalVersion}
+              expandedAnimation={isWideOrNormalVersion? "expanded":"smExpanded"}
+              isSelected={false}
+              isDisabled={isLoading}
+              button={<SignOutButton
+                zIndex={10}
+                theme="red"
+                isDisabled={isLoading}
+                colorIndexes={["400", "400", "400"]}
+                forceHoverEffect
+                { ...boxShadow() }
+              />}
+            /> }
         </Stack>
       </Box>
     </>

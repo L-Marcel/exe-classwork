@@ -1,5 +1,6 @@
 import { Box, ButtonProps, Text } from "@chakra-ui/react";
 import { m } from "framer-motion";
+import { ReactNode } from "react";
 import { boxShadow } from "../../theme/effects/shadow";
 import { IconButton } from "../Buttons/IconButton";
 import { Link } from "../Link";
@@ -7,11 +8,13 @@ import { NamedIcon } from "../NamedIcon";
 interface NavigationItemProps extends ButtonProps {
   path: string;
   name: string;
+  prefix?: string;
   isSelected: boolean;
   forceExpanded?: boolean;
   expandedAnimation: string;
   isWideOrNormalVersion?: boolean;
   needPayAttention?: boolean;
+  button?: ReactNode;
 };
 
 function NavigationItem({ 
@@ -19,9 +22,11 @@ function NavigationItem({
   isSelected, 
   forceExpanded = false, 
   name,
+  prefix,
   expandedAnimation,
   isWideOrNormalVersion = true,
   needPayAttention = false,
+  button,
   ...rest 
 }: NavigationItemProps) {
   return (
@@ -37,9 +42,12 @@ function NavigationItem({
       animate={forceExpanded? expandedAnimation:undefined}
       whileHover={expandedAnimation}
       whileFocus={expandedAnimation}
+      _last={{
+        mt: !isWideOrNormalVersion? 6:2
+      }}
       { ...boxShadow() }
     >
-      <Link
+      { button ?? <Link
         data-testid="navigation-item"
         href={path}
       >
@@ -53,7 +61,7 @@ function NavigationItem({
           zIndex={10}
           {...rest}
         />
-      </Link>
+      </Link> }
       <Text
         as={m.p}
         position="absolute"
@@ -64,6 +72,7 @@ function NavigationItem({
         borderRightRadius={isWideOrNormalVersion? 8:0}
         borderLeftRadius={isWideOrNormalVersion? 0:8}
         pointerEvents="none"
+        whiteSpace="nowrap"
         variants={{
           hidden: {
             opacity: 0,
@@ -89,7 +98,7 @@ function NavigationItem({
           }
         }}
       >
-        {name.toLowerCase()}
+        {prefix?.toLowerCase()}{name.toLowerCase()}
       </Text>
     </Box>
   );

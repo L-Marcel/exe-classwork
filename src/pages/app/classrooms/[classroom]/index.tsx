@@ -74,9 +74,9 @@ function ClassroomPage({
           pb="1px"
         >
           { (!teamsAreRestricted && !repositoriesAreRestricted) && <Tab>Analytics</Tab> }
-          <Tab>Alerts</Tab>
-          <Tab>Members</Tab>
           { !teamsAreRestricted && <Tab>Teams</Tab> }
+          <Tab>Members</Tab>
+          <Tab>Alerts</Tab>
         </TabList>
         <TabPanels
           w="100%"
@@ -91,11 +91,21 @@ function ClassroomPage({
               repositories={repositories}
             />
           </TabPanel> }
-          <TabPanel 
+          { !teamsAreRestricted && <TabPanel 
             w="100%"
           >
-            <ClassroomAlerts id={id}/>
-          </TabPanel>
+            <ClassroomSearch
+              maxW={["auto", "auto", "auto", "50%"]}
+              placeholder="Search by name, user or repo..."
+              addInstanceUrl={userIsAuthorized && `/app/classrooms/${classroom.id}/team`}
+            >
+              <ClassroomTeamsList
+                classroomId={id}
+                initialData={teams}
+                repositoriesAreRestricted={repositoriesAreRestricted}
+              />
+            </ClassroomSearch>
+          </TabPanel> }
           <TabPanel
             w="100%"
           >
@@ -112,21 +122,11 @@ function ClassroomPage({
               />
             </ClassroomSearch>
           </TabPanel>
-          { !teamsAreRestricted && <TabPanel 
+          <TabPanel 
             w="100%"
           >
-            <ClassroomSearch
-              maxW={["auto", "auto", "auto", "50%"]}
-              placeholder="Search by name, user or repo..."
-              addInstanceUrl={userIsAuthorized && `/app/classrooms/${classroom.id}/team`}
-            >
-              <ClassroomTeamsList
-                classroomId={id}
-                initialData={teams}
-                repositoriesAreRestricted={repositoriesAreRestricted}
-              />
-            </ClassroomSearch>
-          </TabPanel> }
+            <ClassroomAlerts id={id}/>
+          </TabPanel>
         </TabPanels>
       </Tabs>
       </Section>

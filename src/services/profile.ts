@@ -17,7 +17,7 @@ class ProfileAnalyzer {
       };
     };
 
-    const sloc = this.commits[this.commits.length - 1].sloc;
+    const sloc = this.commits[this.commits.length - 1]?.sloc ?? 0;
     const currentUserCommit = this.data.find(d => d.user.id === this.user);
     const count = currentUserCommit?.count;
     const numberOfCommitters = this.data.length;
@@ -399,7 +399,7 @@ class ProfileAnalyzer {
   };
 
   getOrganizationByMethods(): Omit<RepositoryProfileItemProps, "onSelect"> {
-    const sloc = this.commits[this.commits.length - 1].sloc;
+    const sloc = this.commits[this.commits.length - 1]?.sloc ?? 0;
     const currentUser = this.data.find(d => d.user.id === this.user);
 
     const equation = {
@@ -473,7 +473,7 @@ class ProfileAnalyzer {
   };
 
   getOrganizationByClasses(): Omit<RepositoryProfileItemProps, "onSelect"> {
-    const sloc = this.commits[this.commits.length - 1].sloc;
+    const sloc = this.commits[this.commits.length - 1]?.sloc ?? 0;
     const currentUser = this.data.find(d => d.user.id === this.user);
 
     const equation = {

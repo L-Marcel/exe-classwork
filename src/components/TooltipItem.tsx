@@ -11,6 +11,7 @@ interface TooltipItemProps {
   payload?: any;
   arr?: any[];
   isClassroom?: boolean;
+  index?: number;
 };
 
 function TooltipItem({
@@ -18,14 +19,14 @@ function TooltipItem({
   stroke,
   value,
   dataKey,
-  payload,
   arr,
-  isClassroom = false
+  isClassroom = false,
+  index
 }: TooltipItemProps) {
   let diff = arr? getDiffInCommitValue({
     commits: arr,
     dataKey: dataKey,
-    order: payload.order,
+    indexOfLastItem: index - 1,
     value: value
   }):0;
 
@@ -42,7 +43,7 @@ function TooltipItem({
         {getTooltipPayloadName(name, isClassroom)}:
       </Span> {value} { diff !== 0 && <Span
         fontWeight="semibold"
-        color={diff > 0 ? "green.50" : "red.50"}
+        color={diff > 0 ? "var(--chakra-colors-green-300)":"var(--chakra-colors-red-300)"}
       > 
         ({diff > 0? "+":diff < 0? "-":""}{diff}) 
       </Span> }

@@ -7,17 +7,22 @@ const specialKeys = [
   "filesModified"
 ];
 
+interface GetDiffInCommitValueProps {
+  dataKey?: string;
+  value?: number;
+  commits?: any[];
+  indexOfLastItem?: number;
+};
+
 function getDiffInCommitValue({
-  order = 0,
   dataKey = "",
   value = 0,
-  commits = []
-}) {
+  commits = [],
+  indexOfLastItem = 0
+}: GetDiffInCommitValueProps) {
   let diff = 0;
             
   try {
-    const indexOfLastItem = order-1;
-    
     if(
       indexOfLastItem >= 0 && 
       !specialKeys.includes(dataKey)

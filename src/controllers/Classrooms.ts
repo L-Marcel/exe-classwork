@@ -1,5 +1,7 @@
 import { Prisma as P } from "@prisma/client";
+import shortid from "shortid";
 import { v4 as uuid } from "uuid";
+import { ConflitLimitError } from "../errors/api/ConflitLimitError";
 import { NotFoundError } from "../errors/api/NotFoundError";
 import { Prisma } from "../services/prisma";
 import { getApiQuery } from "../utils/getApiQuery";
@@ -37,9 +39,12 @@ export class Classrooms {
   };
 
   static async create(user: User, data: P.ClassroomCreateInput) {
+    const inviteCode = await this.getUniqueInviteCode();
+
     const createdClassroom = await Prisma.classroom.create({
       data: {
-        ...data
+        ...data,
+        inviteCode
       }
     });
 
@@ -92,12 +97,34 @@ export class Classrooms {
     await Alerts.deleteAllByClassroom(id);
   };
 
+  private static async getUniqueInviteCode(attemps = 0, value?: string) {
+    const inviteCode = value ?? shortid.generate();
+
+    const alreadyExists = await Prisma.classroom.findFirst({
+      where: {
+        inviteCode
+      }
+    });
+
+    if(attemps === 9) {
+      return this.getUniqueInviteCode(attemps + 1, uuid());
+    } else if(attemps >= 10) {
+      return new ConflitLimitError("generate a random and unique invite code.");
+    } else if(alreadyExists) {
+      return await this.getUniqueInviteCode(attemps + 1);
+    };
+
+    return inviteCode;
+  };
+
   static async generateInviteCode(user: User, id: string) {
     await ClassroomRelations.havePermissionsToGenerateClassrroomInviteCode(id, user.id);
 
+    const inviteCode = await this.getUniqueInviteCode();
+
     const data = await Prisma.classroom.update({
       data: {
-        inviteCode: uuid(),
+        inviteCode,
         updatedAt: new Date(),
         updatedBy: user.username
       },
