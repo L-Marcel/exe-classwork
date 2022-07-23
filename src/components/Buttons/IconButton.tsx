@@ -1,5 +1,5 @@
 import { IconButton as ChakraIconButton, IconButtonProps as ChakraIconButtonProps, useBreakpointValue } from "@chakra-ui/react";
-import React from "react";
+import { TooltipOnHover } from "../TooltipOnHover";
 import { getButtonStyle } from "./styles/getButtonStyle";
 
 export interface IconButtonProps extends ChakraIconButtonProps {
@@ -7,15 +7,19 @@ export interface IconButtonProps extends ChakraIconButtonProps {
   colorIndexes?: [string, string, string];
   layoutId?: string;
   forceHoverEffect?: boolean;
+  label?: string;
+  labelBgColor?: string;
 };
 
-const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(({ 
+function IconButton({ 
   theme, 
   color, 
   colorIndexes,
   forceHoverEffect,
+  label,
+  labelBgColor,
   ...rest
-}, ref = React.createRef()) => {
+}: IconButtonProps) {
   const isWideOrNormalVersion = useBreakpointValue({
     base: false,
     sm: false,
@@ -23,19 +27,36 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(({
     xl: true,
     lg: true
   });
+
+  if(!label) {
+    return (
+      <ChakraIconButton
+        layoutId
+        data-testid="icon-button"
+        {...getButtonStyle({ theme, color, colorIndexes, forceHoverEffect })}
+        size={isWideOrNormalVersion? "md":"sm"}
+        fontSize={18}
+        {...rest}
+      />
+    );
+  };
  
   return (
-    <ChakraIconButton
-      layoutId
-      data-testid="icon-button"
-      {...getButtonStyle({ theme, color, colorIndexes, forceHoverEffect })}
-      size={isWideOrNormalVersion? "md":"sm"}
-      fontSize={18}s
-      {...rest}
-      ref={ref}
-    />
+    <TooltipOnHover
+      label={label}
+      bgColor={labelBgColor ?? "primary.700"}
+    >
+      <ChakraIconButton
+        layoutId
+        data-testid="icon-button"
+        {...getButtonStyle({ theme, color, colorIndexes, forceHoverEffect })}
+        size={isWideOrNormalVersion? "md":"sm"}
+        fontSize={18}
+        {...rest}
+      />
+    </TooltipOnHover>
   );
-});
+};
 
 export { IconButton };
 

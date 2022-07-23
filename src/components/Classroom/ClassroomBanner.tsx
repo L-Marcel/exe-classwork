@@ -7,7 +7,6 @@ import { Link } from "../Link";
 import { NamedIcon } from "../NamedIcon";
 import { Section } from "../Section";
 import { Title } from "../Title";
-import { TooltipOnHover } from "../TooltipOnHover";
 
 interface ClassroomBanner extends Classroom {
   userIsAuthorized?: boolean;
@@ -68,46 +67,37 @@ function ClassroomBanner({
         flexWrap="wrap"
       >
         <Link href={`/app/classrooms/${id}/config`}>
-          <TooltipOnHover
-            label="Classroom configuration"
-          >
-            <IconButton
-              aria-label="redirect-to-config"
-              icon={<NamedIcon name="cog"/>}
-              theme="primary"
-              h={8}
-              w={8}
-              minW="auto"
-            />
-          </TooltipOnHover>
-        </Link>
-        <Link href={`/app/classrooms/${id}/qrcode`}>
-          <TooltipOnHover
-            label="Get QRCode"
-          >
-            <IconButton
-              aria-label="redirect-to-qrcode"
-              icon={<NamedIcon name="qrcode"/>}
-              theme="primary"
-              h={8}
-              w={8}
-              minW="auto"
-            />
-          </TooltipOnHover>
-        </Link>
-        <TooltipOnHover
-          label="Get a new invite code"
-        >
           <IconButton
-            aria-label="change-invite-code"
-            icon={<NamedIcon name="refresh"/>}
+            aria-label="redirect-to-config"
+            label="Classroom configuration"
+            icon={<NamedIcon name="cog"/>}
             theme="primary"
             h={8}
             w={8}
             minW="auto"
-            onClick={handleChangeInviteCode}
           />
-        </TooltipOnHover>
+        </Link>
+        <Link href={`/app/classrooms/${id}/qrcode`}>
+          <IconButton
+            aria-label="redirect-to-qrcode"
+            label="Get QRCode"
+            icon={<NamedIcon name="qrcode"/>}
+            theme="primary"
+            h={8}
+            w={8}
+            minW="auto"
+          />
+        </Link>
+        <IconButton
+          aria-label="change-invite-code"
+          label="Get a new invite code"
+          icon={<NamedIcon name="refresh"/>}
+          theme="primary"
+          h={8}
+          w={8}
+          minW="auto"
+          onClick={handleChangeInviteCode}
+        />
         <CopyTag
           text={lastInviteCode}
           successMessage="Invite code is copied!"
@@ -123,6 +113,7 @@ function ClassroomBanner({
           <IconButton
             aria-label="redirect-to-qrcode"
             icon={<NamedIcon name="qrcode"/>}
+            label="Get QRCode"
             theme="primary"
             h={8}
             w={8}

@@ -11,7 +11,6 @@ import { IconButton } from "../../Buttons/IconButton";
 import { Link } from "../../Link";
 import { NamedIcon } from "../../NamedIcon";
 import { Title } from "../../Title";
-import { TooltipOnHover } from "../../TooltipOnHover";
 
 interface ClassroomTeamItem {
   team: Team;
@@ -129,67 +128,58 @@ function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: Classroo
             gap={2}
             bgColor="solid.100"
           >
-            <TooltipOnHover
+            <IconButton
+              mr={0}
               label="Github repository"
-            >
-              <IconButton
-                mr={0}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  window.open(`https://github.com/${repository?.fullname}`, "_blank");
-                }}
-                aria-label="repository-page-button"
-                bgColor="primary.800"
-                icon={<NamedIcon
-                  name="github"
-                />}
-                pointerEvents="all"
-                size="sm"
-                borderLeftRadius={0}
-              />
-            </TooltipOnHover>
+              onClick={(e) => {
+                e.stopPropagation();
+                window.open(`https://github.com/${repository?.fullname}`, "_blank");
+              }}
+              aria-label="repository-page-button"
+              bgColor="primary.800"
+              icon={<NamedIcon
+                name="github"
+              />}
+              pointerEvents="all"
+              size="sm"
+              borderLeftRadius={0}
+            />
             { repository?.homepage && 
-              <TooltipOnHover 
-                label="Deployment environment"
-              >
-                <IconButton
-                  mr={0}
-                  opacity={(!repositoryIsLoading && !repositoryIsLoaded) && .3}
-                  cursor={repositoryIsLoading? "progress":repositoryIsLoaded? "pointer":"not-allowed"}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    canOpenRepository && window.open(repository?.homepage, "_blank");
-                  }}
-                  aria-label="repository-page-button"
-                  bgColor={theme}
-                  icon={<NamedIcon
-                    name="website"
-                  />}
-                  pointerEvents="all"
-                  size="sm"
-                />
-              </TooltipOnHover>
-            }
-            <TooltipOnHover
-              label="Repository page"
-            >
               <IconButton
                 mr={0}
+                label="Deployment environment"
                 opacity={(!repositoryIsLoading && !repositoryIsLoaded) && .3}
                 cursor={repositoryIsLoading? "progress":repositoryIsLoaded? "pointer":"not-allowed"}
                 onClick={(e) => {
                   e.stopPropagation();
-                  canOpenRepository && window.open(`/repositories/${repository?.fullname}`, "_blank");
+                  canOpenRepository && window.open(repository?.homepage, "_blank");
                 }}
                 aria-label="repository-page-button"
                 bgColor={theme}
                 icon={<NamedIcon
-                  name="open"
+                  name="website"
                 />}
                 pointerEvents="all"
                 size="sm"
               />
-            </TooltipOnHover>
+            }
+            <IconButton
+              mr={0}
+              label="Repository page"
+              opacity={(!repositoryIsLoading && !repositoryIsLoaded) && .3}
+              cursor={repositoryIsLoading? "progress":repositoryIsLoaded? "pointer":"not-allowed"}
+              onClick={(e) => {
+                e.stopPropagation();
+                canOpenRepository && window.open(`/repositories/${repository?.fullname}`, "_blank");
+              }}
+              aria-label="repository-page-button"
+              bgColor={theme}
+              icon={<NamedIcon
+                name="open"
+              />}
+              pointerEvents="all"
+              size="sm"
+            />
           </Box>
         </Box> }
       </Box>
@@ -244,31 +234,28 @@ function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: Classroo
         <Link
           href={`/app/classrooms/${classroom?.id}/teams/${team?.id}/config?returnToList=true`}
         >
-          <TooltipOnHover
+          <IconButton
+            data-testid="icon-button"
             label="Team configuration"
-          >
-            <IconButton
-              data-testid="icon-button"
-              justifyContent="center"
-              borderRadius={15}
-              alignItems="center"
-              minW="28px"
-              minH="28px"
-              maxW="28px"
-              maxH="28px"
-              bgColor="solid.200"
-              icon={<NamedIcon 
-                name="cog"
-                h="15px"
-                w="15px"
-                mt=".5px"
-                maxW="15px"
-                maxH="15px"
-              />}
-              aria-label="table-filter-button"
-              fontSize={18}
-            />
-          </TooltipOnHover>
+            justifyContent="center"
+            borderRadius={15}
+            alignItems="center"
+            minW="28px"
+            minH="28px"
+            maxW="28px"
+            maxH="28px"
+            bgColor="solid.200"
+            icon={<NamedIcon 
+              name="cog"
+              h="15px"
+              w="15px"
+              mt=".5px"
+              maxW="15px"
+              maxH="15px"
+            />}
+            aria-label="table-filter-button"
+            fontSize={18}
+          />
         </Link>
       </Box> }
     </Stack>

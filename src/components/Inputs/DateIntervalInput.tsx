@@ -3,6 +3,7 @@ import { format } from "date-fns";
 import { debounce } from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { NamedIcon } from "../NamedIcon";
+import { TooltipOnHover } from "../TooltipOnHover";
 import { DatePicker } from "./DatePicker";
 
 interface DateIntervalInputProps {
@@ -104,31 +105,36 @@ function DateIntervalInput({
           onBlur={() => setCanResetInput(true)}
           onChange={e => setSelectedAfterDate(e.target.value)}
         />
-        <Box
-          position="relative"
-          onClick={handleResetDate}
-          display={["none", "none", "initial"]}
-          w={["0", "0", "initial"]}
-          cursor="pointer"
-          transition="color .1s"
-          _hover={{
-            color: "primary.500"
-          }}
+        <TooltipOnHover
+          label="Reset"
+          mt={2}
         >
-          <NamedIcon
-            name="refresh"
-            position="absolute"
-            top="-5px"
-            left="-10px"
-            w={9}
-            h={9}
-          />
-          <Text
-            color="solid.900"
+          <Box
+            position="relative"
+            onClick={handleResetDate}
+            display={["none", "none", "initial"]}
+            w={["0", "0", "initial"]}
+            cursor="pointer"
+            transition="color .1s"
+            _hover={{
+              color: "primary.500"
+            }}
           >
-            to
-          </Text>
-        </Box>
+            <NamedIcon
+              name="refresh"
+              position="absolute"
+              top="-5px"
+              left="-10px"
+              w={9}
+              h={9}
+            />
+            <Text
+              color="solid.900"
+            >
+              to
+            </Text>
+          </Box>
+        </TooltipOnHover>
       </Box>
       <DatePicker
         value={selectedBeforeDate}

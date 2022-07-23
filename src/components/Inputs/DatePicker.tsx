@@ -20,7 +20,7 @@ function DatePicker({ ...rest }: InputProps) {
         borderRadius={8}
         h={10}
         w={10}
-        children={<NamedIcon name="calendar"/>}
+        children={<NamedIcon name="calendar" cursor="pointer"/>}
       />
       <Input 
         type="date"

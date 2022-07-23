@@ -6,7 +6,6 @@ import ReactSelect, { StylesConfig } from "react-select";
 import { useInputErrors } from "../../contexts/hooks/useInputErrors";
 import { IconButton } from "../Buttons/IconButton";
 import { NamedIcon } from "../NamedIcon";
-import { TooltipOnHover } from "../TooltipOnHover";
 
 interface SelectProps extends BoxProps {
   options: SelectOption[];
@@ -135,33 +134,30 @@ function Select({
                     >
                       {children}
                     </Text>
-                    <TooltipOnHover
+                    <IconButton
+                      position="absolute"
                       label="Remove"
-                      bgColor="red.600"
-                    >
-                      <IconButton
-                        position="absolute"
-                        top="3px"
-                        right={1}
-                        aria-label="remove-option"
-                        icon={<NamedIcon name="close" color="black"/>}
-                        bgColor="red.400"
-                        _hover={{
-                          bgColor: "red.500"
-                        }}
-                        _active={{
-                          bgColor: "red.600"
-                        }}
-                        h={5}
-                        w={5}
-                        minW={5}
-                        ml={2}
-                        fontSize=".9rem"
-                        onClick={rest.removeProps.onClick && rest.removeProps.onClick as any}
-                        onMouseDown={rest.removeProps.onMouseDown && rest.removeProps.onMouseDown as any}
-                        onTouchEnd={rest.removeProps.onTouchEnd && rest.removeProps.onTouchEnd as any}
-                      />
-                    </TooltipOnHover>
+                      labelBgColor="red.600"
+                      top="3px"
+                      right={1}
+                      aria-label="remove-option"
+                      icon={<NamedIcon name="close" color="black"/>}
+                      bgColor="red.400"
+                      _hover={{
+                        bgColor: "red.500"
+                      }}
+                      _active={{
+                        bgColor: "red.600"
+                      }}
+                      h={5}
+                      w={5}
+                      minW={5}
+                      ml={2}
+                      fontSize=".9rem"
+                      onClick={rest.removeProps.onClick && rest.removeProps.onClick as any}
+                      onMouseDown={rest.removeProps.onMouseDown && rest.removeProps.onMouseDown as any}
+                      onTouchEnd={rest.removeProps.onTouchEnd && rest.removeProps.onTouchEnd as any}
+                    />
                   </Box>
                 );
               }

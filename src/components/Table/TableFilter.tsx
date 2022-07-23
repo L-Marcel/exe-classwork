@@ -1,9 +1,8 @@
-import { IconButton, Menu, MenuButton, MenuItemOption, MenuList, MenuOptionGroup, useBreakpointValue } from "@chakra-ui/react";
+import { Menu, MenuButton, MenuItemOption, MenuList, MenuOptionGroup, useBreakpointValue } from "@chakra-ui/react";
 import { useTable } from "../../contexts/hooks/useTable";
 import { boxShadow } from "../../theme/effects/shadow";
-import { getButtonStyle } from "../Buttons/styles/getButtonStyle";
+import { IconButton } from "../Buttons/IconButton";
 import { NamedIcon } from "../NamedIcon";
-import { TooltipOnHover } from "../TooltipOnHover";
 
 function TableFilter() {
   const {
@@ -36,19 +35,20 @@ function TableFilter() {
 
   return (
     <Menu closeOnSelect={false}>
-      <TooltipOnHover
-        label="Filter columns"
+      <MenuButton
+        mb={5}
+        pointerEvents="none"
       >
-        <MenuButton
-          { ...getButtonStyle({ theme: "solid" }) }
-          as={IconButton}
+        <IconButton
           data-testid="icon-button"
+          label="Filter columns"
+          pointerEvents="all"
           size={isWideOrNormalVersion? "md":"sm"}
           icon={<NamedIcon name="tune"/>}
           aria-label="table-filter-button"
           fontSize={18}
         />
-      </TooltipOnHover>
+      </MenuButton>
       <MenuList 
         zIndex={899} 
         minWidth="240px"

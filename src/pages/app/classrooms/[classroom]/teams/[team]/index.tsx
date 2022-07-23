@@ -7,7 +7,6 @@ import { TeamMembersList } from "../../../../../../components/List/Classroom/Tea
 import { NamedIcon } from "../../../../../../components/NamedIcon";
 import { Section } from "../../../../../../components/Section";
 import { Title } from "../../../../../../components/Title";
-import { TooltipOnHover } from "../../../../../../components/TooltipOnHover";
 import { useUser } from "../../../../../../contexts/hooks/useUser";
 import { Prisma } from "../../../../../../services/prisma";
 import { WithClassroomProps } from "../../../../../../utils/routes/WithClassroomProps";
@@ -77,18 +76,15 @@ function TeamPage({ team, classroom }: TeamPageProps) {
             mt={5}
             href={`/app/classrooms/${classroom?.id}/teams/${id}/config`}
           >
-            <TooltipOnHover
+            <IconButton
+              aria-label="redirect-to-config"
               label="Team configuration"
-            >
-              <IconButton
-                aria-label="redirect-to-config"
-                icon={<NamedIcon name="cog"/>}
-                theme="primary"
-                h={8}
-                w={8}
-                minW="auto"
-              />
-            </TooltipOnHover>
+              icon={<NamedIcon name="cog"/>}
+              theme="primary"
+              h={8}
+              w={8}
+              minW="auto"
+            />
           </Link> }
           <Tag
             fontWeight="bold"

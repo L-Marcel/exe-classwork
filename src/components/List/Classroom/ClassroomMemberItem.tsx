@@ -5,7 +5,6 @@ import { Link } from "../../Link";
 import { NamedIcon } from "../../NamedIcon";
 import { Profile } from "../../Profile";
 import { Title } from "../../Title";
-import { TooltipOnHover } from "../../TooltipOnHover";
 
 interface ClassroomMemberItem {
   member: ClassroomRelation;
@@ -68,31 +67,28 @@ function ClassroomMemberItem({
         <Link
           href={`/app/classrooms/${classroom?.id}/members/${member?.user?.id}`}
         >
-          <TooltipOnHover
+          <IconButton
+            data-testid="icon-button"
             label="Member configuration"
-          >
-            <IconButton
-              data-testid="icon-button"
-              justifyContent="center"
-              borderRadius={15}
-              alignItems="center"
-              minW="28px"
-              minH="28px"
-              maxW="28px"
-              maxH="28px"
-              bgColor="solid.200"
-              icon={<NamedIcon 
-                name="cog"
-                h="15px"
-                w="15px"
-                mt=".5px"
-                maxW="15px"
-                maxH="15px"
-              />}
-              aria-label="table-filter-button"
-              fontSize={18}
-            />
-          </TooltipOnHover>
+            justifyContent="center"
+            borderRadius={15}
+            alignItems="center"
+            minW="28px"
+            minH="28px"
+            maxW="28px"
+            maxH="28px"
+            bgColor="solid.200"
+            icon={<NamedIcon 
+              name="cog"
+              h="15px"
+              w="15px"
+              mt=".5px"
+              maxW="15px"
+              maxH="15px"
+            />}
+            aria-label="table-filter-button"
+            fontSize={18}
+          />
         </Link>
       </Box> }
     </HStack>

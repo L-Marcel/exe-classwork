@@ -6,7 +6,6 @@ import { scaleIn } from "../theme/animations/motion";
 import { IconButton } from "./Buttons/IconButton";
 import { NumberInput } from "./Inputs/NumberInput";
 import { NamedIcon } from "./NamedIcon";
-import { TooltipOnHover } from "./TooltipOnHover";
 
 interface PaginationProps extends StackProps {};
 
@@ -25,30 +24,28 @@ function Pagination({ ...rest }: PaginationProps) {
       mb={5}
       {...rest}
     >
-      { page > min && <TooltipOnHover
-        label="First page"
-      >
+      { page > min && 
         <IconButton
           as={m.button}
+          label="First page"
           aria-label="double-prev-page"
           icon={<NamedIcon name="double-prev"/>}
           theme="primary"
           onClick={() => setPage(min - 1)}
           {...scaleIn}
         />
-      </TooltipOnHover> }
-      { page > (min - 1) && <TooltipOnHover
-        label="Previous page"
-      >
+      }
+      { page > (min - 1) && 
         <IconButton
           as={m.button}
+          label="Previous page"
           aria-label="prev-page"
           icon={<NamedIcon name="prev"/>}
           theme="primary"
           onClick={() => setPage(page - 1)}
           {...scaleIn}
         />
-      </TooltipOnHover> }
+      }
       <NumberInput
         allowMouseWheel
         display="inline-flex"
@@ -63,30 +60,28 @@ function Pagination({ ...rest }: PaginationProps) {
           setPage(page - 1);
         }}
       />
-      { page < (max - 1) && <TooltipOnHover
-        label="Next page"
-      >
+      { page < (max - 1) && 
         <IconButton
           as={m.button}
+          label="Next page"
           aria-label="next-page"
           icon={<NamedIcon name="next"/>}
           theme="primary"
           onClick={() => setPage(page + 1)}
           {...scaleIn}
         />
-      </TooltipOnHover> }
-      { page < (max - 2) && <TooltipOnHover
-        label="Last page"
-      >
+       }
+      { page < (max - 2) &&
         <IconButton
           as={m.button}
+          label="Last page"
           aria-label="double-next-page"
           icon={<NamedIcon name="double-next"/>}
           theme="primary"
           onClick={() => setPage(max - 1)}
           {...scaleIn}
         />
-      </TooltipOnHover> }
+      }
     </HStack>
   );
 };

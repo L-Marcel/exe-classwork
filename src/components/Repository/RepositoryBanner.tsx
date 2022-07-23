@@ -6,7 +6,6 @@ import { Link } from "../Link";
 import { NamedIcon } from "../NamedIcon";
 import { Section } from "../Section";
 import { Title } from "../Title";
-import { TooltipOnHover } from "../TooltipOnHover";
 
 interface RepositoryBannerProps {
   name: string;
@@ -99,25 +98,21 @@ function RepositoryBanner({
         rowGap={3}
         mt={5}
       >
-        <TooltipOnHover
+        <IconButton
+          aria-label="github-repository-page"
           label="Github repository"
-        >
-          <IconButton
-            aria-label="github-repository-page"
-            icon={<NamedIcon name="github"/>}
-            onClick={() =>  window.open(`https://github.com/${fullname}`, "_blank")}
-            theme="primary"
-            h={8}
-            w={8}
-            minW="auto"
-          />
-        </TooltipOnHover>
+          icon={<NamedIcon name="github"/>}
+          onClick={() =>  window.open(`https://github.com/${fullname}`, "_blank")}
+          theme="primary"
+          h={8}
+          w={8}
+          minW="auto"
+        />
         {
-          homepage && <TooltipOnHover
-            label="Deployment environment"
-          >
+          homepage && 
             <IconButton
               aria-label="homepage"
+              label="Deployment environment"
               icon={<NamedIcon name="website"/>}
               onClick={() =>  window.open(homepage, "_blank")}
               theme="primary"
@@ -125,23 +120,19 @@ function RepositoryBanner({
               w={8}
               minW="auto"
             />
-          </TooltipOnHover>
         }
         { (isAuthorizedUser && id) && <Link 
           href={`/app/repositories/${id}/config`}
         >
-          <TooltipOnHover
+          <IconButton
+            aria-label="redirect-to-config"
             label="Repository configuration"
-          >
-            <IconButton
-              aria-label="redirect-to-config"
-              icon={<NamedIcon name="cog"/>}
-              theme="primary"
-              h={8}
-              w={8}
-              minW="auto"
-            />
-          </TooltipOnHover>
+            icon={<NamedIcon name="cog"/>}
+            theme="primary"
+            h={8}
+            w={8}
+            minW="auto"
+          />
         </Link> }
         <Box
           display="flex"
