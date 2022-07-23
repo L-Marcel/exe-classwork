@@ -45,6 +45,7 @@ function ClassroomCharts({
         ...cur,
         classes: cur.classes,
         methods: cur.methods,
+        filtered: true,
         files: ((prev.length > 0 && prev[i - 1].files) || 0) + (cur.filesAdded - cur.filesRemoved)
       });
       
@@ -87,7 +88,14 @@ function ClassroomCharts({
         setRepositoriesWithCommitsInterval(data.map(r => {
           return {
             ...r,
-            commits: r.commits.filter(commit => getFilteredResult(commit?.commitedAt))
+            commits: r.commits.map(c => {
+              return {
+                ...c,
+                filtered: getFilteredResult(c?.commitedAt)
+                //to compare with not filtered results in the future
+                //please, keep it
+              };
+            })
           };
         }))
       };
@@ -139,7 +147,7 @@ function ClassroomCharts({
             maxW="100%"
           >
             <ClasssroomRepositoriesTableContent
-              repositories={[ ...repositoriesWithCommitsInterval, ...repositoriesWithCommitsInterval, ...repositoriesWithCommitsInterval]}
+              repositories={repositoriesWithCommitsInterval}
             />
           </TabPanel>
         </TabPanels>

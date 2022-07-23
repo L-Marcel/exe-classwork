@@ -9,6 +9,7 @@ interface RepositoryTooltipsProps {
   active?: boolean;
   payload?: any;
   label?: string;
+  firstItemBefore?: any;
 };
 
 
@@ -16,7 +17,8 @@ function RepositoryTooltips({
   active, 
   payload, 
   label,
-  commits
+  commits,
+  firstItemBefore
 }: RepositoryTooltipsProps) {
   if(active && payload && payload.length > 0) {
     const data = payload[0]?.payload;
@@ -93,6 +95,7 @@ function RepositoryTooltips({
                 key={p.name}
                 arr={commits}
                 index={indexOfCurrentItem}
+                firstItemBefore={firstItemBefore}
                 {...p}
               />
             );
@@ -107,6 +110,7 @@ function RepositoryTooltips({
                 key={p.name}
                 arr={commits}
                 index={indexOfCurrentItem}
+                firstItemBefore={firstItemBefore}
                 {...p}
               />
             );

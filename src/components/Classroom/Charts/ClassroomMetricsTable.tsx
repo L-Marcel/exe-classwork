@@ -9,39 +9,49 @@ interface ClassroomMetricsTableProps {
 
 function ClassroomMetricsTable({ repositories }: ClassroomMetricsTableProps) {
   const data = repositories.reduce((prev, cur, i) => {
-    let complexityDiff = cur.commits? getDiffInCommitValue({
-      commits: cur.commits,
+    const filteredCommits = cur?.commits?.filter(d => d.filtered);
+    const firstItemBefore = cur?.commits?.find(c => 
+      filteredCommits && filteredCommits.length > 0 && c.order === filteredCommits[0].order - 1
+    );
+
+    let complexityDiff = filteredCommits? getDiffInCommitValue({
+      commits: filteredCommits,
       dataKey: "complexity",
-      indexOfLastItem: i - 1,
-      value: cur.commits[cur.commits.length - 1]?.complexity
+      indexOfLastItem: -1,
+      firstItemBefore,
+      value: filteredCommits[filteredCommits.length - 1]?.complexity
     }):0;
 
-    let churnDiff = cur.commits? getDiffInCommitValue({
-      commits: cur.commits,
+    let churnDiff = filteredCommits? getDiffInCommitValue({
+      commits: filteredCommits,
       dataKey: "churn",
-      indexOfLastItem: i - 1,
-      value: cur.commits[cur.commits.length - 1]?.churn
+      indexOfLastItem: -1,
+      firstItemBefore,
+      value: filteredCommits[filteredCommits.length - 1]?.churn
     }):0;
 
-    let classesDiff = cur.commits? getDiffInCommitValue({
-      commits: cur.commits,
+    let classesDiff = filteredCommits? getDiffInCommitValue({
+      commits: filteredCommits,
       dataKey: "classes",
-      indexOfLastItem: i - 1,
-      value: cur.commits[cur.commits.length - 1]?.classes
+      indexOfLastItem: -1,
+      firstItemBefore,
+      value: filteredCommits[filteredCommits.length - 1]?.classes
     }):0;
 
-    let methodsDiff = cur.commits? getDiffInCommitValue({
-      commits: cur.commits,
+    let methodsDiff = filteredCommits? getDiffInCommitValue({
+      commits: filteredCommits,
       dataKey: "methods",
-      indexOfLastItem: i - 1,
-      value: cur.commits[cur.commits.length - 1]?.methods
+      indexOfLastItem: -1,
+      firstItemBefore,
+      value: filteredCommits[filteredCommits.length - 1]?.methods
     }):0;
 
-    let slocDiff = cur.commits? getDiffInCommitValue({
-      commits: cur.commits,
+    let slocDiff = filteredCommits? getDiffInCommitValue({
+      commits: filteredCommits,
       dataKey: "sloc",
-      indexOfLastItem: i - 1,
-      value: cur.commits[cur.commits.length - 1]?.sloc
+      indexOfLastItem: -1,
+      firstItemBefore,
+      value: filteredCommits[filteredCommits.length - 1]?.sloc
     }):0;
 
     prev.push({

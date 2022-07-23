@@ -18,8 +18,10 @@ function RepositoryContent({
 }: RepositoryContentProps) {
   const { user } = useUser();
 
+  const filteredCommits = commits.filter(c => c.filtered);
+
   const [chartWidth, setChartWidth] = useState(900 - 125);
-  const [viewInterval, setViewInterval] = useState<[number, number]>([0, (commits.length - 1) * 100]);
+  const [viewInterval, setViewInterval] = useState<[number, number]>([0, (filteredCommits.length - 1) * 100]);
 
   const data = isFormatted? commits:commits.reduce((prev, cur, i) => {
     prev.push({
@@ -42,6 +44,12 @@ function RepositoryContent({
   function handleOnChangeRanger(interval: [number, number]) {
     setViewInterval(interval);
   };
+
+  const filteredData = data.filter(d => d.filtered);
+  const commitsInView: CommitChart[] = getSelectedArrayInterval<CommitChart>(filteredData, viewInterval);
+  const firstCommitBeforeTheView = data.find(c => 
+    commitsInView && commitsInView.length > 0 && c.order === commitsInView[0].order - 1
+  );
 
   return (
     <Tabs>
@@ -77,13 +85,14 @@ function RepositoryContent({
             onChange={handleOnChangeRanger}
             h={5}
             value={viewInterval}
-            max={(commits.length - 1) * 100}
+            max={(filteredCommits.length - 1) * 100}
             mb={5}
             mt="1px"
             mr="2px"
           />
           <RepositoryMetricsChart
-            data={getSelectedArrayInterval(data, viewInterval)}
+            data={commitsInView}
+            firstItemBefore={firstCommitBeforeTheView}
           />
         </TabPanel>
         <TabPanel
@@ -101,12 +110,13 @@ function RepositoryContent({
             mr="14px"
             h={5}
             value={viewInterval}
-            max={(commits.length - 1) * 100}
+            max={(filteredCommits.length - 1) * 100}
             mb={5}
             mt={2}
           />
           <RepositoryChangesChart
-            data={getSelectedArrayInterval(data, viewInterval)}
+            data={commitsInView}
+            firstItemBefore={firstCommitBeforeTheView}
           />
         </TabPanel>
         <TabPanel
@@ -124,12 +134,13 @@ function RepositoryContent({
             h={5}
             mr="14px"
             value={viewInterval}
-            max={(commits.length - 1) * 100}
+            max={(filteredCommits.length - 1) * 100}
             mb={5}
             mt={2}
           />
           <RepositoryFilesChart
-            data={getSelectedArrayInterval(data, viewInterval)}
+            data={commitsInView}
+            firstItemBefore={firstCommitBeforeTheView}
           />
         </TabPanel>
         <TabPanel
@@ -141,7 +152,7 @@ function RepositoryContent({
         >
           <RepositoryProfile
             isFormatted={isFormatted}
-            commits={commits || []}
+            commits={filteredCommits || []}
           />
         </TabPanel>
       </TabPanels>

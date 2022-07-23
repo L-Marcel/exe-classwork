@@ -6,9 +6,10 @@ import { RepositoryTooltips } from "./RepositoryTooltips";
 
 export interface RepositoryMetricsChartProps {
   data: CommitChart[];
+  firstItemBefore?: any;
 };
 
-function RepositoryMetricsChart({ data }: RepositoryMetricsChartProps) {
+function RepositoryMetricsChart({ data, firstItemBefore }: RepositoryMetricsChartProps) {
   const [opacity, setOpacity] = useState({
     complexity: 1,
     churn: 1,
@@ -80,7 +81,7 @@ function RepositoryMetricsChart({ data }: RepositoryMetricsChartProps) {
         <CartesianGrid strokeDasharray="3 3"/>
         <XAxis dataKey="message"/>
         <YAxis/>
-        <Tooltip content={(rest) => RepositoryTooltips({ ...rest, commits: data })}/>
+        <Tooltip content={(rest) => RepositoryTooltips({ ...rest, commits: data, firstItemBefore })}/>
         
         <Line 
           strokeWidth={2} 

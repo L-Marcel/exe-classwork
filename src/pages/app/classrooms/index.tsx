@@ -16,7 +16,7 @@ function ClassroomsPage({ user }: ClassroomsPageProps) {
       isNeabyOfNavigation
     >
       <Title>
-        Classrooms
+        My classrooms
       </Title>
       <SearchProvider>
         <Box

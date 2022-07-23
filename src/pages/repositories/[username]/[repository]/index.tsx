@@ -26,7 +26,12 @@ function RepositoryPage({
     id
   } = repository;
 
-  const [commitsInterval, setCommitsInterval] = useState(commits || []);
+  const [commitsInterval, setCommitsInterval] = useState(commits.map(c => {
+    return {
+      ...c,
+      filtered: true
+    };
+  }) || []);
 
   useEffect(() => {
     setRepository(repository);
@@ -35,9 +40,14 @@ function RepositoryPage({
   const handleOnChangeInterval = useCallback(
     (getFilteredResult: (date: string) => boolean) => {
       if(commits.length > 0) {
-        setCommitsInterval(commits.filter(
-          commit => getFilteredResult(commit.commitedAt)
-        ));
+        setCommitsInterval(commits.map(c => {
+          return {
+            ...c,
+            filtered: getFilteredResult(c.commitedAt) 
+            //to compare with not filtered results in the future
+            //please, keep it
+          };
+        }));
       };
     }, [commits]);
 

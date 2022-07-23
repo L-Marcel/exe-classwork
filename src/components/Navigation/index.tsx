@@ -135,9 +135,9 @@ function Navigation({ ...rest }: NavigationProps) {
         <Profile
           position="absolute"
           user={user}
-          m={3}
-          mt={[4, 4, 3]}
-          ml={[4, 4, 3]}
+          m={[3, 3, 2]}
+          mt={[4, 4, 7]}
+          ml={[4, 4, -3]}
           padding={isWideOrNormalVersion? 2:"none"}
           showUsername={!isWideOrNormalVersion}
           avatarProps={{
@@ -156,7 +156,7 @@ function Navigation({ ...rest }: NavigationProps) {
           borderRadius={12}
           w="min-content"
           bgColor={(isWideOrNormalVersion || isOpen)? "solid.100":"solid.25"}
-          top={[2, 2, "90px"]}
+          top={[2, 2, "120px"]}
           zIndex={903}
           p={2}
         >

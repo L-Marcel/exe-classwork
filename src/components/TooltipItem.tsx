@@ -12,6 +12,7 @@ interface TooltipItemProps {
   arr?: any[];
   isClassroom?: boolean;
   index?: number;
+  firstItemBefore?: any;
 };
 
 function TooltipItem({
@@ -21,12 +22,14 @@ function TooltipItem({
   dataKey,
   arr,
   isClassroom = false,
-  index
+  index,
+  firstItemBefore
 }: TooltipItemProps) {
   let diff = arr? getDiffInCommitValue({
     commits: arr,
     dataKey: dataKey,
     indexOfLastItem: index - 1,
+    firstItemBefore,
     value: value
   }):0;
 

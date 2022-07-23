@@ -12,13 +12,15 @@ interface GetDiffInCommitValueProps {
   value?: number;
   commits?: any[];
   indexOfLastItem?: number;
+  firstItemBefore?: any;
 };
 
 function getDiffInCommitValue({
   dataKey = "",
   value = 0,
   commits = [],
-  indexOfLastItem = 0
+  indexOfLastItem = 0,
+  firstItemBefore
 }: GetDiffInCommitValueProps) {
   let diff = 0;
             
@@ -32,7 +34,7 @@ function getDiffInCommitValue({
       indexOfLastItem < 0 && 
       !specialKeys.includes(dataKey)
     ) {
-      diff = value;
+      diff = value - (firstItemBefore? firstItemBefore[dataKey]:0);
     };
   } catch(e) {};
 

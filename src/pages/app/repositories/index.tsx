@@ -22,7 +22,7 @@ function RepositoriesPage({}: RepositoriesPageProps) {
         isNeabyOfNavigation
       >
         <Title>
-          Repositories
+          My repositories
         </Title>
         <SearchProvider>
           <Box

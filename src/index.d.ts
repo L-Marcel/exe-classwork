@@ -19,6 +19,7 @@ declare interface Alert extends _Alert {
 
 declare interface Commit extends _Commit {
   tree?: string;
+  filtered?: boolean;
 };
 
 declare interface CommitChart extends Commit {

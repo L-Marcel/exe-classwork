@@ -19,8 +19,9 @@ function ClasssroomRepositoriesTableContent({
         const userRelation = team.users[u];
         const user = userRelation.user;
 
+        const commitsFiltered = repository?.commits?.filter(c => c.filtered);
         const profile = useCommitsProfile({
-          commits: (repository.commits || []),
+          commits: (commitsFiltered || []),
           selectedUser: user.githubId,
           isFormatted: true,
           allowNeverDate: true
