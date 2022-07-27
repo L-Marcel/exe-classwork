@@ -142,20 +142,20 @@ function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: Classroo
               />}
               pointerEvents="all"
               size="sm"
+              cursor="pointer"
               borderLeftRadius={0}
             />
             { repository?.homepage && 
               <IconButton
                 mr={0}
                 label="Deployment environment"
-                opacity={(!repositoryIsLoading && !repositoryIsLoaded) && .3}
-                cursor={repositoryIsLoading? "progress":repositoryIsLoaded? "pointer":"not-allowed"}
+                cursor="pointer"
                 onClick={(e) => {
                   e.stopPropagation();
-                  canOpenRepository && window.open(repository?.homepage, "_blank");
+                  window.open(repository?.homepage, "_blank");
                 }}
                 aria-label="repository-page-button"
-                bgColor={theme}
+                bgColor="primary.800"
                 icon={<NamedIcon
                   name="website"
                 />}

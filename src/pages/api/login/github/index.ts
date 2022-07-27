@@ -27,7 +27,8 @@ export async function github(req: Req, res: Res) {
       const {
         avatar_url: avatarUrl, 
         id: githubId, name, 
-        login: username 
+        login: username,
+        email
       } = githubUser;
 
       await Users.create({
