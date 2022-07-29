@@ -2,6 +2,7 @@ import { Box, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { useCommitsProfile } from "../../contexts/hooks/useCommitsProfile";
 import { getPercent } from "../../utils/getPercent";
+import { Button } from "../Buttons/Button";
 import { RepositoryContributionChart } from "./RepositoryContributionChart";
 import { RepositoryProfileDescription } from "./RepositoryProfileDescription";
 import { RepositoryProfileItem } from "./RepositoryProfileItem";
@@ -9,17 +10,20 @@ import { RepositoryProfileStatistic } from "./RepositoryProfileStatistic";
 
 export interface RepositoryProfileProps {
   commits: Commit[];
-  isFormatted?: boolean;
+  firstItemBefore?: any;
 };
 
 function RepositoryProfile({
   commits,
-  isFormatted = false
+  firstItemBefore
 }: RepositoryProfileProps) {
   if(commits.length <= 0) {
     return null;
   };
 
+  const filteredCommits = commits.filter(c => c.filtered);
+
+  const [compareByInterval, setCompareByInterval] = useState(true);
   const [selectedProfile, setSelectedProfile] = useState(0);
   const [selectedUser, setSelectedUser] = useState<string>("");
   
@@ -27,13 +31,35 @@ function RepositoryProfile({
     lastDate: dateOfLastCommit,
     result: profileResult,
     userCommits,
-    total,
+    total: totalInInterval,
     data
   } = useCommitsProfile({
-    commits,
+    commits: filteredCommits,
     selectedUser,
-    isFormatted
+    firstItemBefore
   });
+
+  const {
+    total,
+    userCommits: userCommitsInTotal
+  } = useCommitsProfile({
+    commits,
+    selectedUser
+  });
+
+  if(!userCommits) {
+    return (
+      <RepositoryProfileDescription
+        message="No commits"
+        description={'Unfortunately, we have not found any commits to analyze, ' +
+        `this repository. Verify the dates' interval and, if necessary, the ` +
+        'repository page in GitHub.\n\n' + 
+        'Even the small changes can carry a bug, lost feature, or deleted files.'}
+        icon="slepping"
+        color="red.600"
+      />
+    );
+  };
 
   return ( 
     <>
@@ -82,34 +108,86 @@ function RepositoryProfile({
               mb={4}
             >
               <Text 
-                fontSize="4xl" 
+                fontSize="2xl" 
                 fontWeight="bold"
                 lineHeight="9"
                 color="primary.700"
               >
-                {userCommits?.user?.name}
+                {
+                  userCommits?.user?.name.length > 25? 
+                    userCommits?.user?.name.slice(0, 22) + "...":
+                    userCommits?.user?.name
+                }
               </Text>
-              <RepositoryProfileStatistic mb={4}>
-                Last commit: {dateOfLastCommit} ago
-              </RepositoryProfileStatistic>
               <RepositoryProfileStatistic>
-                Contibution: {getPercent(userCommits?.contribution, 1)}%
+                Last commit: {dateOfLastCommit} ago
               </RepositoryProfileStatistic>
               <RepositoryProfileStatistic mb={4}>
                 Commits: {userCommits?.count} - {getPercent(userCommits?.count, total.count)}%
               </RepositoryProfileStatistic>
-              <RepositoryProfileStatistic>
-                Complexity: {userCommits?.complexity} - {getPercent(userCommits?.complexity, total.complexity)}%
-              </RepositoryProfileStatistic>
-              <RepositoryProfileStatistic>
-                Classes: {userCommits?.organization.classes} - {getPercent(userCommits?.organization.classes, total.organization.classes)}%
-              </RepositoryProfileStatistic>
-              <RepositoryProfileStatistic>
-                Methods: {userCommits?.organization.methods} - {getPercent(userCommits?.organization.methods, total.organization.methods)}%
-              </RepositoryProfileStatistic>
-              <RepositoryProfileStatistic>
-                Changes: {userCommits?.progress} - {getPercent(userCommits?.progress, total.progress)}%
-              </RepositoryProfileStatistic>
+              <Box 
+                mb={4}
+                bgColor="solid.100"
+                display="flex"
+                justifyContent="space-between"
+                gap={1}
+                w="min"
+                borderRadius={18}
+              >
+                <Button
+                  h={7}
+                  theme={compareByInterval? "primary":"solid"}
+                  bgColor={compareByInterval? "primary.600":"transparent"}
+                  borderRadius={18}
+                  onClick={() => setCompareByInterval(true)}
+                >
+                  in interval
+                </Button>
+                <Button
+                  h={7}
+                  theme={compareByInterval? "solid":"primary"}
+                  bgColor={compareByInterval? "transparent":"primary.600"}
+                  borderRadius={18}
+                  onClick={() => setCompareByInterval(false)}
+                >
+                  total
+                </Button>
+              </Box>
+              {
+                compareByInterval? <>
+                  <RepositoryProfileStatistic mb={4}>
+                    Contibution: {getPercent(userCommits?.contribution, 1)}%
+                  </RepositoryProfileStatistic>
+                  <RepositoryProfileStatistic>
+                    Complexity: {userCommits?.complexity} - {getPercent(userCommits?.complexity, totalInInterval.complexity)}%
+                  </RepositoryProfileStatistic>
+                  <RepositoryProfileStatistic>
+                    Classes: {userCommits?.organization.classes} - {getPercent(userCommits?.organization.classes, totalInInterval.organization.classes)}%
+                  </RepositoryProfileStatistic>
+                  <RepositoryProfileStatistic>
+                    Methods: {userCommits?.organization.methods} - {getPercent(userCommits?.organization.methods, totalInInterval.organization.methods)}%
+                  </RepositoryProfileStatistic>
+                  <RepositoryProfileStatistic>
+                    Changes: {userCommits?.progress} - {getPercent(userCommits?.progress, totalInInterval.progress)}%
+                  </RepositoryProfileStatistic>
+                </>:<>
+                  <RepositoryProfileStatistic mb={4}>
+                    Contibution: {getPercent(userCommitsInTotal?.contribution, 1)}%
+                  </RepositoryProfileStatistic>
+                  <RepositoryProfileStatistic>
+                    Complexity: {userCommits?.complexity} - {getPercent(userCommits?.complexity, total.complexity)}%
+                  </RepositoryProfileStatistic>
+                  <RepositoryProfileStatistic>
+                    Classes: {userCommits?.organization.classes} - {getPercent(userCommits?.organization.classes, total.organization.classes)}%
+                  </RepositoryProfileStatistic>
+                  <RepositoryProfileStatistic>
+                    Methods: {userCommits?.organization.methods} - {getPercent(userCommits?.organization.methods, total.organization.methods)}%
+                  </RepositoryProfileStatistic>
+                  <RepositoryProfileStatistic>
+                    Changes: {userCommits?.progress} - {getPercent(userCommits?.progress, total.progress)}%
+                  </RepositoryProfileStatistic>
+                </>
+              }
             </Box>
           </Box>
           <Box
@@ -127,7 +205,6 @@ function RepositoryProfile({
                 return (
                   <RepositoryProfileItem
                     key={`${p.message} ${selectedUser}`}
-                    sulfix={i < profileResult.length - 1? ";":"."}
                     isSelected={selectedProfile === i}
                     onSelect={() => setSelectedProfile(i)}
                     {...p}

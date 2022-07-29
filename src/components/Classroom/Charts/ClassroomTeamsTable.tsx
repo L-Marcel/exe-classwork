@@ -3,11 +3,11 @@ import { Table } from "../../Table";
 import { ClassroomRepositoryIsSelectedButton } from "./ClassroomRepositoryIsSelectedButton";
 import { ClassroomRepositorySelectedText } from "./ClassroomRepositorySelectedText";
 
-interface ClassroomMetricsTableProps {
+interface ClassroomTeamsTableProps {
   repositories: Repository[];
 };
 
-function ClassroomMetricsTable({ repositories }: ClassroomMetricsTableProps) {
+function ClassroomTeamsTable({ repositories }: ClassroomTeamsTableProps) {
   const data = repositories.reduce((prev, cur, i) => {
     const filteredCommits = cur?.commits?.filter(d => d.filtered);
     const firstItemBefore = cur?.commits?.find(c => 
@@ -137,5 +137,5 @@ function ClassroomMetricsTable({ repositories }: ClassroomMetricsTableProps) {
   );
 };
 
-export { ClassroomMetricsTable };
+export { ClassroomTeamsTable };
 

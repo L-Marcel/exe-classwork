@@ -5,45 +5,40 @@ import { getDiffInCommitValue } from "../../utils/getDiffInCommitValue";
 interface CommitsProfileProps {
   selectedUser: string;
   commits: Commit[];
-  isFormatted?: boolean;
   allowNeverDate?: boolean;
+  firstItemBefore?: any;
 };
 
 function useCommitsProfile({
   commits,
   selectedUser,
-  isFormatted = false,
+  firstItemBefore,
   allowNeverDate = false
 }: CommitsProfileProps) {
-  const formattedCommits: (Omit<CommitChart, "files"> | any)[] = isFormatted? commits:commits.map(commit => {
-    return {
-      ...commit,
-      methods: commit.methods,
-      classes: commit.classes,
-    };
-  });
-
-  let { data, total } = formattedCommits.reduce((prev, cur, index) => {
+  let { data, total } = commits.reduce((prev, cur, index) => {
     const userAlreadyExistsInArray = prev.data.some(c => c.user.id === cur.userGithubId);
     
     let methodsDiff = getDiffInCommitValue({
-      commits: formattedCommits,
+      commits,
       dataKey: "methods",
       indexOfLastItem: index - 1,
+      firstItemBefore,
       value: cur.methods
     });
 
     let classesDiff = getDiffInCommitValue({
-      commits: formattedCommits,
+      commits,
       dataKey: "classes",
       indexOfLastItem: index - 1,
+      firstItemBefore,
       value: cur.classes
     });
 
     let complexityDiff = getDiffInCommitValue({
-      commits: formattedCommits,
+      commits,
       dataKey: "complexity",
       indexOfLastItem: index - 1,
+      firstItemBefore,
       value: cur.complexity
     });
 
@@ -123,7 +118,12 @@ function useCommitsProfile({
         (0.5 * (totalClasses > 0? (classes/totalClasses):0)) +
         (0.5 * (totalMethods > 0? (methods/totalMethods):0)) + 
         (1 * (totalComplexity > 0? (complexity/totalComplexity):0))
-      ) /4;
+      ) / (
+        (2 * (totalProgress > 0? 1:0)) + 
+        (0.5 * (totalClasses > 0? 1:0)) + 
+        (0.5 * (totalMethods > 0? 1:0)) + 
+        (1 * (totalComplexity > 0? 1:0))
+      );
 
     if(contribution < 0) {
       contribution = 0;
@@ -136,7 +136,7 @@ function useCommitsProfile({
 
   const userCommits = data.find(u => u.user.id === selectedUser);
 
-  const profile = new ProfileAnalyzer(data, formattedCommits, userCommits?.user?.id || "");
+  const profile = new ProfileAnalyzer(data, commits, userCommits?.user?.id || "");
 
   const commitsCount = profile.getNumberOfCommits();
   const time = profile.getTimeOfCommits();

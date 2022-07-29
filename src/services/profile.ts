@@ -12,6 +12,9 @@ class ProfileAnalyzer {
     if(this.data.length <= 0) {
       return {
         message: "No commits",
+        description: 'This programmer has a great experience with version control, ' +
+        'keeping the changes safe, and resolving possible future errors in the code. ' + 
+        'Even the small changes can carry a bug, lost feature, or deleted files.',
         icon: "slepping",
         color: "red.600"
       };

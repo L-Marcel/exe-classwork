@@ -2,13 +2,13 @@ import { format } from "date-fns";
 import { useCommitsProfile } from "../../../contexts/hooks/useCommitsProfile";
 import { Table } from "../../Table";
 
-interface ClassroomRepositoriesTableContentProp {
+interface ClassroomContributorsTableContentProp {
   repositories: Repository[];
 };
 
-function ClasssroomRepositoriesTableContent({
+function ClasssroomContributorsTableContent({
   repositories
-}: ClassroomRepositoriesTableContentProp) {
+}: ClassroomContributorsTableContentProp) {
   const data = repositories.reduce((prev, cur) => {
     const repository = cur;
 
@@ -19,11 +19,21 @@ function ClasssroomRepositoriesTableContent({
         const userRelation = team.users[u];
         const user = userRelation.user;
 
-        const commitsFiltered = repository?.commits?.filter(c => c.filtered);
+        const filteredCommits = repository?.commits?.filter(c => c.filtered);
+        const firstItemBefore = cur?.commits?.find(c => 
+          filteredCommits && filteredCommits.length > 0 && c.order === filteredCommits[0].order - 1
+        );
+
         const profile = useCommitsProfile({
-          commits: (commitsFiltered || []),
+          commits: (filteredCommits || []),
           selectedUser: user.githubId,
-          isFormatted: true,
+          allowNeverDate: true,
+          firstItemBefore
+        });
+
+        const profileInTotal = useCommitsProfile({
+          commits: (repository?.commits || []),
+          selectedUser: user.githubId,
           allowNeverDate: true
         });
 
@@ -43,15 +53,15 @@ function ClasssroomRepositoriesTableContent({
           contribution: profile.userCommits?.contribution,
           totalContribution: 1,
           commits: profile.userCommits?.count,
-          totalCommits: profile.total?.count,
+          totalCommits: profileInTotal.total?.count,
           changes: profile.userCommits?.progress,
-          totalChanges: profile.total?.progress,
+          totalChanges: profileInTotal.total?.progress,
           classes: profile.userCommits?.organization?.classes,
-          totalClasses: profile.total?.organization?.classes,
+          totalClasses: profileInTotal.total?.organization?.classes,
           methods: profile.userCommits?.organization?.methods,
-          totalMethods: profile.total?.organization?.methods,
+          totalMethods: profileInTotal.total?.organization?.methods,
           complexity: profile.userCommits?.complexity,
-          totalComplexity: profile.total?.complexity,
+          totalComplexity: profileInTotal.total?.complexity,
           lastCommit: profile.lastDate,
           favoriteHour: profile.result[2]?.value && format(favoriteHour, "h aaa")
         });
@@ -117,5 +127,5 @@ function ClasssroomRepositoriesTableContent({
   );
 };
 
-export { ClasssroomRepositoriesTableContent };
+export { ClasssroomContributorsTableContent };
 

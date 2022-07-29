@@ -151,8 +151,8 @@ function RepositoryContent({
           flexDir="column"
         >
           <RepositoryProfile
-            isFormatted={isFormatted}
-            commits={filteredCommits || []}
+            firstItemBefore={firstCommitBeforeTheView}
+            commits={commits || []}
           />
         </TabPanel>
       </TabPanels>

@@ -2,9 +2,9 @@ import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { ClassroomProvider } from "../../../contexts/ClassroomProvider";
 import { DateIntervalInput } from "../../Inputs/DateIntervalInput";
-import { ClassroomMetricsTable } from "./ClassroomMetricsTable";
-import { ClasssroomRepositoriesTableContent } from "./ClassroomRepositoriesTableContent";
 import { ClassroomRepositoryContent } from "./ClassroomRepositoryContent";
+import { ClassroomTeamsTable } from "./ClassroomTeamsTable";
+import { ClasssroomContributorsTableContent } from "./ClasssroomContributorsTableContent";
 
 export interface ClassroomChartsProps {
   repositories: Repository[];
@@ -130,7 +130,7 @@ function ClassroomCharts({
               p={4}
               pb={0}
             >
-              <ClassroomMetricsTable
+              <ClassroomTeamsTable
                 repositories={repositoriesWithCommitsInterval}
               />
             </Box>
@@ -146,7 +146,7 @@ function ClassroomCharts({
             w={["1000px", "1000px", "900px", `${chartWidth}px`]}
             maxW="100%"
           >
-            <ClasssroomRepositoriesTableContent
+            <ClasssroomContributorsTableContent
               repositories={repositoriesWithCommitsInterval}
             />
           </TabPanel>
