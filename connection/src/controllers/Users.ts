@@ -51,14 +51,12 @@ class User {
         ),
         queue
       ];
-      console.log("Adding forced repository load in queue: ", queue.id);
+
     } else {
       this.repositoriesInQueue = [
         ...this.repositoriesInQueue,
         queue
       ];
-
-      console.log("Adding repository load in queue: ", queue.id);
     };
 
     this.nextInQueue(queue.fullname);
@@ -94,16 +92,28 @@ class User {
 
     Users.updateUser(this);
 
-    console.log("Starting repository load process: ", nextRequestInQueue.id);
     nextRequestInQueue.load(this.namespace, () => {
+      this.finishRequestInQueue(nextRequestInQueue.uuid);
       this.nextInQueue(fullname);
     });
   };
 
-  alreadyRunningInQueue(id: string) {
-    return this.repositoriesInQueue.some(
-      r => r.id === id && r.isRunning === true
+  alreadyRunningInQueue(uuid: string) {
+    const someIsRunning = this.repositoriesInQueue.some(
+      r => r.uuid === uuid && r.isRunning === true
     );
+
+    return someIsRunning;
+  };
+
+  finishRequestInQueue(uuid: string) {
+    this.repositoriesInQueue = [
+      ...this.repositoriesInQueue.filter(
+        r => r.uuid !== uuid
+      ),
+    ];
+
+    Users.updateUser(this);
   };
 };
 
@@ -145,4 +155,3 @@ class Users {
 };
 
 export { Users };
-
