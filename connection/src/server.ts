@@ -1,3 +1,7 @@
 import { http, io } from ".";
 
-io.listen(http.listen(process.env.PORT || 3333));
+const port = process.env.PORT || 3333;
+
+io.listen(http.listen(port, () => {
+ console.log("Sever is running in: ", port);
+}));
