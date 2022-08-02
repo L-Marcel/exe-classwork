@@ -1,0 +1,21 @@
+FROM node:16-alpine
+
+WORKDIR /connection
+
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S socketio -u 1001
+
+COPY --chown=socketio:nodejs /* ./
+RUN yarn --frozen-lockfile --network-timeout 600000
+
+RUN yarn build
+
+ENV NODE_ENV production
+
+USER socketio
+
+EXPOSE 3333
+
+ENV PORT 3333
+
+CMD [ "node", "dist/server.js" ]

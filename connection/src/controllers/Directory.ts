@@ -1,6 +1,6 @@
 import { CodeAnalytic, CodeAnalyticFile } from "@lmarcel/exe-code-analytics";
 import { AxiosInstance } from "axios";
-import { CannotGetRepository } from "../errors/CannotGetRespository";
+import { CannotGetRepositoryError } from "../errors/CannotGetRespositoryError";
 import { getRawString } from "../utils/getRawString";
 import { GithubApp, RateLimit } from "./GithubApp";
 
@@ -102,7 +102,7 @@ class Directory {
       });
     }).catch(err => {
       console.log(err.message);
-      throw new CannotGetRepository(repositoryFullname);
+      throw new CannotGetRepositoryError(repositoryFullname);
     });
 
     if(refs.length >= per_page) {
@@ -130,13 +130,9 @@ class Directory {
     onChangeRateLimit: (rateLimit: RateLimit) => void,
     onChangeProgress: (progress: Progress) => void,
   ) {
-    console.log("Getting api instance...");
-
     const githubApp = new GithubApp(token);
     const appApi = await githubApp.getApi(onChangeRateLimit);
 
-    console.log("Getting commits refs...");
-    console.log(authUserId, repositoryFullname, token);
     const commitsRef: any[] = await this.getCommitsRefs(
       repositoryFullname, 
       authUserId, 
@@ -151,7 +147,6 @@ class Directory {
       value: 0
     });
 
-    console.log("Changing commits refs order...");
     commitsRef.reverse();
 
     const commits: Commit[] = [];
@@ -248,8 +243,6 @@ class Directory {
         methods: [],
         classes: []
       });
-
-      console.log(ci, c.commit.message);
 
       commits.push({
         order: Number(ci || 0),

@@ -1,8 +1,8 @@
 import express from "express";
 import { io } from "..";
-import { Directory } from "../controllers/Directory";
+import { RepositoryQueue } from "../controllers/RepositoryQueue";
+import { Users } from "../controllers/Users";
 import { api } from "../services/api";
-import { Users } from "../services/users";
 
 export type RepositoryStatus = "NOT_REQUESTED" | "REQUESTED" | "LOADED";
 export type RefreshCommitsData = {
@@ -11,7 +11,6 @@ export type RefreshCommitsData = {
   fullname: string;
   appToken: string;
 }; 
-
 
 const connectionRoutes = express.Router();
 
@@ -39,7 +38,8 @@ connectionRoutes.post("/connect", (req, res) => {
         socket.on("@repostory/commits/refresh", ({
           repositoryFullname,
           token,
-          userId
+          userId,
+          isForced = false
         }) => {
           console.log("Commit refresh event");
 
@@ -48,63 +48,25 @@ connectionRoutes.post("/connect", (req, res) => {
           }).then((res) => {
             const {
               id,
-              fullname,
-              status,
               appToken
             } = res.data;
             
-            //temporary
-            if(true/*status === "NOT_REQUESTED"*/) {
-              Directory.getRepositoryCommits(userId, fullname, appToken, (rateLimit) => {
-                server.emit("rate_limit", rateLimit);
-              }, (progress) => {
-                const newProgressValue = {
-                  ...progress,
-                  name: fullname,
-                  status: "REQUESTED"
-                }; 
+            const user = Users.getUser(namespace);
+            const currentProgress = user?.getProgress(repositoryFullname); 
+             
+            const newRepositoryQueue = new RepositoryQueue(
+              server, 
+              repositoryFullname, 
+              id, 
+              token, 
+              appToken, 
+              userId, 
+              currentProgress?.status,
+              isForced
+            );
 
-                const inProgressValue = Users.updateUserProgress(namespace, newProgressValue);
-                server.emit("progress", inProgressValue);
-              }).then(async(commits) => {
-                for(let c = 0; c <= Math.ceil(commits.length/10); c++) {
-                  const pieceOfCommits = commits.slice((c*10), (c*10) + 10);
-  
-                  await api.post(`user/repository/socket/commits?token=${token}`, {
-                    fullname: repositoryFullname,
-                    id,
-                    commits: pieceOfCommits,
-                    isFinished: c >= Math.ceil(commits.length/10),
-                    count: commits.length
-                  }).then((res) => {
-                    console.log("IsFinished: " + (c >= Math.ceil(commits.length/10)));
-                    const newProgressValue = {
-                      target: -pieceOfCommits.length,
-                      value: -pieceOfCommits.length,
-                      name: fullname,
-                      status: "REQUESTED"
-                    };
-
-                    const inProgressValue = Users.updateUserProgress(namespace, newProgressValue);
-                    server.emit("progress", inProgressValue);
-                  }).catch((err) => console.log("c", err.message));
-                };
-
-                const endProgressValue = {
-                  target: 0,
-                  value: 0,
-                  name: fullname,
-                  status: "LOADED"
-                };
-
-                const inProgressValue = Users.updateUserProgress(namespace, endProgressValue);
-                server.emit("progress", inProgressValue);
-                
-                console.log("Repository loaded: " + repositoryFullname);
-              }).catch((err) => console.log("b", err.message));
-            };
-
-          }).catch((err) => console.log("a", err));
+            user?.addInQueue(newRepositoryQueue);
+          }).catch((err) => console.log("Error on try to get information: ", err));
         });
       });
     };

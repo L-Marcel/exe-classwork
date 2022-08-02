@@ -1,0 +1,30 @@
+services:
+  database:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=41654y54uxedrs4gy
+      - POSTGRES_DATABASE=app
+    volumes:
+      - postgresql:/postgresql
+
+  connection:
+    image: connection
+    ports:
+      - 3333:3333
+    build: 
+      context: ./connection
+      dockerfile: Dockerfile.connection
+      
+  app:
+    image: classwork
+    ports:
+      - 3000:3000
+    build:
+      context: ./app
+      dockerfile: Dockerfile.app
+
+volumes:
+  postgresql:
+    driver: local
