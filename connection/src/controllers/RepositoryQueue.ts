@@ -13,7 +13,7 @@ class RepositoryQueue {
   public uuid: string;
 
   constructor(
-    private server: Namespace,
+    public server: Namespace,
     public fullname: string,
     public repositoryId: string,
     public token: string,
@@ -26,49 +26,46 @@ class RepositoryQueue {
     this.requestedAt = new Date();
   };
 
-  private onProgressUpdate(namespace: string, progress: Progress) {
-    let newProgressValue = {
-      ...progress,
-      name: this.fullname,
-      status: "REQUESTED"
-    }; 
-
-    this.progressTarget += (progress?.target || 0);
-    this.progressValue += (progress?.value || 0);
-
-    const user = Users.getUser(namespace);
-    let inProgressValue = user?.updateProgress(newProgressValue);
-
-    const isRunning = user?.alreadyRunningInQueue(this.uuid);
- 
-    if(!isRunning) {
-      newProgressValue = {
-        value: -this.progressValue,
-        target: -this.progressTarget,
-        name: this.fullname,
-        status: "REQUESTED"
-      }; 
-
-      inProgressValue = user?.updateProgress(newProgressValue);
-      this.server.emit("progress", inProgressValue);
-
-      throw new ProcessNotFoundInQueueError(this.fullname);
-    };
-
-    this.server.emit("progress", inProgressValue);
-  };
-
-  private onUpdaterateLimit(rateLimit: RateLimit) {
-    this.server.emit("rate_limit", rateLimit);
-  };
-
   load(namespace: string, onFinish: () => void) {
     Directory.getRepositoryCommits(
       this.userId, 
       this.fullname, 
       this.appToken, 
-      this.onUpdaterateLimit, 
-      (progress) => this.onProgressUpdate(namespace, progress)
+      (rateLimit) => {
+        this.server.emit("rate_limit", rateLimit);
+      }, 
+      (progress) => {
+        let newProgressValue = {
+          ...progress,
+          name: this.fullname,
+          status: "REQUESTED"
+        }; 
+
+        this.progressTarget += (progress?.target || 0);
+        this.progressValue += (progress?.value || 0);
+        console.log(this.progressValue, this.progressTarget);
+    
+        const user = Users.getUser(namespace);
+        let inProgressValue = user?.updateProgress(newProgressValue);
+    
+        const isRunning = user?.alreadyRunningInQueue(this.uuid);
+     
+        if(!isRunning) {
+          newProgressValue = {
+            value: -this.progressValue,
+            target: -this.progressTarget,
+            name: this.fullname,
+            status: "REQUESTED"
+          }; 
+    
+          inProgressValue = user?.updateProgress(newProgressValue);
+          this.server.emit("progress", inProgressValue);
+    
+          throw new ProcessNotFoundInQueueError(this.fullname);
+        };
+    
+        this.server.emit("progress", inProgressValue);
+      }
     ).then(async(commits) => {
       for(let c = 0; c <= Math.ceil(commits.length/10); c++) {
         const pieceOfCommits = commits.slice((c*10), (c*10) + 10);
