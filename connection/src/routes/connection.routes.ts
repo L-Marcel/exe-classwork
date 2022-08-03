@@ -38,8 +38,7 @@ connectionRoutes.post("/connect", (req, res) => {
         socket.on("@repostory/commits/refresh", ({
           repositoryFullname,
           token,
-          userId,
-          isForced = false
+          userId
         }) => {
           console.log("Commit refresh event");
 
@@ -52,7 +51,6 @@ connectionRoutes.post("/connect", (req, res) => {
             } = res.data;
             
             const user = Users.getUser(namespace);
-            const currentProgress = user?.getProgress(repositoryFullname); 
              
             const newRepositoryQueue = new RepositoryQueue(
               server, 
@@ -60,9 +58,7 @@ connectionRoutes.post("/connect", (req, res) => {
               id, 
               token, 
               appToken, 
-              userId, 
-              currentProgress?.status,
-              isForced
+              userId
             );
 
             user?.addInQueue(newRepositoryQueue);

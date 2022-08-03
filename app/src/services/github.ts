@@ -195,19 +195,34 @@ export class Github {
       case "push":
         let push: WebhookEventData["push"] = data;
 
-        if(push?.repository?.full_name.toLocaleLowerCase() === "l-marcel/exe-classwork") {
+        const isDefaultBranch = push?.ref.includes(`/${push?.repository?.default_branch}`);
+        const isForced = push?.deleted || push?.forced;
+
+        if(
+          push?.repository?.full_name.toLocaleLowerCase() === "l-marcel/exe-classwork" 
+          || !isDefaultBranch
+        ) {
           return true;
-        };
+        };        
 
         const user = await Users.getByGithubId(String(push.repository.owner.id));
         const appToken = AppAuth.createToken(user);
 
-        //Just simplify
-        await Commits.deleteMany({
+        const repositoryWhere = {
           repository: {
             fullname: push.repository?.full_name
           }
-        });
+        };
+
+        await Commits.deleteMany(repositoryWhere);
+        
+        /*
+        let lastCommitLoaded: Commit | undefined;
+        if(isForced) {
+          await Commits.deleteMany(repositoryWhere);
+        } else {
+          lastCommitLoaded = await Commits.getLastCommit(repositoryWhere);
+        };*/
 
         return await ServerSocket.getSocket(user.id, appToken)
         .then(socket => {
@@ -216,7 +231,6 @@ export class Github {
             repositoryFullname: push.repository?.full_name,
             token: appToken,
             userId: user.id,
-            isForced: true
           });
         }).catch(err => console.log(err));
       default:

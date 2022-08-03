@@ -128,10 +128,15 @@ declare type WebhookEventDataRepository = {
 
 declare interface RepositoryPushEventData extends Repository {
   full_name: string;
+  default_branch: string;
 };
 
 declare type WebhookEventDataPush = {
   _type: "push";
+  ref: string;
+  created: boolean;
+  deleted: boolean;
+  forced: boolean;
   repository: RepositoryPushEventData;
   commits: Commit[];
 };

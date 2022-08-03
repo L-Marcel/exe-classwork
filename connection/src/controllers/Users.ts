@@ -83,7 +83,7 @@ class User {
     const nextRequestInQueue = repositoryQueue[0];
     
     this.repositoriesInQueue = this.repositoriesInQueue.map(r => {
-      if(r.id === nextRequestInQueue.id) {;
+      if(r.repositoryId === nextRequestInQueue.repositoryId) {;
         r.isRunning = true;
       };
 

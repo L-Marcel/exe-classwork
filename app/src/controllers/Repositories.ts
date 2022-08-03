@@ -8,8 +8,8 @@ export class Repositories {
   static async link({
     repository,
     classroomId,
-    teamId
-  }: RepositoriesLinkInput) {
+    teamId,
+  }: RepositoriesLinkInput, onCreate?: () => Promise<void>) {
     const repositoryAlreadyExists = await Prisma.repository.findFirst({
       where: {
         OR: [
@@ -78,7 +78,7 @@ export class Repositories {
         }
       });
     } else {
-      return await this.create({
+      const createdRepos = await this.create({
         ...repository,
         classrooms: classroomId? {
           connect: {
@@ -91,6 +91,10 @@ export class Repositories {
           }
         }:undefined
       });
+
+      onCreate && await onCreate();
+
+      return createdRepos;
     };
   };
 

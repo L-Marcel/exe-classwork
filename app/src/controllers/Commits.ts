@@ -38,6 +38,21 @@ class Commits {
     });
   };
 
+  static async getLastCommit(where: P.CommitWhereInput) {
+    const lastCommit = await Prisma.commit.findFirst({
+      where,
+      orderBy: {
+        order: "desc"
+      }
+    });
+
+    if(!lastCommit) {
+      return undefined;
+    };
+
+    return lastCommit;
+  };
+
   static async count(repositoryId: string) {
     return await Prisma.commit.aggregate({
       where: {

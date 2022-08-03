@@ -35,6 +35,17 @@ async function createTeam(req: Req, res: Res) {
       },
       classroomId: classroomId?.toString() || "",
       teamId: team.team.id
+    }, async() => {
+      await ServerSocket.getSocket(user.id, req.token)
+      .then(socket => {
+        console.log("Socket created: ", socket.id);
+        socket.emit("@repostory/commits/refresh", {
+          repositoryFullname: repository.fullname,
+          token: req.token,
+          userId: user.id,
+          isForced: true
+        });
+      }).catch(err => console.log(err));
     }).then(async(res: any) => {
       try {
         await Alerts.create("TEAM", {
@@ -55,19 +66,6 @@ async function createTeam(req: Req, res: Res) {
         teamId: team.team.id
       });
     });
-
-    console.log("Requesting commits...");
-
-    await ServerSocket.getSocket(user.id, req.token)
-    .then(socket => {
-      console.log("Socket created: ", socket.id);
-      socket.emit("@repostory/commits/refresh", {
-        repositoryFullname: repository.fullname,
-        token: req.token,
-        userId: user.id,
-        isForced: true
-      });
-    }).catch(err => console.log(err));
   };
 
   return res.status(201).send("");

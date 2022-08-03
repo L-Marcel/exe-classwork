@@ -15,9 +15,6 @@ export type GithubRepositoryCommitRef = {
   sha: string;
   commit: {
     message: string;
-    tree: {
-      sha: string
-    }
   };
 };
 
@@ -93,10 +90,7 @@ class Directory {
         return {
           sha: c.sha,
           commit: {
-            message: c.commit.message,
-            tree: {
-              sha: c.commit.tree.sha
-            }
+            message: c.commit.message
           }
         } as GithubRepositoryCommitRef;
       });
