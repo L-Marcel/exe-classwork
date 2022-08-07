@@ -2,8 +2,8 @@
 Exe Classwork is a new version of the Classwork: a tool for analyzing GitHub repositories focused on helping teachers to monitor their students' software development process results.
 
 ## Authors
-- Lucas Marcel Silva de Brito
-- João Helis Bernardo  
+- [Lucas Marcel Silva de Brito](https://www.linkedin.com/in/l-marcel/)
+- [João Helis Bernardo](https://www.linkedin.com/in/joaohelis/)
 
 ## Features
 - Repositories, classrooms, and teams creation
