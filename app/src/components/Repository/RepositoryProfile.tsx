@@ -46,7 +46,7 @@ function RepositoryProfile({
     selectedUser
   });
 
-  if(!userCommits) {
+  /*if(!userCommits) {
     return (
       <RepositoryProfileDescription
         message="No commits"
@@ -58,7 +58,7 @@ function RepositoryProfile({
         color="red.600"
       />
     );
-  };
+  };*/
 
   return ( 
     <>
