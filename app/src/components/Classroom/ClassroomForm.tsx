@@ -300,6 +300,18 @@ function ClassroomForm({
           watch={watch}
         />
       </Stack>
+      <Alert 
+        status="warning"
+        variant="left-accent"
+        borderRadius={8}
+        borderLeftWidth={2}
+        w={[300, 350, 500]}
+        maxW="80vw"
+        alignItems="flex-start"
+      >
+        <AlertIcon/>
+        New classrooms are disabled in beta
+      </Alert>
       { message && 
         <Alert 
           status={message.type}

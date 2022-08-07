@@ -2,6 +2,7 @@ import { Prisma as P } from "@prisma/client";
 import { NotFoundError } from "../errors/api/NotFoundError";
 import { Prisma } from "../services/prisma";
 import { getApiQuery } from "../utils/getApiQuery";
+import { getIsBeta } from "../utils/getIsBeta";
 import { Alerts } from "./Alerts";
 
 export class Repositories {
@@ -99,6 +100,12 @@ export class Repositories {
   };
 
   static async create(data: P.RepositoryCreateInput) {
+    const isBeta = getIsBeta();
+
+    if(isBeta) {
+      return false;
+    };
+
     return await Prisma.repository.create({
       data
     }).then(async(res) => {

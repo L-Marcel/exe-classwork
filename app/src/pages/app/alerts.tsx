@@ -1,4 +1,4 @@
-import { Box, HStack } from "@chakra-ui/react";
+import { Alert, AlertIcon, Box, HStack } from "@chakra-ui/react";
 import { AlertsList } from "../../components/List/Alert/AlertsList";
 import { Pagination } from "../../components/Pagination";
 import { Search } from "../../components/Search";
@@ -35,6 +35,19 @@ function AlertsPage() {
           </HStack>
           <Pagination/>
         </Box>
+        <Alert 
+          status="warning"
+          variant="left-accent"
+          borderRadius={8}
+          borderLeftWidth={2}
+          w={[300, 350, 500]}
+          maxW="80vw"
+          alignItems="flex-start"
+          mb={6}
+        > 
+          <AlertIcon/>
+          New alerts are disabled in beta
+        </Alert>
         <AlertsList/>
       </SearchProvider>
     </Section>

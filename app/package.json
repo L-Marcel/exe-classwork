@@ -1,6 +1,7 @@
 {
   "name": "next-start",
   "private": true,
+  "version": "1.0.1",
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",

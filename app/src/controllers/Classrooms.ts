@@ -5,6 +5,7 @@ import { ConflitLimitError } from "../errors/api/ConflitLimitError";
 import { NotFoundError } from "../errors/api/NotFoundError";
 import { Prisma } from "../services/prisma";
 import { getApiQuery } from "../utils/getApiQuery";
+import { getIsBeta } from "../utils/getIsBeta";
 import { Alerts } from "./Alerts";
 import { ClassroomRelations } from "./ClassroomRelations";
 
@@ -39,6 +40,12 @@ export class Classrooms {
   };
 
   static async create(user: User, data: P.ClassroomCreateInput) {
+    const isBeta = getIsBeta();
+
+    if(isBeta) {
+      return false;
+    };
+
     const inviteCode = await this.getUniqueInviteCode();
 
     const createdClassroom = await Prisma.classroom.create({

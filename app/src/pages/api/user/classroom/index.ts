@@ -8,7 +8,11 @@ async function createClassroom(req: Req, res: Res) {
   const data = req.body;
   const user = req.user;
 
-  await Classrooms.create(user, data);
+  const isCreated = await Classrooms.create(user, data);
+
+  if(!isCreated) {
+    return res.status(403).send("");
+  };
 
   return res.status(201).send("");
 };

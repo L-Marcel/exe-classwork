@@ -51,6 +51,11 @@ function HomePage({
             description="Some metrics can make a difference in the repository evaluation; they aren't all but can show important data for the teacher or the developer byself, improving the rest of the development process."
           />,
           <ReferenceButton
+            href="https://l-marcel.gitbook.io/classwork/analytic-and-metrics/metrics-extracted-of-a-repository"
+            title="+ Test in playground"
+            description="Check the metrics extracted for a file in real-time in our playground. You can check more than a programming language! (But we have extended support only for Java and JavaScript)"
+          />,
+          <ReferenceButton
             href="https://l-marcel.gitbook.io/classwork/additional/send-your-feedback-for-us"
             title="+ Send your feedback for us"
             description="You shouldn't be a developer to contribute to the Exe Classwork. Send your opinion, it's important and can make a difference."

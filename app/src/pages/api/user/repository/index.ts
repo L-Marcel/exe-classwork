@@ -17,6 +17,10 @@ async function createRepository(req: Req, res: Res) {
     return null;
   });
 
+  if(!repository) {
+    return res.status(403).send("");
+  };
+
   console.log("Creating socket...");
   
   await ServerSocket.getSocket(user.id, req.token)

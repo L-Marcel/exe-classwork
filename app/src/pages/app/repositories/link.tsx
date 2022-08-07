@@ -1,4 +1,4 @@
-import { Stack } from "@chakra-ui/react";
+import { Alert, AlertIcon, Stack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -113,6 +113,18 @@ function LinkRepository() {
           ]}
           selectStyles={selectStyle(8)}
         />
+        <Alert 
+          status="warning"
+          variant="left-accent"
+          borderRadius={8}
+          borderLeftWidth={2}
+          w={[300, 350, 500]}
+          maxW="80vw"
+          alignItems="flex-start"
+        >
+          <AlertIcon/>
+          New repositories are disabled in beta
+        </Alert>
         <Button 
           theme="primary" 
           type="submit"
