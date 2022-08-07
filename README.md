@@ -13,6 +13,13 @@ Exe Classwork is a new version of the Classwork: a tool for analyzing GitHub rep
 - Table, charts and data filter
 - Aims at accessibility
 
+## Public repositories demonstration
+We also leave a demonstration that you can visit without need a login:
+
+- [TypeScript](https://exe-classwork.vercel.app/repositories/L-Marcel/exe-classwork)
+- [TypeScript](https://exe-classwork.vercel.app/repositories/L-Marcel/exe-code-analytics)
+- [Java](https://exe-classwork.vercel.app/repositories/joaohelis/cinephilebox)
+
 ## Documentation
 - [For users](https://l-marcel.gitbook.io/classwork/for-users/first-steps-for-a-common-user)
 - [For devs](https://l-marcel.gitbook.io/classwork/for-developers/creating-a-development-environment)
