@@ -51,7 +51,7 @@ function HomePage({
             description="Some metrics can make a difference in the repository evaluation; they aren't all but can show important data for the teacher or the developer byself, improving the rest of the development process."
           />,
           <ReferenceButton
-            href="https://l-marcel.gitbook.io/classwork/analytic-and-metrics/metrics-extracted-of-a-repository"
+            href="https://exe-code-analytics-playground.vercel.app/"
             title="+ Test in playground"
             description="Check the metrics extracted for a file in real-time in our playground. You can check more than a programming language! (But we have extended support only for Java and JavaScript)"
           />,
