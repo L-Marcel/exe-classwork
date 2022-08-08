@@ -1,4 +1,4 @@
-import { Box, HStack } from "@chakra-ui/react";
+import { Alert, AlertIcon, Box, HStack } from "@chakra-ui/react";
 import { SearchProvider } from "../../contexts/SearchProvider";
 import { AlertsList } from "../List/Alert/AlertsList";
 import { Pagination } from "../Pagination";
@@ -18,7 +18,6 @@ function ClassroomAlerts({
         flexDir={["column", "column", "column", "row"]}
         alignItems={["flex-start"]}
         flexWrap="wrap"
-        mt={5}
         justifyContent="space-between"
         w="100%"
       >
@@ -32,6 +31,19 @@ function ClassroomAlerts({
         </HStack>
         <Pagination/>
       </Box>
+      <Alert 
+        status="warning"
+        variant="left-accent"
+        borderRadius={8}
+        borderLeftWidth={2}
+        w={[300, 350, 500]}
+        maxW="80vw"
+        alignItems="flex-start"
+        mb={6}
+      > 
+        <AlertIcon/>
+        New alerts are disabled in beta
+      </Alert>
       <AlertsList
         queryTo={`/user/classroom/${id}/alerts`}
       />
@@ -40,3 +52,4 @@ function ClassroomAlerts({
 };
 
 export { ClassroomAlerts };
+

@@ -130,6 +130,9 @@ export const theme = extendTheme({
         },
         ".recharts-cartesian-grid": {
           cursor: "pointer"
+        },
+        "textarea, input": {
+          userSelect: "all"
         }
       }
     }
