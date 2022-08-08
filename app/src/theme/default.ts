@@ -132,7 +132,7 @@ export const theme = extendTheme({
           cursor: "pointer"
         },
         "textarea, input": {
-          userSelect: "all"
+          userSelect: "text"
         }
       }
     }
