@@ -29,3 +29,10 @@ Auto updates are disabled to l-marcel/exe-classwork because exists a conflict on
 - [Extracted metrics](https://l-marcel.gitbook.io/classwork/analytic-and-metrics/metrics-extracted-of-a-repository)
 - [Test in playground](https://exe-code-analytics-playground.vercel.app/)
 - [Feedback](https://l-marcel.gitbook.io/classwork/additional/send-your-feedback-for-us)
+
+## Roadmap
+
+- [ ] Add exit of classroom option
+- [ ] Improve charts in mobile
+- [ ] Finish documentation
+- [ ] Add support for Python
