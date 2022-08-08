@@ -46,6 +46,7 @@ export type GithubRepositoryCommit = {
     status: "added" | "removed" | "modified" | "renamed" | "copied" | "changed" | "unchanged";
     filename: string;
     raw_url: string;
+    previous_filename?: string;
   }[];
 };
 
@@ -173,6 +174,19 @@ class Directory {
         removed: 0
       });
 
+      const deletedFiles = data.files.filter(f => f.status === "removed").map(f => {
+        return {
+          path: f.filename
+        };
+      })
+      
+      const renamedFiles = data.files.filter(f => f.status === "renamed").map(f => {
+        return {
+          path: f.filename,
+          oldPath: f.previous_filename
+        };
+      });
+
       const files: GithubTreesFile[] = await Promise.all(data.files.map(async(f) => {
         return await this.getFileData({ 
           path: f.filename,
@@ -182,7 +196,18 @@ class Directory {
       }));
 
       const allFiles = [ 
-        ...oldCommitFiles,
+        ...oldCommitFiles.map(oldFile => {
+          const indexOfRenamedFile = renamedFiles.findIndex(renamedFile => renamedFile.oldPath === oldFile.path);
+
+          if(indexOfRenamedFile >= 0) {
+            return {
+              ...oldFile,
+              path: renamedFiles[indexOfRenamedFile].path
+            };
+          };
+
+          return oldFile;
+        }).filter(oldFile => !deletedFiles.some(deletedFile => deletedFile.path === oldFile.path)),
         ...files
       ];
 
