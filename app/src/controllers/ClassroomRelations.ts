@@ -470,7 +470,10 @@ export class ClassroomRelations {
   ) {
     const authorizedRelation = await ClassroomRelations.get(classroomId, authorizedUserId);
 
-    if(authorizedRelation.role !== "OWNER" && authorizedRelation.role !== "ADMIN") {
+    if(
+      (authorizedRelation.role !== "OWNER" && authorizedRelation.role !== "ADMIN" && userId !== authorizedUserId) ||
+      (userId === authorizedUserId && authorizedRelation.role === "OWNER")
+    ) {
       throw new UnauthorizedError();
     };
 
