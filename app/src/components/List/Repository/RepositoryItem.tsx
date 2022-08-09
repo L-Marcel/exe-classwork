@@ -24,8 +24,7 @@ function RepositoryItem({
   description, 
   subject, 
   id, 
-  status,
-  alerts = [] 
+  status
 }: RepositoryItemProps) {
   const router = useRouter();
 
@@ -62,7 +61,7 @@ function RepositoryItem({
     <Box
       position="relative"
       w="fill"
-      minW={["85%", "80%", "80%", "40%", "20%", "20.1%"]}
+      minW={["85%", "80%", "80%", "40%", "20%"]}
     >
       <Box
         as={m.button}
@@ -92,18 +91,17 @@ function RepositoryItem({
           <Heading
             fontSize="1.4rem"
             color={theme}
-            maxW={["65vw", "70vw", "80vw", 350, 220, 300]}
+            maxW={["65vw", "70vw", "80vw", 350, 325, 400]}
             pr={[0, 12]}
             mt={-1}
           >
             {name?.slice(0, 30)}{name?.length > 30 && "..."}
           </Heading>
-
         </Box>
         <Text
           mt={-1}
           fontSize=".9rem"
-          maxW={["63vw", "77vw", "77vw", 330, 200, 280]}
+          maxW={["63vw", "77vw", "77vw", 350, 325, 400]}
         >
           {subject}
         </Text>

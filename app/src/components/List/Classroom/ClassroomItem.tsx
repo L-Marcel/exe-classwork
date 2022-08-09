@@ -56,7 +56,7 @@ function ClassroomItem({ title, description, subject, id, alerts = [] }: Classro
   return (
     <Box
       as={m.button}
-      minW={["85%", "80%", "80%", "40%", "20%", "20.1%"]}
+      minW={["85%", "80%", "80%", "40%", "20%"]}
       w="fill"
       bgColor="solid.100"
       borderRadius={15}
@@ -81,7 +81,7 @@ function ClassroomItem({ title, description, subject, id, alerts = [] }: Classro
         <Heading
           fontSize="1.4rem"
           color="primary.700"
-          maxW={["65vw", "70vw", "80vw", 350, 220, 300]}
+          maxW={["65vw", "70vw", "80vw", 350, 325, 400]}
           pr={[0, 12]}
           mt={-1}
         >
@@ -112,9 +112,8 @@ function ClassroomItem({ title, description, subject, id, alerts = [] }: Classro
         </Box>
       </Box>
       <Text
-        mt={-1}
         fontSize=".9rem"
-        maxW={["63vw", "77vw", "77vw", 330, 200, 280]}
+        maxW={["63vw", "77vw", "77vw", 350, 325, 400]}
       >
         {subject}
       </Text>
@@ -122,7 +121,7 @@ function ClassroomItem({ title, description, subject, id, alerts = [] }: Classro
         description && <Text 
           mt={3}
           fontSize="1rem"
-          maxW={["68vw", "80vw", "80vw", "50vw", 220, 300]}
+          maxW={["68vw", "80vw", "80vw", "50vw", 325, 325]}
         >
           {description?.slice(0, 200)}{description?.length > 200 && "..."}
         </Text>

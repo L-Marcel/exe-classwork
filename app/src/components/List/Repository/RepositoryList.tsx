@@ -19,6 +19,14 @@ function RepositoryList() {
           instance="repository"
         />
       }
+      colsMaxW={["100%", "100%", "100%", "50%", "33%", "33%"]}
+      cols={{
+        base: ["a"],
+        xl: ["a", "b", "c"],
+        lg: ["a", "b"],
+        md: ["a"],
+        sm: ["a"]
+      }}
       items={repositories?.map(c => {
         return (
           <RepositoryItem

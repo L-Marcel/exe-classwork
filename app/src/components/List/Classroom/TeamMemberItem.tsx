@@ -20,7 +20,7 @@ function TeamMemberItem({
       alignItems="center"
       justifyContent="flex-start"
       textAlign="start"
-      minW={["85%", "80%", "80%", "40%", "20%", "20.1%"]}
+      minW={["85%", "80%", "80%", "40%", "20%"]}
       w="fill"
       bgColor="solid.100"
       borderRadius={15}
