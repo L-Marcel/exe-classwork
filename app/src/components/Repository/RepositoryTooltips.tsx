@@ -40,11 +40,11 @@ function RepositoryTooltips({
     return (
       <Stack
         gap={2}
-        maxW={420}
+        maxW={[200, 200, 200, 420]}
       >
         { (payload[0]?.payload?.userGithubId && data?.userGithubLogin) && 
           <Box
-            p={5}
+            p={[2, 2, 2, 5]}
             bgColor="solid.50"
             borderRadius={8}
             display="flex"
@@ -59,12 +59,14 @@ function RepositoryTooltips({
             /> }
             <Box>
               <Text
+                fontSize={[12, 12, 12, 16]}
                 fontWeight="black"
               >
                 {data?.userGithubLogin}
               </Text>
               { formatedDate && <Text
-                fontSize={14}
+                fontSize={[10, 10, 10, 14]}
+                whiteSpace="pre-wrap"
               >
                 {formatedDate}
               </Text> }
@@ -72,19 +74,20 @@ function RepositoryTooltips({
           </Box> 
         }
         <Box
-          p={5}
+          p={[2, 2, 2, 5]}
           bgColor="solid.50"
           borderRadius={8}
           { ...boxShadow() }
         >
           <Text
+            fontSize={[12, 12, 12, 16]}
             fontWeight="black"
           >
             {label.length > 58 ? label.substring(0, 55) + "..." : label}
           </Text>
           <Text
             fontWeight="normal"
-            fontSize={14}
+            fontSize={[10, 10, 10, 14]}
             mb={2}
           >
             {formatedDistanceOfCommitDate} ago

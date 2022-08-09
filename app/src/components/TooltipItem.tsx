@@ -37,6 +37,7 @@ function TooltipItem({
     <Text 
       fontWeight="hairline"
       whiteSpace="pre-wrap"
+      fontSize={[10, 10, 10, 14]}
       mr={20}
     >
       <Span

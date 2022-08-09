@@ -80,7 +80,7 @@ function RepositoryContent({
           justifyContent="center"
         >
           <RangerInput
-            w={`${chartWidth - 50}px`}
+            w={["950px", "950px", "850px", `${chartWidth-50}px`]}
             alignSelf="center"
             onChange={handleOnChangeRanger}
             h={5}
@@ -104,7 +104,7 @@ function RepositoryContent({
           justifyContent="center"
         >
           <RangerInput
-            w={`${chartWidth - 50}px`}
+            w={["950px", "950px", "850px", `${chartWidth-50}px`]}
             alignSelf="center"
             onChange={handleOnChangeRanger}
             mr="14px"
@@ -128,7 +128,7 @@ function RepositoryContent({
           justifyContent="center"
         >
           <RangerInput
-            w={`${chartWidth - 50}px`}
+            w={["950px", "950px", "850px", `${chartWidth-50}px`]}
             alignSelf="center"
             onChange={handleOnChangeRanger}
             h={5}
