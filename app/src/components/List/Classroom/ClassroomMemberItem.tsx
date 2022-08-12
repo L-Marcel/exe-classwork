@@ -70,6 +70,7 @@ function ClassroomMemberItem({
       justifyContent="flex-start"
       textAlign="start"
       minW={["85%", "80%", "80%", "40%", "20%"]}
+      mr={[5, 0, 0, 0, 0]}
       w="fill"
       bgColor="solid.100"
       borderRadius={15}
@@ -139,7 +140,7 @@ function ClassroomMemberItem({
       </Box>:(currentUser.id === user.id && !userIsOwner) && <Box
         position="absolute"
         top={-1}
-        right={[-8, 0]}
+        right={0}
         p={4}
       >
         <IconButton

@@ -77,6 +77,7 @@ function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: Classroo
       justifyContent="flex-start"
       textAlign="start"
       minW={["85%", "80%", "80%", "40%", "20%", "20.1%"]}
+      mr={[5, 0, 0, 0, 0]}
       w="fill"
       bgColor="solid.100"
       borderRadius={15}
@@ -227,7 +228,7 @@ function ClassroomTeamItem({ team, repositoriesAreRestricted = false }: Classroo
       { userIsAuthorized && <Box
         position="absolute"
         top={-1}
-        right={[-8, 0]}
+        right={0}
         p={4}
         onClick={e => e.stopPropagation()}
       >

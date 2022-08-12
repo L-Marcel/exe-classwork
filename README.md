@@ -35,6 +35,6 @@ Auto updates are disabled to l-marcel/exe-classwork because exists a conflict on
 - [x] Remove error on check deleted or renamed files
 - [x] Add exit of classroom option
 - [x] Improve charts in mobile
-
+- [x] Improve layout
 - [ ] Finish documentation
 - [ ] Add support for Python
