@@ -10,7 +10,8 @@
     "CSS"
   ],
   "links": {
-    "self": "https://exe-classwork.vercel.app"
+    "self": "https://exe-classwork.vercel.app",
+    "documentation": "https://l-marcel.gitbook.io/classwork"
   }
 }
  
