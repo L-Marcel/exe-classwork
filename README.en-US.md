@@ -22,10 +22,6 @@
 <p>A tool for analyzing GitHub repositories focused on helping teachers to monitor their students' software development process results.</p>
 
 <div id="grid">
-  <ul><h2>The <span>authors</span>:</h2>
-    <li id="checked"><a href="https://www.linkedin.com/in/l-marcel/" target="__blank__">Lucas Marcel Silva de Brito</a>;</li>
-    <li id="checked"><a href="https://www.linkedin.com/in/l-marcel/" target="__blank__">João Helis Bernardo</a>.</li>
-  </ul>
   <ul><h2>All <span>features</span>:</h2>
     <li id="checked">Repositories, classrooms, and teams creation;</li>
     <li id="checked">Code analysis and playground for external tests;</li>
@@ -34,6 +30,10 @@
     <li id="checked">Table, charts and <span>data filter</span>;</li>
     <li id="checked">Aims at <span>accessibility</span>.</li>
   </ul>
+  <ul><h2>The <span>authors</span>:</h2>
+    <li id="linkedin"><a href="https://www.linkedin.com/in/l-marcel/" target="__blank__">Lucas Marcel Silva de Brito</a>;</li>
+    <li id="linkedin"><a href="https://www.linkedin.com/in/l-marcel/" target="__blank__">João Helis Bernardo</a>.</li>
+  </ul>
 </div>
 
 <h2>Public repositories <span>demonstration</span></h2>
@@ -41,9 +41,9 @@
 
 <div id="grid">
   <ul>
-    <li id="checked">TypeScript - <a href="https://exe-classwork.vercel.app/repositories/L-Marcel/exe-classwork" target="__blank__">l-marcel/exe-classwork</a>;</li>
-    <li id="checked">TypeScript - <a href="https://exe-classwork.vercel.app/repositories/L-Marcel/exe-code-analytics" target="__blank__">l-marcel/exe-code-analytics</a>;</li>
-    <li id="checked">Java - <a href="https://exe-classwork.vercel.app/repositories/joaohelis/cinephilebox" target="__blank__">joaohelis/cinephilebox</a>.</li>
+    <li id="typescript">TypeScript - <a href="https://exe-classwork.vercel.app/repositories/L-Marcel/exe-classwork" target="__blank__">l-marcel/exe-classwork</a>;</li>
+    <li id="typescript">TypeScript - <a href="https://exe-classwork.vercel.app/repositories/L-Marcel/exe-code-analytics" target="__blank__">l-marcel/exe-code-analytics</a>;</li>
+    <li id="java">Java - <a href="https://exe-classwork.vercel.app/repositories/joaohelis/cinephilebox" target="__blank__">joaohelis/cinephilebox</a>.</li>
   </ul>
 </div>
 

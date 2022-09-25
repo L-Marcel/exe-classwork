@@ -22,10 +22,6 @@
 <p>Uma ferramente para análise de repositórios focada em ajudar professores para monitorar o resultado do processo de desenvolvimento de softwares do seus estudantes.</p>
 
 <div id="grid">
-  <ul><h2>Os <span>autores</span>:</h2>
-    <li id="checked"><a href="https://www.linkedin.com/in/l-marcel/" target="__blank__">Lucas Marcel Silva de Brito</a>;</li>
-    <li id="checked"><a href="https://www.linkedin.com/in/l-marcel/" target="__blank__">João Helis Bernardo</a>.</li>
-  </ul>
   <ul><h2>Todos os <span>rescursos</span>:</h2>
     <li id="checked">Criar repositórios, turmas e times;</li>
     <li id="checked">Análise do código e playground para testes;</li>
@@ -33,6 +29,10 @@
     <li id="checked">Suporta <span>Java</span>, <span>JavaScript</span> e <span>TypeScript</span>;</li>
     <li id="checked">Com tabelas, gráficos e <span>filtros de dado</span>;</li>
     <li id="checked">Focado em <span>acessibilidade</span>.</li>
+  </ul>
+  <ul><h2>Os <span>autores</span>:</h2>
+    <li id="checked"><a href="https://www.linkedin.com/in/l-marcel/" target="__blank__">Lucas Marcel Silva de Brito</a>;</li>
+    <li id="checked"><a href="https://www.linkedin.com/in/l-marcel/" target="__blank__">João Helis Bernardo</a>.</li>
   </ul>
 </div>
 
