@@ -23,12 +23,12 @@
 
 <div id="grid">
   <ul><h2>All <span>features</span>:</h2>
-    <li id="checked">Repositories, classrooms, and teams creation;</li>
-    <li id="checked">Code analysis and playground for external tests;</li>
-    <li id="checked">Classrooms and teams permissions management;</li>
-    <li id="checked">Support for <span>Java</span>, <span>JavaScript</span>, and <span>TypeScript</span>;</li>
-    <li id="checked">Table, charts and <span>data filter</span>;</li>
-    <li id="checked">Aims at <span>accessibility</span>.</li>
+    <li id="checked"><p>Repositories, classrooms, and teams creation;</p></li>
+    <li id="checked"><p>Code analysis and playground for external tests;</p></li>
+    <li id="checked"><p>Classrooms and teams permissions management;</p></li>
+    <li id="checked"><p>Support for <span>Java</span>, <span>JavaScript</span>, and <span>TypeScript</span>;</p></li>
+    <li id="checked"><p>Table, charts and <span>data filter</span>;</p></li>
+    <li id="checked"><p>Aims at <span>accessibility</span>.</p></li>
   </ul>
   <ul><h2>The <span>authors</span>:</h2>
     <li id="linkedin"><p><a href="https://www.linkedin.com/in/l-marcel/" target="__blank__">Lucas Marcel Silva de Brito</a>;</p></li>
