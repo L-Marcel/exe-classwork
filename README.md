@@ -49,7 +49,7 @@
 
 <br/>
 
-<p>Atualizações automáticas são desativadas para l-marcel/exe-classwork porque há um conflito ao realizar ao realizar o commit.</p>
+<p>Atualizações automáticas são desativadas para l-marcel/exe-classwork porque há um conflito ao realizar o commit.</p>
 
 <div id="grid">
   <ul><h2>A <span>documentação</span>:</h2>
