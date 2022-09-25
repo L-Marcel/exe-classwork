@@ -31,8 +31,8 @@
     <li id="checked">Aims at <span>accessibility</span>.</li>
   </ul>
   <ul><h2>The <span>authors</span>:</h2>
-    <li id="linkedin"><a href="https://www.linkedin.com/in/l-marcel/" target="__blank__">Lucas Marcel Silva de Brito</a>;</li>
-    <li id="linkedin"><a href="https://www.linkedin.com/in/l-marcel/" target="__blank__">João Helis Bernardo</a>.</li>
+    <li id="linkedin"><p><a href="https://www.linkedin.com/in/l-marcel/" target="__blank__">Lucas Marcel Silva de Brito</a>;</p></li>
+    <li id="linkedin"><p><a href="https://www.linkedin.com/in/l-marcel/" target="__blank__">João Helis Bernardo</a>.</p></li>
   </ul>
 </div>
 
@@ -41,9 +41,9 @@
 
 <div id="grid">
   <ul>
-    <li id="typescript">TypeScript - <a href="https://exe-classwork.vercel.app/repositories/L-Marcel/exe-classwork" target="__blank__">l-marcel/exe-classwork</a>;</li>
-    <li id="typescript">TypeScript - <a href="https://exe-classwork.vercel.app/repositories/L-Marcel/exe-code-analytics" target="__blank__">l-marcel/exe-code-analytics</a>;</li>
-    <li id="java">Java - <a href="https://exe-classwork.vercel.app/repositories/joaohelis/cinephilebox" target="__blank__">joaohelis/cinephilebox</a>.</li>
+    <li id="typescript"><p>TypeScript - <a href="https://exe-classwork.vercel.app/repositories/L-Marcel/exe-classwork" target="__blank__">l-marcel/exe-classwork</a>;</p></li>
+    <li id="typescript"><p>TypeScript - <a href="https://exe-classwork.vercel.app/repositories/L-Marcel/exe-code-analytics" target="__blank__">l-marcel/exe-code-analytics</a>;</p></li>
+    <li id="java"><p>Java - <a href="https://exe-classwork.vercel.app/repositories/joaohelis/cinephilebox" target="__blank__">joaohelis/cinephilebox</a>.</p></li>
   </ul>
 </div>
 
@@ -53,11 +53,11 @@
 
 <div id="grid">
   <ul><h2>The <span>documentation</span>:</h2>
-    <li id="checked">For <a href="https://l-marcel.gitbook.io/classwork/for-users/first-steps-for-a-common-user" target="__blank__">users</a>;</li>
-    <li id="checked">For <a href="https://l-marcel.gitbook.io/classwork/for-developers/creating-a-development-environment" target="__blank__">devs</a>;</li>
-    <li id="checked">Classroom <a href="https://l-marcel.gitbook.io/classwork/classrooms/creating-and-managing-a-classroom" target="__blank__">management</a>;</li>
-    <li id="checked">Extracted <a href="https://l-marcel.gitbook.io/classwork/analytic-and-metrics/metrics-extracted-of-a-repository" target="__blank__">metrics</a>;</li>
-    <li id="checked">Code analytic <a href="https://exe-code-analytics-playground.vercel.app/" target="__blank__">playground</a>;</li>
-    <li id="checked">Send your <a href="https://l-marcel.gitbook.io/classwork/additional/send-your-feedback-for-us/" target="__blank__">feedback</a>.</li>
+    <li id="checked"><p>For <a href="https://l-marcel.gitbook.io/classwork/for-users/first-steps-for-a-common-user" target="__blank__">users</a>;</p></li>
+    <li id="checked"><p>For <a href="https://l-marcel.gitbook.io/classwork/for-developers/creating-a-development-environment" target="__blank__">devs</a>;</p></li>
+    <li id="checked"><p>Classroom <a href="https://l-marcel.gitbook.io/classwork/classrooms/creating-and-managing-a-classroom" target="__blank__">management</a>;</p></li>
+    <li id="checked"><p>Extracted <a href="https://l-marcel.gitbook.io/classwork/analytic-and-metrics/metrics-extracted-of-a-repository" target="__blank__">metrics</a>;</p></li>
+    <li id="checked"><p>Code analytic <a href="https://exe-code-analytics-playground.vercel.app/" target="__blank__">playground</a>;</p></li>
+    <li id="checked"><p>Send your <a href="https://l-marcel.gitbook.io/classwork/additional/send-your-feedback-for-us/" target="__blank__">feedback</a>.</p></li>
   </ul>
 </div>
