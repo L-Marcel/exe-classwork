@@ -22,7 +22,7 @@
 <p>A tool for analyzing GitHub repositories focused on helping teachers to monitor their students' software development process results.</p>
 
 <div id="grid">
-  <ul><h2>All <span>features</span>:</h2>
+  <ul><h2>The <span>features</span>:</h2>
     <li id="checked"><p>Repositories, classrooms, and teams creation;</p></li>
     <li id="checked"><p>Code analysis and playground for external tests;</p></li>
     <li id="checked"><p>Classrooms and teams permissions management;</p></li>

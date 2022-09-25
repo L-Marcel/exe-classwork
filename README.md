@@ -22,7 +22,7 @@
 <p>Uma ferramente para análise de repositórios focada em ajudar professores para monitorar o resultado do processo de desenvolvimento de softwares do seus estudantes.</p>
 
 <div id="grid">
-  <ul><h2>Todos os <span>rescursos</span>:</h2>
+  <ul><h2>Os <span>rescursos</span>:</h2>
     <li id="checked"><p>Criar repositórios, turmas e times;</p></li>
     <li id="checked"><p>Análise do código e playground para testes;</p></li>
     <li id="checked"><p>Gerenciamentos das permissões das turmas e equipes;</p></li>
