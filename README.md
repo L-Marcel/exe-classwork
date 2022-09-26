@@ -31,19 +31,19 @@
     <li id="checked"><p>Focado em <span>acessibilidade</span>.</p></li>
   </ul>
   <ul><h2>Os <span>autores</span>:</h2>
-    <li id="checked"><p><a href="https://www.linkedin.com/in/l-marcel/" target="__blank__">Lucas Marcel Silva de Brito</a>;</p></li>
-    <li id="checked"><p><a href="https://www.linkedin.com/in/l-marcel/" target="__blank__">João Helis Bernardo</a>.</p></li>
+    <li id="linkedin"><p><a href="https://www.linkedin.com/in/l-marcel/" target="__blank__">Lucas Marcel Silva de Brito</a>;</p></li>
+    <li id="linkedin"><p><a href="https://www.linkedin.com/in/l-marcel/" target="__blank__">João Helis Bernardo</a>.</p></li>
   </ul>
 </div>
 
 <h2><span>Demonstração</span> pública</h2>
-<p>Nós deixamos algumas demonstrações que você visitar <span>sem realizar o login</span>:</p>
+<p>Nós deixamos algumas demonstrações que você pode visitar <span>sem realizar o login</span>:</p>
 
 <div id="grid">
   <ul>
-    <li id="checked"><p>TypeScript - <a href="https://exe-classwork.vercel.app/repositories/L-Marcel/exe-classwork" target="__blank__">l-marcel/exe-classwork</a>;</p></li>
-    <li id="checked"><p>TypeScript - <a href="https://exe-classwork.vercel.app/repositories/L-Marcel/exe-code-analytics" target="__blank__">l-marcel/exe-code-analytics</a>;</p></li>
-    <li id="checked"><p>Java - <a href="https://exe-classwork.vercel.app/repositories/joaohelis/cinephilebox" target="__blank__">joaohelis/cinephilebox</a>.</p></li>
+    <li id="typescript"><p>TypeScript - <a href="https://exe-classwork.vercel.app/repositories/L-Marcel/exe-classwork" target="__blank__">l-marcel/exe-classwork</a>;</p></li>
+    <li id="typescript"><p>TypeScript - <a href="https://exe-classwork.vercel.app/repositories/L-Marcel/exe-code-analytics" target="__blank__">l-marcel/exe-code-analytics</a>;</p></li>
+    <li id="java"><p>Java - <a href="https://exe-classwork.vercel.app/repositories/joaohelis/cinephilebox" target="__blank__">joaohelis/cinephilebox</a>.</p></li>
   </ul>
 </div>
 
