@@ -1,5 +1,5 @@
 <div valing="top">
-  <h1><span>Exe</span> Classwork</h1>
+  <h1><span>Exe:</span> Classwork</h1>
   <p>Exe Classwork is a <span>new version</span> of the Classwork.</p>
   <nav>
     <div id="repository-buttons"/>
