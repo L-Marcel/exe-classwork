@@ -1,6 +1,6 @@
 <div valing="top">
   <h1><span>Exe:</span> Classwork</h1>
-  <p>Exe Classwork is a <span>new version</span> of the Classwork.</p>
+  <p>Is a <span>new version</span> of the Classwork.</p>
   <nav>
     <div id="repository-buttons"/>
     <a class="navigation-link disabled" href="https://github.com/L-Marcel/exe-classwork/blob/main/README.md" target="__blank__">

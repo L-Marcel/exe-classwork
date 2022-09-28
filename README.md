@@ -1,6 +1,6 @@
 <div valing="top">
   <h1><span>Exe:</span> Classwork</h1>
-  <p>Exe Classwork é uma <span>nova versão</span> da Classwork.</p>
+  <p>É uma <span>nova versão</span> da Classwork.</p>
   <nav>
     <div id="repository-buttons"/>
     <a class="navigation-link disabled" href="https://github.com/L-Marcel/exe-classwork/blob/main/README.en-US.md" target="__blank__">
@@ -24,7 +24,7 @@
 <div id="grid">
   <ul><h2>Os <span>rescursos</span>:</h2>
     <li id="checked"><p>Criar repositórios, turmas e times;</p></li>
-    <li id="checked"><p>Análise do código e playground para testes;</p></li>
+    <li id="checked"><p>Demonstração e análise do código;</p></li>
     <li id="checked"><p>Gerenciamentos das permissões das turmas e equipes;</p></li>
     <li id="checked"><p>Suporta <span>Java</span>, <span>JavaScript</span> e <span>TypeScript</span>;</p></li>
     <li id="checked"><p>Com tabelas, gráficos e <span>filtros de dado</span>;</p></li>
@@ -57,7 +57,7 @@
     <li id="checked"><p>Para <a href="https://l-marcel.gitbook.io/classwork/for-developers/creating-a-development-environment" target="__blank__">desenvolvedores</a>;</p></li>
     <li id="checked"><p>Gerenciamento de <a href="https://l-marcel.gitbook.io/classwork/classrooms/creating-and-managing-a-classroom" target="__blank__">turmas</a>;</p></li>
     <li id="checked"><p>Extração de <a href="https://l-marcel.gitbook.io/classwork/analytic-and-metrics/metrics-extracted-of-a-repository" target="__blank__">métricas</a>;</p></li>
-    <li id="checked"><p><a href="https://exe-code-analytics-playground.vercel.app/" target="__blank__">Playground</a> para análise de código;</p></li>
+    <li id="checked"><p><a href="https://exe-code-analytics-playground.vercel.app/" target="__blank__">Demonstração </a> da análise de código;</p></li>
     <li id="checked"><p>Envie sua <a href="https://l-marcel.gitbook.io/classwork/additional/send-your-feedback-for-us/" target="__blank__">avaliação</a>.</p></li>
   </ul>
 </div>
