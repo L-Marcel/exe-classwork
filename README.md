@@ -44,8 +44,8 @@
 
 <div id="grid">
   <div id="grid-item">
-    <h2><span>Demonstração</span> pública</h2>
-    <p>Nós deixamos algumas demonstrações que você pode visitar <span>sem realizar o login</span>:</p>
+    <h2><span>Demonstração</span> pública:</h2>
+    <p>Nós deixamos algumas demonstrações que você pode visitar <span>sem realizar o login</span>.</p>
     <ul>
       <li id="typescript"><p>TypeScript - <a href="https://exe-classwork.vercel.app/repositories/L-Marcel/exe-classwork" target="__blank__">l-marcel/exe-classwork</a>;</p></li>
       <li id="typescript"><p>TypeScript - <a href="https://exe-classwork.vercel.app/repositories/L-Marcel/exe-code-analytics" target="__blank__">l-marcel/exe-code-analytics</a>;</p></li>
