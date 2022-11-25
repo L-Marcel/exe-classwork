@@ -48,8 +48,8 @@
     <p>Nós deixamos algumas demonstrações que você pode visitar <span>sem realizar o login</span>.</p>
     <ul>
       <li id="typescript"><p>TypeScript - <a href="https://exe-classwork.vercel.app/repositories/L-Marcel/exe-classwork" target="__blank__">l-marcel/exe-classwork</a>;</p></li>
-      <li id="typescript"><p>TypeScript - <a href="https://exe-classwork.vercel.app/repositories/L-Marcel/exe-code-analytics" target="__blank__">l-marcel/exe-code-analytics</a>;</p></li>
-      <li id="java"><p>Java - <a href="https://exe-classwork.vercel.app/repositories/joaohelis/cinephilebox" target="__blank__">joaohelis/cinephilebox</a>.</p></li>
+      <li id="typescript"><p>TypeScript - <a href="https://exe-classwork.vercel.app/repositories/L-Marcel/exe-code-analytics-playground" target="__blank__">l-marcel/exe-code-analytics-playground</a>;</p></li>
+      <li id="java"><p><strike>Java - <a href="https://exe-classwork.vercel.app/repositories/joaohelis/cinephilebox" target="__blank__">joaohelis/cinephilebox</a></strike>.</p></li>
     </ul>
   </div>
 </div>
