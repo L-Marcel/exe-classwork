@@ -18,7 +18,7 @@
 </div>
 
 <hr/>
-<p><strong>[Aviso]:</strong> infelizmente esse projeto foi encerrado devido as limitações dos planos gratuitos aos quais somos dependentes tendo em vista a falta de investimento. Estou arquivando o repositório por essa razão. Tentamos, mas não apareceu algo possível.</p>
+<p><strong>[Aviso]:</strong> infelizmente esse projeto foi encerrado devido as limitações dos planos gratuitos aos quais somos dependentes tendo em vista a falta de investimento. Estou arquivando o repositório por essa razão. Tentamos, mas não pareceu algo possível.</p>
 <hr/>
 <p>Uma ferramente para análise de repositórios focada em ajudar professores para monitorar o resultado do processo de desenvolvimento de softwares do seus estudantes.</p>
 
