@@ -18,7 +18,7 @@
 </div>
 
 <hr/>
-<p><strong>[Warning]:</strong> unfortunately this project was closed due to the limitations of the free plans to which we are dependent in view of the lack of investment. I am archiving it for this reason, we tried, but nothing possible appears.</p>
+<p><strong>[Warning]:</strong> unfortunately this project was closed due to the limitations of the free plans to which we are dependent in view of the lack of investment. I am archiving the repository for this reason. We tried, but nothing possible came up.</p>
 <hr/>
 <p>A tool for analyzing GitHub repositories focused on helping teachers to monitor their students' software development process results.</p>
 
