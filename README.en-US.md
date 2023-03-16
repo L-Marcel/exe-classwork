@@ -17,10 +17,9 @@
   </nav>
 </div>
 
-<br/>
-
-<p><strong>Warning:</strong> unfortunately this project was closed due to the limitations of the free plans to which we are dependent in view of the lack of investment.</p>
-
+<hr/>
+<p><strong>[Warning]:</strong> unfortunately this project was closed due to the limitations of the free plans to which we are dependent in view of the lack of investment. I am archiving it for this reason, we tried, but nothing possible appears.</p>
+<hr/>
 <p>A tool for analyzing GitHub repositories focused on helping teachers to monitor their students' software development process results.</p>
 
 <div id="grid">
