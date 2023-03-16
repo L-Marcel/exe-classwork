@@ -19,6 +19,8 @@
 
 <br/>
 
+<p><strong>Warning:</strong> unfortunately this project was closed due to the limitations of the free plans to which we are dependent in view of the lack of investment.</p>
+
 <p>A tool for analyzing GitHub repositories focused on helping teachers to monitor their students' software development process results.</p>
 
 <div id="grid">
