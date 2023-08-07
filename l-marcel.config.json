@@ -1,6 +1,5 @@
 {
   "name": "Exe: Classwork",
-  "pinned": true,
   "translatedDescription": "Reconstrução da antiga Dev Classwork.",
   "technologies": [
     "Next.js",
